@@ -1,13 +1,12 @@
 #step 1 of preprocessing Output data for Walking VR 
 
 #load packages 
-library(ggplot2)
 library(dplyr)
 library(tidyverse)
 library(wrapr)
 library(plyr)
 library(stringr)
-library(BRRR)
+
 
 
 # set our working directory 
