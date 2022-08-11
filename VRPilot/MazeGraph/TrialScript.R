@@ -1,6 +1,26 @@
-# second part of preprocessing 
-# using for DSP wayfinding an analysis
-# this will output a csv with all the trial information for subjects. 
+############################################################
+##                                                         ##
+##  AUTHOR: DANIELA COSSIO                                 ##
+##                                                         ##
+##  PURPOSE: THIS IS THE SECOND STEP IN PREPROCESSING      ##
+##           THE UNITY OUTPUT FROM THE VR WALKING          ##
+##           MAZE GRAPH TASK. HERE THE CSV FROM THE 1ST    ##
+##           STEP IS SUMMARIZED INTO INDIVIDUAL TRIALS     ##
+##           INSTEAD OF TIME POINTS.ACCURACY, START AND    ##
+##           END OBJECTS ARE EXTRACTED                     ##
+##                                                         ##
+##  INPUT : BEHAVIORAL PREPROCESSING CSV OUTPUT            ##
+##                                                         ##
+##  OUPUT: A CSV FILE WITH A ROW FOR EVERY TRIAL PER SUBJ  ##
+##                                                         ##
+##  NOTES: A BIT CONVOLUTED BUT SHOULD RUN WIHTOUT         ##
+##          ERRORS AND IS FLEXIBLE. DOUBLE CHECK ALL       ##
+##          VARIABLE NAMES BEFORE USING. NEW VARIABLES     ##
+##          CAN BE EXTRACTED IF PLACED IN THE LOOP.        ##
+##                                                         ##
+##                                                         ##
+############################################################
+
 
 library(ggplot2)
 library(dplyr)
@@ -11,6 +31,9 @@ library(stringr)
 library(BRRR)
 
 
+# New script who dis? starting fresh 
+rm(list=ls()) 
+
 # set our working directory 
 
 workdir <-"/Volumes/GoogleDrive/My Drive/Midlife_walkingVR_Pilot/midlifeVRpilot_2022/behavior_data"
@@ -19,12 +42,11 @@ setwd (workdir)
 
 
 #Read in files
-behfile <- read_csv(paste0(workdir,"/","DSPBehaviorFile.csv"))
+behfile <- read_csv(paste0(workdir,"/","BehaviorFile.csv"))
 
-y <-which(c(FALSE, tail(behfile$Trial,-1) != head(behfile$Trial,-1)))
-#x <- which(c(TRUE, tail(behfile$Trial,-1) != head(behfile$Trial,-1)))
-#x <-x-1
-splitrows <- sort(c(y)) # originally combined s and tt rows but we only have one way to split rows so we may not need this 
+trialidx <-which(c(FALSE, tail(behfile$Trial,-1) != head(behfile$Trial,-1)))
+
+splitrows <- sort(c(trialidx)) # originally combined s and tt rows but we only have one way to split rows so we may not need this 
 splitrows <- splitrows - 1 # idk whatevr rob did so i kept it anyways 
 meta_trial <- split(behfile, cumsum(1:nrow(behfile) %in% (splitrows+1)))
 
@@ -50,8 +72,8 @@ for (i in 1:length(meta_trial)){
   subID <- meta_trial[[i]][["participantID"]][1]
   ID <-c(ID,subID)
   
-  #number of Time points 
-  timepoints <- length((meta_trial[[i]][["X1"]])) # on mac it was ..1 and laptop its X1. I'm just grabbing the very first column of behfile
+  #number of Time points recorded in each trial 
+  timepoints <- length((meta_trial[[i]][[1]])) # on mac it was ..1 and laptop its X1. I'm just grabbing the very first column of behfile
   timepoint <- c(timepoint,timepoints)
   
   #Trial number 
@@ -106,13 +128,14 @@ for (i in 1:length(meta_trial)){
     ac <- Results=="Success"
     accuracy <- c(accuracy,ac)
 }
-#i removed the variables that we dont have by commenting them at the end of this little chunk of text
+
+# PUTTING IT ALL TOGETHER AND EXPORTING
 trial_master <- data.frame(ID=ID,timepoint=timepoint,TrialID =TrialID,PosX= PosX, PosY=PosY,PosZ=PosZ,
                            FacingAngle=FacingAngle, startObj=startObj,endObj= endObj,      
                            TrialTime=TrialTime,Result=Result,accuracy=accuracy)
 
 
-write.csv(trial_master, "DSFPTrials.csv", col.names =TRUE)
+write.csv(trial_master, "Trials.csv", col.names =TRUE)
 
 
 

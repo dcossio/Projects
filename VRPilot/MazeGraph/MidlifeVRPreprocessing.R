@@ -1,4 +1,27 @@
-#step 1 of preprocessing Output data for Walking VR 
+############################################################
+##                                                        ##
+##  AUTHOR: DANIELA COSSIO                                ##
+##                                                        ##
+##  PURPOSE: THIS IS THE FIRST STEP IN PREPROCESSING      ##
+##           THE UNITY OUTPUT FROM THE VR WALKING         ##
+##           MAZE GRAPH TASK. HERE A TXT FILE IS SPLIT UP,##
+##           TURNED INTO A DATAFRAME AND CLEANED FOR      ##
+##           READIBILITY                                  ##
+##                                                        ##
+##   INPUT : RAW UNITY TXT FILE                           ##
+##                                                        ##
+##   OUPUT: A CSV FILE WITH A ROW FOR EVERY TIME POINT    ##
+##          IN THE TXT FILE.                              ##
+##                                                        ##
+##   NOTES: A BIT CONVOLUTED BUT SHOULD RUN WIHTOUT       ##
+##          ERRORS AND IS FLEXIBLE. DOUBLE CHECK ALL      ##
+##          VARIABLE NAMES BEFORE USING. SCRIPT REQUIRES  ##
+##          YOUR FOLDERS TO USE THE FILE STRUCTURE        ##
+##          LISTED BELOW                                  ##
+##                                                        ##
+##   FILE STRUCTURE: ~/WORKDIR/SUB-*/MAZE/GRAPH/*TXT      ##
+##                                                        ##
+############################################################
 
 #load packages 
 library(ggplot2)
@@ -8,6 +31,9 @@ library(wrapr)
 library(plyr)
 library(stringr)
 library(BRRR)
+
+# New script who dis? starting fresh 
+  rm(list=ls()) 
 
 
 # set our working directory 
