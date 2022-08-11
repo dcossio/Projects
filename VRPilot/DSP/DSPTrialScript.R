@@ -1,5 +1,5 @@
 # second part of preprocessing 
-
+# using for DSP wayfinding an analysis
 # this will output a csv with all the trial information for subjects. 
 
 library(ggplot2)
@@ -19,7 +19,7 @@ setwd (workdir)
 
 
 #Read in files
-behfile <- read_csv(paste0(workdir,"/","BehaviorFile.csv"))
+behfile <- read_csv(paste0(workdir,"/","DSPBehaviorFile.csv"))
 
 y <-which(c(FALSE, tail(behfile$Trial,-1) != head(behfile$Trial,-1)))
 #x <- which(c(TRUE, tail(behfile$Trial,-1) != head(behfile$Trial,-1)))
@@ -89,6 +89,7 @@ for (i in 1:length(meta_trial)){
   # Start object 
    startObjs<-meta_trial[[i]][["Object"]][1]
    startObj <-c(startObj,startObjs)
+   
  # Endobject is the object they ended on.
    endObjs<-(meta_trial[[i]][["endloc"]])[1]   
    endObj<-c(endObj,endObjs) 
@@ -111,7 +112,7 @@ trial_master <- data.frame(ID=ID,timepoint=timepoint,TrialID =TrialID,PosX= PosX
                            TrialTime=TrialTime,Result=Result,accuracy=accuracy)
 
 
-write.csv(trial_master, "MidlifeTrials.csv", col.names =TRUE)
+write.csv(trial_master, "DSFPTrials.csv", col.names =TRUE)
 
 
 

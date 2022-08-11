@@ -1,12 +1,14 @@
 #step 1 of preprocessing Output data for Walking VR 
+# Version 
 
 #load packages 
+library(ggplot2)
 library(dplyr)
 library(tidyverse)
 library(wrapr)
 library(plyr)
 library(stringr)
-
+library(BRRR)
 
 
 # set our working directory 
@@ -21,13 +23,13 @@ finalDF <- setNames(data.frame(matrix(ncol = 11, nrow = 0)), c("participantID","
 
 
 # Create a list of file folders containing participant data
-  sublist <- list.files()
-  filelist <- sublist[nchar(sublist) == 8]
+  filelist <- list.files()
+  subjlist <- filelist[nchar(filelist) == 8]
 
 
-for (i in filelist){
+for (i in subjlist){
   
-    f <- paste0(workdir,"/",i,"/","Maze","/","graph", "/")
+    f <- paste0(workdir,"/",i,"/","DSP","/","Wayfinding", "/")
     rawUnity <- read.delim(paste0(f,list.files(f,pattern = "*.txt")),header=FALSE,sep= ",")
    
     print(i)
@@ -72,6 +74,6 @@ for (i in filelist){
 
 }
  
-  write.csv(finalDF, "BehaviorFile.csv", col.names =TRUE)
+  write.csv(finalDF, "DSPBehaviorFile.csv")
  
  
