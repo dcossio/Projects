@@ -1,16 +1,29 @@
-#Edited by DC on Feb 14 2022 for SNAG data
-
-#this is the fourth and final script of the preprocessing. You should end up with a single row for each participant 
-# each row contains summary data 
+##############################################################################
+#   Title: Path distance for SNAG midlife                                    #
+#   Author: Vaisakh P & Daniela C                                            #
+#                                                                            #
+#   Purpose: This is fourth and final script. summarizing all trials for     #
+#            each subj. one row =one subject                                 #
+#                                                                            #
+#    input: trials.csv file from third  script                               #
+#                                                                            #
+#                                                                            #
+#    output: clean csv with summary data for each subject                    #
+#                                                                            #
+#    Notes:  make sure to have the location.csv, distance.csv                # 
+#           and path distance.csv when running the pipeline                  #
+#                                                                            #
+##############################################################################
 
 #loading libraries 
-library(rprime)
+library(rprime) 
 library(tidyverse)
 library(wrapr)
 library(plyr)
+library(dplyr)
 
 #
-working_dir <- "/Volumes/Google Drive/My Drive/MLINDIV_SNAG_preprocessing/old"
+working_dir <- "/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preprocessing/Raw sub data"
 setwd(working_dir)
 # TODO: Need to add Explore Trials completed tally and Test trials completed tally
 

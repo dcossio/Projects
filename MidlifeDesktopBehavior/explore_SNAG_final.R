@@ -6,7 +6,24 @@
 
 # This is the first script in the preprocessing pipeline. DMC and VP edited this based off of Rob's script 
 # it was adapted to process one single Eprime txt file containing all explore and test trials combined
-# make sure to have the location.csv, distance.csv and path distance.csv when running the pipeline
+
+
+
+##############################################################################
+#   Title: Explore script for SNAG midlife preprocessing                     #
+#   Author: Vaisakh P & Daniela C                                            #
+#                                                                            #
+#   Purpose: This is the first script in the pipeline and requires the       #
+#            output from the behavior preprocessing Here the                 #
+#                  #
+#                                                                            #
+#    input: eprime.txt file one per person                                   #
+#                                                                            #
+#    output: behavior csv file                                               #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------    
 # Load proper packages. Rprime is built specifically for EPrime. If you do not have these packages installed, use
@@ -29,7 +46,7 @@ library(BRRR) #just for fun package. See BRRR on github to add
 # This working directory should contain file folders for each participant, with each folder containing Eprime trial data.
 # Each folder is named with participant's number:sss
 # i.e.: "002.....103"
-working_dir <-"/Volumes/Google Drive/My Drive/MLINDIV_SNAG_preprocessing/old"
+working_dir <-"/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preprocessing/Raw sub data"
 setwd(working_dir)
 
 MLINDIV_filelist <- list.files()
@@ -372,4 +389,4 @@ print("X and Y coordinates merged and added...")
 print("Writing csv")
 write.csv(master_file, "MLINDIV_behavioral_master.csv")
 
-#skrrrahh(26) Brr package
+skrrrahh(26) #Brr package

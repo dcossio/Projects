@@ -1,20 +1,20 @@
-# Split master file into Explore and Test
-# this is the second script in the pipeline and requires the output from explore
-# Split test master file by rows where movement = "Select"
-# Split Explore files by NAs
-# For all these newly split data frames grab the letter_locs and store them in as path vectors in lists 
-#         that will serve as individual observations in an eventual new file for trial by trial summary
-
-#edited by DC on march 29  2022
-
-# Since I adjusted the task types for explore data 
-
-#summary of changes 
-  #changed the way the explore and test trials were split
-  #Removed the block trials 
-
+##############################################################################
+#     Title: Trial Master for SNAG midlife                                   #
+#     Author: Vaisakh P & Daniela C                                         #
+#                                                                            #
+#   Purpose: This is the second script in the pipeline and requires the      #
+#            output from the behavior preprocessing script. Here all rows    #
+#             will not be summarized by trial number and variables will be   #
+#             extracted                                                      #
+#                                                                            #
+#   Input: Behavioral.csv file from the first script                         #
+#                                                                            #
+#   Output: Trial.csv file                                                   #
+#                                                                            #
+#                                                                            #
+##############################################################################
 # set working directory here to where the master csv file is located along with the location and dista
-working_dir <-  "/Volumes/Google Drive/My Drive/MLINDIV_SNAG_preprocessing/old"
+working_dir <-  "/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preprocessing/Raw sub data"
 setwd(working_dir)
 
 # output from explore script 
@@ -22,12 +22,7 @@ master_file <- read.csv("MLINDIV_behavioral_master.csv")
 
 library(tidyverse)
 library(plyr)
-library(BRRR)
-
- #DJ Khaled if theres an error
-options(error = function() {skrrrahh(34)})
-
-
+library(dplyr)
 
 #remove block trials from test trials from Master
 blockrow_locs <-which(is.na(master_file$ImageFile))  #finding block locations 
@@ -182,9 +177,6 @@ for (i in 1:length(meta)){
   average_RT <- c(average_RT, avRT)
   
   # Trial Completion Duration
-  #had to change the if statement to apply to our data set. Our procdures are either explore or 
-  #trial proc and trial procs contain both a finished onset time and ITI onset time
-  #explore only have the finished onset time. Without this we dont get the fmv duration
   starttime <- as.numeric(as.character(meta[[i]]["Choose.OnsetTime"][[1]][1]))
   if (proc == "ExploreProc"){  # this is where i changed it from is.na to if procedure =explore
     endtime <- as.numeric(as.character(meta[[i]]["Finished.OnsetTime"][[1]][1]))
@@ -228,6 +220,13 @@ colnames(dtable)[2] <- "EndAt"
 t <- join(trial_master, dtable, by = c("StartAt", "EndAt"))
 
 t <- t %>% mutate(fmv_duration = trial_endtime - final_movevid_OT)
+
+#Recoding wayfinding trials that were supposed to end at N but actually ended at F facing south as true, as they are close enough to being true. Likewise,
+#recoding trials that were supposed to end at Y but actually ended at V facing east as true. 
+recode_trials_1<- which(t$Procedure=='TrialProc'& t$EndAt == 'N' & t$end_location =='F' & t$end_rotation=='S') #finding rows satisfying first condition 
+recode_trials_2<- which(t$Procedure=='TrialProc'& t$EndAt == 'Y' & t$end_location =='V' & t$end_rotation=='E')#finding rows satisfying second condition
+recode_trials<-append(recode_trials_1,recode_trials_2) #combining into one list
+t[recode_trials,16]<-"TRUE" #recoding these trials to TRUE 
 
 print("writing CSV")
 write.csv(t, "MLINDIV_trial_master.csv")# Split master file into Explore and Tests

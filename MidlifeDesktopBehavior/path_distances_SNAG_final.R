@@ -1,7 +1,19 @@
-# This is the third script in the preprocessing pipeline 
-# this one takes the longest to process 
-#march 29 -DC 
-# just changed where it grabbed task type. used to grab from cycle 
+
+##############################################################################
+#   Title: Path distance for SNAG midlife                                    #
+#   Author: Vaisakh P & Daniela C                                            #
+#                                                                            #
+#   Purpose: This is the third script in the pipeline and requires the       #
+#            output from the behavior preprocessing script. Here the trial   #
+#            csv will be inputed and path distances will be calculated       #
+#                                                                            #
+#    input: trials.csv file from second script                               #
+#                                                                            #
+#    output: an updated trial.csv with paths and routes taken during trial   #
+#    Notes:  make sure to have the location.csv, distance.csv                # 
+#           and path distance.csv when running the pipeline                  #
+#                                                                            #
+##############################################################################
 
 
 # Loading libraries 
@@ -9,14 +21,15 @@ library(rprime)
 library(tidyverse)
 library(wrapr)
 library(plyr)
+library(dplyr)
 
 # set your working dir. Helps if it's the same as your explore script dir 
-working_dir <-  "/Volumes/Google Drive/My Drive/MLINDIV_SNAG_preprocessing/old"
+working_dir <- "/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preprocessing/Raw sub data"
 setwd(working_dir)
 
 
 # csvs need to be in the same location as your dir 
-pd <- read.csv("pathdistance.csv")
+pd <- read.csv("pathdistances.csv")
 loc <- read.csv("location.csv") 
 pd$node_pairs <- paste0(pd$n1, pd$n2)
 path_distance <- 0
@@ -79,7 +92,7 @@ tm <- tm %>% mutate(euc_dist_trav = calc_euc_dist(paths))
 write.csv(tm, "MLINDIV_trial_master.csv")
 
 
-pd <- read.csv("pathdistance.csv")
+pd <- read.csv("pathdistances.csv")
 
 pd$node_pairs <- paste0(pd$n1, pd$n2)
 
@@ -163,7 +176,5 @@ tm_new <- cbind(dates, times, tm_new)
 tm_new <- tm_new[, c(3, 1:2, 4:ncol(tm_new))]
 
 tm_new$dates <- as.Date(tm_new$dates, "SessionDate: %m-%d-%Y")
-
-
 
 write.csv(tm_new, "MLINDIV_trial_master.csv", row.names = FALSE)

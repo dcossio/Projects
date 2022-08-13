@@ -1,0 +1,88 @@
+Subject ID,Subject ID 2,Completed Scan,Completed Spatial,Notes (Scan),Sex,Age Scan (years),Age Spatial (years),MAZE Usable,MAZE Accuracy (%),MAZE Number of Moves
+301,MaMo,Yes,Yes,,Female,60,61,Yes,0.125,259
+306,LoCa,Yes,Yes,,Female,57,58,Yes,0,210
+310,CaCo,Yes,Yes,,Female,49,49,Yes,0,269
+312,SaCh,Yes,Yes,,Female,48,48,Yes,0.083333333,266
+313,MoMo,Yes,Yes,,Female,53,54,Yes,0.208333333,288
+315,SaWh,Yes,Yes,,Female,43,44,Yes,0.125,299
+319,DaBa,Yes,Yes,,Male,60,61,Yes,0.041666667,266
+320,DaPa,No,Yes,,Male,44,45,Yes,0.625,273
+321,BrKe,Yes,Yes,,Male,51,51,Yes,0.125,315
+322,PaLa,Yes,Yes,,Male,48,48,Yes,0.083333333,269
+323,LiFe,Yes,Yes,,Female,48,48,Yes,0.291666667,274
+324,JeEs,Yes,Yes,,Female,48,48,Yes,0.041666667,288
+325,DaGo,Partial,Yes,"T1, resting, DSI scans",Male,48,48,Yes,1,275
+326,SaEb,Yes,Yes,,Female,50,50,Yes,0.041666667,275
+327,LiFr,Yes,Yes,,Female,52,52,Yes,0.041666667,264
+330,JeSc,Yes,Yes,,Male,54,54,Yes,0.375,263
+332,SiBy,Yes,Yes,,Female,52,52,Yes ,0.083333333,248
+333,JeHe,Yes,Yes,first to get T2 hipp scan,Female,45,45,Yes,0.208333333,285
+334,JuLa,Yes,Yes,,Female,53,53,Yes,0.125,218
+336,ReAs,No,Yes,,Female,55,55,Yes,0.166666667,232
+337,LoGo,Yes,Yes,,Female,53,53,Yes,0,202
+338,KaGa,No,Yes,,Female,54,54,Yes,0,212
+339,LiCr,Yes,Yes,,Female,43,43,Yes,0.0417,262
+340,LiRi,Yes,Yes,,Female,50,50,Yes,0,218
+342,TaSt,Yes,Yes,,Female,53,53,Yes,0,196
+343,BrDu,Yes,Yes,,Male,55,55,Yes,0,227
+344,HeWa,No,Yes,,Female,50,50,Yes,0.1667,228
+345,DaGa,Yes,Yes,,Male,49,49,Yes,0.0833,217
+346,MaMo,Yes,Yes,,Male,55,55,Yes,0.0833,187
+347,CrWo,Yes,Yes,,Female,49,49,Yes,0,186
+348,JeMo,Yes,Yes,,Male,48,48,Yes,0.125,245
+351,LiWi,Yes,Yes,,Female,49,49,Yes,0.25,205
+352,GaLy,Yes,Yes,"current MDD, had heart attack, high blood pressure, cholesterol, hypertension, etc..",Male,52,52,Yes,0.6667,301
+353,MiTh,Yes,Yes,,Male,44,44,Yes,0.1667,300
+354,RoTa,Yes,Yes,,Male,47,47,Yes,0.1667,240
+355,CaSv,Yes,Yes,,Female,49,49,Yes,0,206
+356,ChJu,Yes,Yes,,Female,49,49,Yes,0.1667,199
+357,GeJe,Yes,Yes,,Male,50,50,Yes,0.0833,185
+358,KiFe,Yes,Yes,,Female,53,53,Yes,0.0417,200
+385,AnHe,Yes,Yes,,Female,54,54,Yes,0.25,302
+386,KaVe,Yes,Yes,,Female,49,49,Yes,0,220
+387,KrWi,Yes,Yes,,Female,53,53,Yes,0.125,298
+388,LaWe,Yes,Yes,incidental finding in cerebellum,Male,46,46,Yes,0.3333,304
+389,MiWh,Yes,Yes,,Female,54,54,Yes,0.0833,276
+390,BeCa,Yes,Yes,,Female,46,46,Yes,1,253
+391,GiGe,Yes,Yes,,Female,52,52,Yes,0.125,256
+392,AnTo,Yes,Yes,,Female,51,51,Yes,0.0417,251
+393,TrCa,Yes,Yes,,Female,52,52,Yes,0.1667,286
+395,CoPa,Yes,Yes,,Female,53,53,Yes,0,269
+396,PaGu,Yes,Yes,,Female,50,50,Yes,0.3333,288
+397,KyMa,Yes,Yes,,Female,51,51,Yes,0.125,286
+398,JeMe,Yes,Yes,,Female,45,45,Yes,0.2083,289
+399,TeWi,Yes,Yes,,Female,51,51,Yes,0.2917,289
+400,JuSi,Yes,Yes,,Female,48,48,Yes,0.1667,232
+401,NaSm,Yes,Yes,,Female,46,46,Yes,0.1667,
+402,LaIs,Yes,Yes,,Female,53,53,Yes,0.1667,291
+403,JeSt,Yes,Yes,,Female,50,50,Yes,0.0417,296
+406,GaCa,Yes,Yes,,Female,50,50,Yes,0,297
+407,LoHa,Yes,Yes,,Female,52,52,Yes,0.0417,283
+408,AlSm,Yes,Yes,,Female,48,48,Yes,0.0833,252
+409,GeRo,Yes,Yes,,Female,53,53,Yes,0.0833,295
+410,NaOl,Yes,Yes,"started OC (Errin, Norethindron 0.35mg) a week before study",Female,44,44,Yes,0.25,287
+411,BeWi,Yes,Yes,,Male,52,52,Yes,0.125,301
+412,JeDe,Yes,Yes,,Male,46,46,Yes,0.125,275
+413,AlBr,Yes,Yes,,Female,53,53,Yes,0,251
+414,ReAn,Yes,Yes,,Female,47,47,Yes,0.1667,272
+415,NeVe,Yes,Yes,,Female,50,50,Yes,0.0417,255
+416,DiMu,Yes,Yes,,Female,56,56,Yes,0.125,265
+417,LeSw,Yes,Yes,,Female,51,51,Yes,0.125,291
+418,NePa,Yes,Yes,,Female,53,53,Yes,0.125,287
+419,DaLa,Yes,Yes,,Female,51,51,Yes,0.0833,282
+420,JeGh,Yes,Yes,,Female,50,50,Yes,0.0833,305
+421,ShMo,Yes,Yes,,Female,45,45,Yes,0.0833,290
+422,TaWa,Yes,Yes,,Female,45,45,Yes,0.125,274
+423,BeSt,Yes,Yes,,Female,52,52,Yes,0.25,312
+425,JuDe,Yes,Yes,,Female,46,46,Yes,0.2083,294
+426,JaBi,Yes,Yes,,Male,47,47,Yes,0.0833,293
+427,CaRi,Yes,Yes,,Female,54,54,Yes,0.3333,265
+428,CaKo,Yes,Yes,,Male,47,47,Yes,0.0417,345
+429,SaIe,Yes,Yes,,Female,50,50,Yes,0.125,261
+430,YeTr,Yes,Yes,,Female,46,46,Yes,0.0417,219
+432,LoPr,Yes,Yes,,Female,51,51,Yes,0.333,304
+433,DoHe,Yes,Yes,,Male,56,56,Yes,0.125,293
+434,GaSh,Yes,Yes,asymmetrical hemispheres,Female,53,53,Yes,0.0833,249
+435,DeBa,Yes,Yes,,Male,53,53,Yes,0.0833,290
+436,StPr,Yes,Yes,,Male,50,50,Yes,0.1667,316
+437,TeCa,Yes,Yes,,Male,44,44,Yes,1,331
