@@ -1,0 +1,72 @@
+---
+title: "Midlife Tbbs Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(tidyverse)
+library(stringr)
+library(BRRR)
+library(ppcor)
+library(car)
+library(afex)
+
+workdir <- "/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze"
+setwd(workdir)
+
+```
+
+
+
+```{r Read in participant info}
+# Reading all of our scalar files 
+
+rawAD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-AD.csv")
+
+rawRD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-RD.csv")
+
+rawMD<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-MD.csv")
+
+rawFA<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-FA.csv")
+                 
+                 
+# reading in participant info but only keeping those that are in the tbss analysis
+
+subj_info <- read_csv("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_participant_master.csv") %>%  filter(Subject %in% c(as.character(rawAD$`Subject ID`)))
+              
+```
+
+```{r}
+
+#
+```
+
+
+```{r}
+# here lets start looking at FA 
+for (A in 1:nrow(newDF)){    # loop through all subs rows,
+  if (newDF$AvgAccuracy[A] == 0){       #if the mean acc is perfect or =1, 
+    newDF$AvgAccuracy[A] <- 0.0001   #then change to 0.999 for log purposes 
+  } 
+  if (newDF$AvgAccuracy[A] == 1){       #if the mean acc is perfect or =1, 
+    newDF$AvgAccuracy[A] <- 0.9999   #then change to 0.999 for log purposes 
+  } 
+  newDF$AvgAccuracy[A] <-log(newDF$AvgAccuracy[A]/(1-newDF$AvgAccuracy[A]),10) # main loop formula replacing raw acc with log acc
+}
+
+
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
