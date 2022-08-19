@@ -6,6 +6,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+knitr::opts_knit$set(root.dir = "/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze")
+
 library(ggplot2)
 library(tidyverse)
 library(stringr)
@@ -39,9 +41,22 @@ subj_info <- read_csv("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDe
               
 ```
 
-```{r}
+```{r Data organizing }
+# only do this once 
+subj_info$logacc <- subj_info$tm_accuracy
 
-#
+# WE want the log accuracy as well as
+for (acc in 1:nrow(subj_info)){    
+  if (subj_info$logacc[acc] == 1){       
+        subj_info$logacc[acc] <- 0.9999  #then change to 0.999 for log purposes 
+  } 
+  if (subj_info$logacc[acc] == 0){       #if the mean acc is perfect or =0, 
+        subj_info$logacc[acc] <- 0.0001
+  } 
+  subj_info$logacc[acc]<-log(subj_info$logacc[acc]/(1-subj_info$logacc[acc]),10) # main loop formula replacing raw acc with log acc
+}
+
+
 ```
 
 
