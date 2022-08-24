@@ -193,9 +193,8 @@ wilcox.test(mid_female_analysis$Dist,yng_female_analysis$Dist) # significant pva
 #midlife women =217.6289
 #yng=244.3077
 
-difference 
+# young men vs midlife men 
 wilcox.test(mid_male_analysis$Dist,yng_male_analysis$Dist) #not significantly different 
-
 # young men =248.3646
 #midlife men = 233.9728
 
@@ -391,7 +390,140 @@ mean(yng_male_analysis$TotalObjVisits)
 
 
 ```
+
 ```{r Plots for distance }
+yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
+mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)
+
+dist <- rbind(yng_distance,mid_distance)
+
+#this was just to create a better grouping
+ for (group in 1:nrow(dist)){
+   if (dist$age[group] < 25 && dist$sex[group] == "Female" ) {
+     dist$group[group] <- "young_female"
+     }
+   if (dist$age[group] > 35 && dist$sex[group] == "Female" ) {
+     dist$group[group] <- "mid_female"
+     }
+   if (dist$age[group] > 35 && dist$sex[group] == "Male" ) {
+     dist$group[group] <- "mid_male"
+   }
+   if (dist$age[group] < 25 && dist$sex[group] == "Male" ) {
+     dist$group[group] <- "young_male"
+   }
+  }
+
+sam_size <- dist%>%dplyr::group_by(group)%>% dplyr::summarize(num=n())
+
+
+pdf("Distance Traveled in young and midlife split by gender.pdf")
+dist %>%
+  left_join(sam_size) %>%
+  mutate(myaxis=paste0(group,"\n", "n=", num)) %>%
+  ggplot( aes(x=myaxis, y=Dist, fill=group)) +
+  #geom_violin() +
+  geom_boxplot(width=0.2, color="grey", alpha=0.2) +
+  geom_jitter(position = position_jitter(seed = 1, width = 0.1)) +
+  scale_colour_brewer(cbPalette) +
+  stat_summary(fun="mean",size =0.2, color="red" )+
+  theme(legend.position="none", plot.title = element_text(size=14)) +
+  ggtitle("Distance in young and midlife split by gender") +
+  xlab("") +
+  ylab("Distance traveled")
+dev.off()
+
+```
+
+```{r Plot for object visits }
+yng_obj <- rbind(yng_female_analysis,yng_male_analysis) %>% 
+  select(Subject,TotalObjVisits) %>% 
+  arrange() %>% 
+  mutate(sex= yng_master_participant$sex)%>% 
+  mutate(age= yng_master_participant$age)
+
+mid_obj <- rbind(mid_female_analysis,mid_male_analysis) %>% 
+  select(Subject,TotalObjVisits) %>% 
+  arrange() %>% 
+  mutate(sex= mid_master_participant$sex)%>% 
+  mutate(age= mid_master_participant$age)
+
+ObjVisits <- rbind(yng_obj,mid_obj)
+
+#this was just to create a better grouping
+ for (group in 1:nrow(ObjVisits)){
+   if (ObjVisits$age[group] < 25 && ObjVisits$sex[group] == "Female" ) {
+     ObjVisits$group[group] <- "young_female"
+     }
+   if (ObjVisits$age[group] > 35 && ObjVisits$sex[group] == "Female" ) {
+     ObjVisits$group[group] <- "mid_female"
+     }
+   if (ObjVisits$age[group] > 35 && ObjVisits$sex[group] == "Male" ) {
+     ObjVisits$group[group] <- "mid_male"
+   }
+   if (ObjVisits$age[group] < 25 && ObjVisits$sex[group] == "Male" ) {
+     ObjVisits$group[group] <- "young_male"
+   }
+  }
+
+sam_size <- ObjVisits%>%dplyr::group_by(group)%>% dplyr::summarize(num=n())
+
+
+pdf("Distance Traveled in young and midlife split by gender.pdf")
+ObjVisits %>%
+  left_join(sam_size) %>%
+  mutate(myaxis=paste0(group,"\n", "n=", num)) %>%
+  ggplot( aes(x=myaxis, y=TotalObjVisits, fill=group)) +
+  #geom_violin() +
+    geom_boxplot(width=0.2, color="grey", alpha=0.2) +
+    geom_jitter(position = position_jitter(seed = 1, width = 0.1)) +
+    scale_colour_brewer(cbPalette) +
+    stat_summary(fun="mean",size =0.2, color="red" )+
+    theme(legend.position="none", plot.title = element_text(size=14)) +
+    ggtitle("Object Visits in young and midlife split by gender") +
+    theme(plot.title = element_text(hjust = 0.5))+
+  xlab("") +
+  ylab("Object Visits")
+dev.off()
+
+# LEts just do women 
+pdf("Distance Traveled in young and midlife Women.pdf")
+ObjVisits %>%
+  left_join(sam_size) %>% 
+  filter(sex == "Female") %>% 
+  mutate(myaxis=paste0(group,"\n", "n=", num)) %>%
+  ggplot( aes(x=myaxis, y=TotalObjVisits, fill=group)) +
+  #geom_violin() +
+    geom_boxplot(width=0.2, color="grey", alpha=0.2) +
+    geom_jitter(position = position_jitter(seed = 1, width = 0.1)) +
+    scale_colour_brewer(cbPalette) +
+    stat_summary(fun="mean",size =0.2, color="red" )+
+    theme(legend.position="none", plot.title = element_text(size=14)) +
+    ggtitle("Object Visits in young and midlife women") +
+    theme(plot.title = element_text(hjust = 0.5))+
+    xlab("") +
+    ylab("Total bject Visits")
+dev.off()
+
+
+#Lets do men
+pdf("Distance Traveled in young and midlife Men.pdf")
+ObjVisits %>%
+  left_join(sam_size) %>% 
+  filter(sex == "Male") %>% 
+  mutate(myaxis=paste0(group,"\n", "n=", num)) %>%
+  ggplot( aes(x=myaxis, y=TotalObjVisits, fill=group)) +
+  #geom_violin() +
+    geom_boxplot(width=0.2, color="grey", alpha=0.2) +
+    geom_jitter(position = position_jitter(seed = 1, width = 0.1)) +
+    scale_colour_brewer(cbPalette) +
+    stat_summary(fun="mean",size =0.2, color="red" )+
+    theme(legend.position="none", plot.title = element_text(size=14)) +
+    ggtitle("Object Visits in young and midlife women") +
+    theme(plot.title = element_text(hjust = 0.5))+
+    xlab("") +
+    ylab("Total Object Visits")
+dev.off()
+
 
 
 
