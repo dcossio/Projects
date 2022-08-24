@@ -162,20 +162,16 @@ There's no significant difference between men and women at the young age but the
 
 #Let's look at the young men first 
  yng_male_analysis$Dist<- yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
-
 shapiro.test(yng_male_analysis$Dist)  #not normal 
 # young female 
  yng_female_analysis$Dist<- yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
- 
 shapiro.test(yng_female_analysis$Dist) # not normal 
 
-# Lets do 
+# Lets do the young 
 wilcox.test(yng_female_analysis$Dist,yng_male_analysis$Dist) #no difference 
-
 
 # LEts do Midlife 
 mid_female_analysis$Dist<-mid_master_participant%>% filter(sex == "Female") %>% pull(em_path_dist_trav)
-
 #male
 mid_male_analysis$Dist<-mid_master_participant%>% filter(sex == "Male") %>% pull(em_path_dist_trav)
 
@@ -185,7 +181,6 @@ shapiro.test(mid_male_analysis$Dist)
 shapiro.test(mid_female_analysis$Dist)
 wilcox.test(mid_female_analysis$Dist,mid_male_analysis$Dist) #0.03 
 
-#Wilcoxon Test # may change this later
 
 # young female vs young midlife
 wilcox.test(mid_female_analysis$Dist,yng_female_analysis$Dist) # significant pvalue = 0.001139 
@@ -204,37 +199,33 @@ wilcox.test(mid_male_analysis$Dist,yng_male_analysis$Dist) #not significantly di
 yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
 mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)
 
-dist <- rbind(yng_distance,mid_distance) %>% 
-  mutate(zDist = scale(.$'Dist')) 
+dist <- rbind(yng_distance,mid_distance)
 
-# this was just to quickly convert to binary 
-# for (gender in 1:nrow(dist)){
-#   if (dist$sex[gender] == "Female") {
-#      dist$sex[gender] = 0
-#     } else {
-#      dist$sex[gender] = 1
-#     }
-# }
-    
+#this was just to quickly convert to binary
+for (gender in 1:nrow(dist)){
+   if (dist$sex[gender] == "Female") {
+      dist$sex[gender] = 0
+     } else {
+      dist$sex[gender] = 1
+    }
+ }
 
-# this was just to quickly convert to binary 
- # for (group in 1:nrow(dist)){
- #   if (dist$age[group] < 25) {
- #     dist$group[group] <- "young"
- #     } else {
- #        dist$group[group] <- "midlife"
- #     }
- #  }
- #    
 
+# this was just to quickly convert to binary
+  for (group in 1:nrow(dist)){
+    if (dist$age[group] < 25) {
+      dist$group[group] <- "young"
+      } else {
+         dist$group[group] <- "midlife"
+      }
+  }
+ 
+
+a <-  aov(formula=Dist ~ group + age + sex,dist)
+summary(a)
 
 dist %>% 
-  aov_ez(id = 'Subject', dv = 'Dist', within = 'group' , covariate = list('age', 'sex'))
-
-
-mod <- dist %>% 
-  mutate(sub = as.factor(Subject), sex = scale(sex), age = scale(age)) %>%
-  aov_car(formula = zFA ~ zAcc + roi + sex + age + Error(sub/roi), observed = c("age", "sex"), factorize = F, include_aov = T, type = 2) 
+  aov_ez(id = 'group', dv = 'Dist', within = 'group' , covariate = list('age', 'sex'))
 
 # the hypothesis were assuming are that men and women
 
@@ -242,9 +233,6 @@ mod <- dist %>%
 ```
 
 ```{r SPEED Skipped for now }
-
-
-
 
 ```
 
@@ -341,8 +329,8 @@ female_obj_visits$total= rowSums(female_obj_visits[,cols_sum])
 fObj_ave <- aggregate(female_obj_visits$total, list(female_obj_visits$subject), FUN=mean)
 mid_female_analysis$TotalObjVisits<-fObj_ave$x
 #Object Visits- Normality test to assess whether samples are normally distributed
-shapiro.test(mid_male_analysis$TotalObjVisits)
-shapiro.test(mid_female_analysis$TotalObjVisits)
+shapiro.test(mid_male_analysis$TotalObjVisits) #normal 
+shapiro.test(mid_female_analysis$TotalObjVisits) # normal
 #Object Visits - T-Test  # no differe
 
 # GRabbing the young group
@@ -358,6 +346,23 @@ cols_sum<-c(3:length(female_obj_visits))
 female_obj_visits$total= rowSums(female_obj_visits[,cols_sum])
 fObj_ave <- aggregate(female_obj_visits$total, list(female_obj_visits$subject), FUN=mean)
 yng_female_analysis$TotalObjVisits<-fObj_ave$x
+
+shapiro.test(yng_male_analysis$TotalObjVisits) #normal 
+shapiro.test(yng_female_analysis$TotalObjVisits) # normal 
+
+
+
+#Instead of a ttest we're going to do an ANOVA
+
+yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
+mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)
+
+dist <- rbind(yng_distance,mid_distance)
+
+dist %>% 
+  aov_car(formula= Dist~)
+
+
 
 # lets do some analysis 
 
