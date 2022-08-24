@@ -1,7 +1,7 @@
 ---
 title: "Young_MLINDIV_analsis "
 output: html_notebook
-editor_options: 
+Purpose: used this to analyse tbss output from the young MLINDIV 
   chunk_output_type: inline
 ---
 

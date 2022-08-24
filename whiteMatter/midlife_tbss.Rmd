@@ -6,8 +6,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-knitr::opts_knit$set(root.dir = "/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze")
-
 library(ggplot2)
 library(tidyverse)
 library(stringr)
@@ -15,10 +13,9 @@ library(BRRR)
 library(ppcor)
 library(car)
 library(afex)
+library(ggpubr)
 
-workdir <- "/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze"
-setwd(workdir)
-
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
 
@@ -26,13 +23,13 @@ setwd(workdir)
 ```{r Read in participant info}
 # Reading all of our scalar files 
 
-rawAD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-AD.csv")
+rawAD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-AD.csv") 
 
 rawRD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-RD.csv")
 
 rawMD<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-MD.csv")
 
-rawFA<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-FA.csv")
+rawFA<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-FA.csv") 
                  
                  
 # reading in participant info but only keeping those that are in the tbss analysis
@@ -41,7 +38,22 @@ subj_info <- read_csv("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDe
               
 ```
 
-```{r Data organizing }
+```{r Creating empty data frames for later}
+
+FA_corrs <-data.frame(matrix(NA,nrow=48,ncol=7))
+MD_corrs <-data.frame(matrix(NA,nrow=48,ncol=7))
+AD_corrs <-data.frame(matrix(NA,nrow=48,ncol=7))
+RD_corrs <-data.frame(matrix(NA,nrow=48,ncol=7))
+
+corrs <-data.frame(matrix(NA,nrow=48,ncol=1))
+corrs[,1] <- colnames(rawAD[5:52])
+
+```
+
+
+```{r Grabbing log accuracy }
+# we want to have the log accuracy as well so we'll be adding in a new column 
+ 
 # only do this once 
 subj_info$logacc <- subj_info$tm_accuracy
 
@@ -57,23 +69,126 @@ for (acc in 1:nrow(subj_info)){
 }
 
 
+
 ```
 
 
-```{r}
-# here lets start looking at FA 
-for (A in 1:nrow(newDF)){    # loop through all subs rows,
-  if (newDF$AvgAccuracy[A] == 0){       #if the mean acc is perfect or =1, 
-    newDF$AvgAccuracy[A] <- 0.0001   #then change to 0.999 for log purposes 
-  } 
-  if (newDF$AvgAccuracy[A] == 1){       #if the mean acc is perfect or =1, 
-    newDF$AvgAccuracy[A] <- 0.9999   #then change to 0.999 for log purposes 
-  } 
-  newDF$AvgAccuracy[A] <-log(newDF$AvgAccuracy[A]/(1-newDF$AvgAccuracy[A]),10) # main loop formula replacing raw acc with log acc
+```{r Normality Tests on the FA }
+#Normality for each roi
+
+FAnormality <-data.frame(matrix(NA,nrow=48,ncol=2))
+rois <- colnames(rawFA[5:52])
+# lets look at FA
+for (fa in 1:nrow(corrs)){
+  roi <- as.data.frame(rawFA[,fa+4]) %>% dplyr::select(c(1)) %>% unlist() 
+  tmp <- shapiro.test(roi)
+  FAnormality[fa,] <-  cbind(corrs[fa,], tmp$p.value)
 }
 
+colnames(FAnormality) <- c("ROI", "p.value")
+
 
 ```
+
+# sex effect 
+```{r FA looking at sex effects really quick }
+# organizing so it's in long format
+longFA <- rawFA %>%  mutate(acc = subj_info$tm_accuracy) %>% # Use common columns to combine these two
+  pivot_longer(cols = c(5:52), names_to = "roi", values_to = "fa") %>% # convert our data from wide-format to long-format
+  mutate(zAcc = scale(.$'acc'), zFa = scale(.$fa)) # make some z-scores
+
+
+mod <- longFA %>% 
+  mutate(sub = as.factor(`Subject ID`), roi = as.factor(roi), sex = scale(`binary sex`), age = scale(`Age Scan (years)`)) %>%
+  aov_car(formula = zFa ~ zAcc + roi + sex + age + Error(sub/roi), observed = c("age", "sex"), factorize = F, include_aov = T, type = 2, return = afex_options("return_aov")) 
+#aov_ez(id = SUBJ.., dv = 'fa', within = 'roi', covariate = list('sex', 'age')) # from package 'afex'
+ROI_ACC_interaction <- mod$anova_table
+
+
+# LEts do the partial correlations with average accuracy 
+
+for (fa in 1:nrow(corrs)){
+  x <- as.numeric(subj_info$tm_accuracy)
+  y <- unlist(as.data.frame(rawFA[,fa+4]))
+  z <- unlist(as.data.frame(rawFA[,c("binary sex","Age Scan (years)")]))
+  tmp <- pcor.test(x,y,z, method = c("spearman"))
+  FA_corrs[fa,] <-  cbind(corrs[fa,], tmp)
+}
+colnames(FA_corrs) <- c("ROI", "estimate","p.value","statistic","n","gp", "Method")
+
+```
+
+```{r split by sex }
+sexsplitDF <- rawFA %>%  mutate(acc = subj_info$tm_accuracy)
+maleFAcorrs <- data.frame(matrix(NA,nrow=48,ncol=7))
+femaleFAcorrs <- data.frame(matrix(NA,nrow=48,ncol=7))
+
+maleFA <- sexsplitDF %>% filter(`binary sex`== 1)
+femaleFA <- sexsplitDF %>% filter(`binary sex`== 0)
+
+
+# lets do males 
+
+for (fa in 1:nrow(corrs)){
+  x <- as.numeric(maleFA$acc)
+  y <- unlist(as.data.frame(maleFA[,fa+4]))
+  z <- unlist(as.data.frame(maleFA[,c("Age Scan (years)")]))
+  tmp <- pcor.test(x,y,z, method = c("spearman"))
+  maleFAcorrs[fa,] <-  cbind(corrs[fa,], tmp)
+}
+colnames(maleFAcorrs) <- c("ROI", "estimate","p.value","statistic","n","gp", "Method")
+
+
+for (fa in 1:nrow(corrs)){
+  x <- as.numeric(femaleFA$acc)
+  y <- unlist(as.data.frame(femaleFA[,fa+4]))
+  z <- unlist(as.data.frame(femaleFA[,c("binary sex","Age Scan (years)")]))
+  tmp <- pcor.test(x,y,z, method = c("spearman"))
+  femaleFAcorrs[fa,] <-  cbind(corrs[fa,], tmp)
+}
+colnames(femaleFAcorrs) <- c("ROI", "estimate","p.value","statistic","n","gp", "Method")
+
+```
+
+
+
+```{r plots}
+pdf("cerebral peduncular in men vs women.pdf")
+ ggplot(sexsplitDF, aes(x=`Cerebral peduncle R`, y=acc)) +
+  geom_point(aes(color = factor(Sex)), size=2)+
+  geom_smooth(method = "glm", 
+              aes(color = factor(Sex))) +
+  labs(title = "Correlation between Proportion correct and FA in men vs women",
+       x = "Cerebral peduncle R",
+       y = "Proportion Correct")+
+  theme(legend.position = "right") +
+  stat_cor(aes(color= Sex),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) +
+  stat_regline_equation(aes(color=Sex)) +
+  xlim(min(sexsplitDF$`Cerebral peduncle R`), max(sexsplitDF$`Cerebral peduncle R`)) +
+  font("xlab", size=15)+
+  font("ylab", size=15)
+ dev.off()
+ 
+```
+
+
+
+```{r }
+
+
+
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
 
 
 ## Including Plots
