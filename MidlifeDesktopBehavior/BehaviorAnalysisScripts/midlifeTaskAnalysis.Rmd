@@ -5,6 +5,35 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+library(factoextra)
+library(lsr)
+# library(car)
+# library(ggpubr)
+# library(entropy)
+# library(ds4psy)
+# library(pROC)
+library(devtools)
+library(BRRR)
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+workdir<- "/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior"
+setwd(workdir)
 ```
 
 ## R Markdown
@@ -38,77 +67,66 @@ View(ynginfo)
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
+# midlife participants 
 
-youngAccDF <- ynginfo %>% select(Subject_ID,Sex,Age,AvgAccuracy)
-sam_size <- ynginfo %>% group_by(Sex)%>% summarize(num=n())
-View(youngAccDF)
-YoungAccMeans <- youngAccDF %>%
-group_by(sex) %>%
-summarize(average = mean(tm_accuracy)) %>%
-ungroup()
-YoungAccMeans <- youngAccDF %>%
-group_by(Sex) %>%
-summarize(average = mean(tm_accuracy)) %>%
-ungroup()
-YoungAccMeans <- youngAccDF %>%
-group_by(Sex) %>%
-summarize(average = mean(AvgAccuracy)) %>%
-ungroup()
-View(YoungAccMeans)
-yngfemaleAcc <- youngAccDF %>% filter(Sex == "Female")
-shapiro.test(femaleAcc$tm_accuracy)  # non normal
-yngmaleAcc <- youngAccDF %>% filter(Sex == "Male")
-shapiro.test(maleAcc$tm_accuracy)  # non normal
-YoungAccMeans %>%
-left_join(sam_size) %>%
-mutate(myaxis=paste0(Sex,"\n", "n=", num)) %>%
-ggplot(aes(x=myaxis, y=AvgAccuracy, fill=sex)) +
-geom_boxplot(width=0.2, color="grey", alpha=0.2) +
-stat_summary(fun.y="mean",size =0.2, color="red" )+
-scale_colour_brewer() +
-theme(legend.position="none", plot.title = element_text(size=11)) +
-ggtitle("men and women accuracy") +
-xlab("") +
-ylab("accuracy")
-youngAccDF %>%
-left_join(sam_size) %>%
-mutate(myaxis=paste0(Sex,"\n", "n=", num)) %>%
-ggplot(aes(x=myaxis, y=AvgAccuracy, fill=sex)) +
-geom_boxplot(width=0.2, color="grey", alpha=0.2) +
-stat_summary(fun.y="mean",size =0.2, color="red" )+
-scale_colour_brewer() +
-theme(legend.position="none", plot.title = element_text(size=11)) +
-ggtitle("men and women accuracy") +
-xlab("") +
-ylab("accuracy")
-youngAccDF %>%
-left_join(sam_size) %>%
-mutate(myaxis=paste0(Sex,"\n", "n=", num)) %>%
-ggplot(aes(x=myaxis, y=AvgAccuracy, fill=Sex)) +
-geom_boxplot(width=0.2, color="grey", alpha=0.2) +
-stat_summary(fun.y="mean",size =0.2, color="red" )+
-scale_colour_brewer() +
-theme(legend.position="none", plot.title = element_text(size=11)) +
-ggtitle("men and women accuracy") +
-xlab("") +
-ylab("accuracy")
-wilcox.test(yngfemaleAcc$tm_accuracy,yngmaleAcc$tm_accuracy)
-wilcox.test(yngfemaleAcc$AvgAccuracy,yngmaleAcc$AvgAccuracy)
-wilcox.test(yngfemaleAcc$AvgAccuracy,femaleAcc$tm_accuracy)
-wilcox.test(yngmaleAcc$AvgAccuracy,maleAcc$tm_accuracy)
-# quickly analyzing and plotting sex differences
+# quickly analyzing and plotting sex differences 
 AccDF <- master_participant %>% select(Subject,sex,age,tm_accuracy)
 sam_size <- master_participant %>% group_by(sex)%>% summarize(num=n())
+
 AccMeans <- AccDF %>%
-group_by(sex) %>%
-summarize(average = mean(tm_accuracy)) %>%
-ungroup()
+  group_by(sex) %>%
+  summarize(average = mean(tm_accuracy)) %>%
+  ungroup()
+# normality 
 femaleAcc <- AccDF %>% filter(sex == "Female")
 shapiro.test(femaleAcc$tm_accuracy)  # non normal
 maleAcc <- AccDF %>% filter(sex == "Male")
 shapiro.test(maleAcc$tm_accuracy)  # non normal
-#male AVe = 0.259058
-#female =  0.1347656
+
+
+# young
+youngAccDF <- ynginfo %>% select(Subject_ID,Sex,Age,AvgAccuracy)
+
+yngsam_size <- ynginfo %>% group_by(Sex)%>% summarize(num=n())
+View(youngAccDF)
+
+YoungAccMeans <- youngAccDF %>%
+                    group_by(Sex) %>%
+                      summarize(average = mean(AvgAccuracy)) %>%
+                        ungroup()
+# normality
+yngfemaleAcc <- youngAccDF %>% filter(Sex == "Female")
+shapiro.test(yngfemaleAcc$AvgAccuracy)  # non normal
+
+yngmaleAcc <- youngAccDF %>% filter(Sex == "Male")
+shapiro.test(yngmaleAcc$AvgAccuracy)  # non normal
+
+# young men vs women 
+wilcox.test(yngfemaleAcc$AvgAccuracy,yngmaleAcc$AvgAccuracy)
+
+# young women vs midlife women 
+wilcox.test(yngfemaleAcc$AvgAccuracy,femaleAcc$tm_accuracy)
+#young men vs midlife men
+wilcox.test(yngmaleAcc$AvgAccuracy,maleAcc$tm_accuracy)
+```
+
+```{r young plot}
+#plot
+youngAccDF %>%
+  left_join(yngsam_size) %>%
+  mutate(myaxis=paste0(Sex,"\n", "n=", num)) %>%
+  ggplot(aes(x=myaxis, y=AvgAccuracy, fill=Sex)) +
+  geom_boxplot(width=0.2, color="grey", alpha=0.2) +
+  stat_summary(fun.y="mean",size =0.2, color="red" )+
+  scale_colour_brewer() +
+  theme(legend.position="none", plot.title = element_text(size=11)) +
+  ggtitle("men and women accuracy") +
+  xlab("") +
+  ylab("accuracy")
+
+```
+
+```{r midlife plot }
 AccDF %>%
 left_join(sam_size) %>%
 mutate(myaxis=paste0(sex,"\n", "n=", num)) %>%
@@ -120,38 +138,6 @@ theme(legend.position="none", plot.title = element_text(size=11)) +
 ggtitle("men and women accuracy") +
 xlab("") +
 ylab("accuracy")
-# ttest
-wilcox.test(femaleAcc$tm_accuracy,maleAcc$tm_accuracy)
-#Young people
-youngAccDF <- ynginfo %>% select(Subject_ID,Sex,Age,AvgAccuracy)
-sam_size <- ynginfo %>% group_by(Sex)%>% summarize(num=n())
-YoungAccMeans <- youngAccDF %>%
-group_by(Sex) %>%
-summarize(average = mean(AvgAccuracy)) %>%
-ungroup()
-yngfemaleAcc <- youngAccDF %>% filter(Sex == "Female")
-shapiro.test(femaleAcc$tm_accuracy)  # non normal
-yngmaleAcc <- youngAccDF %>% filter(Sex == "Male")
-shapiro.test(maleAcc$tm_accuracy)  # non normal
-#male AVe = 0.259058
-#female =  0.1347656
-youngAccDF %>%
-left_join(sam_size) %>%
-mutate(myaxis=paste0(Sex,"\n", "n=", num)) %>%
-ggplot(aes(x=myaxis, y=AvgAccuracy, fill=Sex)) +
-geom_boxplot(width=0.2, color="grey", alpha=0.2) +
-stat_summary(fun.y="mean",size =0.2, color="red" )+
-scale_colour_brewer() +
-theme(legend.position="none", plot.title = element_text(size=11)) +
-ggtitle("men and women accuracy") +
-xlab("") +
-ylab("accuracy")
-# ttest
-wilcox.test(yngfemaleAcc$AvgAccuracy,yngmaleAcc$AvgAccuracy)
-# Lets do midlife women versus young women
-wilcox.test(yngfemaleAcc$AvgAccuracy,femaleAcc$tm_accuracy)
-# Lets do midlife men versus young men
-wilcox.test(yngmaleAcc$AvgAccuracy,maleAcc$tm_accuracy)
-#conclusion: men and women performed the same in midlife but not at a young```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#conclusion: men and women performed the same in midlife but not at a young```.
+```

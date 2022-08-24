@@ -46,20 +46,19 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r Read Files}
+```{r Read in  Files}
+# Reading in midlife participant info 
 
 #infosheet with age/sex
-subjInfo<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MAZE_data_old.csv")  %>% select(Subject.ID,Sex,Age.Scan..years.,) %>% `colnames<-` (c("Subject","sex","age")) %>% drop_na()  %>% arrange(.$Subject)
+midsubjInfo<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MAZE_data_old.csv")  %>% select(Subject.ID,Sex,Age.Scan..years.,) %>% `colnames<-` (c("Subject","sex","age")) %>% drop_na()  %>% arrange(.$Subject)
 
 #preprocessed data 
-trialDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_trial_master.csv") %>% filter(Subject %in% c(as.character(subjInfo$Subject))) 
+midtrialDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_trial_master.csv") %>% filter(Subject %in% c(as.character(subjInfo$Subject))) 
 
-participantDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_participant_master.csv") %>%  filter(Subject %in% c(as.character(subjInfo$Subject)))
+midparticipantDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_participant_master.csv") %>%  filter(Subject %in% c(as.character(subjInfo$Subject)))
 
-master_trial <- inner_join(subjInfo, trialDF, by="Subject") 
-master_participant <- inner_join(subjInfo, participantDF, by="Subject") 
-
-
+mid_master_trial <- inner_join(subjInfo, trialDF, by="Subject") 
+mid_master_participant <- inner_join(subjInfo, participantDF, by="Subject") 
 
 ```
 
@@ -82,8 +81,6 @@ hallways <- c('B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'M', 'Q', 'R', 'S', 'T', '
 
 #ttest output colnames for data later 
 #colttest <-  c("estimate","statistic", "p.value", "parameter"," conf.low"," conf.high"," method","alternative")
-
-
 
 ```
 
