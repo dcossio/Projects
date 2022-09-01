@@ -16,11 +16,30 @@ library(wrapr)
 library(stringr)
 library(BRRR)
 library(ggpubr)
+library(dplyr)
 
-subjInfo <- read.csv("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/participantinfo_young.csv")
+
 
 
 ```
+
+
+```{r Getting subject info togethet }
+wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
+setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
+
+# read in the Accuracy files 
+# what i need to do is get subject list from the DSI output 
+#took a bit of rearranging becuase i needed to split the characters up
+DSI_subs <- read_csv("QA_male_pos_Stats.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`)) %>%  filter(grepl('mean_qa', `Tract Name`)) %>% select(`Tract Name`) 
+DSI_subs <- as.data.frame(str_split( DSI_subs$`Tract Name`, "[-]")) %>% slice(2) %>% t() 
+DSI_subs <- as.data.frame(str_split( DSI_subs, "_")) %>% slice(1) %>% t() %>% `colnames<-`(c("SubId")) %>% as.data.frame()
+
+subjInfo <- read.csv("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/participantinfo_young.csv") 
+
+```
+
+
 
 
 ```{r Read in  All files for accuracy }
@@ -30,16 +49,14 @@ wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
 setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
 
 
-# read in the Accuracy files 
-
 # QA male Negative
-Acc_Male_negQA <- read_csv("QA_male_pos_Stats.csv")
+Acc_Male_posQA_raw <- read_csv("QA_male_pos_Stats.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
 #QA FEmale
-Acc_Female_negQA <- read.csv("QA_neg_female_Stats.csv")
-Acc_Female_posQA <- read_csv("QA_pos_female.csv")
+Acc_Female_negQA_raw <- read.csv("QA_neg_female_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract.Name`))
+Acc_Female_posQA_raw<- read_csv("QA_pos_female.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
 
 #RD 
-Acc_negRD <- read_csv("RD_neg_Stats.csv")
+Acc_negRD_raw <- read_csv("RD_neg_Stats.csv") 
 
 ```
 
@@ -65,4 +82,106 @@ PE_Female_negRD <- read_csv("PE_RD_female_pos_Stats.csv")
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r Data cleaning }
+# we need a dataframe with a the following specific variable QA, number of tracts, mean length, diameter. and then we need to combine the subjinfo with the DSI output 
+# then We'll need to filter by gender based on variable name 
+
+# Male QA 
+Acc_Male_posQA <- Acc_Male_posQA_raw %>% filter(grepl('mean_qa', `Tract Name`)) 
+Acc_Male_posQA <- cbind(subjInfo,Acc_Male_posQA) %>% filter(sex==1)
+Acc_Male_posQA_stats <- Acc_Male_negQA_raw %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+#Acc_Male_negQA <- rbind(QAtmp,Acc_Male_negQA)
+
+
+#Need to do this with all of our accuracy data frames 
+#feamle QA Neg
+Acc_Female_negQA <- Acc_Female_negQA_raw %>% filter(grepl('mean_qa', `Tract.Name`)) 
+Acc_Female_negQA <- cbind(subjInfo,Acc_Female_negQA)  %>% filter(sex==0)
+Acc_Female_negQA_stats <- Acc_Female_negQA_raw %>% filter(str_detect(`Tract.Name`, "number of tracts|mean length|diameter"))
+
+
+#female Positive QA
+Acc_Female_posQA <- Acc_Female_posQA_raw  %>% filter(grepl('mean_qa', `Tract Name`))
+Acc_Female_posQA <- cbind(subjInfo,Acc_Female_posQA) %>% filter(sex==0)
+Acc_Female_posQA_stats<- Acc_Female_posQA_raw %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+# RD
+Acc_negRD <- Acc_negRD_raw %>% filter(grepl('mean_rd', `Tract Name`))
+Acc_negRD <- cbind(subjInfo,Acc_negRD)
+Acc_negRD_stats<- Acc_negRD_raw %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+
+
+```
+
+```{r Cingulum_Frontal_Parietal_R}
+ctspR <- Acc_Male_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
+tmp <-  Acc_Female_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
+ctspR <- rbind(ctspR,tmp)
+
+for (s in 1:nrow(ctspR)){
+  if (ctspR$sex[s] == 0) {
+     ctspR$sex[s] <-  "female"
+}
+   else{
+     ctspR$sex[s] <-  "male"
+   }
+}
+
+  
+ # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
+ggplot(data = ctspR, aes(x = Mean.Acc, y = Cingulum_Frontal_Parietal_R)) +
+  geom_point(aes(shape = factor(sex))) +
+  geom_point(aes(color = factor(sex))) +
+  geom_smooth(method = "lm", 
+              aes(color = factor(sex))) +
+  labs(title = "Correlation between Proportion correct and QA in men vs women",
+       x = "Proportion correct",
+       y = "Cingulum_Frontal_Parietal_R")+
+  theme(legend.position = "right") +
+  #stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
+  #stat_regline_equation(aes(color=sex)) +
+  xlim(min(ctspR$Mean.Acc), max(ctspR$Mean.Acc)) +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+#dev.off()
+
+
+wilcox.test(Acc_Female_posQA$Cingulum_Frontal_Parietal_R, Acc_Male_posQA$Cingulum_Frontal_Parietal_R)
+
+```
+
+```{r RD Fornix}
+
+fornix <- Acc_negRD %>% select(SUBJ..,Mean.Acc,sex,Fornix_R)
+
+for (s in 1:nrow(fornix)){
+  if (fornix$sex[s] == 0) {
+     fornix$sex[s] <-  "female"
+}
+   else{
+     fornix$sex[s] <-  "male"
+   }
+}
+
+  
+ # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
+ggplot(data = fornix, aes(x = Mean.Acc, y = Fornix_R)) +
+  geom_point(aes(shape = factor(sex))) +
+  geom_point(aes(color = factor(sex))) +
+  geom_smooth(method = "lm", 
+              aes(color = factor(sex))) +
+  labs(title = "Correlation between Proportion correct and RD in men vs women",
+       x = "Proportion Correct",
+       y = "Fornix_R")+
+  theme(legend.position = "right") +
+  #stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
+  #stat_regline_equation(aes(color=sex)) +
+  xlim(min(fornix$Mean.Acc), max(fornix$Mean.Acc)) +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+
+
+```
+
+
+
