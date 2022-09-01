@@ -157,7 +157,7 @@ yng_explr_Subinfo <- inner_join(yng_master_participant,yng_expl_df)
 
 Distance Summary of results: No sex differences in men and women during midlife:
 
-There's no significant difference between men and women at the young age but there was at the midlife age. Women traveled significantly less than men did. Nho significant difference between midlife men andage men 
+There's no significant difference between men and women at the young age but there was at the midlife age. Midlife Women traveled significantly less than midlife men did. No significant difference between midlife men and young  men. Midlife women did travel significantly less than young women. 
 ```{r Distance }
 
 #Let's look at the young men first 
@@ -172,19 +172,18 @@ wilcox.test(yng_female_analysis$Dist,yng_male_analysis$Dist) #no difference
 
 # LEts do Midlife 
 mid_female_analysis$Dist<-mid_master_participant%>% filter(sex == "Female") %>% pull(em_path_dist_trav)
+shapiro.test(mid_female_analysis$Dist)
 #male
 mid_male_analysis$Dist<-mid_master_participant%>% filter(sex == "Male") %>% pull(em_path_dist_trav)
-
-
-#Normality test to assess whether samples are normally distributed  # females is not normal
 shapiro.test(mid_male_analysis$Dist)
-shapiro.test(mid_female_analysis$Dist)
+
+
+#Midlife women vs midlife men
 wilcox.test(mid_female_analysis$Dist,mid_male_analysis$Dist) #0.03 
 
 
-# young female vs young midlife
+# young female vs  midlife female
 wilcox.test(mid_female_analysis$Dist,yng_female_analysis$Dist) # significant pvalue = 0.001139 
-
 #midlife women =217.6289
 #yng=244.3077
 
@@ -195,9 +194,9 @@ wilcox.test(mid_male_analysis$Dist,yng_male_analysis$Dist) #not significantly di
 
 ```
 
-```{r Distance analysis using non normal anova NOT WORKING RN }
-yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
-mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)
+```{r Distance analysis using  }
+yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav) %>%  mutate(acc= yng_master_participant$tm_accuracy)
+mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)%>%  mutate(acc= mid_master_participant$tm_accuracy)
 
 dist <- rbind(yng_distance,mid_distance)
 
@@ -211,28 +210,25 @@ for (gender in 1:nrow(dist)){
  }
 
 
-# this was just to quickly convert to binary
-  for (group in 1:nrow(dist)){
-    if (dist$age[group] < 25) {
-      dist$group[group] <- "young"
-      } else {
-         dist$group[group] <- "midlife"
-      }
-  }
- 
+# # this was just to quickly convert to binary
+#   for (group in 1:nrow(dist)){
+#     if (dist$age[group] < 25) {
+#       dist$group[group] <- "young"
+#       } else {
+#          dist$group[group] <- "midlife"
+#       }
+#   }
+#  
 
-a <-  aov(formula=Dist ~ group + age + sex,dist)
-summary(a)
+dist_aov<-  aov(formula=Dist ~ sex * age, dist)
+summary(dist_aov)
 
-dist %>% 
-  aov_ez(id = 'group', dv = 'Dist', within = 'group' , covariate = list('age', 'sex'))
 
-# the hypothesis were assuming are that men and women
-
-# i think maybe taking z score 
 ```
 
 ```{r SPEED Skipped for now }
+
+
 
 ```
 
@@ -354,19 +350,34 @@ shapiro.test(yng_female_analysis$TotalObjVisits) # normal
 
 #Instead of a ttest we're going to do an ANOVA
 
-yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
-mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)
+yng_obj <- rbind(yng_female_analysis,yng_male_analysis) %>% 
+  select(Subject,TotalObjVisits) %>% 
+  arrange() %>% 
+  mutate(sex= yng_master_participant$sex)%>% 
+  mutate(age= yng_master_participant$age)%>%  mutate(acc= yng_master_participant$tm_accuracy)
 
-dist <- rbind(yng_distance,mid_distance)
+mid_obj <- rbind(mid_female_analysis,mid_male_analysis) %>% 
+  select(Subject,TotalObjVisits) %>% 
+  arrange() %>% 
+  mutate(sex= mid_master_participant$sex)%>% 
+  mutate(age= mid_master_participant$age) %>%  mutate(acc= mid_master_participant$tm_accuracy)
 
-dist %>% 
-  aov_car(formula= Dist~)
 
+ObjVisits <- rbind(yng_obj,mid_obj)
+
+# How does age and sex predict obj visits and how does this correlate to performance  mediation
+ Obj_aov <- aov(formula= acc ~ TotalObjVisits * age * sex ,ObjVisits)
+summary(Obj_aov)
+
+
+# or do you do 
+Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
+summary(Obj_aov)
 
 
 # lets do some analysis 
 
-# young female vs young male # signicant difference
+# young female vs young male # significant difference
 # pvalue=  0.02034 d=0.59377
 # mean yng=male 9.75
 #young =9.15
@@ -426,7 +437,7 @@ dist %>%
   left_join(sam_size) %>%
   mutate(myaxis=paste0(group,"\n", "n=", num)) %>%
   ggplot( aes(x=myaxis, y=Dist, fill=group)) +
-  #geom_violin() +
+  geom_violin() +
   geom_boxplot(width=0.2, color="grey", alpha=0.2) +
   geom_jitter(position = position_jitter(seed = 1, width = 0.1)) +
   scale_colour_brewer(cbPalette) +
