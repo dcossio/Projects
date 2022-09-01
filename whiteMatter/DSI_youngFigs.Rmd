@@ -1,0 +1,68 @@
+---
+title: "Young_DSI_figures"
+purpose: "Creating figures based on the Stats output from DSI connectronomy analysis "   
+input: "Stats CSVs from dsi"           
+output: Figures                     
+Notes:  
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(tidyverse)
+library(wrapr)
+library(stringr)
+library(BRRR)
+library(ggpubr)
+
+subjInfo <- read.csv("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/participantinfo_young.csv")
+
+
+```
+
+
+```{r Read in  All files for accuracy }
+#set wd just for these files 
+
+wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
+setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
+
+
+# read in the Accuracy files 
+
+# QA male Negative
+Acc_Male_negQA <- read_csv("QA_male_pos_Stats.csv")
+#QA FEmale
+Acc_Female_negQA <- read.csv("QA_neg_female_Stats.csv")
+Acc_Female_posQA <- read_csv("QA_pos_female.csv")
+
+#RD 
+Acc_negRD <- read_csv("RD_neg_Stats.csv")
+
+```
+
+
+```{r All files for path efficiency}
+
+wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
+setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
+
+#PE = path efiiciency
+
+# QA male Negative
+PE_Male_negQA <- read_csv("PE_QA_male_pos_Stats.csv")
+PE_Male_posQA <- read_csv("PE_QA_male_pos_Stats.csv")
+
+
+#QA FEmale
+PE_Female_negQA <- read.csv("PE_QA_male_pos_Stats.csv")
+
+#RD 
+PE_Female_negRD <- read_csv("PE_RD_female_pos_Stats.csv")
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
