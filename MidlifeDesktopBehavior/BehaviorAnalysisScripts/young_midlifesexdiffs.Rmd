@@ -366,14 +366,14 @@ mid_obj <- rbind(mid_female_analysis,mid_male_analysis) %>%
 ObjVisits <- rbind(yng_obj,mid_obj)
 
 # How does age and sex predict obj visits and how does this correlate to performance  mediation
- Obj_aov <- aov(formula= acc ~ TotalObjVisits * age * sex ,ObjVisits)
-summary(Obj_aov)
+# Obj_aov <- aov(formula= acc ~ TotalObjVisits * age * sex ,ObjVisits)
+#summary(Obj_aov)
 
 
 # or do you do 
 Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
 summary(Obj_aov)
-
+# post hoc and do bonferroni 
 
 # lets do some analysis 
 

@@ -41,7 +41,6 @@ subjInfo <- read.csv("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLI
 
 
 
-
 ```{r Read in  All files for accuracy }
 #set wd just for these files 
 
@@ -50,7 +49,7 @@ setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
 
 
 # QA male Negative
-Acc_Male_posQA_raw <- read_csv("QA_male_pos_Stats.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
+Acc_Male_posQA_raw <- read_csv("QA_male_pos_Stats.csv")%>% filter(!grepl('mean_qa', `Tract Name`))
 #QA FEmale
 Acc_Female_negQA_raw <- read.csv("QA_neg_female_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract.Name`))
 Acc_Female_posQA_raw<- read_csv("QA_pos_female.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
@@ -64,17 +63,18 @@ Acc_negRD_raw <- read_csv("RD_neg_Stats.csv")
 ```{r All files for path efficiency}
 
 wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
+
 setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
 
 #PE = path efiiciency
 
 # QA male Negative
-PE_Male_negQA <- read_csv("PE_QA_male_pos_Stats.csv")
-PE_Male_posQA <- read_csv("PE_QA_male_pos_Stats.csv")
+PE_Male_negQA <- read_csv("PE_QA_male_pos_Stats.csv") %>%  filter(!grepl('mean_qa_post_norm', `Tract Name`))
+PE_Male_posQA <- read_csv("PE_QA_male_pos_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
 
 
 #QA FEmale
-PE_Female_negQA <- read.csv("PE_QA_male_pos_Stats.csv")
+PE_Female_negQA <- read.csv("PE_QA_male_pos_Stats.csv") filter(!grepl('mean_qa_post_norm', `Tract Name`))
 
 #RD 
 PE_Female_negRD <- read_csv("PE_RD_female_pos_Stats.csv")
@@ -90,7 +90,7 @@ PE_Female_negRD <- read_csv("PE_RD_female_pos_Stats.csv")
 # Male QA 
 Acc_Male_posQA <- Acc_Male_posQA_raw %>% filter(grepl('mean_qa', `Tract Name`)) 
 Acc_Male_posQA <- cbind(subjInfo,Acc_Male_posQA) %>% filter(sex==1)
-Acc_Male_posQA_stats <- Acc_Male_negQA_raw %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+Acc_Male_posQA_stats <- Acc_Male_posQA_raw %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
 #Acc_Male_negQA <- rbind(QAtmp,Acc_Male_negQA)
 
 
@@ -113,34 +113,49 @@ Acc_negRD_stats<- Acc_negRD_raw %>% filter(str_detect(`Tract Name`, "number of t
 
 ```
 
-```{r Cingulum_Frontal_Parietal_R}
-ctspR <- Acc_Male_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
-tmp <-  Acc_Female_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
-ctspR <- rbind(ctspR,tmp)
+```{r Cingulum_Frontal_Parietal_R not SPLIT}
+ggplot(data = CFPR, aes(x = Cingulum_Frontal_Parietal_R, y = `Mean.Acc`)) +
+  geom_point(aes(color = factor(`SUBJ..`)))+
+  geom_smooth(method = lm)+
+  labs(title = "Correlation between Proportion correct and QA in men vs women",
+       x = "Cingulum ",
+       y = "Correct")+
+  theme(legend.position = "none") +
+  stat_cor(method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
+  #stat_regline_equation(label.y = 0.95, label.x = 6e-05, aes(label = ..rr.label..)) +
+  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+```
 
-for (s in 1:nrow(ctspR)){
-  if (ctspR$sex[s] == 0) {
-     ctspR$sex[s] <-  "female"
+```{r Cingulum_Frontal_Parietal_R SPLIT}
+CFPR <- Acc_Male_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
+tmp <-  Acc_Female_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
+CFPR <- rbind(CFPR,tmp)
+
+for (s in 1:nrow(CFPR)){
+  if (CFPR$sex[s] == 0) {
+     CFPR$sex[s] <-  "female"
 }
    else{
-     ctspR$sex[s] <-  "male"
+     CFPR$sex[s] <-  "male"
    }
 }
 
   
  # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
-ggplot(data = ctspR, aes(x = Mean.Acc, y = Cingulum_Frontal_Parietal_R)) +
+ggplot(data = CFPR, aes(x = Cingulum_Frontal_Parietal_R, y= Mean.Acc)) +
   geom_point(aes(shape = factor(sex))) +
   geom_point(aes(color = factor(sex))) +
   geom_smooth(method = "lm", 
               aes(color = factor(sex))) +
   labs(title = "Correlation between Proportion correct and QA in men vs women",
-       x = "Proportion correct",
-       y = "Cingulum_Frontal_Parietal_R")+
+       x = "Cingulum_Frontal_Parietal_R ",
+       y = "Proportion Correct")+
   theme(legend.position = "right") +
   #stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
   #stat_regline_equation(aes(color=sex)) +
-  xlim(min(ctspR$Mean.Acc), max(ctspR$Mean.Acc)) +
+  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
   font("xlab", size=11)+
   font("ylab", size=11)
 #dev.off()
@@ -150,7 +165,54 @@ wilcox.test(Acc_Female_posQA$Cingulum_Frontal_Parietal_R, Acc_Male_posQA$Cingulu
 
 ```
 
-```{r RD Fornix}
+```{r Violin plot of Cingulum_Frontal_Parietal_R measurements }
+
+ sam_size <- CFPR %>% dplyr::group_by(sex)%>%dplyr::summarize(num=n())
+ 
+ #Violin
+ CFPR %>%
+    left_join(sam_size) %>%
+    mutate(myaxis=paste0(sex,"\n", "n=", num)) %>%
+    ggplot( aes(x=myaxis, y=Cingulum_Frontal_Parietal_R, fill=sex)) +
+    geom_violin() +
+    geom_boxplot(width=0.1, color="grey", alpha=0.2) +
+    geom_jitter(position = position_jitter(seed = 1, width = 0.2)) +
+    scale_colour_brewer() +
+    stat_summary(fun.y="mean",size =0.2, color="red" )+
+    theme(legend.position="none", plot.title = element_text(size=11)) +
+    ggtitle("QA in men and women Cingulum_Frontal_Parietal_R") +
+    xlab("") +
+    ylab("Cingulum_Frontal_Parietal_R")
+```
+
+```{r  unsplit Fornix}}
+
+fornix <- Acc_negRD %>% select(SUBJ..,Mean.Acc,sex,Fornix_R)
+for (s in 1:nrow(CFPR)){
+  if (fornix$sex[s] == 0) {
+     fornix$sex[s] <-  "female"
+}
+   else{
+     fornix$sex[s] <-  "male"
+   }
+}
+
+ggplot(data = fornix, aes(x =Fornix_R , y = Mean.Acc)) +
+  geom_point(aes(color = factor(`SUBJ..`)))+
+  geom_smooth(method = lm, se = FALSE)+
+  labs(title = "Correlation between Proportion correct and RD in men vs women",
+       x = "Fornix ",
+       y = "Proportion correct")+
+  theme(legend.position = "none") +
+  stat_cor(method = "spearman", label.x.npc = 0.1, label.y.npc = 0.75) +
+ # stat_regline_equation(label.y = , label.x = 6e-05, aes(label = ..rr.label..)) +
+  xlim(min(fornix$Fornix_R), max(fornix$Fornix_R)) +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+
+```
+
+```{r RD  split Fornix}
 
 fornix <- Acc_negRD %>% select(SUBJ..,Mean.Acc,sex,Fornix_R)
 
@@ -183,5 +245,24 @@ ggplot(data = fornix, aes(x = Mean.Acc, y = Fornix_R)) +
 
 ```
 
+```{r RD violin}
+
+fsampl <- fornix %>% dplyr::group_by(sex)%>%dplyr::summarize(num=n())
+ #Violin
+ fornix %>%
+    left_join(sam_size) %>%
+    mutate(myaxis=paste0(sex,"\n", "n=", num)) %>%
+    ggplot( aes(x=myaxis, y=Fornix_R, fill=sex)) +
+    geom_violin() +
+    geom_boxplot(width=0.1, color="grey", alpha=0.2) +
+    geom_jitter(position = position_jitter(seed = 1, width = 0.2)) +
+    scale_colour_brewer() +
+    stat_summary(fun.y="mean",size =0.2, color="red" )+
+    theme(legend.position="none", plot.title = element_text(size=11)) +
+    ggtitle("QA in fornix") +
+    xlab("") +
+    ylab("Cingulum_Frontal_Parietal_R")
+
+```
 
 
