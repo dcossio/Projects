@@ -18,11 +18,10 @@ library(BRRR)
 library(ggpubr)
 library(dplyr)
 
-
-
+a <- wes_palette(n=5, name="Rushmore1")
+b <- wes_palette(n=5, name="Royal2")
 
 ```
-
 
 ```{r Getting subject info togethet }
 wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
@@ -37,9 +36,11 @@ DSI_subs <- as.data.frame(str_split( DSI_subs, "_")) %>% slice(1) %>% t() %>% `c
 
 subjInfo <- read.csv("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/participantinfo_young.csv") 
 
+maze_lerningVars <- read_csv("participantfiles_young.csv") %>% select(tm_path_efficiencies,tm_euc_dist_trav,tm_path_dist_trav,em_path_dist_trav,em_euc_dist_trav) %>% 
+  `colnames<-`(c("path_eff","euc_dist","path_dist", "explore_path_dist","explore_euc_dist"))
+
+subjInfo <- cbind(subjInfo,maze_lerningVars)
 ```
-
-
 
 ```{r Read in  All files for accuracy }
 #set wd just for these files 
@@ -49,39 +50,18 @@ setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
 
 
 # QA male Negative
-Acc_Male_posQA_raw <- read_csv("QA_male_pos_Stats.csv")%>% filter(!grepl('mean_qa', `Tract Name`))
+Acc_Male_posQA_raw <- read_csv("QA_male_pos_Stats.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
+Acc_Male_posNormalQA_raw <- read_csv("QA_male_pos_Stats.csv")%>% filter(grepl('mean_qa_post_norm', `Tract Name`))
 #QA FEmale
 Acc_Female_negQA_raw <- read.csv("QA_neg_female_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract.Name`))
-Acc_Female_posQA_raw<- read_csv("QA_pos_female.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
+Acc_Female_negNormalQA_raw <- read.csv("QA_neg_female_Stats.csv") %>% filter(grepl('mean_qa_post_norm', `Tract.Name`))
 
+Acc_Female_posQA_raw<- read_csv("QA_pos_female.csv")%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
+Acc_Female_poNormalsQA_raw<- read_csv("QA_pos_female.csv")%>% filter(grepl('mean_qa_post_norm', `Tract Name`))
 #RD 
 Acc_negRD_raw <- read_csv("RD_neg_Stats.csv") 
 
 ```
-
-
-```{r All files for path efficiency}
-
-wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
-
-setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
-
-#PE = path efiiciency
-
-# QA male Negative
-PE_Male_negQA <- read_csv("PE_QA_male_pos_Stats.csv") %>%  filter(!grepl('mean_qa_post_norm', `Tract Name`))
-PE_Male_posQA <- read_csv("PE_QA_male_pos_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
-
-
-#QA FEmale
-PE_Female_negQA <- read.csv("PE_QA_male_pos_Stats.csv") filter(!grepl('mean_qa_post_norm', `Tract Name`))
-
-#RD 
-PE_Female_negRD <- read_csv("PE_RD_female_pos_Stats.csv")
-
-
-```
-
 
 ```{r Data cleaning }
 # we need a dataframe with a the following specific variable QA, number of tracts, mean length, diameter. and then we need to combine the subjinfo with the DSI output 
@@ -113,22 +93,7 @@ Acc_negRD_stats<- Acc_negRD_raw %>% filter(str_detect(`Tract Name`, "number of t
 
 ```
 
-```{r Cingulum_Frontal_Parietal_R not SPLIT}
-ggplot(data = CFPR, aes(x = Cingulum_Frontal_Parietal_R, y = `Mean.Acc`)) +
-  geom_point(aes(color = factor(`SUBJ..`)))+
-  geom_smooth(method = lm)+
-  labs(title = "Correlation between Proportion correct and QA in men vs women",
-       x = "Cingulum ",
-       y = "Correct")+
-  theme(legend.position = "none") +
-  stat_cor(method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
-  #stat_regline_equation(label.y = 0.95, label.x = 6e-05, aes(label = ..rr.label..)) +
-  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
-  font("xlab", size=11)+
-  font("ylab", size=11)
-```
-
-```{r Cingulum_Frontal_Parietal_R SPLIT}
+```{r  Seeting data up for plot for QA Cingulum_Frontal_Parietal_R }
 CFPR <- Acc_Male_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
 tmp <-  Acc_Female_posQA %>% select(SUBJ..,Mean.Acc,sex,Cingulum_Frontal_Parietal_R)
 CFPR <- rbind(CFPR,tmp)
@@ -142,26 +107,72 @@ for (s in 1:nrow(CFPR)){
    }
 }
 
-  
+# creating model for the plot 
+mod <- lm(CFPR$Mean.Acc~ CFPR$Cingulum_Frontal_Parietal_R + CFPR$sex)
+resids1 <- residuals(mod)
+
+
+# for men and women split plot
+F_lm <- CFPR %>% filter(sex=="female")
+femalemod <- lm(F_lm$Mean.Acc ~ F_lm$Cingulum_Frontal_Parietal_R)
+
+M_lm <- CFPR %>% filter(sex=="male")
+malemod <- lm(M_lm$Mean.Acc ~ M_lm$Cingulum_Frontal_Parietal_R)  
+
+# just a random quick text
+wilcox.test(Acc_Female_posQA$Cingulum_Frontal_Parietal_R, Acc_Male_posQA$Cingulum_Frontal_Parietal_R)
+
+```
+
+```{r Cingulum_Frontal_Parietal_R  ALL subs}
+ggplot(data = CFPR, aes(x = Cingulum_Frontal_Parietal_R, y = `Mean.Acc`)) +
+  geom_point(aes(color = factor(`SUBJ..`)))+
+  geom_abline(slope=coef(mod)["CFPR$Cingulum_Frontal_Parietal_R"],intercept=coef(mod)["(Intercept)"])+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  labs(title = "Correlation between proportion correct and QA in the Cingulum_Frontal_Parietal_R",
+       x = "Cingulum_Frontal_Parietal_R ",
+       y = "Proportion Correct")+
+  theme(legend.position = "none") +
+  stat_cor(method = "spearman", label.x.npc = 0.75, label.y.npc = 0.75) +
+  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
+  scale_x_continuous(breaks=seq(0,4,0.5)) +
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+```
+
+```{r Cingulum_Frontal_Parietal_R SPLIT}
+
+a <- wes_palette(n=5, name="Rushmore1")
+
  # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
 ggplot(data = CFPR, aes(x = Cingulum_Frontal_Parietal_R, y= Mean.Acc)) +
-  geom_point(aes(shape = factor(sex))) +
-  geom_point(aes(color = factor(sex))) +
-  geom_smooth(method = "lm", 
-              aes(color = factor(sex))) +
+  geom_point(aes(color = sex)) +
+  geom_abline(slope=coef(femalemod)["F_lm$Cingulum_Frontal_Parietal_R"],intercept=coef(femalemod)["(Intercept)"], colour=a[3])+
+  geom_abline(slope=coef(malemod)["M_lm$Cingulum_Frontal_Parietal_R"],intercept=coef(malemod)["(Intercept)"], colour=a[4])+
+  scale_color_manual(values= c(a[3],a[4])) +
   labs(title = "Correlation between Proportion correct and QA in men vs women",
        x = "Cingulum_Frontal_Parietal_R ",
        y = "Proportion Correct")+
+   theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
   theme(legend.position = "right") +
-  #stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
-  #stat_regline_equation(aes(color=sex)) +
+  stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.75, label.y.npc = 0.75) +
   xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
+  scale_x_continuous(breaks=seq(0,4,0.5)) +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
   font("xlab", size=11)+
   font("ylab", size=11)
 #dev.off()
 
 
-wilcox.test(Acc_Female_posQA$Cingulum_Frontal_Parietal_R, Acc_Male_posQA$Cingulum_Frontal_Parietal_R)
+
 
 ```
 
@@ -185,34 +196,7 @@ wilcox.test(Acc_Female_posQA$Cingulum_Frontal_Parietal_R, Acc_Male_posQA$Cingulu
     ylab("Cingulum_Frontal_Parietal_R")
 ```
 
-```{r  unsplit Fornix}}
-
-fornix <- Acc_negRD %>% select(SUBJ..,Mean.Acc,sex,Fornix_R)
-for (s in 1:nrow(CFPR)){
-  if (fornix$sex[s] == 0) {
-     fornix$sex[s] <-  "female"
-}
-   else{
-     fornix$sex[s] <-  "male"
-   }
-}
-
-ggplot(data = fornix, aes(x =Fornix_R , y = Mean.Acc)) +
-  geom_point(aes(color = factor(`SUBJ..`)))+
-  geom_smooth(method = lm, se = FALSE)+
-  labs(title = "Correlation between Proportion correct and RD in men vs women",
-       x = "Fornix ",
-       y = "Proportion correct")+
-  theme(legend.position = "none") +
-  stat_cor(method = "spearman", label.x.npc = 0.1, label.y.npc = 0.75) +
- # stat_regline_equation(label.y = , label.x = 6e-05, aes(label = ..rr.label..)) +
-  xlim(min(fornix$Fornix_R), max(fornix$Fornix_R)) +
-  font("xlab", size=11)+
-  font("ylab", size=11)
-
-```
-
-```{r RD  split Fornix}
+```{r RD  data prep for  Fornix}
 
 fornix <- Acc_negRD %>% select(SUBJ..,Mean.Acc,sex,Fornix_R)
 
@@ -225,23 +209,65 @@ for (s in 1:nrow(fornix)){
    }
 }
 
-  
- # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
-ggplot(data = fornix, aes(x = Mean.Acc, y = Fornix_R)) +
-  geom_point(aes(shape = factor(sex))) +
-  geom_point(aes(color = factor(sex))) +
-  geom_smooth(method = "lm", 
-              aes(color = factor(sex))) +
+
+RDmod <- lm(fornix$Mean.Acc~ fornix$Fornix_R + fornix$sex)
+resids1 <- residuals(mod)
+
+
+# for men and women split plot
+RD_F_lm <- fornix %>% filter(sex=="female")
+RD_femalemod <- lm(RD_F_lm$Mean.Acc ~ RD_F_lm$Fornix_R)
+
+RD_M_lm <- fornix %>% filter(sex=="male")
+RD_malemod <- lm(RD_M_lm$Mean.Acc ~ RD_M_lm$Fornix_R)  
+
+
+```
+
+```{r  SPLIT Fornix}}
+
+ggplot(data = fornix, aes(x =Fornix_R , y = Mean.Acc))+
+  geom_point(aes(color = sex)) +
+  geom_abline(slope=coef(RD_femalemod)["RD_F_lm$Fornix_R"],intercept=coef(RD_femalemod)["(Intercept)"], colour=a[3])+
+  geom_abline(slope=coef(RD_malemod)["RD_M_lm$Fornix_R"],intercept=coef(RD_malemod)["(Intercept)"], colour=a[4])+
+  scale_color_manual(values= c(a[3],a[4])) +
   labs(title = "Correlation between Proportion correct and RD in men vs women",
-       x = "Proportion Correct",
-       y = "Fornix_R")+
+       x = "Fornix_R ",
+       y = "Proportion Correct")+
+   theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
   theme(legend.position = "right") +
-  #stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.4, label.y.npc = 0.75) +
-  #stat_regline_equation(aes(color=sex)) +
-  xlim(min(fornix$Mean.Acc), max(fornix$Mean.Acc)) +
+  stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.75, label.y.npc = 0.75) +
+  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
+  scale_x_continuous(breaks=seq(0,4,0.5)) +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
   font("xlab", size=11)+
   font("ylab", size=11)
 
+```
+
+```{r RD  split Fornix}
+
+ggplot(data = fornix, aes(x = Mean.Acc, y = Fornix_R)) +
+  geom_point(aes(color = factor(`SUBJ..`)))+
+  geom_abline(slope=coef(RDmod)["fornix$Fornix_R"],intercept=coef(RDmod)["(Intercept)"])+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  labs(title = "Correlation between Proportion correct and RD in men vs women",
+       x = "Cingulum_Frontal_Parietal_R ",
+       y = "Proportion Correct")+
+  theme(legend.position = "none") +
+  stat_cor(method = "spearman", label.x.npc = 0.75, label.y.npc = 0.75) +
+  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
+  scale_x_continuous(breaks=seq(0,4,0.5)) +
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
 
 ```
 
@@ -264,5 +290,187 @@ fsampl <- fornix %>% dplyr::group_by(sex)%>%dplyr::summarize(num=n())
     ylab("Cingulum_Frontal_Parietal_R")
 
 ```
+########### PATH EFFICIENCY ##########
+```{r All files for path efficiency}
 
+wd <- "/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI"
+
+setwd("/Volumes/GoogleDrive/My Drive/White matter tract/young-MLINDIV/DSI")
+
+#PE = path efiiciency
+
+# QA male Negative
+PE_Male_negQA_raw<- read_csv("PE_QA_male_neg_Stats.csv") %>%  filter(!grepl('mean_qa_post_norm', `Tract Name`))
+PE_Male_negNormalQA<- read_csv("PE_QA_male_neg_Stats.csv") %>%  filter(grepl('mean_qa_post_norm', `Tract Name`))
+
+PE_Male_posQA_raw <- read_csv("PE_QA_male_pos_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
+PE_Male_posNormalQA <- read_csv("PE_QA_male_pos_Stats.csv") %>% filter(grepl('mean_qa_post_norm', `Tract Name`))
+
+#QA FEmale
+PE_Female_negQA_raw <- read.csv("PE_QA_female_neg_Stats.csv") %>% filter(!grepl('mean_qa_post_norm', `Tract.Name`))
+PE_female_negNormalQA <- read_csv("PE_QA_female_neg_Stats.csv") %>% filter(grepl('mean_qa_post_norm', `Tract Name`))
+
+
+#RD 
+PE_negRD_raw <- read_csv("PE_RD_female_pos_Stats.csv")
+
+
+
+```
+
+```{r cleaning data }
+# we need a dataframe with a the following specific variable QA, number of tracts, mean length, diameter. and then we need to combine the subjinfo with the DSI output 
+# then We'll need to filter by gender based on variable name 
+
+# Male QA 
+PE_Male_posQA <- PE_Male_posNormalQA %>% filter(grepl('mean_qa', `Tract Name`)) 
+PE_Male_posQA <- cbind(subjInfo,PE_Male_posNormalQA) %>% filter(sex==1)
+PE_Male_posQA_stats <- PE_Male_posNormalQA %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+#PE_Male_negQA <- rbind(QAtmp,PE_Male_negQA)
+
+PE_Male_negQA <- PE_Male_negNormalQA %>% filter(grepl('mean_qa', `Tract Name`)) 
+PE_Male_negQA <- cbind(subjInfo,PE_Male_negNormalQA) %>% filter(sex==1)
+PE_Male_negQA_stats <- PE_Male_negNormalQA %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+
+#Need to do this with all of our PEuracy data frames 
+#feamle QA Neg
+PE_Female_negQA <- PE_female_negNormalQA %>% filter(grepl('mean_qa', `Tract Name`)) 
+PE_Female_negQA <- cbind(subjInfo,PE_female_negNormalQA)  %>% filter(sex==0)
+PE_Female_negQA_stats <- PE_female_negNormalQA %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+
+
+#female Positive QA
+
+# RD
+PE_negRD <- PE_negRD_raw %>% filter(grepl('mean_rd', `Tract Name`))
+PE_negRD <- cbind(subjInfo,PE_negRD)
+PE_negRD_stats<- PE_negRD_raw %>% filter(str_detect(`Tract Name`, "number of tracts|mean length|diameter"))
+
+```
+
+```{r Neg correlation with cingulum fontral pariaetal }
+
+pe_CFPR <- PE_Male_negQA %>% select(SUBJ..,path_eff,sex,Cingulum_Frontal_Parietal_R)
+tmp <-  PE_Female_negQA %>% select(SUBJ..,path_eff,sex,Cingulum_Frontal_Parietal_R)
+pe_CFPR <- rbind(pe_CFPR,tmp)
+
+for (s in 1:nrow(pe_CFPR)){
+  if (pe_CFPR$sex[s] == 0) {
+     pe_CFPR$sex[s] <-  "female"
+}
+   else{
+     pe_CFPR$sex[s] <-  "male"
+   }
+}
+
+# creating model for the plot 
+PE_QAmod <- lm(pe_CFPR$path_eff~ pe_CFPR$Cingulum_Frontal_Parietal_R + pe_CFPR$sex)
+resids1 <- residuals(PE_QAmod)
+PE_coef <- format(round(coef(PE_QAmod)[2], 3), nsmall = 3)
+
+# for men and women split plot
+pe_fem_QA_lm <- pe_CFPR %>% filter(sex=="female")
+PE_F_QAmod <- lm(pe_fem_QA_lm$path_eff ~ pe_fem_QA_lm$Cingulum_Frontal_Parietal_R)
+fem_coeff <- format(round(coef(PE_F_QAmod)[2], 3), nsmall = 3)
+
+pe_male_QA_lm <- pe_CFPR %>% filter(sex=="male")
+PE_M_QAmod <- lm(pe_male_QA_lm$path_eff ~ pe_male_QA_lm$Cingulum_Frontal_Parietal_R)  
+m_coeff <- format(round(coef(PE_M_QAmod)[2], 3), nsmall = 3)
+
+```
+
+```{r Cingulum_Frontal_Parietal_R }
+
+ggplot(data = pe_CFPR, aes(x = Cingulum_Frontal_Parietal_R, y = path_eff )) +
+  geom_point(aes(color = factor(`SUBJ..`)))+
+  geom_abline(slope=coef(PE_QAmod)["pe_CFPR$sexmale"],intercept=coef(PE_QAmod)["(Intercept)"])+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  labs(title = "Correlation between Path Efficiency score and QA",
+       x = "Cingulum_Frontal_Parietal_R ",
+       y = "Path Efficiency Score")+
+  theme(legend.position = "none") +
+  annotate("text",x = 1.30, y = 1.26, size = 4, colour = a[4], label=paste0("R="," ",PE_coef)) +  
+  xlim(min(pe_CFPR$Cingulum_Frontal_Parietal_R),max(pe_CFPR$Cingulum_Frontal_Parietal_R)) +
+  ylim(min(pe_CFPR$path_eff),max(pe_CFPR$path_eff)) +
+  scale_x_continuous(breaks=seq(0,4,0.5)) +
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+```
+
+```{r Cingulum_Frontal_Parietal_R  split }
+
+ # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
+ggplot(data = pe_CFPR, aes(x = Cingulum_Frontal_Parietal_R, y = path_eff)) +
+  geom_point(aes(color = factor(sex)))+
+  geom_abline(slope=coef(PE_F_QAmod)["pe_fem_QA_lm$Cingulum_Frontal_Parietal_R"],intercept=coef(PE_F_QAmod)["(Intercept)"],colour=b[3])+
+  geom_abline(slope=coef(PE_M_QAmod )["pe_male_QA_lm$Cingulum_Frontal_Parietal_R"],intercept=coef(PE_M_QAmod )["(Intercept)"], colour=b[5])+
+  scale_color_manual(values= c(b[3],b[5])) +
+  labs(title = "Correlation between path efficiency score and QA in men vs women",
+       x = "Cingulum_Frontal_Parietal_R ",
+       y = "Path Efficiency Score")+
+   theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "right") +
+  annotate("text",x = 1.6, y = 1.26, size = 4, colour = b[3], label=paste0("R="," ",PE_coef, ", ","P=0.2755"))+
+  annotate("text",x = 2.5, y = 1.26, size = 4, colour = b[5], label=paste0("R="," ",m_coeff, ", ","P=0.3204"))+
+  xlim(min(CFPR$Cingulum_Frontal_Parietal_R), max(CFPR$Cingulum_Frontal_Parietal_R)) +
+  scale_x_continuous(breaks=seq(0,4,0.5)) +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+#dev.off()
+
+```
+
+
+```{r fornix in women only }
+
+pe_CFPR <- PE_negRD %>% select(SUBJ..,path_eff,sex,Cingulum_Frontal_Parietal_R) %>% filter(sex==0)
+
+
+for (s in 1:nrow(pe_CFPR)){
+  if (pe_CFPR$sex[s] == 0) {
+     pe_CFPR$sex[s] <-  "female"
+}
+   else{
+     pe_CFPR$sex[s] <-  "male"
+   }
+}
+
+
+PE_RDmod <- lm(pe_CFPR$path_eff~ pe_CFPR$Cingulum_Frontal_Parietal_R )
+resids1 <- residuals(PE_RDmod)
+PE_coef <- format(round(coef(PE_RDmod)[2], 3), nsmall = 3)
+```
+
+```{r}
+
+
+ # jpeg("Corticostriatal_Tract_Superior_R.jpeg")
+ggplot(data = pe_CFPR, aes(x = Cingulum_Frontal_Parietal_R, y = path_eff)) +
+  geom_point(colour =c(b[3])) +
+  geom_abline(slope=coef(PE_RDmod)["pe_CFPR$Cingulum_Frontal_Parietal_R"],intercept=coef(PE_RDmod)["(Intercept)"],colour=b[3])+
+  labs(title = "Correlation between path efficiency score and RD in women ",
+       x = "Cingulum_Frontal_Parietal_R ",
+       y = "Path Efficiency Score")+
+   theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "right") +
+  xlim(min(pe_CFPR$Cingulum_Frontal_Parietal_R), max(pe_CFPR$Cingulum_Frontal_Parietal_R)) +
+  annotate("text",x = 0.48, y = 1.25, size = 4, colour = b[3], label=paste0("R="," ",PE_coef, ", ","P=0.001037"))+
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+#dev.off()
+```
 
