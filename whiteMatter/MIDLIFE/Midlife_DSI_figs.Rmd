@@ -1,0 +1,167 @@
+---
+title: "Midlife_DSI_Hormone_figs"
+purpose: "Creating figures based on the Stats output from DSI connectronomy analysis "   
+input: "SUbject info CSV, CSV files with DSI output"           
+output: Figures                     
+Notes:  
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(tidyverse)
+library(wrapr)
+library(stringr)
+library(BRRR)
+library(ggpubr)
+library(dplyr)
+library(wesanderson)
+library(stats)
+a <- wes_palette(n=5, name="Rushmore1")
+b <- wes_palette(n=5, name="Royal2")
+c <- wes_palette(n=5, name="BottleRocket2")
+```
+
+```{r Reading in CSVS}
+wd <-"/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/DSI/Hormones"
+setwd("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/DSI/Hormones")
+
+subInfo <- read_csv("midlife_hormones_participantinfo.csv") %>%
+  select(Sub_ID,age_scan_years,progesterone_scan_ng_ml, estradiol_scan_pg_ml)
+
+QA <- read_csv("QA_estradiol_DSI.csv")
+norm_QA <- read_csv("QA_estradiol_DSI.csv")%>% filter(grepl('mean_qa_post_norm', `Tract Name`))
+RD<- read_csv("DSI_RD_progesterone.csv")
+MD<- read_csv("MD_Progesterone_DSI.csv")
+AD<- read_csv("AD_progesterone_DSI.csv")
+
+```
+
+
+```{r Data Prepping for QA CErebellum}
+CBM <- QA %>% filter(grepl('mean_qa', `Tract Name`))%>% filter(!grepl('mean_qa_post_norm', `Tract Name`))
+CBM <- cbind(subInfo,CBM) %>% select(Sub_ID,age_scan_years,estradiol_scan_pg_ml, Cerebellum_L)
+
+# creating model for the plot 
+QA_mod <- lm(CBM$Cerebellum_L~ CBM$estradiol_scan_pg_ml + CBM$age_scan_years)
+resids1 <- residuals(QA_mod)
+QA_coef <- format(round(coef(QA_mod)[2], 3), nsmall = 3)
+
+```
+
+## Including Plots
+```{r QA Cerebellum Plot}
+
+png("QA_cerebellum_estr.png", res=300, width=1900, height=1500)
+ggtrendline(x = CBM$Cerebellum_L, y = CBM$estradiol_scan_pg_ml,model = "line2P",linecolor = a[4], linetype = 1, linewidth = 1, CI.level = 0.95, 
+            CI.fill = a[4], CI.color = NA)+
+  geom_point(aes(x = CBM$Cerebellum_L, y = CBM$estradiol_scan_pg_ml), color=a[3]) +
+  labs(
+       x = "Cerebellum_L ",
+       y = "estradiol ")+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "none") +
+  xlim(min(CBM$Cerebellum_L), max(CBM$Cerebellum_L)) +
+  #stat_cor(method = "spearman", label.x.npc = 0.75, label.y.npc = 0.85) +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+dev.off()
+```
+
+
+```{r RD Fornix}
+RD_fornix <- RD %>% filter(grepl('mean_rd', `Tract_Name`))
+RD_fornix <- cbind(subInfo,RD_fornix) %>% select(Sub_ID,age_scan_years,progesterone_scan_ng_ml, Fornix_R)
+
+RD_mod <- lm(RD_fornix$progesterone_scan_ng_ml~RD_fornix$Fornix_R)
+resids1 <- residuals(RD_mod)
+RD_coef <- format(round(coef(RD_mod)[2], 3), nsmall = 3)
+```
+
+```{r Rd_Fornix R fig }
+
+png("RD_fornix_prog.png", res=300, width=1900, height=1500)
+ggtrendline(x = RD_fornix$Fornix_R, y = RD_fornix$progesterone_scan_ng_ml,model = "line2P",linecolor = a[4], linetype = 1, linewidth = 1, CI.level = 0.95, 
+            CI.fill = a[4], CI.color = NA)+
+  geom_point(aes(x = RD_fornix$Fornix_R, y = RD_fornix$progesterone_scan_ng_ml), color=a[3])+
+  labs(
+       x = "Fornix_R",
+       y = "Progesterone ")+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "none") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+dev.off()
+```
+
+```{r AD }
+AD_fornix <- AD %>% filter(grepl('mean_ad', `Tract Name`))
+AD_fornix <- cbind(subInfo,AD_fornix) %>% select(Sub_ID,age_scan_years,progesterone_scan_ng_ml, Fornix_L)
+
+AD_mod <- lm(AD_fornix$Fornix_L~ AD_fornix$progesterone_scan_ng_ml + AD_fornix$age_scan_years)
+resids1 <- residuals(AD_mod)
+AD_coef <- format(round(coef(AD_mod)[2], 3), nsmall = 3)
+
+```
+
+```{r AD_Fig}
+png("AD_fornix_prog.png", res=300, width=1900, height=1500)
+ggtrendline(x = AD_fornix$Fornix_L, y = AD_fornix$progesterone_scan_ng_ml,model = "line2P",linecolor = a[4], linetype = 1, linewidth = 1, CI.level = 0.95, 
+            CI.fill = a[4], CI.color = NA)+
+  geom_point(aes(x = AD_fornix$Fornix_L, y = AD_fornix$progesterone_scan_ng_ml), color=a[3])+
+  labs(
+    x = "Fornix_L ",
+    y = "Progesterone ")+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "none") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+dev.off()
+```
+```{r MD}
+MD_fornix <- MD %>% filter(grepl('mean_md', `Tract Name`))
+MD_fornix <- cbind(subInfo,MD_fornix) %>% select(Sub_ID,age_scan_years,progesterone_scan_ng_ml, Fornix_L)
+
+MD_mod <- lm(MD_fornix$progesterone_scan_ng_ml~ MD_fornix$Fornix_L)
+resids1 <- residuals(MD_mod)
+MD_coef <- format(round(coef(MD_mod)[2], 3), nsmall = 3)
+```
+
+```{r}
+png("MD_fornix_prog.png", res=300, width=1900, height=1500)
+  ggtrendline(x = AD_fornix$Fornix_L, y = AD_fornix$progesterone_scan_ng_ml,model = "line2P",linecolor = a[4], linetype = 1, linewidth = 1, CI.level = 0.95, 
+            CI.fill = a[4], CI.color = NA)+
+  geom_point(aes(x = MD_fornix$Fornix_L, y = MD_fornix$progesterone_scan_ng_ml), color=a[3])+
+  labs(
+       x = "Fornix_L",
+       y = "Progesterone ")+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "none") +
+  theme(plot.title = element_text(hjust = 0.5, vjust = +2))+
+  theme(axis.title.x = element_text(vjust = -2))  +
+  theme(axis.title.y = element_text(vjust = +2))  +
+  font("xlab", size=11)+
+  font("ylab", size=11)
+dev.off()
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
