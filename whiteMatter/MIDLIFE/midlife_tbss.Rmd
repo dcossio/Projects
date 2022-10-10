@@ -1,5 +1,5 @@
 ---
-title: "Midlife Tbbs Analysis"
+title: "Midlife Tbss Analysis"
 output: html_document
 ---
 
@@ -15,21 +15,27 @@ library(car)
 library(afex)
 library(ggpubr)
 
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+a <- wes_palette(n=5, name="Rushmore1")
+b <- wes_palette(n=5, name="Royal2")
+c <- wes_palette(n=5, name="BottleRocket2")
+
 ```
 
 
 
 ```{r Read in participant info}
 # Reading all of our scalar files 
+workdir <-"/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze"
+setwd(workdir)
 
-rawAD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-AD.csv") 
+# only select specific ROIs suhc as fornix and cingulum 
+rawAD <- read_csv("JHU-skeletonized-AD.csv") 
 
-rawRD <- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-RD.csv")
+rawRD <- read_csv("JHU-skeletonized-RD.csv")
 
-rawMD<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-MD.csv")
+rawMD<- read_csv("JHU-skeletonized-MD.csv")
 
-rawFA<- read_csv("/Volumes/GoogleDrive/My Drive/White matter tract/Midlife_SNAG/tbss/Maze/JHU-skeletonized-FA.csv") 
+rawFA<- read_csv("JHU-skeletonized-FA.csv") %>% select(Fornix,`Fornix (cres) / Stria terminalis R, Fornix (cres) / Stria terminalis L,Cingulum (cingulate gyrus) R,Cingulum (cingulate gyrus) L,Cingulum (hippocampus) R, Cingulum (hippocampus) L)
                  
                  
 # reading in participant info but only keeping those that are in the tbss analysis
