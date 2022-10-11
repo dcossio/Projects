@@ -29,7 +29,7 @@ library(stringr)
 library(factoextra)
 library(lsr)
 # library(car)
-# library(ggpubr)
+library(ggpubr)
 # library(entropy)
 # library(ds4psy)
 # library(pROC)
@@ -54,6 +54,8 @@ participantDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/Midlif
 
 mid_master_trial <- inner_join(subjInfo, trialDF, by="Subject") 
 mid_master_participant <- inner_join(subjInfo, participantDF, by="Subject") 
+mid_master_participant$age <- as.factor("midlife")
+mid_master_participant$sex <- as.factor(mid_master_participant$sex)
 
 ```
 
@@ -67,7 +69,8 @@ yngparticipantDF <-read.csv("/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preproce
 
 yng_master_trial <- inner_join(yngsubjInfo, yngtrialDF, by="Subject") 
 yng_master_participant <- inner_join(yngsubjInfo, yngparticipantDF, by="Subject") 
-
+yng_master_participant$age <-as.factor("young")
+yng_master_participant$sex <-as.factor(yng_master_participant$sex)
 ```
 
 ```{r prepping variables for later use}
@@ -93,7 +96,7 @@ hallways <- c('B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'M', 'Q', 'R', 'S', 'T', '
 
 ```{r prepping datafranes for later use}
 
-mid_female_analysis<-mid_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))#creating master analysis data-frame to store all final exploration variable outputs into 
+mid_female_analysis<-mid_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))       #creating master analysis data-frame to store all final exploration variable outputs into 
 
 mid_male_analysis<-mid_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))
   
@@ -194,21 +197,16 @@ wilcox.test(mid_male_analysis$Dist,yng_male_analysis$Dist) #not significantly di
 #Theres no significant differece between men and women at any age when seeing an anova
 ```{r Distance analysis using ANOVA }
 
- yng_male_analysis$Dist <- yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
-
- yng_female_analysis$Dist<- yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
- 
+yng_male_analysis$Dist <- yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
+yng_female_analysis$Dist<- yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
 dist <- rbind(yng_male_analysis, yng_female_analysis)
 
 #Midlife
 mid_female_analysis$Dist<-mid_master_participant%>% filter(sex == "Female") %>% pull(em_path_dist_trav)
-
- dist <- rbind(dist, mid_female_analysis)
-
+dist <- rbind(dist, mid_female_analysis)
 #male
 mid_male_analysis$Dist<-mid_master_participant%>% filter(sex == "Male") %>% pull(em_path_dist_trav)
-
- dist <- rbind(dist, mid_male_analysis)
+dist <- rbind(dist, mid_male_analysis) 
 #normality
 
 shapiro.test(yng_male_analysis$Dist)  # p-value = 0.04028
@@ -220,49 +218,28 @@ shapiro.test(mid_male_analysis$Dist) #p-value = 0.1104
 #1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
 dist_aov <-  aov(formula=Dist ~ sex * age, dist)
 summary(dist_aov)
-# sex is associated with significant different distances 
-# age is significantly associated with difference in distance lengths 
-# there's no sex vs age interaction
 
-# Post hoc
-with(dist, pairwise.t.test(Dist, group, 
-p.adj="bonferroni", paired=F))
+pairwise.t.test(dist$Dist, dist$group, p.adj="bonferroni")
+TukeyHSD(dist_aov)
 
 
-
- # 2 is to create our factors of midlife men /midlife women /young men/young women
-# Does sex affect distance and does this change with age?
-d_aov <- aov(formula=Dist ~ group, dist)
-summary(d_aov)
-
-# Post hoc 
- TukeyHSD(d_aov, which = "group")
- 
-
- # we dont find any meaning ful significant interactions
- # only age effect in females and a yng male vs young female
- 
 
 ```
 
 No difference in speed
 ```{r SPEED }
 
- yng_male_analysis$speed <-yng_master_participant %>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
-
-
- yng_female_analysis$speed<- yng_master_participant %>% filter(sex == "Female") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
-
-speed <- rbind( yng_female_analysis,  yng_male_analysis)
+yng_male_analysis$speed <-yng_master_participant %>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
+yng_female_analysis$speed<- yng_master_participant %>% filter(sex == "Female") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
+Speed <- rbind(yng_female_analysis,  yng_male_analysis)
 
 #Midlife
 mid_female_analysis$speed<-mid_master_participant%>% filter(sex == "Female") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
-
-speed <- rbind( speed,  mid_female_analysis$speed)
+Speed <- rbind(Speed, mid_female_analysis)
 #male
 mid_male_analysis$speed<-mid_master_participant%>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
+Speed <- rbind( Speed,  mid_male_analysis) %>% select(!(Dist))
 
-speed <- rbind( speed,  mid_male_analysis$speed) %>% select(!(Dist))
 
 #Normality test to assess whether samples are normally distributed 
 # Midlife
@@ -273,10 +250,36 @@ shapiro.test(mid_male_analysis$speed)# p =.1104
 shapiro.test(yng_female_analysis$speed) #p= 0.03
 shapiro.test(yng_male_analysis$speed)# p = 0,.04 
 
+# Plotting the distribution
+ym <- ggplot(yng_male_analysis, aes(x=speed)) + 
+  geom_histogram(bins=15)
+yf <- ggplot(yng_female_analysis, aes(x=speed)) + 
+  geom_histogram(bins=15)
+
+mm <- ggplot(mid_male_analysis,aes(x=speed))+ 
+  geom_histogram(bins=15)
+mf <- ggplot(mid_female_analysis, aes(x=speed))+ 
+  geom_histogram(bins=15)
+
+multi_plot <- ggarrange(ym,yf,mm,mf,
+                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+                       font.label = list(size = 12, color = "red"),
+                       vjust = 1.5,
+                       ncol=2, nrow = 3)
+annotate_figure(multi_plot,
+                top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14))
+multi_plot
+#does the plot have a common legend)
+
 #1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
-speed_aov <-  aov(formula=speed ~ sex * age,speed)
+speed_aov <-  aov(formula=speed ~ sex * age,Speed)
 summary(speed_aov)
 # not significant 
+pairwise.t.test(dist$Dist, dist$group, p.adj="bonferroni")
+TukeyHSD(dist_aov)
+
+
+
 ```
 
 ```{r midlife explore object processing }
@@ -357,8 +360,6 @@ yng_big_explore_counts <- yng_big_explore_counts %>% mutate(sex=yng_explr_Subinf
 
 ```
 
-
-Object Visits Summary: There are sex differences in the young group in that men visited object significantly more than women. There are no sex differences between men and women during midlife. ACross groups Men and women in the age group visited significantly more objects than their younger counter parts. 
 ```{r object visits }
 
 #midlife 
@@ -409,17 +410,12 @@ shapiro.test(yng_female_analysis$TotalObjVisits) # normal
 Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
 summary(Obj_aov)
 
-o_aov <- aov(formula=TotalObjVisits ~ group, ObjVisits)
-summary(o_aov)
-
-# Post hoc 
- TukeyHSD(d_aov, which = "group")
 ```
 
 ```{r Hallway visits}
 
 #midlife male
-mid_male_hall_visits <- mid_big_explore_counts %>% filter(sex =="Male") %>%   transmute(subject,sex,group, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
+mid_male_hall_visits <- mid_big_explore_counts %>% filter(sex =="Male") %>% transmute(subject,sex,group, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
 cols_sum<-c(4:length(mid_male_hall_visits))
 mid_male_hall_visits$total<-rowSums(mid_male_hall_visits[,cols_sum])#finding total hallway counts for each subject for each session 
 mid_male_hall_visits_mean<-aggregate(mid_male_hall_visits$total, list(mid_male_hall_visits$subject), FUN=mean)
@@ -453,7 +449,15 @@ yng_female_analysis$TotalHallwayVisits<-yng_female_hall_visits_mean$x
 
 halls <- rbind(halls,yng_female_analysis) %>% select(sex,age,group,TotalHallwayVisits)
 
-hallvis_aov <- aov(formula=TotalHallwayVisits ~ sex * age ,halls)
+#normality distribution
+
+shapiro.test(yng_male_analysis$TotalHallwayVisits) #normal 
+shapiro.test(yng_female_analysis$TotalHallwayVisits)
+shapiro.test(mid_male_analysis$TotalHallwayVisits) #normal 
+shapiro.test(mid_female_analysis$TotalHallwayVisits)
+
+
+hallvis_aov<- aov(formula=TotalHallwayVisits ~ sex*age ,halls)
 summary(hallvis_aov)
 
 ```
@@ -467,20 +471,7 @@ mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.f
 dist <- rbind(yng_distance,mid_distance)
 
 #this was just to create a better grouping
- for (group in 1:nrow(dist)){
-   if (dist$age[group] < 25 && dist$sex[group] == "Female" ) {
-     dist$group[group] <- "young_female"
-     }
-   if (dist$age[group] > 35 && dist$sex[group] == "Female" ) {
-     dist$group[group] <- "mid_female"
-     }
-   if (dist$age[group] > 35 && dist$sex[group] == "Male" ) {
-     dist$group[group] <- "mid_male"
-   }
-   if (dist$age[group] < 25 && dist$sex[group] == "Male" ) {
-     dist$group[group] <- "young_male"
-   }
-  }
+
 
 sam_size <- dist%>%dplyr::group_by(group)%>% dplyr::summarize(num=n())
 
@@ -518,21 +509,6 @@ mid_obj <- rbind(mid_female_analysis,mid_male_analysis) %>%
 
 ObjVisits <- rbind(yng_obj,mid_obj)
 
-#this was just to create a better grouping
- for (group in 1:nrow(ObjVisits)){
-   if (ObjVisits$age[group] < 25 && ObjVisits$sex[group] == "Female" ) {
-     ObjVisits$group[group] <- "young_female"
-     }
-   if (ObjVisits$age[group] > 35 && ObjVisits$sex[group] == "Female" ) {
-     ObjVisits$group[group] <- "mid_female"
-     }
-   if (ObjVisits$age[group] > 35 && ObjVisits$sex[group] == "Male" ) {
-     ObjVisits$group[group] <- "mid_male"
-   }
-   if (ObjVisits$age[group] < 25 && ObjVisits$sex[group] == "Male" ) {
-     ObjVisits$group[group] <- "young_male"
-   }
-  }
 
 sam_size <- ObjVisits%>%dplyr::group_by(group)%>% dplyr::summarize(num=n())
 
