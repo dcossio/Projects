@@ -35,6 +35,7 @@ library(lsr)
 # library(pROC)
 library(devtools)
 library(BRRR)
+library(stats)
 library(afex)
 
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -92,23 +93,20 @@ hallways <- c('B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'M', 'Q', 'R', 'S', 'T', '
 
 ```{r prepping datafranes for later use}
 
-mid_female_analysis<-mid_master_participant %>% filter(sex == "Female") %>% select(Subject) %>% as.data.frame() #creating master analysis data-frame to store all final exploration variable outputs into 
-mid_male_analysis<-mid_master_participant %>% filter(sex == "Male") %>% select(Subject) %>% as.data.frame()
+mid_female_analysis<-mid_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))#creating master analysis data-frame to store all final exploration variable outputs into 
+
+mid_male_analysis<-mid_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))
   
-yng_female_analysis<-yng_master_participant %>% filter(sex == "Female") %>% select(Subject) %>% as.data.frame() 
-yng_male_analysis<-yng_master_participant %>% filter(sex == "Male") %>% select(Subject) %>% as.data.frame() #same thing for young
+yng_female_analysis<-yng_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "young") %>% mutate(group=paste(sex,group))
 
-```
-
-
-```{r GRabbing the exploration trials for both groups }
-
-mid_explor <- mid_master_trial %>% filter(is.na(accuracy) == TRUE)
-yng_explor <- yng_master_trial %>% filter(is.na(accuracy) == TRUE)
+yng_male_analysis<-yng_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "young") %>% mutate(group=paste(sex,group))#same thing for young
 
 ```
 
 ```{r Little bit of preprocessing on the explore trials }
+
+mid_explor <- mid_master_trial %>% filter(is.na(accuracy) == TRUE)
+
 
 #creating empty dataframe to store contents of for loop into 
 # midlife 
@@ -129,11 +127,11 @@ for (i in 1:nrow(mid_explor)){
 mid_expl_df$Subject<-mid_explor$Subject
 mid_expl_df <- mid_expl_df %>% rename(paths = matrix.nrow...nrow.mid_explor..) 
 
-mid_explr_Subinfo <- inner_join(mid_master_participant,mid_expl_df)
+mid_explr_Subinfo <- inner_join(mid_master_participant,mid_expl_df) %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))
 ```
 
 ```{r explore trial young preprocessing }
-
+yng_explor <- yng_master_trial %>% filter(is.na(accuracy) == TRUE)
 yng_expl_df<- data.frame(matrix(nrow = nrow(yng_explor)))
 
 for (i in 1:nrow(yng_explor)){
@@ -150,15 +148,14 @@ for (i in 1:nrow(yng_explor)){
 yng_expl_df$Subject<-yng_explor$Subject
 yng_expl_df <- yng_expl_df %>% rename(paths = matrix.nrow...nrow.yng_explor..) 
 
-yng_explr_Subinfo <- inner_join(yng_master_participant,yng_expl_df)
+yng_explr_Subinfo <- inner_join(yng_master_participant,yng_expl_df) %>% mutate(group = "young") %>% mutate(group=paste(sex,group))#same thing for young
 
 ```
-
 
 Distance Summary of results: No sex differences in men and women during midlife:
 
 There's no significant difference between men and women at the young age but there was at the midlife age. Midlife Women traveled significantly less than midlife men did. No significant difference between midlife men and young  men. Midlife women did travel significantly less than young women. 
-```{r Distance }
+```{r Distance analysis using just wilcox }
 
 #Let's look at the young men first 
  yng_male_analysis$Dist<- yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
@@ -194,45 +191,96 @@ wilcox.test(mid_male_analysis$Dist,yng_male_analysis$Dist) #not significantly di
 
 ```
 
-```{r Distance analysis using  }
-yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav) %>%  mutate(acc= yng_master_participant$tm_accuracy)
-mid_distance <- mid_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = mid_master_participant$em_path_dist_trav)%>%  mutate(acc= mid_master_participant$tm_accuracy)
+#Theres no significant differece between men and women at any age when seeing an anova
+```{r Distance analysis using ANOVA }
 
-dist <- rbind(yng_distance,mid_distance)
+ yng_male_analysis$Dist <- yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
 
-#this was just to quickly convert to binary
-for (gender in 1:nrow(dist)){
-   if (dist$sex[gender] == "Female") {
-      dist$sex[gender] = 0
-     } else {
-      dist$sex[gender] = 1
-    }
- }
+ yng_female_analysis$Dist<- yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
+ 
+dist <- rbind(yng_male_analysis, yng_female_analysis)
+
+#Midlife
+mid_female_analysis$Dist<-mid_master_participant%>% filter(sex == "Female") %>% pull(em_path_dist_trav)
+
+ dist <- rbind(dist, mid_female_analysis)
+
+#male
+mid_male_analysis$Dist<-mid_master_participant%>% filter(sex == "Male") %>% pull(em_path_dist_trav)
+
+ dist <- rbind(dist, mid_male_analysis)
+#normality
+
+shapiro.test(yng_male_analysis$Dist)  # p-value = 0.04028
+shapiro.test(yng_female_analysis$Dist) # p-value = 0.03625
+shapiro.test(mid_female_analysis$Dist) # p-value = 0.01943
+shapiro.test(mid_male_analysis$Dist) #p-value = 0.1104
 
 
-# # this was just to quickly convert to binary
-#   for (group in 1:nrow(dist)){
-#     if (dist$age[group] < 25) {
-#       dist$group[group] <- "young"
-#       } else {
-#          dist$group[group] <- "midlife"
-#       }
-#   }
-#  
-
-dist_aov<-  aov(formula=Dist ~ sex * age, dist)
+#1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
+dist_aov <-  aov(formula=Dist ~ sex * age, dist)
 summary(dist_aov)
+# sex is associated with significant different distances 
+# age is significantly associated with difference in distance lengths 
+# there's no sex vs age interaction
 
+# Post hoc
+with(dist, pairwise.t.test(Dist, group, 
+p.adj="bonferroni", paired=F))
+
+
+
+ # 2 is to create our factors of midlife men /midlife women /young men/young women
+# Does sex affect distance and does this change with age?
+d_aov <- aov(formula=Dist ~ group, dist)
+summary(d_aov)
+
+# Post hoc 
+ TukeyHSD(d_aov, which = "group")
+ 
+
+ # we dont find any meaning ful significant interactions
+ # only age effect in females and a yng male vs young female
+ 
 
 ```
 
-```{r SPEED Skipped for now }
+No difference in speed
+```{r SPEED }
+
+ yng_male_analysis$speed <-yng_master_participant %>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
 
 
+ yng_female_analysis$speed<- yng_master_participant %>% filter(sex == "Female") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
 
+speed <- rbind( yng_female_analysis,  yng_male_analysis)
+
+#Midlife
+mid_female_analysis$speed<-mid_master_participant%>% filter(sex == "Female") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
+
+speed <- rbind( speed,  mid_female_analysis$speed)
+#male
+mid_male_analysis$speed<-mid_master_participant%>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
+
+speed <- rbind( speed,  mid_male_analysis$speed) %>% select(!(Dist))
+
+#Normality test to assess whether samples are normally distributed 
+# Midlife
+shapiro.test(mid_female_analysis$speed) #p=0.019
+shapiro.test(mid_male_analysis$speed)# p =.1104
+
+#young
+shapiro.test(yng_female_analysis$speed) #p= 0.03
+shapiro.test(yng_male_analysis$speed)# p = 0,.04 
+
+#1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
+speed_aov <-  aov(formula=speed ~ sex * age,speed)
+summary(speed_aov)
+# not significant 
 ```
 
 ```{r midlife explore object processing }
+
 mid_big_explore<-as.data.frame(str_split_fixed(mid_expl_df$paths," ",nrow(mid_expl_df)))
 mid_big_explore <- mid_big_explore %>% mutate(subject = mid_expl_df$Subject) 
 mid_big_explore <-mid_big_explore[,c(ncol(mid_big_explore), 1:(ncol(mid_big_explore)-1))] 
@@ -265,12 +313,13 @@ for (i in locs){
   mid_big_explore_counts <- cbind(d, mid_big_explore_counts)
 }
 
-mid_big_explore_counts <- mid_big_explore_counts %>% mutate(sex=mid_explr_Subinfo$sex)
+mid_big_explore_counts <- mid_big_explore_counts %>% mutate(sex=mid_explr_Subinfo$sex) %>% mutate(group =mid_explr_Subinfo$group)
 
 
 ```
 
 ```{r explore object processing }
+#location visits
 yng_big_explore<-as.data.frame(str_split_fixed(yng_expl_df$paths," ",nrow(yng_expl_df)))
 yng_big_explore <- yng_big_explore %>% mutate(subject = yng_expl_df$Subject) 
 yng_big_explore <-yng_big_explore[,c(ncol(yng_big_explore), 1:(ncol(yng_big_explore)-1))] 
@@ -303,7 +352,7 @@ for (i in locs){
   yng_big_explore_counts <- cbind(d, yng_big_explore_counts)
 }
 
-yng_big_explore_counts <- yng_big_explore_counts %>% mutate(sex=yng_explr_Subinfo$sex)
+yng_big_explore_counts <- yng_big_explore_counts %>% mutate(sex=yng_explr_Subinfo$sex) %>% mutate(group =yng_explr_Subinfo$group)
 
 
 ```
@@ -313,99 +362,103 @@ Object Visits Summary: There are sex differences in the young group in that men 
 ```{r object visits }
 
 #midlife 
-male_obj_visits <- mid_big_explore_counts %>% filter(sex=="Male") %>%   transmute(subject,sex, A, I, L, K, N, O, P, Y, W)
-cols_sum<-c(3:length(male_obj_visits))
+male_obj_visits <- mid_big_explore_counts %>% filter(sex=="Male") %>%   transmute(subject,sex,group, A, I, L, K, N, O, P, Y, W)
+cols_sum<-c(4:length(male_obj_visits))
 male_obj_visits$total= rowSums(male_obj_visits[,cols_sum])
 mObj_ave <-aggregate(male_obj_visits$total, list(male_obj_visits$subject), FUN=mean)
 mid_male_analysis$TotalObjVisits <- mObj_ave$x
+
+
 #females
-female_obj_visits <- mid_big_explore_counts %>% filter(sex=="Female") %>%   transmute(subject,sex, A, I, L, K, N, O, P, Y, W)
-cols_sum<-c(3:length(female_obj_visits))
+female_obj_visits <- mid_big_explore_counts %>% filter(sex=="Female") %>%   transmute(subject,sex,group, A, I, L, K, N, O, P, Y, W)
+cols_sum<-c(4:length(female_obj_visits))
 female_obj_visits$total= rowSums(female_obj_visits[,cols_sum])
 fObj_ave <- aggregate(female_obj_visits$total, list(female_obj_visits$subject), FUN=mean)
 mid_female_analysis$TotalObjVisits<-fObj_ave$x
+
 #Object Visits- Normality test to assess whether samples are normally distributed
 shapiro.test(mid_male_analysis$TotalObjVisits) #normal 
 shapiro.test(mid_female_analysis$TotalObjVisits) # normal
-#Object Visits - T-Test  # no differe
+
+ObjVisits <- rbind(mid_female_analysis,mid_male_analysis)
 
 # GRabbing the young group
 
-male_obj_visits <- yng_big_explore_counts %>% filter(sex=="Male") %>%   transmute(subject,sex, A, I, L, K, N, O, P, Y, W)
-cols_sum<-c(3:length(male_obj_visits))
-male_obj_visits$total= rowSums(male_obj_visits[,cols_sum])
-mObj_ave <-aggregate(male_obj_visits$total, list(male_obj_visits$subject), FUN=mean)
-yng_male_analysis$TotalObjVisits <- mObj_ave$x
+yng_male_obj_visits <- yng_big_explore_counts %>% filter(sex=="Male") %>%   transmute(subject,sex,group, A, I, L, K, N, O, P, Y, W)
+cols_sum<-c(4:length(yng_male_obj_visits))
+yng_male_obj_visits$total= rowSums(yng_male_obj_visits[,cols_sum])
+yng_mObj_ave <-aggregate(yng_male_obj_visits$total, list(yng_male_obj_visits$subject), FUN=mean)
+yng_male_analysis$TotalObjVisits <- yng_mObj_ave$x
+
+ObjVisits <- rbind(ObjVisits,yng_male_analysis)
+
 #females
-female_obj_visits <- yng_big_explore_counts %>% filter(sex=="Female") %>%   transmute(subject,sex, A, I, L, K, N, O, P, Y, W)
-cols_sum<-c(3:length(female_obj_visits))
-female_obj_visits$total= rowSums(female_obj_visits[,cols_sum])
-fObj_ave <- aggregate(female_obj_visits$total, list(female_obj_visits$subject), FUN=mean)
+yng_female_obj_visits <- yng_big_explore_counts %>% filter(sex=="Female") %>%   transmute(subject,sex, A, I, L, K, N, O, P, Y, W)
+cols_sum<-c(3:length(yng_female_obj_visits))
+yng_female_obj_visits$total= rowSums(yng_female_obj_visits[,cols_sum])
+fObj_ave <- aggregate(yng_female_obj_visits$total, list(yng_female_obj_visits$subject), FUN=mean)
 yng_female_analysis$TotalObjVisits<-fObj_ave$x
+
+ObjVisits <- rbind(ObjVisits,yng_female_analysis) %>% select(!(Dist)) %>% select(!(speed))
 
 shapiro.test(yng_male_analysis$TotalObjVisits) #normal 
 shapiro.test(yng_female_analysis$TotalObjVisits) # normal 
 
 
-
-#Instead of a ttest we're going to do an ANOVA
-
-yng_obj <- rbind(yng_female_analysis,yng_male_analysis) %>% 
-  select(Subject,TotalObjVisits) %>% 
-  arrange() %>% 
-  mutate(sex= yng_master_participant$sex)%>% 
-  mutate(age= yng_master_participant$age)%>%  mutate(acc= yng_master_participant$tm_accuracy)
-
-mid_obj <- rbind(mid_female_analysis,mid_male_analysis) %>% 
-  select(Subject,TotalObjVisits) %>% 
-  arrange() %>% 
-  mutate(sex= mid_master_participant$sex)%>% 
-  mutate(age= mid_master_participant$age) %>%  mutate(acc= mid_master_participant$tm_accuracy)
-
-
-ObjVisits <- rbind(yng_obj,mid_obj)
-
-# How does age and sex predict obj visits and how does this correlate to performance  mediation
-# Obj_aov <- aov(formula= acc ~ TotalObjVisits * age * sex ,ObjVisits)
-#summary(Obj_aov)
-
-
 # or do you do 
 Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
 summary(Obj_aov)
-# post hoc and do bonferroni 
 
-# lets do some analysis 
+o_aov <- aov(formula=TotalObjVisits ~ group, ObjVisits)
+summary(o_aov)
 
-# young female vs young male # significant difference
-# pvalue=  0.02034 d=0.59377
-# mean yng=male 9.75
-#young =9.15
-wilcox.test(yng_female_analysis$TotalObjVisits,yng_male_analysis$TotalObjVisits)
-cohensD(yng_female_analysis$TotalObjVisits,yng_male_analysis$TotalObjVisits)
+# Post hoc 
+ TukeyHSD(d_aov, which = "group")
+```
 
-# midlife group 
-#non sig  p=0.08762 d=0.4
-wilcox.test(mid_female_analysis$TotalObjVisits,mid_male_analysis$TotalObjVisits)
-cohensD(mid_female_analysis$TotalObjVisits,mid_male_analysis$TotalObjVisits)
+```{r Hallway visits}
 
-# what about young vs midlife 
-# females p-value = 8.953e-10
-# midlife =12.45
-#young =9.15
-wilcox.test(mid_female_analysis$TotalObjVisits,yng_female_analysis$TotalObjVisits)
-cohensD(mid_female_analysis$TotalObjVisits,yng_female_analysis$TotalObjVisits)
+#midlife male
+mid_male_hall_visits <- mid_big_explore_counts %>% filter(sex =="Male") %>%   transmute(subject,sex,group, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
+cols_sum<-c(4:length(mid_male_hall_visits))
+mid_male_hall_visits$total<-rowSums(mid_male_hall_visits[,cols_sum])#finding total hallway counts for each subject for each session 
+mid_male_hall_visits_mean<-aggregate(mid_male_hall_visits$total, list(mid_male_hall_visits$subject), FUN=mean)
+mid_male_analysis$TotalHallwayVisits<-mid_male_hall_visits_mean$x 
 
-# males
-#p=1.562e-06
-# mean yng=9.75
-#mid = 13.43478
-wilcox.test(mid_male_analysis$TotalObjVisits,yng_male_analysis$TotalObjVisits)
-cohensD(mid_male_analysis$TotalObjVisits,yng_male_analysis$TotalObjVisits)
-mean(yng_male_analysis$TotalObjVisits)
+# midlife female
+mid_female_hall_visits <- mid_big_explore_counts %>% filter(sex =="Female") %>%   transmute(subject,sex,group, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
+cols_sum<-c(4:length(mid_female_hall_visits))
+mid_female_hall_visits$total<-rowSums(mid_female_hall_visits[,cols_sum])#finding total hallway counts for each subject for each session 
+mid_female_hall_visits_mean<-aggregate(mid_female_hall_visits$total, list(mid_female_hall_visits$subject), FUN=mean)
+mid_female_analysis$TotalHallwayVisits<-mid_female_hall_visits_mean$x 
 
+halls <- rbind(mid_female_analysis,mid_male_analysis)
+
+#Young male
+
+yng_male_hall_visits <- yng_big_explore_counts %>% filter(sex =="Male") %>%   transmute(subject,sex,group, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
+cols_sum<-c(4:length(yng_male_hall_visits))
+yng_male_hall_visits$total<-rowSums(yng_male_hall_visits[,cols_sum])#finding total hallway counts for each subject for each session 
+yng_male_hall_visits_mean<-aggregate(yng_male_hall_visits$total, list(yng_male_hall_visits$subject), FUN=mean)
+yng_male_analysis$TotalHallwayVisits<-yng_male_hall_visits_mean$x 
+
+halls <- rbind(halls,yng_male_analysis)
+
+# ynglife female
+yng_female_hall_visits <- yng_big_explore_counts %>% filter(sex =="Female") %>%   transmute(subject,sex,group, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
+cols_sum<-c(4:length(yng_female_hall_visits))
+yng_female_hall_visits$total<-rowSums(yng_female_hall_visits[,cols_sum])#finding total hallway counts for each subject for each session 
+yng_female_hall_visits_mean<-aggregate(yng_female_hall_visits$total, list(yng_female_hall_visits$subject), FUN=mean)
+yng_female_analysis$TotalHallwayVisits<-yng_female_hall_visits_mean$x 
+
+halls <- rbind(halls,yng_female_analysis) %>% select(sex,age,group,TotalHallwayVisits)
+
+hallvis_aov <- aov(formula=TotalHallwayVisits ~ sex * age ,halls)
+summary(hallvis_aov)
 
 ```
+
+
 
 ```{r Plots for distance }
 yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
