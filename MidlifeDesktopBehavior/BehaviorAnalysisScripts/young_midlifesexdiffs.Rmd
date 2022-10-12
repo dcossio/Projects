@@ -1,6 +1,6 @@
 ---
 title: "Young_MidlifeSexDiff"
-purpose: "This is to analyze sex differences in behavior both in the toung participants. This uses parts of viasakhs and kates code"   #
+purpose: "This is to analyze sex differences in behavior both in the young participants. This uses parts of viasakhs and kates code"   #
 input: Trial.csv and participant.csv and participant info               
 output: Figures and analysis for various variables                    
 Notes:  
@@ -207,12 +207,34 @@ dist <- rbind(dist, mid_female_analysis)
 #male
 mid_male_analysis$Dist<-mid_master_participant%>% filter(sex == "Male") %>% pull(em_path_dist_trav)
 dist <- rbind(dist, mid_male_analysis) 
-#normality
+
+
+# Checking data distribution and normality 
 
 shapiro.test(yng_male_analysis$Dist)  # p-value = 0.04028
 shapiro.test(yng_female_analysis$Dist) # p-value = 0.03625
 shapiro.test(mid_female_analysis$Dist) # p-value = 0.01943
 shapiro.test(mid_male_analysis$Dist) #p-value = 0.1104
+
+# Plotting the distribution
+ym <- ggplot(yng_male_analysis, aes(x=Dist)) + 
+  geom_histogram(bins=10)
+yf <- ggplot(yng_female_analysis, aes(x=Dist)) + 
+  geom_histogram(bins=10)
+
+mm <- ggplot(mid_male_analysis,aes(x=Dist))+ 
+  geom_histogram(bins=10)
+mf <- ggplot(mid_female_analysis, aes(x=Dist))+ 
+  geom_histogram(bins=10)
+
+distance_distr <- ggarrange(ym,yf,mm,mf,
+                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+                       font.label = list(size = 12, color = "red"),
+                       vjust = 1.5,
+                       ncol=2, nrow = 3)
+annotate_figure(distance_distr,
+                top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14))
+
 
 
 #1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
@@ -268,9 +290,10 @@ multi_plot <- ggarrange(ym,yf,mm,mf,
                        ncol=2, nrow = 3)
 annotate_figure(multi_plot,
                 top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14))
-multi_plot
 #does the plot have a common legend)
 
+
+# analysis 
 #1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
 speed_aov <-  aov(formula=speed ~ sex * age,Speed)
 summary(speed_aov)
@@ -369,17 +392,12 @@ male_obj_visits$total= rowSums(male_obj_visits[,cols_sum])
 mObj_ave <-aggregate(male_obj_visits$total, list(male_obj_visits$subject), FUN=mean)
 mid_male_analysis$TotalObjVisits <- mObj_ave$x
 
-
 #females
 female_obj_visits <- mid_big_explore_counts %>% filter(sex=="Female") %>%   transmute(subject,sex,group, A, I, L, K, N, O, P, Y, W)
 cols_sum<-c(4:length(female_obj_visits))
 female_obj_visits$total= rowSums(female_obj_visits[,cols_sum])
 fObj_ave <- aggregate(female_obj_visits$total, list(female_obj_visits$subject), FUN=mean)
 mid_female_analysis$TotalObjVisits<-fObj_ave$x
-
-#Object Visits- Normality test to assess whether samples are normally distributed
-shapiro.test(mid_male_analysis$TotalObjVisits) #normal 
-shapiro.test(mid_female_analysis$TotalObjVisits) # normal
 
 ObjVisits <- rbind(mid_female_analysis,mid_male_analysis)
 
@@ -392,7 +410,6 @@ yng_mObj_ave <-aggregate(yng_male_obj_visits$total, list(yng_male_obj_visits$sub
 yng_male_analysis$TotalObjVisits <- yng_mObj_ave$x
 
 ObjVisits <- rbind(ObjVisits,yng_male_analysis)
-
 #females
 yng_female_obj_visits <- yng_big_explore_counts %>% filter(sex=="Female") %>%   transmute(subject,sex, A, I, L, K, N, O, P, Y, W)
 cols_sum<-c(3:length(yng_female_obj_visits))
@@ -402,8 +419,31 @@ yng_female_analysis$TotalObjVisits<-fObj_ave$x
 
 ObjVisits <- rbind(ObjVisits,yng_female_analysis) %>% select(!(Dist)) %>% select(!(speed))
 
+# Data distribution and nromality 
+shapiro.test(mid_male_analysis$TotalObjVisits) #normal 
+shapiro.test(mid_female_analysis$TotalObjVisits) # normal
 shapiro.test(yng_male_analysis$TotalObjVisits) #normal 
 shapiro.test(yng_female_analysis$TotalObjVisits) # normal 
+
+ym <- ggplot(yng_male_analysis, aes(x=TotalObjVisits)) + 
+  geom_histogram(bins=5)
+yf <- ggplot(yng_female_analysis, aes(x=TotalObjVisits)) + 
+  geom_histogram(bins=5)
+
+mm <- ggplot(mid_male_analysis,aes(x=TotalObjVisits))+ 
+  geom_histogram(bins=5)
+mf <- ggplot(mid_female_analysis, aes(x=TotalObjVisits))+ 
+  geom_histogram(bins=5)
+
+obj_distr <- ggarrange(ym,yf,mm,mf,
+                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+                       font.label = list(size = 12, color = "red"),
+                       vjust = 1.5,
+                       ncol=2, nrow = 3)
+annotate_figure(obj_distr,
+                top = text_grob("distribution", color = "red", face = "bold", size = 14))
+#does the plot have a common legend)
+
 
 
 # or do you do 
@@ -456,13 +496,162 @@ shapiro.test(yng_female_analysis$TotalHallwayVisits)
 shapiro.test(mid_male_analysis$TotalHallwayVisits) #normal 
 shapiro.test(mid_female_analysis$TotalHallwayVisits)
 
+ym <- ggplot(yng_male_analysis, aes(x=TotalHallwayVisits)) + 
+  geom_histogram(bins=5)
+yf <- ggplot(yng_female_analysis, aes(x=TotalHallwayVisits)) + 
+  geom_histogram(bins=5)
 
+mm <- ggplot(mid_male_analysis,aes(x=TotalHallwayVisits))+ 
+  geom_histogram(bins=5)
+mf <- ggplot(mid_female_analysis, aes(x=TotalHallwayVisits))+ 
+  geom_histogram(bins=5)
+
+hall_distr <- ggarrange(ym,yf,mm,mf,
+                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+                       font.label = list(size = 12, color = "red"),
+                       vjust = 1.5,
+                       ncol=2, nrow = 3)
+annotate_figure(hall_distr,
+                top = text_grob("distribution", color = "red", face = "bold", size = 14))
+#does the plot have a common legend)
+
+# analysis
 hallvis_aov<- aov(formula=TotalHallwayVisits ~ sex*age ,halls)
 summary(hallvis_aov)
 
 ```
 
+```{r Turns Made }
+#young MAle and Female
 
+yng_female_analysis$turns <- yng_master_participant %>% filter(sex == "Female") %>% pull(em_turns_count)
+
+yng_male_analysis$turns <- yng_master_participant %>% filter(sex == "Male") %>% pull(em_turns_count)
+
+Turns <- rbind(yng_female_analysis,yng_male_analysis )
+# MIDLIFE
+mid_male_analysis$turns <- mid_master_participant%>% filter(sex == "Male") %>% pull(em_turns_count)
+Turns <- rbind(Turns,mid_male_analysis)
+
+mid_female_analysis$turns <- mid_master_participant%>% filter(sex == "Female") %>% pull(em_turns_count)
+
+Turns <- rbind(Turns,mid_female_analysis) %>% select(Subject,sex,age,group,turns)
+#Normality test to assess whether samples are normally distributed 
+
+shapiro.test(yng_female_analysis$turns)
+shapiro.test(yng_male_analysis$turns)
+shapiro.test(mid_female_analysis$turns)
+shapiro.test(mid_male_analysis$turns)
+
+ym <- ggplot(yng_male_analysis, aes(x=turns)) + 
+  geom_histogram(bins=5)
+yf <- ggplot(yng_female_analysis, aes(x=turns)) + 
+  geom_histogram(bins=5)
+
+mm <- ggplot(mid_male_analysis,aes(x=turns))+ 
+  geom_histogram(bins=5)
+mf <- ggplot(mid_female_analysis, aes(x=turns))+ 
+  geom_histogram(bins=5)
+
+turns_distr <- ggarrange(ym,yf,mm,mf,
+                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+                       font.label = list(size = 12, color = "red"),
+                       vjust = 1.5,
+                       ncol=2, nrow = 3)
+annotate_figure(turns_distr,
+                top = text_grob("distribution", color = "red", face = "bold", size = 14))
+#does the plot have a common legend)
+
+# analysis
+turns_aov<- aov(formula=turns ~ sex*age ,Turns)
+summary(turns_aov)
+
+
+
+
+```
+
+```{r Pause Duration}
+
+#Pause Duration 
+midlife_exploration_analysis$Pauses<-midlife_p_master$em_average_RT #adding to master analysis df
+young_exploration_analysis$Pauses<-young_p_master$em_average_RT #adding to master analysis df
+#Normality test to assess whether samples are normally distributed 
+shapiro.test(midlife_exploration_analysis$Pauses)
+shapiro.test(young_exploration_analysis$Pauses)
+#Wilcoxon Test 
+pauses_groupdiff<-wilcox.test(young_exploration_analysis$Pauses,midlife_exploration_analysis$Pauses)
+pauses_groupdiff_effsize<-cohensD(young_exploration_analysis$Pauses,midlife_exploration_analysis$Pauses)
+
+```
+
+```{r}
+
+#Evenness of Exploration (Target Objects)
+midlife_spread_obj_visits <- midlife_object_visits %>% gather("location", "count", 2:10) %>% pivot_wider(id_cols = subject, names_from = location, values_from = count, values_fn = sum) #adding object visits across both exploration sessions, for each subject
+midlife_spread_obj_visits <- midlife_spread_obj_visits %>% mutate(std = apply(midlife_spread_obj_visits[2:10], 1, sd)) #finding standard deviations 
+midlife_exploration_analysis$ExplorEvenObj<-midlife_spread_obj_visits$std #adding to master analysis dataframe 
+#repeating process above for young 
+young_spread_obj_visits <- young_object_visits %>% gather("location", "count", 2:10) %>% pivot_wider(id_cols = subject, names_from = location, values_from = count, values_fn = sum) #adding object visits across both exploration sessions, for each subject
+young_spread_obj_visits <- young_spread_obj_visits %>% mutate(std = apply(young_spread_obj_visits[2:10], 1, sd)) #finding standard deviations 
+young_exploration_analysis$ExplorEvenObj<-young_spread_obj_visits$std #adding to master analysis dataframe 
+#Normality test to assess whether samples are normally distributed 
+shapiro.test(midlife_exploration_analysis$ExplorEvenObj)
+shapiro.test(young_exploration_analysis$ExplorEvenObj)
+#Wilcoxon Test 
+obj_evenness_groupdiff<-wilcox.test(young_exploration_analysis$ExplorEvenObj,midlife_exploration_analysis$ExplorEvenObj)
+obj_eveness_groupdiff_effsize<-cohensD(young_exploration_analysis$ExplorEvenObj,midlife_exploration_analysis$ExplorEvenObj)
+
+
+
+
+```
+
+```{r}
+#Eveness of Exploration (Hallways)
+midlife_spread_hallway_visits <- midlife_hallway_visits %>% gather("location", "count", 2:18) %>% pivot_wider(id_cols = subject, names_from = location, values_from = count, values_fn = sum) #adding object visits across both exploration sessions, for each subject
+midlife_spread_hallway_visits <- midlife_spread_hallway_visits %>% mutate(std = apply(midlife_spread_hallway_visits[2:18], 1, sd)) #finding standard deviations 
+midlife_exploration_analysis$ExplorEvenHallway<-midlife_spread_hallway_visits$std #adding to master analysis dataframe 
+#repeating process above for young 
+young_spread_hallway_visits <- young_hallway_visits %>% gather("location", "count", 2:18) %>% pivot_wider(id_cols = subject, names_from = location, values_from = count, values_fn = sum) #adding object visits across both exploration sessions, for each subject
+young_spread_hallway_visits <- young_spread_hallway_visits %>% mutate(std = apply(young_spread_hallway_visits[2:18], 1, sd)) #finding standard deviations 
+young_exploration_analysis$ExplorEvenHallway<-young_spread_hallway_visits$std #adding to master analysis dataframe 
+#Normality test to assess whether samples are normally distributed 
+shapiro.test(midlife_exploration_analysis$ExplorEvenHallway)
+shapiro.test(young_exploration_analysis$ExplorEvenHallway)
+#Wilcoxon Test 
+hallway_evenness_groupdiff<-wilcox.test(young_exploration_analysis$ExplorEvenHallway,midlife_exploration_analysis$ExplorEvenHallway)
+hallway_eveness_groupdiff_effsize<-cohensD(young_exploration_analysis$ExplorEvenHallway,midlife_exploration_analysis$ExplorEvenHallway)
+```
+
+```{r}
+#Button Press Moves 
+midlife_button_press<- midlife_t_master %>% filter(Procedure == "ExploreProc") #filtering just explore rows from df 
+midlife_button_press<-midlife_button_press %>% transmute(Subject, nodesturns_count) #condensing df to just vars we care about 
+midlife_button_press_mean<-aggregate(midlife_button_press$nodesturns_count, list(midlife_button_press$Subject), FUN=mean) #calculating mean number of button presses
+#across both exploration trials 
+midlife_exploration_analysis$ButtonPress<-midlife_button_press_mean$x #adding to master analysis dataframe 
+
+young_button_press<- young_t_master %>% filter(Procedure == "ExploreProc") #filtering just explore rows from df 
+young_button_press<-young_button_press %>% transmute(Subject, nodesturns_count) #condensing df to just vars we care about 
+young_button_press_mean<-aggregate(young_button_press$nodesturns_count, list(young_button_press$Subject), FUN=mean) #calculating mean number of button presses
+#across both exploration trials 
+young_exploration_analysis$ButtonPress<-young_button_press_mean$x #adding to master analysis dataframe 
+#Normality test to assess whether samples are normally distributed 
+shapiro.test(midlife_exploration_analysis$ButtonPress)
+shapiro.test(young_exploration_analysis$ButtonPress)
+#Wilcoxon Test 
+buttonpress_groupdiff<-wilcox.test(young_exploration_analysis$ButtonPress,midlife_exploration_analysis$ButtonPress)
+buttonpress_groupdiff_effsize<-cohensD(young_exploration_analysis$ButtonPress,midlife_exploration_analysis$ButtonPress)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ```{r Plots for distance }
 yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
