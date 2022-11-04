@@ -43,6 +43,7 @@ workdir<- "/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavio
 setwd(workdir)
 ```
 
+
 ```{r reading in midlife }
 #infosheet with age/sex
 subjInfo<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MAZE_data_old.csv")  %>% select(Subject.ID,Sex,Age.Scan..years.,) %>% `colnames<-` (c("Subject","sex","age")) %>% arrange(.$Subject)
@@ -76,6 +77,44 @@ yng_master_participant <- inner_join(yngsubjInfo, yngparticipantDF, by="Subject"
 yng_master_participant$age <-as.factor("young")
 yng_master_participant$sex <-as.factor(yng_master_participant$sex)
 ```
+
+No sex differencecs in midlife. sex differences in young
+```{r accuracy}
+# only young male and midlife female 
+#Proportion Correct (Spatial Memory)
+female_mid_acc<-mid_master_participant %>% filter(sex== "Female") %>% select(tm_accuracy)
+
+#Proportion Correct (Spatial Memory)
+male_mid_acc<-mid_master_participant%>% filter(sex== "Male") %>% select(tm_accuracy)
+#young 
+female_yng_acc<-yng_master_participant %>% filter(sex== "Female") %>% select(tm_accuracy)
+#Proportion Correct (Spatial Memory)
+male_yng_acc<-yng_master_participant%>% filter(sex== "Male") %>% select(tm_accuracy)
+
+
+
+#adding to master analysis df
+young_exploration_analysis$PropCorr<-young_p_master$tm_accuracy #adding to master analysis df
+#Normality test to assess whether samples are normally distributed 
+shapiro.test(female_mid_acc$tm_accuracy)
+shapiro.test(male_mid_acc$tm_accuracy)
+shapiro.test(female_yng_acc$tm_accuracy)
+shapiro.test(male_yng_acc$tm_accuracy)
+
+
+#Wilcoxon Test 
+propcorr_groupdiff<-wilcox.test(female_yng_acc$tm_accuracy,male_yng_acc$tm_accuracy)
+propcorr_groupdiff_effsize<-cohensD(female_yng_acc$tm_accuracy,male_yng_acc$tm_accuracy)
+
+
+propcorr_groupdiff<-wilcox.test(female_mid_acc$tm_accuracy,male_mid_acc$tm_accuracy)
+propcorr_groupdiff_effsize<-cohensD(female_mid_acc$tm_accuracy,male_mid_acc$tm_accuracy)
+
+
+
+
+```
+
 
 ```{r prepping variables for later use}
 
@@ -349,7 +388,7 @@ yng_big_explore_counts <- yng_big_explore_counts %>% mutate(sex=yng_explr_Subinf
 
 
 ```
-
+# no sex effect
 ```{r object visits }
 
 #midlife 
@@ -418,9 +457,8 @@ Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
 summary(Obj_aov)
 
 ```
-
+# no sex effect
 ```{r Hallway visits}
-
 #midlife male
 mid_male_hall_visits <- mid_big_explore_counts %>% filter(sex =="Male") %>% transmute(subject,sex,age, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
 cols_sum<-c(4:length(mid_male_hall_visits))
@@ -487,7 +525,7 @@ hallvis_aov<- aov(formula=TotalHallwayVisits ~ sex*age ,halls)
 summary(hallvis_aov)
 
 ```
-
+# no effect
 ```{r Turns Made }
 #young MAle and Female
 
@@ -532,6 +570,7 @@ summary(turns_aov)
 
 ```
 
+# no major  sex effect midlife female and young male only
 ```{r Pause Duration}
 # Young 
 yng_female_analysis$pauses <- yng_master_participant %>% filter(sex == "Female") %>% pull(em_average_RT)
@@ -580,6 +619,7 @@ TukeyHSD(pauses_aov)
 
 ```
 
+# only young male and midlife female 
 ```{r Evenness Of Exploration Objects}
 ## Young Males#####
 yngM_spreadObjs <-
@@ -720,6 +760,7 @@ summary(evenness_aov)
 TukeyHSD(evenness_aov)
 
 ```
+# only young male and midlife female 
 
 ```{r Eveness of Exploration (Hallways)}
 ## Young Males#####
