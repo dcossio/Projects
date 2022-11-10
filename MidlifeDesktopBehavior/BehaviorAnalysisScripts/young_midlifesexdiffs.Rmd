@@ -30,8 +30,8 @@ library(factoextra)
 library(lsr)
 # library(car)
 library(ggpubr)
-# library(entropy)
-# library(ds4psy)
+library(entropy)
+#library(ds4psy)
 # library(pROC)
 library(devtools)
 library(BRRR)
@@ -44,18 +44,21 @@ setwd(workdir)
 ```
 
 
-```{r reading in midlife }
+```{r reading in midlife files }
 #infosheet with age/sex
 subjInfo<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MAZE_data_old.csv")  %>% select(Subject.ID,Sex,Age.Scan..years.,) %>% `colnames<-` (c("Subject","sex","age")) %>% arrange(.$Subject)
 
-#preprocessed data 
+#preprocessed trial data 
 trialDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_trial_master.csv") %>% filter(Subject %in% c(as.character(subjInfo$Subject))) 
 
+#preprocessed participant data 
 participantDF<-read.csv ("/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior/BehaviorAnalysisScripts/MLINDIV_participant_master.csv") %>%  filter(Subject %in% c(as.character(subjInfo$Subject)))
 
+# Combining sex and age columns to trial and participant sheet 
 mid_master_trial <- inner_join(subjInfo, trialDF, by="Subject") 
 mid_master_trial$age <- as.factor("midlife")
 mid_master_trial$sex <- as.factor(mid_master_trial$sex)
+
 mid_master_participant <- inner_join(subjInfo, participantDF, by="Subject") 
 mid_master_participant$age <- as.factor("midlife")
 mid_master_participant$sex <- as.factor(mid_master_participant$sex)
@@ -63,6 +66,7 @@ mid_master_participant$sex <- as.factor(mid_master_participant$sex)
 ```
 
 ```{r reading in young participants}
+#repeating what i did for midlife to the young group.
 yngsubjInfo<-read.csv("/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preprocessing/young_SNAG/young_snag_participantinfo.csv")  %>% select(subject_id,sex,age_spatial_years) %>% `colnames<-` (c("Subject","sex","age"))
 
 yngtrialDF<-read.csv ("/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preprocessing/young_SNAG/young_trial_master (1).csv") %>% filter(Subject %in% c(as.character(yngsubjInfo$Subject))) 
@@ -73,48 +77,54 @@ yngparticipantDF <-read.csv("/Volumes/GoogleDrive/My Drive/MLINDIV_SNAG_preproce
 yng_master_trial <- inner_join(yngsubjInfo, yngtrialDF, by="Subject") 
 yng_master_trial$age <- as.factor("young")
 yng_master_trial$sex <- as.factor(yng_master_trial$sex)
+
 yng_master_participant <- inner_join(yngsubjInfo, yngparticipantDF, by="Subject") 
 yng_master_participant$age <-as.factor("young")
 yng_master_participant$sex <-as.factor(yng_master_participant$sex)
 ```
 
-No sex differencecs in midlife. sex differences in young
+A normality test was run on each group. The data was not normally distributed for any group: Midlife males(p-value = 3.011e-05), Midlife Females (p-value = 3.273e-10), Young males (p-value = 0.005024), and young females (p-value = 0.0191). A two factor anova revealed a sex and age interaction (6.83e-05 ).  post hox non parametric ttests revealed a sex difference in young (p=2.591e-06) but not midlife (0.1046)
 ```{r accuracy}
-# only young male and midlife female 
-#Proportion Correct (Spatial Memory)
-female_mid_acc<-mid_master_participant %>% filter(sex== "Female") %>% select(tm_accuracy)
+# create a dataframe with all subjects 
 
-#Proportion Correct (Spatial Memory)
-male_mid_acc<-mid_master_participant%>% filter(sex== "Male") %>% select(tm_accuracy)
-#young 
-female_yng_acc<-yng_master_participant %>% filter(sex== "Female") %>% select(tm_accuracy)
-#Proportion Correct (Spatial Memory)
-male_yng_acc<-yng_master_participant%>% filter(sex== "Male") %>% select(tm_accuracy)
+# grab all midlife 
+AccDF <- mid_master_participant %>% select(Subject,sex,age,tm_accuracy)
+# grab all yng
+AccDF <- rbind(AccDF, yng_master_participant[,c("Subject","sex","age","tm_accuracy")])
 
+# normality test 
+# Midlife Female 
+AccDF %>% filter(sex == "Female" &
+                   age == "midlife") %>%  select(tm_accuracy) %>% {
+                     shapiro.test(.$tm_accuracy)
+                   }
+#Midlife male 
+AccDF %>% filter(sex == "Male" &
+                   age == "midlife") %>%  select(tm_accuracy) %>% {
+                     shapiro.test(.$tm_accuracy)
+                   }
+#yng female 
+AccDF %>% filter(sex == "Female" &
+                   age == "young") %>%  select(tm_accuracy) %>% {
+                     shapiro.test(.$tm_accuracy)
+                   }
+# Young males 
+AccDF %>% filter(sex == "Male" &
+                   age == "young") %>%  select(tm_accuracy) %>% {
+                     shapiro.test(.$tm_accuracy)
+                   }
 
+acc_aov <-  aov(formula= tm_accuracy ~ sex * age, AccDF)
+summary(acc_aov)
 
-#adding to master analysis df
-young_exploration_analysis$PropCorr<-young_p_master$tm_accuracy #adding to master analysis df
-#Normality test to assess whether samples are normally distributed 
-shapiro.test(female_mid_acc$tm_accuracy)
-shapiro.test(male_mid_acc$tm_accuracy)
-shapiro.test(female_yng_acc$tm_accuracy)
-shapiro.test(male_yng_acc$tm_accuracy)
-
-
-#Wilcoxon Test 
-propcorr_groupdiff<-wilcox.test(female_yng_acc$tm_accuracy,male_yng_acc$tm_accuracy)
-propcorr_groupdiff_effsize<-cohensD(female_yng_acc$tm_accuracy,male_yng_acc$tm_accuracy)
-
-
-propcorr_groupdiff<-wilcox.test(female_mid_acc$tm_accuracy,male_mid_acc$tm_accuracy)
-propcorr_groupdiff_effsize<-cohensD(female_mid_acc$tm_accuracy,male_mid_acc$tm_accuracy)
-
-
+# post hoc non parametric tests
+# #Wilcoxon Test midlife 
+wilcox.test(AccDF[AccDF$sex == 'Male' & AccDF$age == "midlife", c("tm_accuracy")],AccDF[AccDF$sex == 'Female' & AccDF$age == "midlife", c("tm_accuracy")])
+#young wilcox ttest 
+wilcox.test(AccDF[AccDF$sex == 'Male' & AccDF$age == "young", c("tm_accuracy")],AccDF[AccDF$sex == 'Female' & AccDF$age == "young", c("tm_accuracy")])
 
 
 ```
-
 
 ```{r prepping variables for later use}
 
@@ -137,24 +147,23 @@ hallways <- c('B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'M', 'Q', 'R', 'S', 'T', '
 #colttest <-  c("estimate","statistic", "p.value", "parameter"," conf.low"," conf.high"," method","alternative")
 ```
 
-```{r prepping datafranes for later use}
+```{r prepping dataframes for later use}
 
-mid_female_analysis<-mid_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))       #creating master analysis data-frame to store all final exploration variable outputs into 
+mid_female_analysis<-mid_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame()      #creating master analysis data-frame to store all final exploration variable outputs into 
 
-mid_male_analysis<-mid_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))
+mid_male_analysis<-mid_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame() 
   
-yng_female_analysis<-yng_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "young") %>% mutate(group=paste(sex,group))
+yng_female_analysis<-yng_master_participant %>% filter(sex == "Female") %>% select(Subject,sex,age) %>% as.data.frame()
 
-yng_male_analysis<-yng_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(group = "young") %>% mutate(group=paste(sex,group))#same thing for young
+yng_male_analysis<-yng_master_participant %>% filter(sex == "Male") %>% select(Subject,sex,age) %>% as.data.frame()  #same thing for young
 
 ```
 
 ```{r Little bit of preprocessing on the explore trials }
 
 mid_explor <- mid_master_trial %>% filter(is.na(accuracy) == TRUE)
-#creating empty dataframe to store contents of for loop into 
-# midlife 
 
+#creating empty dataframe to store contents of for loop into 
 mid_expl_df<- data.frame(matrix(nrow = nrow(mid_explor)))
 
 for (i in 1:nrow(mid_explor)){
@@ -171,7 +180,7 @@ for (i in 1:nrow(mid_explor)){
 mid_expl_df$Subject<-mid_explor$Subject
 mid_expl_df <- mid_expl_df %>% rename(paths = matrix.nrow...nrow.mid_explor..) 
 
-mid_explr_Subinfo <- inner_join(mid_master_participant,mid_expl_df) %>% mutate(group = "midlife") %>% mutate(group=paste(sex,group))
+mid_expl_df <- inner_join(mid_master_participant,mid_expl_df) 
 ```
 
 ```{r explore trial young preprocessing }
@@ -191,29 +200,30 @@ for (i in 1:nrow(yng_explor)){
 
 yng_expl_df$Subject<-yng_explor$Subject
 yng_expl_df <- yng_expl_df %>% rename(paths = matrix.nrow...nrow.yng_explor..) 
-
-yng_explr_Subinfo <- inner_join(yng_master_participant,yng_expl_df) %>% mutate(group = "young") %>% mutate(group=paste(sex,group))#same thing for young
+yng_expl_df <- inner_join(yng_master_participant,yng_expl_df) 
 
 ```
 
 Distance Summary of results: No sex differences in men and women during midlife:
 
-There's no significant difference between men and women at the young age but there was at the midlife age. Midlife Women traveled significantly less than midlife men did. No significant difference between midlife men and young  men. Midlife women did travel significantly less than young women. 
-
-
-#Theres no significant differece between men and women at any age when seeing an anova
+Only midlife male displaye a normal distribution. A two factor anova revealed that  
+#Theres no significant differece between men and women at any age when seeing an anova that there was an effect of sex (0.009454) and an effect of age( 0.000496 ) but no interaction. 
 ```{r Distance analysis using ANOVA }
 
-yng_male_analysis$Dist <- yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
-yng_female_analysis$Dist<- yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
+yng_male_analysis$Dist <-
+  yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
+yng_female_analysis$Dist <-
+  yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
 dist <- rbind(yng_male_analysis, yng_female_analysis)
 
 #Midlife
-mid_female_analysis$Dist<-mid_master_participant%>% filter(sex == "Female") %>% pull(em_path_dist_trav)
+mid_female_analysis$Dist <-
+  mid_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
 dist <- rbind(dist, mid_female_analysis)
 #male
-mid_male_analysis$Dist<-mid_master_participant%>% filter(sex == "Male") %>% pull(em_path_dist_trav)
-dist <- rbind(dist, mid_male_analysis) 
+mid_male_analysis$Dist <-
+  mid_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
+dist <- rbind(dist, mid_male_analysis)
 
 
 # Checking data distribution and normality 
@@ -223,41 +233,40 @@ shapiro.test(yng_female_analysis$Dist) # p-value = 0.03625
 shapiro.test(mid_female_analysis$Dist) # p-value = 0.01943
 shapiro.test(mid_male_analysis$Dist) #p-value = 0.1104
 
-# Plotting the distribution
-ym <- ggplot(yng_male_analysis, aes(x=Dist)) + 
-  geom_histogram(bins=10)
-yf <- ggplot(yng_female_analysis, aes(x=Dist)) + 
-  geom_histogram(bins=10)
 
-mm <- ggplot(mid_male_analysis,aes(x=Dist))+ 
-  geom_histogram(bins=10)
-mf <- ggplot(mid_female_analysis, aes(x=Dist))+ 
-  geom_histogram(bins=10)
-
-distance_distr <- ggarrange(ym,yf,mm,mf,
-                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
-                       font.label = list(size = 12, color = "red"),
-                       vjust = 1.5,
-                       ncol=2, nrow = 3)
-annotate_figure(distance_distr,
-                top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14))
-
-
-
-#1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
 dist_aov <-  aov(formula=Dist ~ sex * age, dist)
 summary(dist_aov)
-
-pairwise.t.test(dist$Dist, dist$group, p.adj="bonferroni")
-TukeyHSD(dist_aov)
-
+###########Plot distribution#####
+# Plotting the distribution
+# ym <- ggplot(yng_male_analysis, aes(x=Dist)) + 
+#   geom_histogram(bins=10)
+# yf <- ggplot(yng_female_analysis, aes(x=Dist)) + 
+#   geom_histogram(bins=10)
+# 
+# mm <- ggplot(mid_male_analysis,aes(x=Dist))+ 
+#   geom_histogram(bins=10)
+# mf <- ggplot(mid_female_analysis, aes(x=Dist))+ 
+#   geom_histogram(bins=10)
+# 
+# distance_distr <- ggarrange(ym,yf,mm,mf,
+#                        labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+#                        font.label = list(size = 12, color = "red"),
+#                        vjust = 1.5,
+#                        ncol=2, nrow = 3)
+# annotate_figure(distance_distr,
+#                 top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14))
 
 
 ```
 
-No difference in speed
-```{r SPEED }
+```{Using Log to }
 
+```
+
+Same as distance 
+Only midlife male displayed a normal distribution. A two factor anova revealed that  
+#Theres no significant differece between men and women at any age when seeing an anova that there was an effect of sex (0.009454) and an effect of age( 0.000496 ) but no interaction. 
+```{r SPEED }
 yng_male_analysis$speed <-yng_master_participant %>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
 yng_female_analysis$speed<- yng_master_participant %>% filter(sex == "Female") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
 Speed <- rbind(yng_female_analysis,  yng_male_analysis)
@@ -269,45 +278,36 @@ Speed <- rbind(Speed, mid_female_analysis)
 mid_male_analysis$speed<-mid_master_participant%>% filter(sex == "Male") %>% select(em_path_dist_trav) %>% .$em_path_dist_trav/480
 Speed <- rbind( Speed,  mid_male_analysis) %>% select(!(Dist))
 
-
 #Normality test to assess whether samples are normally distributed 
 # Midlife
 shapiro.test(mid_female_analysis$speed) #p=0.019
 shapiro.test(mid_male_analysis$speed)# p =.1104
-
 #young
 shapiro.test(yng_female_analysis$speed) #p= 0.03
 shapiro.test(yng_male_analysis$speed)# p = 0,.04 
 
-# Plotting the distribution
-ym <- ggplot(yng_male_analysis, aes(x=speed)) + 
-  geom_histogram(bins=10)
-yf <- ggplot(yng_female_analysis, aes(x=speed)) + 
-  geom_histogram(bins=10)
-
-mm <- ggplot(mid_male_analysis,aes(x=speed))+ 
-  geom_histogram(bins=10)
-mf <- ggplot(mid_female_analysis, aes(x=speed))+ 
-  geom_histogram(bins=10)
-
-multi_plot <- ggarrange(ym,yf,mm,mf,
-                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
-                       font.label = list(size = 12, color = "red"),
-                       vjust = 3,
-                       ncol=2, nrow = 2)
-annotate_figure(multi_plot,
-                top = text_grob("Speed data distribution", color = "red", face = "bold", size = 14))
-#does the plot have a common legend)
-
-
-# analysis 
-#1) is to create a df with a column for sex, column for age and column for distance and run anova on that way 
+#
 speed_aov <-  aov(formula=speed ~ sex * age,Speed)
 summary(speed_aov)
-# not significant 
-pairwise.t.test(dist$Dist, dist$group, p.adj="bonferroni")
-TukeyHSD(dist_aov)
 
+########## Plotting the distribution #########
+# ym <- ggplot(yng_male_analysis, aes(x=speed)) + 
+#   geom_histogram(bins=10)
+# yf <- ggplot(yng_female_analysis, aes(x=speed)) + 
+#   geom_histogram(bins=10)
+# 
+# mm <- ggplot(mid_male_analysis,aes(x=speed))+ 
+#   geom_histogram(bins=10)
+# mf <- ggplot(mid_female_analysis, aes(x=speed))+ 
+#   geom_histogram(bins=10)
+# 
+# multi_plot <- ggarrange(ym,yf,mm,mf,
+#                        labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+#                        font.label = list(size = 12, color = "red"),
+#                        vjust = 3,
+#                        ncol=2, nrow = 2)
+# annotate_figure(multi_plot,
+#                 top = text_grob("Speed data distribution", color = "red", face = "bold", size = 14))
 
 ```
 
@@ -333,7 +333,9 @@ for (i in 1:length(mid_big_explore)){
 
 mid_big_explore<-unsplit(mid_big_explore,row_labels)#merging all chunks back into single dataframe 
 mid_big_explore[is.na(mid_big_explore)]<-"none" #replacing all NAs with string, otherwise for loop below won't work 
-mid_big_explore <-  mid_big_explore %>% mutate(sex = mid_explr_Subinfo$sex)
+mid_big_explore <-  mid_big_explore %>% mutate(sex = mid_expl_df$sex) %>% mutate(age = mid_expl_df$age)
+
+mid_big_explore <-mid_big_explore[,c(1,176,177,2:175)]
 
 #for loop to determine location counts 
 mid_big_explore_counts <- data.frame(matrix(ncol = 0, nrow = nrow(mid_big_explore)))#creating dataframe to store counts into  
@@ -345,12 +347,12 @@ for (i in locs){
   mid_big_explore_counts <- cbind(d, mid_big_explore_counts)
 }
 
-mid_big_explore_counts <- mid_big_explore_counts %>% mutate(sex=mid_explr_Subinfo$sex) %>% mutate(age =mid_explr_Subinfo$age)
+mid_big_explore_counts <- mid_big_explore_counts %>% mutate(sex=mid_expl_df$sex) %>% mutate(age =mid_expl_df$age)
 
 
 ```
 
-```{r explore object processing }
+```{r Young explore object processing }
 #location visits
 yng_big_explore<-as.data.frame(str_split_fixed(yng_expl_df$paths," ",nrow(yng_expl_df)))
 yng_big_explore <- yng_big_explore %>% mutate(subject = yng_expl_df$Subject) 
@@ -372,25 +374,27 @@ for (i in 1:length(yng_big_explore)){
 
 yng_big_explore<-unsplit(yng_big_explore,row_labels)#merging all chunks back into single dataframe 
 yng_big_explore[is.na(yng_big_explore)]<-"none" #replacing all NAs with string, otherwise for loop below won't work 
-yng_big_explore <-  yng_big_explore %>% mutate(sex = yng_explr_Subinfo$sex)
+yng_big_explore <-  yng_big_explore %>% mutate(sex = yng_expl_df$sex)%>% mutate(age = yng_expl_df$age)
+
+yng_big_explore <-yng_big_explore[,c(1,102,103,3:101)]
 
 #for loop to determine location counts 
 yng_big_explore_counts <- data.frame(matrix(ncol = 0, nrow = nrow(yng_big_explore)))#creating dataframe to store counts into  
 
 for (i in locs){
   yng_big_explore_counts$subject <- yng_big_explore$subject
-  d <- as.data.frame(apply(yng_big_explore,1,function(x) sum(x==i))) # not sure what this function is 
+  d <- as.data.frame(apply(yng_big_explore,1,function(x) sum(x==i))) # not sure what this function is
   names(d) <- i
   yng_big_explore_counts <- cbind(d, yng_big_explore_counts)
 }
 
-yng_big_explore_counts <- yng_big_explore_counts %>% mutate(sex=yng_explr_Subinfo$sex) %>% mutate(age =yng_explr_Subinfo$age)
+yng_big_explore_counts <- yng_big_explore_counts %>% mutate(sex=yng_expl_df$sex) %>% mutate(age =yng_expl_df$age)
 
 
 ```
-# no sex effect
-```{r object visits }
 
+# All data was normal and there was only an effect of age 
+```{r object visits }
 #midlife 
 mid_male_obj_visits <- mid_big_explore_counts %>% filter(sex=="Male") %>%   transmute(subject,sex,age, A, I, L, K, N, O, P, Y, W)
 cols_sum<-c(4:length(mid_male_obj_visits))
@@ -431,6 +435,10 @@ shapiro.test(mid_female_analysis$TotalObjVisits) # normal
 shapiro.test(yng_male_analysis$TotalObjVisits) #normal 
 shapiro.test(yng_female_analysis$TotalObjVisits) # normal 
 
+Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
+summary(Obj_aov)
+
+########## plots#########
 ym <- ggplot(yng_male_analysis, aes(x=TotalObjVisits)) + 
   geom_histogram(bins=10)
 yf <- ggplot(yng_female_analysis, aes(x=TotalObjVisits)) + 
@@ -450,14 +458,9 @@ annotate_figure(obj_distr,
                 top = text_grob("Total object data distribution", color = "red", face = "bold", size = 14))
 #does the plot have a common legend)
 
-
-
-# or do you do 
-Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
-summary(Obj_aov)
-
 ```
-# no sex effect
+
+A normality test was run on each group. All groupd were normally distributed. no sex effects. 
 ```{r Hallway visits}
 #midlife male
 mid_male_hall_visits <- mid_big_explore_counts %>% filter(sex =="Male") %>% transmute(subject,sex,age, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
@@ -492,14 +495,18 @@ yng_female_hall_visits$total<-rowSums(yng_female_hall_visits[,cols_sum])#finding
 yng_female_hall_visits_mean<-aggregate(yng_female_hall_visits$total, list(yng_female_hall_visits$subject), FUN=mean)
 yng_female_analysis$TotalHallwayVisits<-yng_female_hall_visits_mean$x 
 
-halls <- rbind(halls,yng_female_analysis) %>% select(sex,age,group,TotalHallwayVisits)
+halls <- rbind(halls,yng_female_analysis) %>% select(Subject,sex,age,TotalHallwayVisits)
 
 #normality distribution
 
-shapiro.test(yng_male_analysis$TotalHallwayVisits) #normal 
+shapiro.test(yng_male_analysis$TotalHallwayVisits) 
 shapiro.test(yng_female_analysis$TotalHallwayVisits)
-shapiro.test(mid_male_analysis$TotalHallwayVisits) #normal 
+shapiro.test(mid_male_analysis$TotalHallwayVisits) 
 shapiro.test(mid_female_analysis$TotalHallwayVisits)
+
+hallvis_aov<- aov(formula=TotalHallwayVisits ~ sex*age ,halls)
+summary(hallvis_aov)
+######## plot ##############
 
 ym <- ggplot(yng_male_analysis, aes(x=TotalHallwayVisits)) + 
   geom_histogram(bins=10)
@@ -520,12 +527,9 @@ annotate_figure(hall_distr,
                 top = text_grob("Total Hall data distribution", color = "red", face = "bold", size = 14))
 #does the plot have a common legend)
 
-# analysis
-hallvis_aov<- aov(formula=TotalHallwayVisits ~ sex*age ,halls)
-summary(hallvis_aov)
-
 ```
-# no effect
+
+ All groups were normally distributed. No sex or age effects 
 ```{r Turns Made }
 #young MAle and Female
 
@@ -538,39 +542,41 @@ mid_male_analysis$turns <- mid_master_participant%>% filter(sex == "Male") %>% p
 Turns <- rbind(Turns,mid_male_analysis)
 
 mid_female_analysis$turns <- mid_master_participant%>% filter(sex == "Female") %>% pull(em_turns_count)
-Turns <- rbind(Turns,mid_female_analysis) %>% select(Subject,sex,age,group,turns)
+Turns <- rbind(Turns,mid_female_analysis) %>% select(Subject,sex,age,turns)
 #Normality test to assess whether samples are normally distributed 
 shapiro.test(yng_female_analysis$turns)
 shapiro.test(yng_male_analysis$turns)
 shapiro.test(mid_female_analysis$turns)
 shapiro.test(mid_male_analysis$turns)
 
-ym <- ggplot(yng_male_analysis, aes(x=turns)) + 
-  geom_histogram(bins=10)
-yf <- ggplot(yng_female_analysis, aes(x=turns)) + 
-  geom_histogram(bins=10)
-
-mm <- ggplot(mid_male_analysis,aes(x=turns))+ 
-  geom_histogram(bins=10)
-mf <- ggplot(mid_female_analysis, aes(x=turns))+ 
-  geom_histogram(bins=10)
-
-turns_distr <- ggarrange(ym,yf,mm,mf,
-                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
-                       font.label = list(size = 12, color = "red"),
-                       vjust = 3,
-                       ncol=2, nrow = 2)
-annotate_figure(turns_distr,
-                top = text_grob("Total turns data distribution", color = "red", face = "bold", size = 14))
-#does the plot have a common legend)
-
 # analysis
 turns_aov<- aov(formula=turns ~ sex*age ,Turns)
 summary(turns_aov)
 
+########plots ##########
+# ym <- ggplot(yng_male_analysis, aes(x=turns)) + 
+#   geom_histogram(bins=10)
+# yf <- ggplot(yng_female_analysis, aes(x=turns)) + 
+#   geom_histogram(bins=10)
+# 
+# mm <- ggplot(mid_male_analysis,aes(x=turns))+ 
+#   geom_histogram(bins=10)
+# mf <- ggplot(mid_female_analysis, aes(x=turns))+ 
+#   geom_histogram(bins=10)
+# 
+# turns_distr <- ggarrange(ym,yf,mm,mf,
+#                        labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+#                        font.label = list(size = 12, color = "red"),
+#                        vjust = 3,
+#                        ncol=2, nrow = 2)
+# annotate_figure(turns_distr,
+#                 top = text_grob("Total turns data distribution", color = "red", face = "bold", size = 14))
+#does the plot have a common legend)
+
+
 ```
 
-# no major  sex effect midlife female and young male only
+The data was not normally distributed for group: Midlife males(p-value = 0.04288), Midlife Females (p-value = 0.002284), Young males (p-value = 0.01312). Age effect (4.18e-0). A trend towards an interaction (0.0590) and sex effect (0.0807)
 ```{r Pause Duration}
 # Young 
 yng_female_analysis$pauses <- yng_master_participant %>% filter(sex == "Female") %>% pull(em_average_RT)
@@ -583,7 +589,7 @@ mid_male_analysis$pauses <- mid_master_participant%>% filter(sex == "Male") %>% 
 Pauses <- rbind(Pauses,mid_male_analysis)
 
 mid_female_analysis$pauses <- mid_master_participant%>% filter(sex == "Female") %>% pull(em_average_RT)
-Pauses <- rbind(Pauses,mid_female_analysis) %>% select(Subject,sex,age,group,pauses)
+Pauses <- rbind(Pauses,mid_female_analysis) %>% select(Subject,sex,age,pauses)
 
 #Normality test and Distribution of data 
 shapiro.test(yng_female_analysis$pauses)
@@ -591,35 +597,37 @@ shapiro.test(yng_male_analysis$pauses)
 shapiro.test(mid_female_analysis$pauses)
 shapiro.test(mid_male_analysis$pauses)
 
-ym <- ggplot(yng_male_analysis, aes(x=pauses)) + 
-  geom_histogram(bins=10)
-yf <- ggplot(yng_female_analysis, aes(x=pauses)) + 
-  geom_histogram(bins=10)
-
-mm <- ggplot(mid_male_analysis,aes(x=pauses))+ 
-  geom_histogram(bins=10)
-mf <- ggplot(mid_female_analysis, aes(x=pauses))+ 
-  geom_histogram(bins=10)
-
-pauses_distr <- ggarrange(ym,yf,mm,mf,
-                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
-                       font.label = list(size = 12, color = "red"),
-                       vjust = 3,
-                       ncol=2, nrow = 2)
-annotate_figure(pauses_distr,
-                top = text_grob("Total turns data distribution", color = "red", face = "bold", size = 14))
-
 pauses_aov<- aov(formula=pauses ~ sex*age ,Pauses)
 summary(pauses_aov)
 
 # Post Hoc
-pairwise.t.test(Pauses$pauses, dist$group, p.adj="bonferroni")
+# pairwise.t.test(Pauses$pauses, dist$group, p.adj="bonferroni")
+# 
+# TukeyHSD(pauses_aov)
 
-TukeyHSD(pauses_aov)
+
+#########plots #########
+# ym <- ggplot(yng_male_analysis, aes(x=pauses)) + 
+#   geom_histogram(bins=10)
+# yf <- ggplot(yng_female_analysis, aes(x=pauses)) + 
+#   geom_histogram(bins=10)
+# 
+# mm <- ggplot(mid_male_analysis,aes(x=pauses))+ 
+#   geom_histogram(bins=10)
+# mf <- ggplot(mid_female_analysis, aes(x=pauses))+ 
+#   geom_histogram(bins=10)
+# 
+# pauses_distr <- ggarrange(ym,yf,mm,mf,
+#                        labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+#                        font.label = list(size = 12, color = "red"),
+#                        vjust = 3,
+#                        ncol=2, nrow = 2)
+# annotate_figure(pauses_distr,
+#                 top = text_grob("Total turns data distribution", color = "red", face = "bold", size = 14))
 
 ```
 
-# only young male and midlife female 
+Only midlife females failed normality (0.0232). A two factor anova showed an effect of age (4.06e-06) and sex (0.00213) but no interaction. 
 ```{r Evenness Of Exploration Objects}
 ## Young Males#####
 yngM_spreadObjs <-
@@ -725,8 +733,7 @@ midF_totalvisits <-
 mid_female_analysis$evenness <- midF_spreadObjs$std
 
 #Binding the mid male and female evenness spread into one data frame for cleaner analysis 
-
-Spread <- rbind(Spread,mid_female_analysis) %>% select(Subject,sex,age,group,evenness)
+Spread <- rbind(Spread,mid_female_analysis) %>% select(Subject,sex,age,evenness)
 
 #### Data Distribution and normality check ####
 shapiro.test(yng_female_analysis$evenness)
@@ -734,34 +741,34 @@ shapiro.test(yng_male_analysis$evenness)
 shapiro.test(mid_female_analysis$evenness)
 shapiro.test(mid_male_analysis$evenness)
 
-ym <- ggplot(yng_male_analysis, aes(x=evenness)) + 
-  geom_histogram(bins=10)
-yf <- ggplot(yng_female_analysis, aes(x=evenness)) + 
-  geom_histogram(bins=10)
-
-mm <- ggplot(mid_male_analysis,aes(x=evenness))+ 
-  geom_histogram(bins=10)
-mf <- ggplot(mid_female_analysis, aes(x=evenness))+ 
-  geom_histogram(bins=10)
-
-pauses_distr <- ggarrange(ym,yf,mm,mf,
-                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
-                       font.label = list(size = 12, color = "red"),
-                       vjust = 3,
-                       ncol=2, nrow = 2)
-annotate_figure(pauses_distr,
-                top = text_grob("Total evenness data distribution", color = "red", face = "bold", size = 14))
-
 
 ### Analysis ####
 evenness_aov<- aov(formula=evenness ~ sex*age ,Spread)
 summary(evenness_aov)
 
-TukeyHSD(evenness_aov)
+########plot #######
+# ym <- ggplot(yng_male_analysis, aes(x=evenness)) + 
+#   geom_histogram(bins=10)
+# yf <- ggplot(yng_female_analysis, aes(x=evenness)) + 
+#   geom_histogram(bins=10)
+# 
+# mm <- ggplot(mid_male_analysis,aes(x=evenness))+ 
+#   geom_histogram(bins=10)
+# mf <- ggplot(mid_female_analysis, aes(x=evenness))+ 
+#   geom_histogram(bins=10)
+# 
+# pauses_distr <- ggarrange(ym,yf,mm,mf,
+#                        labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+#                        font.label = list(size = 12, color = "red"),
+#                        vjust = 3,
+#                        ncol=2, nrow = 2)
+# annotate_figure(pauses_distr,
+#                 top = text_grob("Total evenness data distribution", color = "red", face = "bold", size = 14))
+
 
 ```
-# only young male and midlife female 
 
+# midlife male and females failed normality (P= 0.0002499,0.009405, respectively). There was an effect of age (4.06e-06) and sex (0.00213) but no interaction. 
 ```{r Eveness of Exploration (Hallways)}
 ## Young Males#####
 yngM_spreadHalls <-
@@ -864,7 +871,7 @@ midF_totalhallvis <-
 mid_female_analysis$HallEvenness <- midF_spreadHalls$std
 
 #Binding the mid male and female evenness spread into one data frame for cleaner analysis 
-Hallspread <- rbind(Hallspread,mid_female_analysis) %>% select(Subject,sex,age,group,HallEvenness)
+Hallspread <- rbind(Hallspread,mid_female_analysis) %>% select(Subject,sex,age,HallEvenness)
 
 #### Data Distribution and normality check ####
 shapiro.test(yng_female_analysis$HallEvenness)
@@ -872,32 +879,33 @@ shapiro.test(yng_male_analysis$HallEvenness)
 shapiro.test(mid_female_analysis$HallEvenness)
 shapiro.test(mid_male_analysis$HallEvenness)
 
-ym <- ggplot(yng_male_analysis, aes(x=HallEvenness)) + 
-  geom_histogram(bins=10)
-yf <- ggplot(yng_female_analysis, aes(x=HallEvenness)) + 
-  geom_histogram(bins=10)
-
-mm <- ggplot(mid_male_analysis,aes(x=HallEvenness))+ 
-  geom_histogram(bins=10)
-mf <- ggplot(mid_female_analysis, aes(x=HallEvenness))+ 
-  geom_histogram(bins=10)
-
-pauses_distr <- ggarrange(ym,yf,mm,mf,
-                       labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
-                       font.label = list(size = 12, color = "red"),
-                       vjust = 3,
-                       ncol=2, nrow = 2)
-annotate_figure(pauses_distr,
-                top = text_grob("Total Hall evenness data distribution", color = "red", face = "bold", size = 14))
-
 
 ### Analysis ####
 evenness_aov<- aov(formula=evenness ~ sex*age ,Spread)
 summary(evenness_aov)
 
-TukeyHSD(evenness_aov)
+
+#######plot ######
+# ym <- ggplot(yng_male_analysis, aes(x=HallEvenness)) + 
+#   geom_histogram(bins=10)
+# yf <- ggplot(yng_female_analysis, aes(x=HallEvenness)) + 
+#   geom_histogram(bins=10)
+# 
+# mm <- ggplot(mid_male_analysis,aes(x=HallEvenness))+ 
+#   geom_histogram(bins=10)
+# mf <- ggplot(mid_female_analysis, aes(x=HallEvenness))+ 
+#   geom_histogram(bins=10)
+# 
+# pauses_distr <- ggarrange(ym,yf,mm,mf,
+#                        labels = c("Young Male", "Young Female", "Midlife Male","Midlife Female"),
+#                        font.label = list(size = 12, color = "red"),
+#                        vjust = 3,
+#                        ncol=2, nrow = 2)
+# annotate_figure(pauses_distr,
+#                 top = text_grob("Total Hall evenness data distribution", color = "red", face = "bold", size = 14))
 ```
 
+Midlife female and young female failed normality tests. Two factor anova revelead an effect of sex(0.03406) and age( 0.00247) but no interaction
 ```{r BUTTON PRESS MOVES}
 #### Young Males ###
 yngM_button_press<- yng_explor %>% filter(Procedure == "ExploreProc")  %>% filter(sex == "Male") 
@@ -913,6 +921,7 @@ yngF_button_press_mean<-aggregate(yngF_button_press$nodesturns_count, list(yngF_
 
 yng_female_analysis$ButtonPress<-yngF_button_press_mean$x 
 
+BP <- rbind(yng_female_analysis, yng_male_analysis)
 #### Midlife Males ###
 midM_button_press<- mid_explor %>% filter(Procedure == "ExploreProc")  %>% filter(sex == "Male") 
 midM_button_press<-midM_button_press %>% transmute(Subject,sex,age,nodesturns_count)
@@ -920,6 +929,7 @@ midM_button_press_mean<-aggregate(midM_button_press$nodesturns_count, list(midM_
 
 mid_male_analysis$ButtonPress<-midM_button_press_mean$x 
 
+BP <- rbind(BP, mid_male_analysis)
 ### Midlife Females ####
 midF_button_press<- mid_explor %>% filter(Procedure == "ExploreProc")  %>% filter(sex == "Female") 
 midF_button_press<-midF_button_press %>% transmute(Subject,sex,age, nodesturns_count)
@@ -927,17 +937,143 @@ midF_button_press_mean<-aggregate(midF_button_press$nodesturns_count, list(midF_
 
 mid_female_analysis$ButtonPress<-midF_button_press_mean$x 
 
+BP <- rbind(BP, mid_female_analysis)%>% select(Subject,sex,age,ButtonPress)
+
+shapiro.test(yng_female_analysis$ButtonPress)
+shapiro.test(yng_male_analysis$ButtonPress)
+shapiro.test(mid_female_analysis$ButtonPress)
+shapiro.test(mid_male_analysis$ButtonPress)
+
+BP_aov<- aov(formula=ButtonPress ~ sex*age ,BP)
+summary(BP_aov)
+ 
+
+```
+
+```{r Midlife path roaming entropy processing}
+#Path Roaming Entropy 
+mid_exp_paths<-as.data.frame(mid_big_explore[,c("subject", "sex", "age")]) #building empty dataframe which we will populate with output from for loop below (part 1)
+mid_exp_paths$paths<-rep("TBC",nrow(mid_exp_paths)) #adding TBCs for now, this will be replaced with output from for loop below 
+
+#For loop to condense path trajectories from midlife_big_explore into single sequence, and remove "repeats" and "none"
+for (i in 1:nrow(mid_big_explore)){
+  cols<-4:length(mid_big_explore) #indexing columns to condense into single sequence 
+  mid_exp_paths[i,4]<-paste(mid_big_explore[i,cols], collapse = '') #combining all characters into single sequence 
+  mid_exp_paths[i,4]<-gsub('[repeatsnone]', '', mid_exp_paths[i,4])#removing strings "repeats" and "none" from sequence
+}
+
+#Combining each subject's exploration trajectories across both sessions into one exploration trajectory 
+mid_exp_paths<- mid_exp_paths %>% group_by(subject) %>% mutate(newcol=paste(paths, collapse = '')) #combining trajectories for each subject
+mid_exp_paths<- mid_exp_paths %>% filter (row_number() %% 2 !=0) #deletes even rows, which are duplicates with regards to combined trajectories 
+names(mid_exp_paths)[names(mid_exp_paths) == 'newcol'] <- 'CombinedPaths' #renaming column 
+mid_exp_paths<-as.data.frame(mid_exp_paths) #converting to df so that for loop below works 
+
+#For loop to calculate path roaming entropies 
+for (i in 1:nrow(mid_exp_paths)){
+  y<-strsplit(mid_exp_paths[i,5],split = "")
+  y_counts_table<-table(y)
+  y_counts_vals<-as.numeric(y_counts_table)
+  y_entropy<-entropy(y_counts_vals,method = c("ML")) #calculate Shannon's Entropy 
+  mid_exp_paths$entropy[i]<-y_entropy
+} 
+
+mid_female_analysis$entropy <- mid_exp_paths %>% filter(sex=="Female") %>% .[,c("entropy")]
+mid_male_analysis$entropy <- mid_exp_paths %>% filter(sex=="Male") %>% .[,c("entropy")]
+
+```
+
+```{r young path roaming entropy processing}
+#Path Roaming Entropy 
+yng_exp_paths<-as.data.frame(yng_big_explore[,c("subject", "sex", "age")]) #building empty dataframe which we will populate with output from for loop below (part 1)
+yng_exp_paths$paths<-rep("TBC",nrow(yng_exp_paths)) #adding TBCs for now, this will be replaced with output from for loop below 
+
+#For loop to condense path trajectories from ynglife_big_explore into single sequence, and remove "repeats" and "none"
+for (i in 1:nrow(yng_big_explore)){
+  cols<-4:length(yng_big_explore) #indexing columns to condense into single sequence 
+  yng_exp_paths[i,4]<-paste(yng_big_explore[i,cols], collapse = '') #combining all characters into single sequence 
+  yng_exp_paths[i,4]<-gsub('[repeatsnone]', '', yng_exp_paths[i,4])#removing strings "repeats" and "none" from sequence
+}
+
+#Combining each subject's exploration trajectories across both sessions into one exploration trajectory 
+yng_exp_paths<- yng_exp_paths %>% group_by(subject) %>% mutate(newcol=paste(paths, collapse = '')) #combining trajectories for each subject
+yng_exp_paths<- yng_exp_paths %>% filter (row_number() %% 2 !=0) #deletes even rows, which are duplicates with regards to combined trajectories 
+names(yng_exp_paths)[names(yng_exp_paths) == 'newcol'] <- 'CombinedPaths' #renaming column 
+yng_exp_paths<-as.data.frame(yng_exp_paths) #converting to df so that for loop below works 
+
+#For loop to calculate path roaming entropies 
+for (i in 1:nrow(yng_exp_paths)){
+  y<-strsplit(yng_exp_paths[i,5],split = "")
+  y_counts_table<-table(y)
+  y_counts_vals<-as.numeric(y_counts_table)
+  y_entropy<-entropy(y_counts_vals,method = c("ML")) #calculate Shannon's Entropy 
+  yng_exp_paths$entropy[i]<-y_entropy
+} 
+
+yng_female_analysis$entropy <- yng_exp_paths %>% filter(sex=="Female") %>% .[,c("entropy")]
+yng_male_analysis$entropy <- yng_exp_paths %>% filter(sex=="Male") %>% .[,c("entropy")]
+
+Entropy <- rbind(mid_exp_paths,yng_exp_paths) %>% select(subject,sex,age,entropy)
+
+```
+
+A normality test was run on each group. The data was not normally distributed for any group: Midlife males(p-value = 0.00695), Midlife Females (p-value = 1e-05), Young males (p-value =  0.01314), and young females (p-value = 0.05319). A two factor anova revealed an effect of sex (0.000274) and an effect of age (< 2e-16)
+```{r Entropy Analysis}
+#normality
+shapiro.test(yng_female_analysis$entropy)
+shapiro.test(yng_male_analysis$entropy)
+shapiro.test(mid_female_analysis$entropy)
+shapiro.test(mid_male_analysis$entropy)
+
+entropy_aov<- aov(formula=entropy ~ sex*age ,Entropy)
+summary(entropy_aov)
+```
+
+A normality test was run on each group. The data was not normally distributed for most groups: Midlife males(p-value = 0.01381), Midlife Females (p-value = 0.000541), Young males (p-value =  0.0001843), and young females (p-value = 0.3501). A two factor anova revealed an effect of sex (0.000274) and an effect of age (< 2e-16)
+```{r Longest Hallway}
+#Longest Hallway Sequence 
+#For loop to identify longest hallway sequence 
+for (i in 1:nrow(mid_exp_paths)){
+  z<-strsplit(mid_exp_paths[i,5],split = "")
+  logical<-as.vector(sapply(z, `%in%`, objects)) #finding if each visited location is an object or not in binary form (true=object, false=hallway)
+  mid_exp_paths$hallwayseq[i]<-with(rle(logical),max(lengths))#finding longest sequence of hallway visits that is not interrupted by an object visit; note that max seq is bound to be hallway as you can't have long sequences of obj visits ('Trues')  
+}
+
+mid_female_analysis$hallwayseq <- mid_exp_paths %>% filter(sex=="Female") %>% .[,c("hallwayseq")]
+mid_male_analysis$hallwayseq <- mid_exp_paths %>% filter(sex=="Male") %>% .[,c("hallwayseq")]
+
+## young 
+for (i in 1:nrow(yng_exp_paths)){
+  z<-strsplit(yng_exp_paths[i,5],split = "")
+  logical<-as.vector(sapply(z, `%in%`, objects)) 
+  yng_exp_paths$hallwayseq[i]<-with(rle(logical),max(lengths))
+}
+
+yng_female_analysis$hallwayseq <- yng_exp_paths %>% filter(sex=="Female") %>% .[,c("hallwayseq")]
+yng_male_analysis$hallwayseq <- yng_exp_paths %>% filter(sex=="Male") %>% .[,c("hallwayseq")]
+
+shapiro.test(yng_female_analysis$hallwayseq)
+shapiro.test(yng_male_analysis$hallwayseq)
+shapiro.test(mid_female_analysis$hallwayseq)
+shapiro.test(mid_male_analysis$hallwayseq)
+
+
+longesthall <- rbind(mid_exp_paths,yng_exp_paths) %>% select(subject,sex,age,hallwayseq)
+
+longesthall_aov<- aov(formula=hallwayseq ~ sex*age,longesthall)
+summary(entropy_aov)
 
 
 ```
 
-```{r}
+```{r Mediation Analysis }
+mediation_df <- rbind(mid_female_analysis,mid_male_analysis)
+mediation_df <- rbind(mediation_df,yng_female_analysis)
+mediation_df <- rbind(mediation_df,yng_male_analysis)
+
+
 
 ```
 
-```{r}
-
-```
 
 ```{r Plots for distance }
 yng_distance <- yng_master_participant %>% select(Subject,sex,age) %>% as.data.frame() %>% mutate(Dist = yng_master_participant$em_path_dist_trav)
