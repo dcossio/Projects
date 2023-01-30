@@ -1,0 +1,82 @@
+---
+title: "28andb DSI studio analysis"
+author: "Daniela Cossio"
+date: "1/11/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Overview 
+This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
+
+# Methods 
+##### **Participants** 
+  One subject and a total of 25 scans from July 2019 to May 2021. Cans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+
+##### **Scan parameters** 
+  * Locations from UCSB and UCI
+
+##### **Blood work**
+  * Subject was measured for various levels of hormones including estrogen, progesterone, LH, FSH
+
+##### **Exclusions** 
+  * Scan 08/13/19 (labeled as sub-003) was excluded 
+
+
+##### **QSIprep** 
+  * Version used
+
+The following parameters were used
+|
+|
+|
+
+##### **DSI Studio**
+###### Version and tags used 
+        * chen-2022-07-31
+
+###### Correlational connectometry 
+####### Analyses
+  * Across all time 
+    * Estrogen 
+    * FSH
+    * LH
+    * Progesterone
+    
+  * Pregnancy only
+    * Estrogen
+      * no significant results at any threshold when analyzed seperately 
+      - QA
+      - AD : no significant results so probably stick with default or with the threshold from all scans.
+    * FSH
+    * LH
+    * Progesterone
+    
+  * Parameters for all 
+    * Length = 25
+    * Permutation = 10,000
+    * pruning 4
+    * non normalized QA
+  * Param
+    
+
+
+
+```{r }
+
+```
+## Estrogen
+## Progesterone
+## LH
+## LSH
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
