@@ -102,11 +102,17 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 ######  Angular Error Rad 3
 ######  Angular Error Average
 
+<!---------------------------------------QA Accuracy--------------------------------->
 
+
+
+<!---------------------------------------Results---------------------------------  -->
 
 # <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}
 ## QA {.tabset}
 ### Summary of results 
+There were both positive and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly positive correlations between QA and performance. When split by menopause stagge, Pre and post displayed both positive and negative correlations while peri displayed only positive correlations with performance. 
+
 ### All subjects
 ```{r QA all subjects correlations,echo=FALSE, results='hide',message=FALSE}
 # write something to read in the csv file and extract the stats and place them all together 
@@ -121,14 +127,20 @@ QA_acc_all_pos <- read.csv('allSubs/QA_all_pos.csv', header=FALSE) %>%  filter(V
 QA_acc_all_neg <- read.csv('allSubs/QA_all_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
-#### <span style="color: hotpink;"> Positive Corrs  </span> 
+#### <span style="color: hotpink;"> Positive ( FDR= 0.043228) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_acc_all_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.122807)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_all_neg, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Positive Correlations between QA and maze accuracy in women.](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/QA_fem_acc_pos_sag.png)
+
+
 ### Men
 ```{r # QA Males,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
 # write something to read in the csv file and extract the stats and place them all together 
@@ -152,9 +164,7 @@ knitr::kable(QA_acc_male_pos, row.names=F)
 knitr::kable(QA_acc_male_neg, row.names=F)
 ```
 
-
 ### Women
-
 ```{r # QA females,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
 # write something to read in the csv file and extract the stats and place them all together 
 # make sure CSVs do not have a header
@@ -176,6 +186,10 @@ knitr::kable(QA_acc_female_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_female_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+
+![Positive Correlations between QA and maze accuracy in women.](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/QA_fem_acc_pos_sag.png)
+
 ### pre
 ```{r # QA Pre menopause,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
 # write something to read in the csv file and extract the stats and place them all together 
@@ -239,7 +253,7 @@ knitr::kable(QA_acc_post_pos, row.names=F)
 knitr::kable(QA_acc_post_neg, row.names=F)
 ```
 
-
+<!---------------------------------------MD Accuracy--------------------------------  -->
 ## MD {.tabset}
 ### Summary of results 
 ### All subjects
@@ -357,6 +371,8 @@ knitr::kable(MD_acc_post_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_post_neg, row.names=F)
 ```
+
+<!---------------------------------------AD Accuracy---------------------------------  -->
 ## AD {.tabset}
 ### Summary of results 
 ### All subjects
@@ -366,6 +382,8 @@ knitr::kable(MD_acc_post_neg, row.names=F)
 ### peri 
 ### post
 
+
+<!---------------------------------------RD Accuracy---------------------------------  -->
 ## RD {.tabset}
 ### Summary of results 
 ### All subjects
@@ -379,7 +397,12 @@ knitr::kable(MD_acc_post_neg, row.names=F)
 
 * * *
 
-# <span style="color: lavender;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
+
+
+
+
+<!---------------------------------------Loop Position Error ---------------------------------  -->
+# <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 ## Summary of results 
 ## QA {.tabset}
 ### All subjects
@@ -492,7 +515,9 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)
 
 
 
-# <span style="color: lavender;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
+
+
+# <span style="color: PaleVioletRed;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
 ## QA {.tabset}
 ### All subjects
 ### Men
@@ -527,73 +552,11 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)
 
 
 
-# <span style="color: darkorange;"> Loop Degree error Rad3 </span>  {.tabset .tabset-dropdown}
-## QA {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
 
-## MD {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
 
-## AD {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
 
-## RD {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
-
-# <span style="color: darkorange;"> Loop Degree error average </span>  {.tabset .tabset-dropdown}
-## QA {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
-
-## MD {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
-
-## AD {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
-
-## RD {.tabset}
-### All subjects
-### Men
-### Women
-### pre
-### peri 
-### post
-
-# <span style="color: darkorange;"> Loop angular error Rad3 </span>  {.tabset .tabset-dropdown}
+<!---------------------------------------Loop Degree error--------------------------------  -->
+# <span style="color: Indigo;"> Loop Degree error Rad3 </span>  {.tabset .tabset-dropdown}
 ## QA {.tabset}
 ### All subjects
 ### Men
@@ -627,7 +590,8 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)
 ### post
 
 
-# <span style="color: darkorange;"> Loop Angular error average </span>  {.tabset .tabset-dropdown}
+
+# <span style="color: Indigo;"> Loop Degree error average </span>  {.tabset .tabset-dropdown}
 ## QA {.tabset}
 ### All subjects
 ### Men
@@ -659,5 +623,80 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)
 ### pre
 ### peri 
 ### post
+
+
+
+<!---------------------------------------Loop Angular Error--------------------------------  -->
+# <span style="color: DarkSlateGrey;"> Loop angular error Rad3 </span>  {.tabset .tabset-dropdown}
+## QA {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+## MD {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+## AD {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+## RD {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+
+
+
+# <span style="color: DarkSlateGrey;"> Loop Angular error average </span>  {.tabset .tabset-dropdown}
+## QA {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+## MD {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+## AD {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+## RD {.tabset}
+### All subjects
+### Men
+### Women
+### pre
+### peri 
+### post
+
+
+
 
 
