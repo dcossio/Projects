@@ -402,9 +402,11 @@ knitr::kable(MD_acc_post_neg, row.names=F)
 
 
 <!---------------------------------------Loop Position Error ---------------------------------  -->
+
 # <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
-## Summary of results 
+
 ## QA {.tabset}
+### Summary of results 
 ### All subjects
 ```{r Loop position errord3 QA, echo=FALSE, results='hide',message=FALSE}
 # make sure CSVs do not have a header
