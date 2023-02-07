@@ -5,73 +5,184 @@ date: "1/11/2023"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+
 ```
 
-# Overview 
+```{css, echo=FALSE}
+h1, h2 {
+  text-align: center;
+  color: darkblue;
+  font-weight: bold;
+}
+```
+
+## Overview 
 This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
 
-# Methods 
-##### **Participants** 
-  One subject and a total of 25 scans from July 2019 to May 2021. Cans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+#### **Participants** 
+  *One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+  
+  *18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.   
 
-##### **Scan parameters** 
+#### **Scan parameters** 
   * Locations from UCSB and UCI
 
-##### **Blood work**
+#### **Blood work**
   * Subject was measured for various levels of hormones including estrogen, progesterone, LH, FSH
 
-##### **Exclusions** 
+#### **Exclusions** 
   * Scan 08/13/19 (labeled as sub-003) was excluded 
 
-
-##### **QSIprep** 
+#### **QSIprep** 
   * Version used
 
-The following parameters were used
-|
-|
-|
+#### **DSI Studio : Correlational connectometry **
+###### Version and tags used **chen-2022-07-31**
+###### Parameters 
+* Length = 25
+* Permutation = 10,000
+* pruning 4
+* non normalized QA T threshold: 2.5
 
-##### **DSI Studio**
-###### Version and tags used 
-        * chen-2022-07-31
-
-###### Correlational connectometry 
-####### Analyses
-  * Across all time 
-    * Estrogen 
-    * FSH
-    * LH
-    * Progesterone
+##### Analyses {.tabset}
+###### Estrogen 
+* Total scans: 16
+* Total pregnancy scans = 9 
+* 2 scans removed due to having no estrogen measurement
+  
+###### Progesterone
+* Total scans: 15
+* Total pregnancy scans = 9 
+* 3 scans removed due to having no progesterone measurement
+###### FSH
+* Total scans: 15
+* Total pregnancy scans = 8
+* 4 scans removed due to having no progesterone measurement
+###### LH
+* Total scans: 12
+* Total pregnancy scans = 8 
+* 4 scans removed due to having no progesterone measurement
     
-  * Pregnancy only
-    * Estrogen
-      * no significant results at any threshold when analyzed seperately 
-      - QA
-      - AD : no significant results so probably stick with default or with the threshold from all scans.
-    * FSH
-    * LH
-    * Progesterone
-    
-  * Parameters for all 
-    * Length = 25
-    * Permutation = 10,000
-    * pruning 4
-    * non normalized QA
-  * Param
-    
+### Results    
+## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
+### QA {.tabset}
+#### All weeks 
+```{r QA all scans correlations,echo=FALSE, results='hide',message=FALSE}
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks" 
+setwd(working_dir)
 
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-
-```{r }
+Est_QA_all_pos <- read.csv('pos_stats.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
-## Estrogen
+
+##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_QA_all_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+No significant Findings
+
+#### Pregnancy only
+```{r QA pregnancy scans correlations,echo=FALSE, results='hide',message=FALSE}
+working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/pregnancy"
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+Est_QA_pregnancy_pos <- read.csv('pos_stats_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+
+##### <span style="color: hotpink;"> Positive ( FDR= 0.043802 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_QA_pregnancy_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.0000)</span> 
+No significant Findings
+
+### AD
+#### All weeks 
+```{r AD all scans correlations,echo=FALSE, results='hide',message=FALSE}
+working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/AD/Allwks"
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+Est_AD_allwks_neg <- read.csv('neg_stats_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+Est_AD_allwks_pos <- read.csv('pos_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+```
+
+##### <span style="color: hotpink;"> Positive ( FDR= 0.000125 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_AD_allwks_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.058824)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_AD_allwks_neg, row.names=F)
+```
+
+#### Pregnancy 
+No significant findings 
+
+### MD
+
+```{r MD all scans correlations,echo=FALSE, results='hide',message=FALSE}
+working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks"
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+Est_MD_allwks_neg <- read.csv('neg_stats_2.5.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+
+```
+
+##### <span style="color: hotpink;"> Positive ( FDR= 0.205882 ) </span> 
+No significant findings
+
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.002002)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_MD_allwks_neg, row.names=F)
+```
+#### Pregnancy 
+No significant findings 
+
+### RD
+
 ## Progesterone
 ## LH
-## LSH
+## FSH
 
 You can also embed plots, for example:
 
