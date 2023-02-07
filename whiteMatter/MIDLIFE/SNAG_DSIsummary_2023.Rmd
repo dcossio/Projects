@@ -117,7 +117,7 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 
 
 
-<!---------------------------------------Results---------------------------------  -->
+<!---------------------------------------Results---------------------------------->
 
 # <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}
 
@@ -267,6 +267,7 @@ knitr::kable(QA_acc_post_neg, row.names=F)
 ```
 
 <!---------------------------------------MD Accuracy--------------------------------  -->
+
 ## MD {.tabset}
 ### Summary of results 
 DSI was run on all subejcts, with sex and age listed as covariates. There were positive correlations between MD values in the Fornix (L&R) and performance. Using a sex straisfied apporoach we viewed the relationship between white matter and performanc ein men and women seperately. Men, displayed a majortiy of positive correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of positive correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both positive and negative relationships between MD and  performance. The majority of tracts with positive correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
@@ -400,6 +401,7 @@ knitr::kable(MD_acc_post_neg, row.names=F)
 <!---------------------------------------AD Accuracy---------------------------------  -->
 ### combined peri/post
 
+
 ## AD {.tabset}
 ### Summary of results 
 ### All subjects
@@ -415,10 +417,10 @@ AD_all_acc_neg <- read.csv('AD_all__acc_neg.csv', header=FALSE) %>%  filter(V1 %
 AD_all_acc_neg <- AD_all_acc_neg[-c(1),]
 ```
 
-#### <span style="color: hotpink;"> Positive Corrs  </span> 
+#### <span style="color: hotpink;"> Positive Corrs  (FDR= 0.031496) </span> 
 No significant findings 
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+####  <span class="text-center" style="color: Teal;"> Negative Corrs ( FDR = 0.150000)</span> 
 ```{r AD_all_acc_neg, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_all_acc_neg, row.names=F)
 ```
@@ -435,11 +437,11 @@ AD_acc_male_pos <- read.csv('AD_male_acc_pos.csv', header=FALSE) %>%  filter(V1 
 
 AD_acc_male_neg <- read.csv('AD_male_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-#### <span style="color: hotpink;"> Positive ( FDR= ) </span> 
+#### <span style="color: hotpink;"> Positive ( FDR= 0.005460) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_acc_male_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR= )</span> 
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR = FDR = 0.004202 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_male_neg, row.names=F)
 ```
@@ -454,22 +456,95 @@ rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)"
 
 AD_acc_female_neg <- read.csv('AD_fem_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-#### <span style="color: hotpink;"> Positive ( FDR= ) </span> 
+#### <span style="color: hotpink;"> Positive ( FDR= 1.000000 ) </span> 
 No significant findings
 
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR= )</span> 
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR=0.006928 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_female_neg, row.names=F)
 ```
+
 ### pre
+```{r AD Pre, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/pre" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+AD_acc_pre_neg <- read.csv('AD_pre_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+#### <span style="color: hotpink;"> Positive ( FDR = 1.000000 ) </span> 
+No significant findings
+
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR = 0.000197 )</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_acc_pre_neg, row.names=F)
+```
+
 ### peri 
+```{r AD peri, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+AD_acc_peri_pos <- read.csv('AD_peri_all_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+
+AD_acc_peri_neg <- read.csv('AD_peri_all_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+#### <span style="color: hotpink;"> Positive ( FDR= 0.000282 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_acc_peri_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR=0.016393 )</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_acc_peri_neg, row.names=F)
+```
 ### post
+```{r AD post, echo=FALSE, results='hide',message="FALSE"}
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+AD_acc_post_pos <- read.csv('ad_post_acc_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+
+AD_acc_post_neg <- read.csv('ad_post_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+#### <span style="color: hotpink;"> Positive ( FDR= 0.000941 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_acc_post_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.001445 )</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_acc_post_neg, row.names=F)
+```
 
 
 <!---------------------------------------RD Accuracy---------------------------------  -->
+
 ## RD {.tabset}
 ### Summary of results 
 ### All subjects
+```{r RD all subjects, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/allSubs" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+
+RD_acc_all_pos <- read.csv('RD_all_acc_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+
+```
+#### <span style="color: hotpink;"> Positive ( FDR=  ) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_acc_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg ( FDR= )</span> 
+
 ### Men
 ### Women
 ### pre
@@ -485,6 +560,10 @@ knitr::kable(AD_acc_female_neg, row.names=F)
 
 
 <!---------------------------------------Loop Position Error ---------------------------------  -->
+
+
+<!----------------------------------Loop position error rad3------------------------------->
+
 
 # <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 
