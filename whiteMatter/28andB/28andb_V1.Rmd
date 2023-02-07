@@ -1,7 +1,7 @@
 ---
 title: "28andb DSI studio analysis"
 author: "Daniela Cossio"
-date: "1/11/2023"
+date: "02/07/2023"
 output: html_document
 ---
 
@@ -179,6 +179,29 @@ knitr::kable(Est_MD_allwks_neg, row.names=F)
 No significant findings 
 
 ### RD
+#### All weeks 
+```{r RD all scans correlations,echo=FALSE, results='hide',message=FALSE}
+working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks"
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+Est_RD_allwks_pos <- read.csv('pos_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+Est_RD_allwks_neg <- read.csv('neg_2.5_all.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+##### <span style="color: hotpink;"> Positive ( FDR= 0.205882 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_RD_allwks_pos, row.names=F)
+```
+
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= )</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_RD_allwks_neg, row.names=F)
+```
+
+#### pregnancy only
+No signifcant findings
 
 ## Progesterone
 ## LH
