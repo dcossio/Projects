@@ -35,6 +35,12 @@ library(ggpubr)
 #library(afex)
 library(knitr)
 
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/"
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+
 ```
 
 ```{css, echo=FALSE}
@@ -44,6 +50,8 @@ h1, h2 {
   font-weight: bold;
 }
 ```
+
+
 
 # Overview 
 This is the analysis of white matter dsi studio connectometry for Maze and Loop 
@@ -125,20 +133,39 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 ### Summary of results 
 There were both positive and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly positive correlations between QA and performance. When split by menopause stagge, Pre and post displayed both positive and negative correlations while peri displayed only positive correlations with performance. 
 
-### All subjects
-```{r QA all subjects correlations,echo=FALSE, results='hide',message=FALSE}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA" 
-setwd(working_dir)
+```{r GRabbing all variables ,echo=FALSE, results='hide',message=FALSE}
+# All subjects
+QA_acc_all_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/allSubs/QA_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+QA_acc_all_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/allSubs/QA_all_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-QA_acc_all_pos <- read.csv('allSubs/QA_all_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+# MEN
+QA_acc_male_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-QA_acc_all_neg <- read.csv('allSubs/QA_all_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+QA_acc_male_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# Women 
+QA_acc_female_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+QA_acc_female_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# PRE
+QA_acc_pre_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/pre/QA_pre_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+QA_acc_pre_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/pre/QA_pre_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+## Peri
+QA_acc_peri_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/peri/QA_peri_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# POST
+QA_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+QA_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
+
+
+### All subjects
 #### <span style="color: hotpink;"> Positive ( FDR= 0.043228) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_acc_all_pos, row.names=F)
@@ -149,26 +176,12 @@ knitr::kable(QA_acc_all_neg, row.names=F)
 ```
 
 ####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
-
 ![Positive Correlations between QA and maze accuracy in women.](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/QA_fem_acc_pos_sag.png)
 
 
 ### Men
-```{r # QA Males,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA" 
-setwd(working_dir)
- 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-QA_acc_male_pos <- read.csv('male/QA_male_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_male_neg <- read.csv('male/QA_male_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-```
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
-```{r, echo=FALSE}
+```{r QA Males pos, echo=FALSE}
 knitr::kable(QA_acc_male_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
@@ -177,19 +190,6 @@ knitr::kable(QA_acc_male_neg, row.names=F)
 ```
 
 ### Women
-```{r # QA females,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA" 
-setwd(working_dir)
- 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-QA_acc_female_pos <- read.csv('female/QA_female_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_female_neg <- read.csv('female/QA_female_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-```
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_female_pos, row.names=F)
@@ -202,20 +202,8 @@ knitr::kable(QA_acc_female_neg, row.names=F)
 
 ![Positive Correlations between QA and maze accuracy in women.](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/QA_fem_acc_pos_sag.png)
 
+
 ### pre
-```{r # QA Pre menopause,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA" 
-setwd(working_dir)
- 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-QA_acc_pre_pos <- read.csv('pre/QA_pre_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_pre_neg <- read.csv('pre/QA_pre_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-```
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_pre_pos, row.names=F)
@@ -224,41 +212,19 @@ knitr::kable(QA_acc_pre_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_pre_neg, row.names=F)
 ```
+
 ### peri 
-```{r # QA peri menopause,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA" 
-setwd(working_dir)
- 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-QA_acc_peri_pos <- read.csv('peri/QA_peri_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-#QA_acc_peri_neg <- read.csv('peri/QA_peri_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-```
-
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_peri_pos, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+No Significant Findings
+
 ### post
-```{r # QA post menopause,echo=FALSE, results='hide',message=FALSE,layout="l-body-outset"}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA" 
-setwd(working_dir)
- 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-QA_acc_post_pos <- read.csv('post/QA_post_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_post_neg <- read.csv('post/QA_post_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-```
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
-```{r, echo=FALSE}
+```{r post positve, echo=FALSE}
 knitr::kable(QA_acc_post_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
@@ -272,23 +238,20 @@ knitr::kable(QA_acc_post_neg, row.names=F)
 ### Summary of results 
 DSI was run on all subejcts, with sex and age listed as covariates. There were positive correlations between MD values in the Fornix (L&R) and performance. Using a sex straisfied apporoach we viewed the relationship between white matter and performanc ein men and women seperately. Men, displayed a majortiy of positive correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of positive correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both positive and negative relationships between MD and  performance. The majority of tracts with positive correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
 
-### All subjects
-```{r MD all subjects correlations,echo=FALSE, results='hide',message="FALSE"}
-# write something to read in the csv file and extract the stats and place them all together 
-# make sure CSVs do not have a header
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD" 
-setwd(working_dir)
+```{r ALL VAriables ,echo=FALSE, results='hide',message="FALSE"}
+# all subjects
+MD_acc_all_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/allSubs/MD_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-MD_acc_all_pos <- read.csv('allSubs/MD_all_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 ```
+
+### All subjects
+
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_all_pos, row.names=F)
 ```
 
-#### <span style="color: hotpink;"> Negative Corrs  </span> 
+#### <span style="color: teal;"> Negative Corrs  </span> 
 No significant findings
 
 ### Men
@@ -352,6 +315,7 @@ MD_acc_pre_neg <- read.csv('pre/MD_pre_neg.csv', header=FALSE) %>%  filter(V1 %i
 
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 No significant findings
+
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_pre_neg, row.names=F)
@@ -369,12 +333,15 @@ rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)"
 MD_acc_peri_pos <- read.csv('peri/MD_peri_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
-No significant findings
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_peri_pos, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+No significant findings
+
+
 ### post
 ```{r MD post subjects correlations,echo=FALSE, results='hide',message="FALSE"}
 # write something to read in the csv file and extract the stats and place them all together 
@@ -530,26 +497,113 @@ knitr::kable(AD_acc_post_neg, row.names=F)
 ### All subjects
 ```{r RD all subjects, echo=FALSE, results='hide',message="FALSE"}
 
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/allSubs" 
-setwd(working_dir)
-
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-
-RD_acc_all_pos <- read.csv('RD_all_acc_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+#RD_acc_all_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/allSubs/RD_all_acc_pos.csv'), header=FALSE) %>% filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 
 ```
 #### <span style="color: hotpink;"> Positive ( FDR=  ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_acc_all_pos, row.names=F)
+#knitr::kable(RD_acc_all_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg ( FDR= )</span> 
+No significant findings
 
 ### Men
+
+```{r RD Men,echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/male" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+RD_acc_male_pos <- read.csv('RD_male_acc_pos.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(RD_acc_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+No Significant Findings
+
 ### Women
+```{r women, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/female" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+RD_acc_female_neg <- read.csv('RD_fem_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No Significant Findings
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(RD_acc_female_neg, row.names=F)
+```
+
 ### pre
+```{r Pre, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/pre" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+RD_acc_pre_neg <- read.csv('RD_pre_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No Significant Findings
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(RD_acc_pre_neg, row.names=F)
+```
+
 ### peri 
+```{r RD peri, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+RD_acc_peri_neg <- read.csv('RD_peri_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No Significant Findings
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(RD_acc_peri_neg, row.names=F)
+```
+
 ### post
+
+### peri 
+```{r peri, echo=FALSE, results='hide',message="FALSE"}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri" 
+setwd(working_dir)
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+RD_acc_peri_neg <- read.csv('RD_peri_acc_neg.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+```
+
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No Significant Findings
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(RD_acc_peri_neg, row.names=F)
+```
+
 
 
 
