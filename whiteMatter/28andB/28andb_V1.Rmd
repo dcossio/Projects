@@ -44,13 +44,22 @@ h1, h2 {
 }
 ```
 
+```{r Global Vars, echo=FALSE, results='hide',message=FALSE}
+
+# working directory to data 
+estrogen_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/"
+Prog_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/"
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+```
 ## Overview 
 This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
 
 #### **Participants** 
-  *One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+  * One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
   
-  *18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.   
+  * 18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.   
 
 #### **Scan parameters** 
   * Locations from UCSB and UCI
@@ -82,72 +91,52 @@ This is the analysis of the relationship between white matter microstructure and
 * Total scans: 15
 * Total pregnancy scans = 9 
 * 3 scans removed due to having no progesterone measurement
-###### FSH
-* Total scans: 15
-* Total pregnancy scans = 8
-* 4 scans removed due to having no progesterone measurement
-###### LH
-* Total scans: 12
-* Total pregnancy scans = 8 
-* 4 scans removed due to having no progesterone measurement
+
     
 ### Results    
 ## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
-#### All weeks 
-```{r QA all scans correlations,echo=FALSE, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks" 
-setwd(working_dir)
+```{r QA  correlations,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+Est_QA_all_pos <- read.csv(paste0(estrogen_path,'QA/Allwks/pos_stats.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+# Pregnancy only
 
-Est_QA_all_pos <- read.csv('pos_stats.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+Est_QA_pregnancy_pos <- read.csv(paste0(estrogen_path,'QA/pregnancy/pos_stats_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
-
-##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+#### All weeks 
+##### <span style="color: hotpink;"> Positive (FDR= 0.002484) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_QA_all_pos, row.names=F)
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.250000)</span> 
 No significant Findings
 
 #### Pregnancy only
-```{r QA pregnancy scans correlations,echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/pregnancy"
-setwd(working_dir)
-
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-Est_QA_pregnancy_pos <- read.csv('pos_stats_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-```
-
-##### <span style="color: hotpink;"> Positive ( FDR= 0.043802 ) </span> 
+##### <span style="color: hotpink;"> Positive (FDR= 0.043802) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_QA_pregnancy_pos, row.names=F)
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.0000)</span> 
+
+#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 1.0000)</span> 
 No significant Findings
 
-### AD
-#### All weeks 
+### AD {.tabset}
 ```{r AD all scans correlations,echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/AD/Allwks"
-setwd(working_dir)
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+Est_AD_allwks_neg <- read.csv(paste0(estrogen_path,'AD/Allwks/neg_stats_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-Est_AD_allwks_neg <- read.csv('neg_stats_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-Est_AD_allwks_pos <- read.csv('pos_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+Est_AD_allwks_pos <- read.csv(paste0(estrogen_path,'AD/Allwks/pos_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 ```
 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.000125 ) </span> 
+#### All weeks 
+##### <span style="color: hotpink;"> Positive (FDR= 0.058824) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_AD_allwks_pos, row.names=F)
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.058824)</span> 
+
+#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.000125)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_AD_allwks_neg, row.names=F)
 ```
@@ -155,62 +144,142 @@ knitr::kable(Est_AD_allwks_neg, row.names=F)
 #### Pregnancy 
 No significant findings 
 
-### MD
-
+### MD {.tabset}
 ```{r MD all scans correlations,echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks"
-setwd(working_dir)
-
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-Est_MD_allwks_neg <- read.csv('neg_stats_2.5.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-
+Est_MD_allwks_neg <- read.csv(paste0(estrogen_path,'MD/Allwks/neg_stats_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 ```
 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.205882 ) </span> 
+##### <span style="color: hotpink;"> Positive (FDR= 0.205882) </span> 
 No significant findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.002002)</span> 
+#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.002002)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_MD_allwks_neg, row.names=F)
 ```
+
 #### Pregnancy 
 No significant findings 
 
-### RD
+### RD {.tabset}
 #### All weeks 
 ```{r RD all scans correlations,echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks"
-setwd(working_dir)
+Est_RD_allwks_neg <- read.csv(paste0(estrogen_path,'RD/Allwks/neg_2.5_all.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-Est_RD_allwks_pos <- read.csv('pos_2.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-Est_RD_allwks_neg <- read.csv('neg_2.5_all.csv', header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+Est_RD_allwks_pos <- read.csv(paste0(estrogen_path,'RD/Allwks/pos_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
-##### <span style="color: hotpink;"> Positive ( FDR= 0.205882 ) </span> 
+##### <span style="color: hotpink;"> Positive (FDR= 0.122222) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_RD_allwks_pos, row.names=F)
 ```
-
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= )</span> 
+#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.001106)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_RD_allwks_neg, row.names=F)
 ```
 
 #### pregnancy only
-No signifcant findings
+No significant findings
 
-## Progesterone
-## LH
-## FSH
 
-You can also embed plots, for example:
+## <span style="color: magenta;"> Progesterone </span>  {.tabset .tabset-dropdown}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+### QA {.tabset}
+```{r QA vars,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+prog_QA_all_pos <- read.csv(paste0(Prog_path,'QA/Allwks/pos_all_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+prog_QA_all_neg <- read.csv(paste0(Prog_path,'QA/Allwks/neg_ALL_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# Pregnancy only
+
+prog_QA_pregnancy_pos <- read.csv(paste0(Prog_path,'QA/pregnancy/pos_pregnancy-2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+#### All weeks 
+##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_QA_all_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_QA_all_neg, row.names=F)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### Pregnancy only
+##### <span style="color: hotpink;"> Positive ( FDR= 0.043802 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_QA_pregnancy_pos, row.names=F)
+```
+
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.0000)</span> 
+No significant Findings
+
+
+
+
+### MD {.tabset}
+```{r MD vars,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+prog_MD_all_pos <- read.csv(paste0(Prog_path,'MD/Allwks/MD_allwks_prog_pos_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+prog_MD_all_neg <- read.csv(paste0(Prog_path,'MD/Allwks/MD_allwks_prog_neg_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+#### All weeks 
+##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_MD_all_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_MD_all_neg, row.names=F)
+```
+
+#### Pregnancy only
+No significant Findings
+
+### AD {.tabset}
+```{r AD vars,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+prog_AD_all_pos <- read.csv(paste0(Prog_path,'AD/Allwks/AD_allwks_prog_pos_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+prog_AD_all_neg <- read.csv(paste0(Prog_path,'AD/Allwks/AD_allwks_prog_neg_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+#### All weeks 
+##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_AD_all_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_AD_all_neg, row.names=F)
+```
+
+#### Pregnancy only
+No significant Findings
+
+### RD {.tabset}
+```{r RD vars,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+prog_RD_all_pos <- read.csv(paste0(Prog_path,'RD/Allwks/RD_allwks_prog_pos_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+prog_RD_all_neg <- read.csv(paste0(Prog_path,'RD/Allwks/RD_allwks_prog_neg_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+#### All weeks 
+##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_RD_all_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_RD_all_neg, row.names=F)
+```
+
+#### Pregnancy only
+No significant Findings
+
+## END
+
+
