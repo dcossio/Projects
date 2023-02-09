@@ -1,0 +1,122 @@
+---
+title: "Young MLINDIV Path Efficiency"
+author: "Daniela Cossio"
+date: "2/8/2023"
+output: html_document
+---
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r Global Variables, ,echo=FALSE, results='hide',message=FALSE}
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/young-MLINDIV/DSI/Path_eff"
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+```
+
+# Overview 
+This is the analysis of white matter dsi studio connectometry for young maze path efficiency 
+
+# <span style="color: darkblue;">Methods </span> 
+##### **Participants** 
+* Total number of scans = 
+  * Total scans used in analysis=  
+  
+        
+##### **Scan parameters** 
+* Locations from UCSB and UCI
+
+##### **QSIprep** 
+* Version used: 
+* The following parameters were used
+  * dwi_denoise_window **5** 
+  * hmc_model **3dSHORE** 
+  * hmc-transform **Rigid** 
+  * shoreline_iters **2**
+
+### **DSI Studio**
+*Version and tags used 
+  * **chen-2022-01-26**
+
+##### **Correlational connectometry**
+
+###### **Parameters** 
+* T-threshold =  vary by analysis
+* Length = 25
+* Permutation = 10,000
+* pruning 4
+* non normalized QA
+
+#### **Analyses and Final sample sizes ** 
+
+##### **Exclusions** 
+* 347 was excluded due to low quality out liar in DSI 
+
+##### Path Efficiency {.tabset} 
+###### All subjects 
+N= 79
+
+T thresholds
+* QA
+* MD
+* RD
+* AD
+
+
+###### Men 
+N= 39
+
+###### Women
+
+
+
+###### Average
+* All subjects = 42
+* Men = 17
+* Women = 25
+* Stage
+  * Pre = 23
+  * Peri = 20 
+  * Post = 17
+
+<!---------------------------------------QA Accuracy--------------------------------->
+
+<!---------------------------------------Results---------------------------------->
+
+# <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}
+
+## QA {.tabset}

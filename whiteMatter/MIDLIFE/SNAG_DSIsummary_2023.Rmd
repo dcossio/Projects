@@ -123,8 +123,6 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 
 <!---------------------------------------QA Accuracy--------------------------------->
 
-
-
 <!---------------------------------------Results---------------------------------->
 
 # <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}
