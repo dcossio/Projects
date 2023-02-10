@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 #(plyr)
 library(tidyverse)
-# library(dplyr)
+library(dplyr)
 # library(tidyr)
 library(stringr)
 # library(data.table)
@@ -38,12 +38,13 @@ library(BRRR)
 library(stats)
 library(afex)
 library(mediation)
+library(plotrix)
+
 
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 workdir<- "/Users/danielacossio/Desktop/MLINDIV_analysisDC/MidlifeDesktopBehavior"
 setwd(workdir)
 ```
-
 
 ```{r reading in midlife files }
 #infosheet with age/sex
@@ -169,6 +170,7 @@ Theres no significant differece between men and women at any age when seeing an 
 
 yng_male_analysis$Dist <-
   yng_master_participant %>% filter(sex == "Male") %>% pull(em_path_dist_trav)
+
 yng_female_analysis$Dist <-
   yng_master_participant %>% filter(sex == "Female") %>% pull(em_path_dist_trav)
 dist <- rbind(yng_male_analysis, yng_female_analysis)
@@ -193,6 +195,32 @@ shapiro.test(mid_male_analysis$Dist) #p-value = 0.1104
 
 dist_aov <-  aov(formula=Dist ~ sex * age, dist)
 summary(dist_aov)
+
+# Tukey Post hoc
+
+post_dist_aov <- TukeyHSD(dist_aov)
+
+
+#Summary Stats
+  #young male 
+yng_male_stats <- summary((yng_male_analysis[,c("Dist")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("Dist")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("Dist")])) %>% mutate(Explore_variable = "Distance", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+  # Young female
+yng_female_stats <- summary((yng_female_analysis[,c("Dist")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("Dist")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("Dist")])) %>% mutate(Explore_variable = "Distance", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(yng_female_stats,yng_male_stats)
+
+# Midlife male 
+mid_male_stats <- summary((mid_male_analysis[,c("Dist")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("Dist")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("Dist")])) %>% mutate(Explore_variable = "Distance", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats)
+
+#midlife female
+mid_female_stats <- summary((mid_female_analysis[,c("Dist")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("Dist")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("Dist")])) %>% mutate(Explore_variable = "Distance", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats)
+
+
 ###########Plot distribution#####
 # Plotting the distribution
 # ym <- ggplot(yng_male_analysis, aes(x=Dist)) + 
@@ -243,9 +271,33 @@ shapiro.test(mid_male_analysis$speed)# p =.1104
 shapiro.test(yng_female_analysis$speed) #p= 0.03
 shapiro.test(yng_male_analysis$speed)# p = 0,.04 
 
-#
+# ANOVA
 speed_aov <-  aov(formula=speed ~ sex * age,Speed)
 summary(speed_aov)
+
+TukeyHSD(speed_aov)
+
+
+#Summary Stats
+  #young male 
+yng_male_stats[2,] <- summary((yng_male_analysis[,c("speed")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("speed")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("speed")])) %>% mutate(Explore_variable = "Speed", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[2,])
+
+  # Young female
+yng_female_stats[2,] <- summary((yng_female_analysis[,c("speed")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("speed")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("speed")])) %>% mutate(Explore_variable = "Speed", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[2,])
+
+# Midlife male 
+mid_male_stats[2,] <- summary((mid_male_analysis[,c("speed")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("speed")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("speed")])) %>% mutate(Explore_variable = "Speed", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[2,])
+
+#midlife female
+mid_female_stats[2,] <- summary((mid_female_analysis[,c("speed")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("speed")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("speed")])) %>% mutate(Explore_variable = "Speed", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[2,])
 
 ########## Plotting the distribution #########
 # ym <- ggplot(yng_male_analysis, aes(x=speed)) + 
@@ -395,6 +447,29 @@ shapiro.test(yng_female_analysis$TotalObjVisits) # normal
 Obj_aov <- aov(formula=TotalObjVisits ~ sex * age ,ObjVisits)
 summary(Obj_aov)
 
+TukeyHSD(Obj_aov)
+
+#Summary Stats
+  #young male 
+yng_male_stats[3,] <- summary((yng_male_analysis[,c("TotalObjVisits")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("TotalObjVisits")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("TotalObjVisits")])) %>% mutate(Explore_variable = "TotalObjVisits", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[3,])
+
+  # Young female
+yng_female_stats[3,] <- summary((yng_female_analysis[,c("TotalObjVisits")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("TotalObjVisits")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("TotalObjVisits")])) %>% mutate(Explore_variable = "TotalObjVisits", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[3,])
+
+# Midlife male 
+mid_male_stats[3,] <- summary((mid_male_analysis[,c("TotalObjVisits")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("TotalObjVisits")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("TotalObjVisits")])) %>% mutate(Explore_variable = "TotalObjVisits", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[3,])
+
+#midlife female
+mid_female_stats[3,] <- summary((mid_female_analysis[,c("TotalObjVisits")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("TotalObjVisits")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("TotalObjVisits")])) %>% mutate(Explore_variable = "TotalObjVisits", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[3,])
+
 ########## plots#########
 # ym <- ggplot(yng_male_analysis, aes(x=TotalObjVisits)) + 
 #   geom_histogram(bins=10)
@@ -437,7 +512,7 @@ halls <- rbind(mid_female_analysis,mid_male_analysis)
 
 #Young male
 
-yng_male_hall_visits <- yng_big_explore_counts %>% filter(sex =="Male") %>%   transmute(subject,sex,age, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
+yng_male_hall_visits <- yng_big_explore_counts %>% filter(sex =="Male") %>% transmute(subject,sex,age, B, C, D, E, `F`, G, H, J, M, Q, R, S, `T`, U, V, X, Z)
 cols_sum<-c(4:length(yng_male_hall_visits))
 yng_male_hall_visits$total<-rowSums(yng_male_hall_visits[,cols_sum])#finding total hallway counts for each subject for each session 
 yng_male_hall_visits_mean<-aggregate(yng_male_hall_visits$total, list(yng_male_hall_visits$subject), FUN=mean)
@@ -463,6 +538,30 @@ shapiro.test(mid_female_analysis$TotalHallwayVisits)
 
 hallvis_aov<- aov(formula=TotalHallwayVisits ~ sex*age ,halls)
 summary(hallvis_aov)
+
+TukeyHSD(hallvis_aov)
+
+#Summary Stats
+  #young male 
+yng_male_stats[4,] <- summary((yng_male_analysis[,c("TotalHallwayVisits")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("TotalHallwayVisits")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("TotalHallwayVisits")])) %>% mutate(Explore_variable = "TotalHallwayVisits", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[4,])
+
+  # Young female
+yng_female_stats[4,] <- summary((yng_female_analysis[,c("TotalHallwayVisits")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("TotalHallwayVisits")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("TotalHallwayVisits")])) %>% mutate(Explore_variable = "TotalHallwayVisits", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[4,])
+
+# Midlife male 
+mid_male_stats[4,] <- summary((mid_male_analysis[,c("TotalHallwayVisits")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("TotalHallwayVisits")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("TotalHallwayVisits")])) %>% mutate(Explore_variable = "TotalHallwayVisits", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[4,])
+
+#midlife female
+mid_female_stats[4,] <- summary((mid_female_analysis[,c("TotalHallwayVisits")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("TotalHallwayVisits")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("TotalHallwayVisits")])) %>% mutate(Explore_variable = "TotalHallwayVisits", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[4,])
+
 ######## plot ##############
 
 ym <- ggplot(yng_male_analysis, aes(x=TotalHallwayVisits)) + 
@@ -560,8 +659,28 @@ summary(pauses_aov)
 # Post Hoc
 # pairwise.t.test(Pauses$pauses, dist$group, p.adj="bonferroni")
 # 
-# TukeyHSD(pauses_aov)
+ TukeyHSD(pauses_aov)
 
+#Summary Stats
+  #young male 
+yng_male_stats[5,] <- summary((yng_male_analysis[,c("pauses")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("pauses")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("pauses")])) %>% mutate(Explore_variable = "pauses", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[5,])
+
+  # Young female
+yng_female_stats[5,] <- summary((yng_female_analysis[,c("pauses")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("pauses")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("pauses")])) %>% mutate(Explore_variable = "pauses", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[5,])
+
+# Midlife male 
+mid_male_stats[5,] <- summary((mid_male_analysis[,c("pauses")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("pauses")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("pauses")])) %>% mutate(Explore_variable = "pauses", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[5,])
+
+#midlife female
+mid_female_stats[5,] <- summary((mid_female_analysis[,c("pauses")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("pauses")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("pauses")])) %>% mutate(Explore_variable = "pauses", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[5,])
 
 #########plots #########
 # ym <- ggplot(yng_male_analysis, aes(x=pauses)) + 
@@ -702,6 +821,28 @@ shapiro.test(mid_male_analysis$evenness)
 ### Analysis ####
 obj_evenness_aov<- aov(formula=evenness ~ sex*age ,Spread)
 summary(obj_evenness_aov)
+TukeyHSD(obj_evenness_aov)
+
+#Summary Stats
+  #young male 
+yng_male_stats[6,] <- summary((yng_male_analysis[,c("evenness")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("evenness")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("evenness")])) %>% mutate(Explore_variable = "obj_evenness", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[6,])
+
+  # Young female
+yng_female_stats[6,] <- summary((yng_female_analysis[,c("evenness")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("evenness")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("evenness")])) %>% mutate(Explore_variable = "obj_evenness", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[6,])
+
+# Midlife male 
+mid_male_stats[6,] <- summary((mid_male_analysis[,c("evenness")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("evenness")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("evenness")])) %>% mutate(Explore_variable = "obj_evenness", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[6,])
+
+#midlife female
+mid_female_stats[6,] <- summary((mid_female_analysis[,c("evenness")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("evenness")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("evenness")])) %>% mutate(Explore_variable = "obj_evenness", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[6,])
 
 ########plot #######
 # ym <- ggplot(yng_male_analysis, aes(x=evenness)) + 
@@ -841,6 +982,27 @@ shapiro.test(mid_male_analysis$HallEvenness)
 Hallevenness_aov<- aov(formula=evenness ~ sex*age ,Spread)
 summary(Hallevenness_aov)
 
+TukeyHSD(Hallevenness_aov)
+#Summary Stats
+  #young male 
+yng_male_stats[7,] <- summary((yng_male_analysis[,c("HallEvenness")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("HallEvenness")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("HallEvenness")])) %>% mutate(Explore_variable = "HallEvenness", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[7,])
+
+  # Young female
+yng_female_stats[7,] <- summary((yng_female_analysis[,c("HallEvenness")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("HallEvenness")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("HallEvenness")])) %>% mutate(Explore_variable = "HallEvenness", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[7,])
+
+# Midlife male 
+mid_male_stats[7,] <- summary((mid_male_analysis[,c("HallEvenness")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("HallEvenness")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("HallEvenness")])) %>% mutate(Explore_variable = "HallEvenness", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[7,])
+
+#midlife female
+mid_female_stats[7,] <- summary((mid_female_analysis[,c("HallEvenness")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("HallEvenness")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("HallEvenness")])) %>% mutate(Explore_variable = "HallEvenness", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[7,])
 
 #######plot ######
 # ym <- ggplot(yng_male_analysis, aes(x=HallEvenness)) + 
@@ -903,6 +1065,28 @@ shapiro.test(mid_male_analysis$ButtonPress)
 
 BP_aov<- aov(formula=ButtonPress ~ sex*age ,BP)
 summary(BP_aov)
+
+TukeyHSD(BP_aov)
+#Summary Stats
+  #young male 
+yng_male_stats[8,] <- summary((yng_male_analysis[,c("ButtonPress")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("ButtonPress")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("ButtonPress")])) %>% mutate(Explore_variable = "ButtonPress", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[8,])
+
+  # Young female
+yng_female_stats[8,] <- summary((yng_female_analysis[,c("ButtonPress")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("ButtonPress")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("ButtonPress")])) %>% mutate(Explore_variable = "ButtonPress", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[8,])
+
+# Midlife male 
+mid_male_stats[8,] <- summary((mid_male_analysis[,c("ButtonPress")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("ButtonPress")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("ButtonPress")])) %>% mutate(Explore_variable = "ButtonPress", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[8,])
+
+#midlife female
+mid_female_stats[8,] <- summary((mid_female_analysis[,c("ButtonPress")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("ButtonPress")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("ButtonPress")])) %>% mutate(Explore_variable = "ButtonPress", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[8,])
  
 
 ```
@@ -983,6 +1167,28 @@ shapiro.test(mid_male_analysis$entropy)
 
 entropy_aov<- aov(formula=entropy ~ sex*age ,Entropy)
 summary(entropy_aov)
+
+TukeyHSD(entropy_aov)
+#Summary Stats
+  #young male 
+yng_male_stats[9,] <- summary((yng_male_analysis[,c("entropy")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("entropy")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("entropy")])) %>% mutate(Explore_variable = "entropy", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[9,])
+
+  # Young female
+yng_female_stats[9,] <- summary((yng_female_analysis[,c("entropy")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("entropy")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("entropy")])) %>% mutate(Explore_variable = "entropy", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[9,])
+
+# Midlife male 
+mid_male_stats[9,] <- summary((mid_male_analysis[,c("entropy")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("entropy")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("entropy")])) %>% mutate(Explore_variable = "entropy", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[9,])
+
+#midlife female
+mid_female_stats[9,] <- summary((mid_female_analysis[,c("entropy")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("entropy")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("entropy")])) %>% mutate(Explore_variable = "entropy", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[9,])
 ```
 
 A normality test was run on each group. The data was not normally distributed for most groups: Midlife males(p-value = 0.01381), Midlife Females (p-value = 0.000541), Young males (p-value =  0.0001843), and young females (p-value = 0.3501). A two factor anova revealed an effect of sex (0.00455) and an effect of age (< 2e-16)
@@ -1019,6 +1225,27 @@ longesthall <- rbind(mid_exp_paths,yng_exp_paths) %>% dplyr::select(subject,sex,
 longesthall_aov<- aov(formula=hallwayseq ~ sex*age,longesthall)
 summary(longesthall_aov)
 
+TukeyHSD(longesthall_aov)
+#Summary Stats
+  #young male 
+yng_male_stats[10,] <- summary((yng_male_analysis[,c("hallwayseq")])) %>% broom::tidy() %>% mutate(SD= sd(yng_male_analysis[,c("hallwayseq")])) %>% mutate(SEM= std.error(yng_male_analysis[,c("hallwayseq")])) %>% mutate(Explore_variable = "hallwayseq", .before= minimum) %>% mutate(Group = "young male", .before= Explore_variable) %>% mutate(N= nrow(yng_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_male_stats[10,])
+
+  # Young female
+yng_female_stats[10,] <- summary((yng_female_analysis[,c("hallwayseq")])) %>% broom::tidy() %>% mutate(SD= sd(yng_female_analysis[,c("hallwayseq")])) %>% mutate(SEM= std.error(yng_female_analysis[,c("hallwayseq")])) %>% mutate(Explore_variable = "hallwayseq", .before= minimum) %>% mutate(Group = "young female", .before= Explore_variable)%>% mutate(N= nrow(yng_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,yng_female_stats[10,])
+
+# Midlife male 
+mid_male_stats[10,] <- summary((mid_male_analysis[,c("hallwayseq")])) %>% broom::tidy() %>% mutate(SD= sd(mid_male_analysis[,c("hallwayseq")])) %>% mutate(SEM= std.error(mid_male_analysis[,c("hallwayseq")])) %>% mutate(Explore_variable = "hallwayseq", .before= minimum) %>% mutate(Group = "midlife male", .before= Explore_variable)%>% mutate(N= nrow(mid_male_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_male_stats[10,])
+
+#midlife female
+mid_female_stats[10,] <- summary((mid_female_analysis[,c("hallwayseq")])) %>% broom::tidy() %>% mutate(SD= sd(mid_female_analysis[,c("hallwayseq")])) %>% mutate(SEM= std.error(mid_female_analysis[,c("hallwayseq")])) %>% mutate(Explore_variable = "hallwayseq", .before= minimum) %>% mutate(Group = "midlife female", .before= Explore_variable)%>% mutate(N= nrow(mid_female_analysis), .after=Group)
+
+master_stats <- rbind(master_stats,mid_female_stats[10,])
 
 ```
 
@@ -1043,34 +1270,14 @@ wilcox.test(AccDF[AccDF$sex == 'Male' & AccDF$age == "young", c("tm_accuracy")],
 
 ```
 
-```{r Mediation Analysis }
-mediation_df <- rbind(mid_female_analysis,mid_male_analysis)
-mediation_df <- rbind(mediation_df,yng_female_analysis)
-mediation_df <- rbind(mediation_df,yng_male_analysis)
+```{r grabbing csvs }
+write_csv(master_stats, "SexDiff_SummaryStats.csv")
 
-#Step 1- Finding Total Effect (relationship between independent variable & dependent variable)
-# there's a weird return with the vairable names 
-fit.totaleffect<-lm(accuracy ~ age+sex, mediation_df)
-summary(fit.totaleffect)
+Master_analysis <- rbind(yng_female_analysis,yng_male_analysis)
+Master_analysis <- rbind(Master_analysis,mid_female_analysis)
+Master_analysis <- rbind(Master_analysis,mid_male_analysis)
 
-#Pause Duration As Mediator Analysis
-# does  age regression on pauses
-pause_fit.dv<-lm(pauses ~ age, mediation_df) # here the dv being mediated is relationship between age and pauses 
-summary(pause_fit.dv)
-# does  sex regression on pauses. no 
-pause_fit.mediator<-lm(pauses ~ sex, mediation_df) # sex is the mediator
-summary(pause_fit.mediator)
-# no mediation
-
-
-#Object Visits As Mediator Analysis  
-obj_fit.mediator<-lm(TotalObjVisits ~ sex, mediation_df)
-summary(obj_fit.mediator)
-
-obj_fit.dv<-lm(TotalObjVisits ~ age, mediation_df)
-summary(obj_fit.dv)
-# no mediation
-
+write_csv(Master_analysis, "SexDiff_analyses.csv")
 
 
 ```
@@ -1187,6 +1394,14 @@ dev.off()
 
 ```
 
+```{r test LM}
+ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
+weight <- c(ctl, trt)
+lm.D9 <- lm(weight ~ group)
+
+```
 
 
 

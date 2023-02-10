@@ -95,6 +95,8 @@ This is the analysis of the relationship between white matter microstructure and
     
 ### Results    
 ## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
+### Summary 
+QA was positively correlated with estrogen levels across numerous tracts including corpus callosum and cingulum. DSI found tracts in the cerebellum with AD, RD, and MD were negatively associated with estrogen levels. Suggesting that increased levels of estrogen are associated with better white matter micro structure. When analyzing pregnancy only scans, DSI only found significant results in the QA analysis. QA was positively associated with estrogen levels.
 ### QA {.tabset}
 ```{r QA  correlations,echo=FALSE, results='hide',message=FALSE}
 # ALl weeks 
@@ -182,6 +184,9 @@ No significant findings
 
 
 ## <span style="color: magenta;"> Progesterone </span>  {.tabset .tabset-dropdown}
+
+### Summary 
+DSI found significant positive and negative correlations between QA and progesterone in various tracts. There were positive and negative correlations between progesterone and AD, RD, and MD but most of the tracts show a positive association. This suggests that higher levels of progesterone may be associated with decreased or altered white matter integrity and increased levels of diffusion. When analyzing pregnancy only, DSI found significant positive correlations with QA only. Interestingly, it appears that tracts in the cerebellum have the opposite relationship with progesterone compared to estrogen. Tracts in the cerebellum show a positive relationship between progesterone and AD, MD and MD. This suggests that higher levels of progesterone in the cerebellum are associated with increased levels of diffusion, a typical signal of weakened or decreased white matter integrity. 
 
 ### QA {.tabset}
 ```{r QA vars,echo=FALSE, results='hide',message=FALSE}
