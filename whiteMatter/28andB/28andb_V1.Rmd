@@ -97,6 +97,7 @@ This is the analysis of the relationship between white matter microstructure and
 ## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
 ### Summary 
 QA was positively correlated with estrogen levels across numerous tracts including corpus callosum and cingulum. DSI found tracts in the cerebellum with AD, RD, and MD were negatively associated with estrogen levels. Suggesting that increased levels of estrogen are associated with better white matter micro structure. When analyzing pregnancy only scans, DSI only found significant results in the QA analysis. QA was positively associated with estrogen levels.
+
 ### QA {.tabset}
 ```{r QA  correlations,echo=FALSE, results='hide',message=FALSE}
 # ALl weeks 
