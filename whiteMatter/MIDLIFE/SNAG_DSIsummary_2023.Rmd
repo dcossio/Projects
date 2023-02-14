@@ -234,7 +234,7 @@ knitr::kable(QA_acc_post_neg, row.names=F)
 
 ## MD {.tabset}
 ### Summary of results 
-DSI was run on all subejcts, with sex and age listed as covariates. There were positive correlations between MD values in the Fornix (L&R) and performance. Using a sex straisfied apporoach we viewed the relationship between white matter and performanc ein men and women seperately. Men, displayed a majortiy of positive correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of positive correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both positive and negative relationships between MD and  performance. The majority of tracts with positive correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
+DSI was run on all subjects, with sex and age listed as covariates. There were positive correlations between MD values in the Fornix (L&R) and performance. Using a sex stratified apporoach we viewed the relationship between white matter and performance in men and women separately. Men, displayed a majortiy of positive correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of positive correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both positive and negative relationships between MD and  performance. The majority of tracts with positive correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
 
 ```{r MD ALL Variables ,echo=FALSE, results='hide',message="FALSE"}
 # all subjects
@@ -262,7 +262,6 @@ MD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_po
 
 MD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-
 ### All subjects
 
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
@@ -324,7 +323,11 @@ knitr::kable(MD_acc_post_neg, row.names=F)
 
 ### combined peri/post
 
-<!---------------------------------------AD Accuracy---------------------------------  -->
+
+
+
+
+<!------------------------------------AD Accuracy--------------------------------->
 
 ## AD {.tabset}
 ```{r AD all vars,echo=FALSE, results='hide',message="FALSE"}
@@ -417,6 +420,8 @@ knitr::kable(AD_acc_post_neg, row.names=F)
 
 <!---------------------------------------RD Accuracy---------------------------------  -->
 
+
+<!------------------------------------RD Accuracy----------------------------------->
 ## RD {.tabset}
 ```{r RD all subjects, echo=FALSE, results='hide',message="FALSE"}
 
@@ -444,7 +449,6 @@ RD_acc_peripost_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/R
 
 RD_acc_peripost_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/RD_peripost_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-
 ### Summary of results 
 ### All subjects
 #### <span style="color: hotpink;"> Positive ( FDR=  ) </span> 
@@ -518,6 +522,9 @@ knitr::kable(RD_acc_peripost_neg, row.names=F)
 <!----------------------------------Loop position error rad3------------------------------->
 
 
+
+<!-------------------------LOOP position error  rad 3 -------------------------->
+
 # <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 
 ## QA {.tabset}
@@ -552,6 +559,8 @@ QA_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/peripost
 ```
 
 ### Summary of results 
+QA values in several tracts were negatively correlated with Loop Position Error performance in a circle with a 3 m radius. When men and women were analyzed separately, there were different relationships observed. The majority of tracts in men were positively correlated with Position Error and QA values.Suggesting that better QA and white matter integrity is associated with increased Position error. The majority of tracts in women were negatively correlated with QA values and Position error, with a few that were positive. This suggests that in women, white matter integrity is associated with lower position error scores. When splitting by meno pause stage, Pre menopausal women displayed both negative and positive relationships between QA and position error. Peri menopausal women displayed negative correlations between QA and position error. . 
+
 ### All subjects
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
 No Significant Findings
@@ -607,7 +616,6 @@ knitr::kable(QA_peRad3_pre_pos, row.names=F)
 knitr::kable(QA_peRad3_pre_neg, row.names=F)
 ```
 
-
 ## MD {.tabset}
 ```{r MD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
@@ -632,6 +640,7 @@ MD_peRad3_post_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/MD/post/MD_post
 MD_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
+### Summary of results
 ### All subjects
 #### <span style="color: hotpink;"> Positive Corrs  </span>
 No significant results
@@ -696,12 +705,102 @@ knitr::kable(MD_peRad3_peripost_neg, row.names=F)
 
 
 ## AD {.tabset}
+```{r AD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+AD_peRad3_all_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/allSubs/AD_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+AD_peRad3_all_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/allSubs/AD_all_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# MEN
+AD_peRad3_male_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/male/AD_male_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+AD_peRad3_male_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/male/AD_male_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# WOMEN
+AD_peRad3_female_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/female/AD_female_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+AD_peRad3_female_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/female/AD_female_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# PRE
+AD_peRad3_pre_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/pre/AD_pre_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# PERI
+AD_peRad3_peri_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/peri/AD_peri_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+#POST
+AD_peRad3_post_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/post/AD_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# Peri + POST
+AD_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+### Summary of results
 ### All subjects
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_all_neg, row.names=F)
+```
+
 ### Men
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_male_neg, row.names=F)
+```
+
 ### Women
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_female_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_female_neg, row.names=F)
+```
+
 ### pre
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No significant results
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_pre_neg, row.names=F)
+```
+
 ### peri 
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No significant results
+
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_peri_neg, row.names=F)
+```
+
 ### post
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No significant results
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_post_neg, row.names=F)
+```
+
+### Peri + Post
+#### <span style="color: hotpink;"> Positive Corrs  </span> 
+No significant results
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_peripost_neg, row.names=F)
+```
 
 ## RD {.tabset}
 ### All subjects
