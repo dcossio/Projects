@@ -76,8 +76,12 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 ### **DSI Studio**
 *Version and tags used 
   * **chen-2022-07-31**
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
+<h4>Connectometry analysis</h4>
+<p>
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
+ The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
 
-##### **Correlational connectometry**
 
 ###### **Parameters** 
 * T-threshold = 2.5
@@ -125,11 +129,18 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 
 <!---------------------------------------Results---------------------------------->
 
-# <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}
+# <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}  
+
+#### <span style="color: darkgreen;"> Summary</span>  {.tabset}
+A total of 82 diffusion MRI scans were included in the connectometry database. For the connectometry analysis, age, sex and repo status were listed as covariates. All subjects displayed positive and negative correlations between tracts with QA and Maze accuracy.Teacts in the fornix with MD and RD displayed positive relationships with Maze accuracy. AD displayed a negative relationship between tracts in the fornix and maze accuracy. All together the results suggest that increased diffusion (Md and RD) are associated with increased performance in scores in midlife participants and these associations are found in regions associated with spatial navigation. When split by sex, Men displayed a negative association between maze performance and a majority of tracts in the corpus callosum with QA. For AD, RD, and MD, men displayed significant positive relationships between performance. Altogether it suggests that better maze accuracy is associated with increased diffusion in midlife men.  Women displayed the opposite, tracts in the fornix with QA were positively associated with performance while tracts in the fornix, cingulum, and cerebellum  and  with AD,RD, and MD were negatively associated with performance. Suggesting that more specific diffusion is associated with better maze accuracy. Next, Menopause stages were analyzed separately. Pre menopausal women displayed both positive and negative correlations with QA while tracts with AD,RD and MD displayed negative relationships. Peri menopausal women displayed positive associations in tracts with QA, MD, RD, and AD and performance. This suggests that in peri menopasual women, maze accuracy is associated with increased diffusion in tracts on the fornix, cerebellum, and cingulum. Post menopausal women displayed both positive and negative associations between acc and QA. Post menopausal women displayed positive and negative assocoations with QA< MD, RD, and AD and maze accuracy. A majority of tracts in the fornix with AD,MD, and RD were positively associated with maze accuracy 
+
+
+#### <span style="color: darkteal;"> DSI output </span>  {.tabset}
 
 ## QA {.tabset}
+
 ### Summary of results 
-There were both positive and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly positive correlations between QA and performance. When split by menopause stagge, Pre and post displayed both positive and negative correlations while peri displayed only positive correlations with performance. 
+There were both positive and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly positive correlations between QA and performance. When split by menopause stagge, Pre and post displayed both positive and negative correlations while peri displayed only positive correlations with performance. 
 
 ```{r GRabbing all variables ,echo=FALSE, results='hide',message=FALSE}
 # All subjects
@@ -357,6 +368,8 @@ AD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_ac
 AD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
 ### Summary of results 
+Only fornix was negatively associated with performance when all subejcts were analyzed. Fornix and thalamic raditions were positively associated with accuracy.Women displayed negative relationships with tracts int he fornix and cingulum and maze acc. Women in the pre menopasual groups showed tracts were negatively correlated with acc in fornix ,and  corpus callosum. Peri menopausal women showed that a majority of tracts in the fornix, cingulum, and cerebellum were positively associated with Acc. Post menopasual women showed positive tracts in the fornix and negative tracts in the cerbebellum. 
+
 ### All subjects
 #### <span style="color: hotpink;"> Positive Corrs  (FDR= 0.031496) </span> 
 No significant findings 
@@ -415,12 +428,6 @@ knitr::kable(AD_acc_post_neg, row.names=F)
 ```
 
 
-<!---------------------------------------RD Accuracy---------------------------------  -->
-
-
-<!---------------------------------------RD Accuracy---------------------------------  -->
-
-
 <!------------------------------------RD Accuracy----------------------------------->
 ## RD {.tabset}
 ```{r RD all subjects, echo=FALSE, results='hide',message="FALSE"}
@@ -437,7 +444,7 @@ RD_acc_female_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/female/RD_fe
 RD_acc_pre_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/pre/RD_pre_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 
 # PERI
-RD_acc_peri_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peri/RD_peri_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_peri_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peri/RD_peri_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 
 # POST
 RD_acc_post_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/post/RD_post_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
@@ -450,6 +457,8 @@ RD_acc_peripost_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/R
 RD_acc_peripost_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/RD_peripost_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
 ### Summary of results 
+All subjects analyzed, tracts in the fornix were positively associated with acc. In Men, tracts in the fornix were positvely associated with acc. Women showed tracts in the fornix were negatively associated with acc. Pre menopausal women showed a similar findings to women with negative correlations in tracts in the fornix. Peri menopasual women showed results similar to men, with tracts in the fornix positively associated. Post menopausal women displayed positive and negative associations with a majority of positive tracts located in the fornix and negative tracts in the cerebellum. 
+
 ### All subjects
 #### <span style="color: hotpink;"> Positive ( FDR=  ) </span> 
 ```{r, echo=FALSE}
@@ -486,12 +495,13 @@ knitr::kable(RD_acc_pre_neg, row.names=F)
 
 ### peri 
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
-No Significant Findings
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(RD_acc_peri_pos, row.names=F)
+```
 
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs</span> 
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peri_neg, row.names=F)
-```
+No Significant Findings
+
 
 ### post
 #### <span style="color: hotpink;"> Positive Corrs  </span> 
@@ -654,6 +664,7 @@ MD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/peripo
 
 ```
 ### Summary of results
+When analyzing all subjects, tracts in fornix and thalamix radion were negatively associated with PE scores. In men, tracts in the fornix were positively associated with loop PE scores. In women, and all menopause stages, tracts were negatively associated with MD and loop PE scores. Increased scores signify poor performance.  
 ### All subjects
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
 No significant results
