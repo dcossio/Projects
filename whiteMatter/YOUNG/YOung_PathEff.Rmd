@@ -36,14 +36,8 @@ library(knitr)
 ```
 
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
 ```{r Global Variables, ,echo=FALSE, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/young-MLINDIV/DSI/Path_eff"
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/young-MLINDIV/DSI/Path_eff/"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 ```
@@ -90,33 +84,209 @@ This is the analysis of white matter dsi studio connectometry for young maze pat
 ###### All subjects 
 N= 79
 
-T thresholds
-* QA
-* MD
-* RD
-* AD
+T threshold  
 
+* QA = 4  
+* MD = 3.7  
+* RD = 4.4  
+* AD = 3.7  
 
 ###### Men 
-N= 39
+N= 39  
+
+T threshold  
+
+* QA = 4  
+* MD = 3.7  
+* RD = 4.4  
+* AD = 3.7  
 
 ###### Women
+N= 40  
 
+T threshold  
 
+* QA = 4  
+* MD = 3.7  
+* RD = 4.4  
+* AD = 3.7  
 
-###### Average
-* All subjects = 42
-* Men = 17
-* Women = 25
-* Stage
-  * Pre = 23
-  * Peri = 20 
-  * Post = 17
-
-<!---------------------------------------QA Accuracy--------------------------------->
 
 <!---------------------------------------Results---------------------------------->
 
-# <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}
+# <span style="color: darkorange;"> Results  </span>  
 
+<!---------------------------------------QA PAth Efficiency --------------------------------->
 ## QA {.tabset}
+
+```{r QA variables ,echo=FALSE, results='hide',message=FALSE}
+# All subjects
+QA_patheff_all_neg <- read.delim(paste0(working_dir,'QA/all_subs/QA_PE_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+QA_patheff_male_neg <- read.delim(paste0(working_dir,'QA/male/QA_PE_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# Women 
+QA_patheff_female_neg <- read.delim(paste0(working_dir,'QA/female/QA_PE_fem_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+### Summary of results 
+DSI studio analyses revealed that there are significant negative associations between tracts with QA and Path efficiency. In this case, lower path efficiency is considered better performance. Lower PE scores are associated with higher QA values suggesting that better white matter integrity is associated with better PE performance. This finding was found when analyzing all subjects with sex and age as covariates and when splitting men and women.  
+
+### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+No significant tracts  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.004717)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_patheff_all_neg, row.names=F)
+```
+
+### Men
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+No significant tracts  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.008850)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_patheff_male_neg, row.names=F)
+```
+
+
+### Women
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+No significant tracts
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.003205)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_patheff_female_neg, row.names=F)
+```
+
+
+## MD {.tabset}
+```{r MD variables ,echo=FALSE, results='hide',message=FALSE}
+# All subjects
+MD_patheff_all_pos <- read.delim(paste0(working_dir,'MD/all_subs/MD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+MD_patheff_male_pos <- read.delim(paste0(working_dir,'MD/male/MD_PE_male.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# Women 
+MD_patheff_female_pos <- read.delim(paste0(working_dir,'MD/female/MD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+
+### Summary of results 
+DSI studio analyses revealed that there are significant positive associations between tracts with MD and Path efficiency. Increased MD is a signal of impaired white matter integrity and increased diffusion levels.  In this case, lower path efficiency is considered better performance. Lower PE scores are associated with lower MD values suggesting that better white matter integrity is associated with better PE performance. This finding was found when analyzing all subjects with sex and age as covariates and when splitting men and women.  
+
+
+### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000559) </span>  
+
+```{r, echo=FALSE}
+knitr::kable(MD_patheff_all_pos, row.names=F)
+```  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+### Men
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.007752) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_patheff_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+### Women 
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.002268) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_patheff_female_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+## AD {.tabset}
+```{r AD variables ,echo=FALSE, results='hide',message=FALSE}
+# All subjects
+AD_patheff_all_pos <- read.delim(paste0(working_dir,'AD/all_subs/AD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+AD_patheff_male_pos <- read.delim(paste0(working_dir,'AD/male/AD_PE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# Women 
+AD_patheff_female_pos <- read.delim(paste0(working_dir,'AD/female/AD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+
+### Summary of results 
+DSI studio analyses revealed that there are significant positive associations between tracts with MD and Path efficiency. AD is a measure of water diffusion along an axon and can be non-specifically associated with axonal density.  In this case, lower path efficiency is considered better performance. Lower PE scores are associated with lower AD values suggesting that  better PE scores are associated with decreased AD. This finding was found when analyzing all subjects with sex and age as covariates and when splitting men and women.  
+
+### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.007407) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_patheff_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+### Men
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.010753) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_patheff_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+### Women 
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000498) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_patheff_female_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+## RD {.tabset}
+```{r RD variables ,echo=FALSE, results='hide',message=FALSE}
+# All subjects
+RD_patheff_all_pos <- read.delim(paste0(working_dir,'RD/all_subs/RD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+RD_patheff_male_pos <- read.delim(paste0(working_dir,'RD/male/RD_PE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# Women 
+RD_patheff_female_pos <- read.delim(paste0(working_dir,'RD/female/RD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+### Summary of results 
+DSI studio analyses revealed that there are significant positive associations between tracts with RDand Path efficiency. RD is a measure of water diffusion away from an axon.  In this case, lower path efficiency is considered better performance. Lower PE scores are associated with lower RD values suggesting that  better PE scores are associated decreased RD. This finding was found when analyzing all subjects with sex and age as covariates and when splitting men and women.  
+
+### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.010000) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_patheff_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+### Men
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.012195) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_patheff_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+### Women 
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.006757) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_patheff_female_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Tracts  
+
+<!---------------------------------------END --------------------------------->
+# <span style="color: darkorange;"> END  </span>  
