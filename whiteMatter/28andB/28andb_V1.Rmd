@@ -116,6 +116,14 @@ knitr::kable(Est_QA_all_pos, row.names=F)
 #####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.250000)</span> 
 No significant Findings
 
+#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+
+![Positive Correlations between QA and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Est_QA_allstages_pos-cor.png)
+
+![Positive Correlations between QA and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_corr.jpg)
+
+![Positive Correlations between QA and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_neg.jpg)
+
 #### Pregnancy only
 ##### <span style="color: hotpink;"> Positive (FDR= 0.043802) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -124,6 +132,29 @@ knitr::kable(Est_QA_pregnancy_pos, row.names=F)
 
 #####  <span class="text-center" style="color: Teal;"> Negative (FDR= 1.0000)</span> 
 No significant Findings
+
+### MD {.tabset}
+```{r MD all scans correlations,echo=FALSE, results='hide',message=FALSE}
+Est_MD_allwks_neg <- read.csv(paste0(estrogen_path,'MD/Allwks/neg_stats_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+```
+
+##### <span style="color: hotpink;"> Positive (FDR= 0.205882) </span> 
+No significant findings
+
+#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.002002)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_MD_allwks_neg, row.names=F)
+```
+
+#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
+![Negative Correlations between MD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Est_MD_allstages_neg_cor.png)
+
+![Negative Correlations between MD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.neg_corr.jpg)
+
+![Negative Correlations between MD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.pos_neg.jpg)
+
+#### Pregnancy 
+No significant findings 
 
 ### AD {.tabset}
 ```{r AD all scans correlations,echo=FALSE, results='hide',message=FALSE}
@@ -144,21 +175,9 @@ knitr::kable(Est_AD_allwks_pos, row.names=F)
 knitr::kable(Est_AD_allwks_neg, row.names=F)
 ```
 
-#### Pregnancy 
-No significant findings 
+#####  <span class="text-center" style="color: Dark Blue;"> Negative TRacts </span> 
+![Negative Correlations between AD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/AD/Allwks/Est_AD_allstages_neg_cor.png)
 
-### MD {.tabset}
-```{r MD all scans correlations,echo=FALSE, results='hide',message=FALSE}
-Est_MD_allwks_neg <- read.csv(paste0(estrogen_path,'MD/Allwks/neg_stats_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-```
-
-##### <span style="color: hotpink;"> Positive (FDR= 0.205882) </span> 
-No significant findings
-
-#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.002002)</span> 
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_MD_allwks_neg, row.names=F)
-```
 
 #### Pregnancy 
 No significant findings 
@@ -179,6 +198,10 @@ knitr::kable(Est_RD_allwks_pos, row.names=F)
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_RD_allwks_neg, row.names=F)
 ```
+
+#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts </span> 
+![Negative Correlations between RD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks/Est_RD_allstages_neg_cor.png)
+
 
 #### pregnancy only
 No significant findings
@@ -211,6 +234,15 @@ knitr::kable(prog_QA_all_pos, row.names=F)
 knitr::kable(prog_QA_all_neg, row.names=F)
 ```
 
+#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+![Positive Correlations between QA and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_pos_cor.png)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> \
+![Negative Correlations between QA and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_neg_cor.png)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+![Positive and Negative Correlations between QA and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_both_cor.png)
+
 #### Pregnancy only
 ##### <span style="color: hotpink;"> Positive ( FDR= 0.043802 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -241,6 +273,21 @@ knitr::kable(prog_MD_all_pos, row.names=F)
 knitr::kable(prog_MD_all_neg, row.names=F)
 ```
 
+#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+![Positive Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_pos_cor.png)
+
+![Positive Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
+![Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_neg_cor.png)
+
+![Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+![Positive and Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_both_cor.png)
+
+![Positive and Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
+
 #### Pregnancy only
 No significant Findings
 
@@ -261,6 +308,19 @@ knitr::kable(prog_AD_all_pos, row.names=F)
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(prog_AD_all_neg, row.names=F)
 ```
+##### <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+![Positive Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_pos_cor.png)
+
+![Positive Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
+![Negative Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_neg_cor.png)
+
+![Negative Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
+
+
+#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+![Positive and Negative Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
 
 #### Pregnancy only
 No significant Findings
@@ -282,6 +342,21 @@ knitr::kable(prog_RD_all_pos, row.names=F)
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(prog_RD_all_neg, row.names=F)
 ```
+#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts  </span> 
+![Positive Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_pos_cor.png)
+
+![Positive Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
+![Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_neg_cor.png)
+
+![Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
+
+#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+![Positive and Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_both_cor.png)
+
+![Positive and Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
+
 
 #### Pregnancy only
 No significant Findings
