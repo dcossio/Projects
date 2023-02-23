@@ -1265,12 +1265,101 @@ knitr::kable(AD_deRad3_peripost_neg, row.names=F)
 ```
 
 ## RD {.tabset}
+```{r RD Loop Degree error RRDd3 variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+RD_deRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/allSubs/RD_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+RD_deRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/male/RD_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_deRad3_male_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/male/RD_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# WOMEN
+RD_deRad3_female_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/female/RD_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_deRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/female/RD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PRE
+RD_deRad3_pre_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/pre/RD_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_deRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/pre/RD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PERI
+
+RD_deRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peri/RD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+#POST
+RD_deRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/post/RD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# Peri + POST
+RD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peripost/RD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_deRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+```
+### Summary
 ### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.027027) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+No Significant Findings
+
 ### Men
+#### <span style="color: hotpink;"> Positive Corrs (Not Significant?) (FDR = 0.553308) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_male_neg, row.names=F)
+```
 ### Women
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.105231) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_female_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.063559)</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_female_neg, row.names=F)
+```
 ### pre
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.181320)) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_pre_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_pre_neg, row.names=F)
+```
 ### peri 
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+No Significant Findings  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.020058) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_peri_neg, row.names=F)
+```
+
 ### post
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+No Significant Findings  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.035618) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_post_neg, row.names=F)
+```
+
+### Peri + Post
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.141074) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_peripost_pos, row.names=F)
+```
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.240841) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_deRad3_peripost_neg, row.names=F)
+```
 
 
 
@@ -1300,38 +1389,7 @@ knitr::kable(AD_deRad3_peripost_neg, row.names=F)
 ### post
 
 ## RD {.tabset}
-```{r RD}
-# # ALL SUBS
-# RD_deRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/allSubs/RD_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-# 
-# RD_deRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/allSubs/RD_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# # MEN
-# RD_deRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/male/RD_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# RD_deRad3_male_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/male/RD_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# # WOMEN
-# RD_deRad3_female_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/female/RD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# RD_deRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/female/RD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# # PRE
-# RD_deRad3_pre_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/pre/RD_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# RD_deRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/pre/RD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# # PERI
-# RD_deRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peri/RD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# #POST
-# RD_deRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/post/RD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# # Peri + POST
-# RD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peripost/RD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-# 
-# RD_deRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  
-```
+
 ### All subjects
 ### Men
 ### Women
@@ -1344,28 +1402,305 @@ knitr::kable(AD_deRad3_peripost_neg, row.names=F)
 <!---------------------------------------Loop Angular Error--------------------------------  -->
 # <span style="color: DarkSlateGrey;"> Loop angular error Rad3 </span>  {.tabset .tabset-dropdown}
 ## QA {.tabset}
+```{r QA Loop Angular error Rad3 variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+QA_aeRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/allSubs/qa_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/allSubs/qa_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+QA_aeRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/male/QA_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_male_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/male/QA_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# WOMEN
+QA_aeRad3_female_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/female/QA_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/female/QA_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PRE
+QA_aeRad3_pre_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/pre/QA_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/pre/QA_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PERI
+QA_aeRad3_peri_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/peri/QA_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/peri/QA_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+#POST
+QA_aeRad3_post_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/post/QA_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/post/QA_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# Peri + POST
+QA_aeRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/peripost/QA_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_aeRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+```
+### Summary
 ### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000675) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.004296)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_all_neg, row.names=F)
+```
+
 ### Men
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.012481) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.024096)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_male_neg, row.names=F)
+```
 ### Women
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.015385) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_female_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001027)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_female_neg, row.names=F)
+```
 ### pre
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.036981) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_pre_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.009185)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_pre_neg, row.names=F)
+```
 ### peri 
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.317868) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_peri_pos, row.names=F)
+```  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.029057) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_peri_neg, row.names=F)
+```
+
 ### post
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+No Significant Findings  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.302332) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_post_neg, row.names=F)
+```
+
+### Peri + Post
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.082506) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_peripost_pos, row.names=F)
+```
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.081279) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_aeRad3_peripost_neg, row.names=F)
+```
 
 ## MD {.tabset}
+```{r MD Loop Angular error Rad3 variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+MD_aeRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/allSubs/MD_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+MD_aeRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/allSubs/MD_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+MD_aeRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/male/MD_males_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+MD_aeRad3_male_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/male/MD_males_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# WOMEN
+MD_aeRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/female/MD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PRE
+
+MD_aeRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/pre/MD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PERI
+MD_aeRad3_peri_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/peri/MD_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+MD_aeRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/peri/MD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+#POST
+
+MD_aeRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/post/MD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# Peri + POST
+MD_aeRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/peripost/MD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+MD_aeRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+```
+### Summary
 ### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.052632) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.001083)</span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_all_neg, row.names=F)
+```
+
 ### Men
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.052789) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (Not significant) (FDR = 1.000000)</span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_male_neg, row.names=F)
+```
 ### Women
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+Not significant
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000594)</span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_female_neg, row.names=F)
+```
 ### pre
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+Not significant
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.027414)</span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_pre_neg, row.names=F)
+```
 ### peri 
+#### <span style="color: hotpink;"> Positive Corrs (not significant) (FDR = 1.000000) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_peri_pos, row.names=F)
+```  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.018769) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_peri_neg, row.names=F)
+```
+
 ### post
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+No Significant Findings  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (Not significant?) (FDR = 0.289057) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_post_neg, row.names=F)
+```
+
+### Peri + Post
+#### <span style="color: hotpink;"> Positive Corrs (not significant?)  (FDR = 1.000000) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_peripost_pos, row.names=F)
+```
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.187319) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_aeRad3_peripost_neg, row.names=F)
+```
+
 
 ## AD {.tabset}
+```{r AD Loop Angular error Rad3 variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+AD_aeRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/allSubs/AD_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+AD_aeRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/allSubs/AD_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+AD_aeRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/male/AD_males_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# WOMEN
+AD_aeRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/female/AD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PRE
+
+AD_aeRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/pre/AD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PERI
+AD_aeRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/peri/AD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+#POST
+AD_aeRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/post/AD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# Peri + POST
+AD_aeRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/peripost/AD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+AD_aeRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+```
+### Summary
 ### All subjects
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_all_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.000569)</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_all_neg, row.names=F)
+```
+
 ### Men
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.052789) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_male_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (Not significant) (FDR = 1.000000)</span> 
+Not significant 
+
 ### Women
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+Not significant
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000594)</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_female_neg, row.names=F)
+```
+
 ### pre
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+Not significant
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.027414)</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_pre_neg, row.names=F)
+```
+
 ### peri 
+#### <span style="color: hotpink;"> Positive Corrs (not significant) (FDR = 1.000000) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_peri_pos, row.names=F)
+```  
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.018769) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_peri_neg, row.names=F)
+```
+
 ### post
+#### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+No Significant Findings  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (Not significant?) (FDR = 0.289057) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_post_neg, row.names=F)
+```
+
+### Peri + Post
+#### <span style="color: hotpink;"> Positive Corrs (not significant?)  (FDR = 1.000000) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_peripost_pos, row.names=F)
+```
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.187319) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_aeRad3_peripost_neg, row.names=F)
+```
 
 ## RD {.tabset}
 ### All subjects
