@@ -1,7 +1,7 @@
 ---
 title: "28andb DSI studio analysis"
 author: "Daniela Cossio"
-date: "02/07/2023"
+date: "02/27/2023"
 output: html_document
 ---
 
@@ -49,7 +49,7 @@ h1, h2 {
 # working directory to data 
 estrogen_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/"
 Prog_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/"
-
+Gest_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/"
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
 ```
@@ -59,7 +59,14 @@ This is the analysis of the relationship between white matter microstructure and
 #### **Participants** 
   * One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
   
-  * 18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.   
+  * 18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.
+    * **2019-07-12_ucsb** : No DWI 
+    * **2019-08-13_ucsb** : DSI Low Quality Outliar 
+    * **20191025** :  No DWI 
+    * **LC002_11_12_19**: No DWI
+    * **LC002_2_7_20** : No DWI
+    * **20200312_20200312_100001_490000** : Had DWI but i think there was a conversion error because it failed QSIprep.  so I may re try converting to BidSkit and then re preprocessing
+    * **2019-10-10_uci**: Was missing for a while but had an issue when converting to bidskit. Missing one of the fmaps needed for proper bids and also needed for DSI. I'll try to reconvert this in case it was an error on my end. 
 
 #### **Scan parameters** 
   * Locations from UCSB and UCI
@@ -81,6 +88,9 @@ This is the analysis of the relationship between white matter microstructure and
 * pruning 4
 * non normalized QA T threshold: 2.5
 
+###### 
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.
+
 ##### Analyses {.tabset}
 ###### Estrogen 
 * Total scans: 16
@@ -92,10 +102,15 @@ This is the analysis of the relationship between white matter microstructure and
 * Total pregnancy scans = 9 
 * 3 scans removed due to having no progesterone measurement
 
+###### Gestational
+* Total scans: 12
+* 6 scans not used since they are post natal scans
     
 ### Results    
 ## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
+
 ### Summary 
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA AD, MD, and RD correlated with Estrogen. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of Endocrine_Status was removed using a multiple regression model. A total of 16 subjects were included in the analysis. A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29). The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.  
 QA was positively correlated with estrogen levels across numerous tracts including corpus callosum and cingulum. DSI found tracts in the cerebellum with AD, RD, and MD were negatively associated with estrogen levels. Suggesting that increased levels of estrogen are associated with better white matter micro structure. When analyzing pregnancy only scans, DSI only found significant results in the QA analysis. QA was positively associated with estrogen levels.
 
 ### QA {.tabset}
@@ -105,9 +120,10 @@ Est_QA_all_pos <- read.csv(paste0(estrogen_path,'QA/Allwks/pos_stats.csv'), head
 
 # Pregnancy only
 
-Est_QA_pregnancy_pos <- read.csv(paste0(estrogen_path,'QA/pregnancy/pos_stats_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+Est_QA_pregnancy_pos <- read.csv(paste0(estrogen_path,'QA/pregnancy/pos_stats_2.csv'), header=FALSE) %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
+
 #### All weeks 
 ##### <span style="color: hotpink;"> Positive (FDR= 0.002484) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -116,13 +132,13 @@ knitr::kable(Est_QA_all_pos, row.names=F)
 #####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.250000)</span> 
 No significant Findings
 
-#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
 
-![Positive Correlations between QA and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Est_QA_allstages_pos-cor.png)
+![Slice overlay image displaying tracts that had QA positively correlate with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Est_QA_allstages_pos-cor.png)
 
-![Positive Correlations between QA and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_corr.jpg)
+![Directional glass brain displaying tracts that had QA positively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_corr.jpg)
 
-![Positive Correlations between QA and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_neg.jpg)
+![Glass brain displaying tracts that had QA positively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_neg.jpg)
 
 #### Pregnancy only
 ##### <span style="color: hotpink;"> Positive (FDR= 0.043802) </span> 
@@ -146,12 +162,12 @@ No significant findings
 knitr::kable(Est_MD_allwks_neg, row.names=F)
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
-![Negative Correlations between MD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Est_MD_allstages_neg_cor.png)
+#####  <span class="text-center" style="color: Dark Blue;"> Figures  </span> 
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Est_MD_allstages_neg_cor.png)
 
-![Negative Correlations between MD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.neg_corr.jpg)
+![Directional glass brain displaying tracts that had MD negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.neg_corr.jpg)
 
-![Negative Correlations between MD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.pos_neg.jpg)
+![Glass Brain displaying tracts that had MD negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.pos_neg.jpg)
 
 #### Pregnancy 
 No significant findings 
@@ -175,8 +191,8 @@ knitr::kable(Est_AD_allwks_pos, row.names=F)
 knitr::kable(Est_AD_allwks_neg, row.names=F)
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Negative TRacts </span> 
-![Negative Correlations between AD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/AD/Allwks/Est_AD_allstages_neg_cor.png)
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Slice overlay image displaying tracts that had AD negatively correlate with Estrogen levels](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/AD/Allwks/Est_AD_allstages_neg_cor.png)
 
 
 #### Pregnancy 
@@ -199,9 +215,10 @@ knitr::kable(Est_RD_allwks_pos, row.names=F)
 knitr::kable(Est_RD_allwks_neg, row.names=F)
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts </span> 
-![Negative Correlations between RD and Estrogen across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks/Est_RD_allstages_neg_cor.png)
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Slice overlay image displaying tracts that had AD negatively correlate with Estrogen levels](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks/Est_RD_allstages_neg_cor.png)
 
+![Glass Brain displaying tracts that had MD positively and negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks/Est_RD_allstages_pos_neg_glass.png)
 
 #### pregnancy only
 No significant findings
@@ -210,6 +227,8 @@ No significant findings
 ## <span style="color: magenta;"> Progesterone </span>  {.tabset .tabset-dropdown}
 
 ### Summary 
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has qa,MD, RD and AD correlated with Progesterone. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of Endocrine_Status was removed using a multiple regression model. A total of 15 subjects were included in the analysis. A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) . The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.  
+ 
 DSI found significant positive and negative correlations between QA and progesterone in various tracts. There were positive and negative correlations between progesterone and AD, RD, and MD but most of the tracts show a positive association. This suggests that higher levels of progesterone may be associated with decreased or altered white matter integrity and increased levels of diffusion. When analyzing pregnancy only, DSI found significant positive correlations with QA only. Interestingly, it appears that tracts in the cerebellum have the opposite relationship with progesterone compared to estrogen. Tracts in the cerebellum show a positive relationship between progesterone and AD, MD and MD. This suggests that higher levels of progesterone in the cerebellum are associated with increased levels of diffusion, a typical signal of weakened or decreased white matter integrity. 
 
 ### QA {.tabset}
@@ -234,14 +253,16 @@ knitr::kable(prog_QA_all_pos, row.names=F)
 knitr::kable(prog_QA_all_neg, row.names=F)
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
-![Positive Correlations between QA and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_pos_cor.png)
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had QA positvely  correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_pos_cor.png)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> \
-![Negative Correlations between QA and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_neg_cor.png)
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_neg_cor.png)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
-![Positive and Negative Correlations between QA and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_both_cor.png)
+![Slice overlay image displaying ROIs with tracts that had QA positevely and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_both_cor.png)
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_pos_neg_allviewsglass.png)
 
 #### Pregnancy only
 ##### <span style="color: hotpink;"> Positive ( FDR= 0.043802 ) </span> 
@@ -274,19 +295,19 @@ knitr::kable(prog_MD_all_neg, row.names=F)
 ```
 
 #####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
-![Positive Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_pos_cor.png)
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_pos_cor.png)
 
-![Positive Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
+![Glass Brain displaying tracts that had MD positively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
-![Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_neg_cor.png)
+![Slice overlay image displaying ROIs with tracts that had MD and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_neg_cor.png)
 
-![Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
+![Glass Brain displaying tracts that had MD negatively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
-![Positive and Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_both_cor.png)
+![Slice overlay image displaying ROIs with tracts that had MD positively and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_both_cor.png)
 
-![Positive and Negative Correlations between MD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
+![Glass Brain displaying tracts that had MD positively and negatively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
 
 #### Pregnancy only
 No significant Findings
@@ -309,18 +330,18 @@ knitr::kable(prog_AD_all_pos, row.names=F)
 knitr::kable(prog_AD_all_neg, row.names=F)
 ```
 ##### <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
-![Positive Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_pos_cor.png)
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_pos_cor.png)
 
-![Positive Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
+![Glass Brain displaying tracts that had AD positively correlated with Progesterone ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
-![Negative Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_neg_cor.png)
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_neg_cor.png)
 
-![Negative Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
+![Glass Brain displaying tracts that had AD negatively correlated with Progesterone ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
 
 
 #####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
-![Positive and Negative Correlations between AD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
+![Glass Brain displaying tracts that had AD positively and  negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
 
 #### Pregnancy only
 No significant Findings
@@ -343,23 +364,140 @@ knitr::kable(prog_RD_all_pos, row.names=F)
 knitr::kable(prog_RD_all_neg, row.names=F)
 ```
 #####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts  </span> 
-![Positive Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_pos_cor.png)
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_pos_cor.png)
 
-![Positive Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
+![Glass Brain displaying tracts that had RD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
-![Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_neg_cor.png)
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Progesterones](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_neg_cor.png)
 
-![Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
+![Glass Brain displaying tracts that had RD negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
 
 #####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
-![Positive and Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_both_cor.png)
+![Slice overlay image displaying ROIs with tracts that had ARD positively and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_both_cor.png)
 
-![Positive and Negative Correlations between RD and Progesterone across pregnancy stages](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
+![Glass Brain displaying tracts that had AD positively and negatively correlated with Progesterones](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
 
 
 #### Pregnancy only
 No significant Findings
+
+
+## <span style="color: magenta;"> Gestational Week  </span>  {.tabset .tabset-dropdown}
+
+### Summary 
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, AD, RD and MD correlated with GestWeek. A nonparametric Spearman correlation was used to derive the correlation. Subjects with GestWeek were selected. A total of 12 subjects were included in the analysis. A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) . The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.
+
+### QA {.tabset}
+```{r QA Gestational WEek QA,echo=FALSE, results='hide',message=FALSE}
+# Pre and during pregnancy weeks up to week 40 
+
+gest_QA_pos <- read.delim(paste0(Gest_path,'QA/Pre_Preg_wks/QA_gestWeek_PreandPreg_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+```
+#### Weeks 1-40
+##### <span style="color: hotpink;"> Positive ( FDR= 0.000214 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(gest_QA_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
+No Significant Findings 
+
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Slice overlay  displaying ROIs with tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/QA_gest_Pre_Preg_pos_cor.png)
+
+
+![Directional glass brain displaying tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/GestWeek.t2.length25.pos_corr.jpg)
+
+![Glass brain displaying tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
+
+### MD {.tabset}
+```{r Gestational MD vars,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+gest_MD_pos <- read.delim(paste0(Gest_path,'MD/Pre_Preg_wks/MD_gestWeek_PreandPreg_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+gest_MD_neg <- read.delim(paste0(Gest_path,'MD/Pre_Preg_wks/MD_gestWeek_PreandPreg_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+#### All weeks 
+##### <span style="color: hotpink;"> Positive ( FDR= 0.066667 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(gest_MD_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.021684)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(gest_MD_neg, row.names=F)
+```
+
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Directional glass brain displaying tracts that had MD Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/GestWeek.t2.length25.pos_corr.jpg)
+
+![Slice overlay  displaying ROIs with tracts that had MD Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/MD_gest_Pre_Preg_Pos_roi_cor.png)
+
+
+![Directional glass brain displaying tracts that had MD Negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/GestWeek.t2.length25.neg_corr.jpg)
+
+![Slice overlay  displaying ROIs with tracts that had MD Neg correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/MD_gest_Pre_Preg_neg_roi_cor.png)
+
+
+![Glass brain displaying tracts that had MD positively and negatively  correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
+
+
+### AD {.tabset}
+```{r Gestational AD vars,echo=FALSE, results='hide',message=FALSE}
+gest_AD_neg <- read.delim(paste0(Gest_path,'AD/Pre_Preg_wks/AD_gestWeek_PreandPreg_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+
+```
+#### Weeks 1-40
+##### <span style="color: hotpink;"> Positive ( FDR= 0.273504 ) </span> 
+No Significant Tracts
+
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.007377)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(gest_AD_neg, row.names=F)
+```
+
+##### <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+
+![Slice overlay  displaying ROIs with tracts that had AD negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/AD/Pre_Preg_wks/AD_gest_Pre_Preg_neg_cor.png)
+
+![Directional glass brain displaying tracts that had AD Negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/AD/Pre_Preg_wks/GestWeek.t2.length25.neg_corr.jpg)
+
+![Glass brain displaying tracts that had AD negatively  correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/AD/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
+
+
+### RD {.tabset}
+```{r GEstational RD vars,echo=FALSE, results='hide',message=FALSE}
+# ALl weeks 
+gest_RD_pos <- read.delim(paste0(Gest_path,'RD/Pre_Preg_wks/RD_gestWeek_PreandPreg_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+gest_RD_neg <- read.delim(paste0(Gest_path,'RD/Pre_Preg_wks/RD_gestWeek_PreandPreg_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+#### Weeks 1-40
+##### <span style="color: hotpink;"> Positive ( FDR= 0.200000 ) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(gest_RD_pos, row.names=F)
+```
+#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.200000)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(gest_RD_neg, row.names=F)
+```
+
+#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Slice overlay  displaying ROIs with tracts that had RD positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/RD_gest_Pre_Preg_pos_roi_ax.png)
+
+![Directional glass brain displaying tracts that had RD Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/GestWeek.t2.length25.pos_corr.jpg)
+
+![Slice overlay  displaying ROIs with tracts that had RD negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/RD_gest_Pre_Preg_neg_roi_cor.png)
+
+![Directional glass brain displaying tracts that had RD Negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/GestWeek.t2.length25.neg_corr.jpg)
+
+![Slice overlay  displaying ROIs with tracts that had RD  positvely and negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/RD_gest_Pre_Preg_both_roi_ax.png)
+
+![Glass brain displaying tracts that had MD positively and negatively  correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
+
+
 
 ## END
 
