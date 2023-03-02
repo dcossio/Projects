@@ -37,8 +37,8 @@ library(knitr)
 
 
 ```{r Global Variables, ,echo=FALSE, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/young-MLINDIV/DSI/Path_eff/"
-
+all_trial_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/young-MLINDIV/DSI/Path_eff/Alltrials_PathEff/"
+correct_trial_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/young-MLINDIV/DSI/Path_eff/AccTrials_PathEff/"
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 ```
 
@@ -96,39 +96,39 @@ N= 39
 
 T threshold  
 
-* QA = 4  
-* MD = 3.7  
-* RD = 4.4  
-* AD = 3.7  
+* QA = 3.2 
+* MD = 3.3  
+* RD = 3.7  
+* AD = 2.6  
 
 ###### Women
 N= 40  
 
 T threshold  
 
-* QA = 4  
-* MD = 3.7  
-* RD = 4.4  
-* AD = 3.7  
+* QA = 4.1 
+* MD = 2.9  
+* RD = 2.4  
+* AD = 3.4  
 
 
 <!---------------------------------------Results---------------------------------->
 
-# <span style="color: darkorange;"> Results  </span>  
+# <span style="color: darkorange;"> Results with All trial path efficiency  </span>  
 
 <!---------------------------------------QA PAth Efficiency --------------------------------->
 ## QA {.tabset}
 
 ```{r QA variables ,echo=FALSE, results='hide',message=FALSE}
 # All subjects
-QA_patheff_all_neg <- read.delim(paste0(working_dir,'QA/all_subs/QA_PE_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+QA_patheff_all_neg <- read.delim(paste0(all_trial_path,'QA/all_subs/QA_PE_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # MEN
-QA_patheff_male_neg <- read.delim(paste0(working_dir,'QA/male/QA_PE_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_patheff_male_neg <- read.delim(paste0(all_trial_path,'QA/male/QA_PE_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 
 # Women 
-QA_patheff_female_neg <- read.delim(paste0(working_dir,'QA/female/QA_PE_fem_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+QA_patheff_female_neg <- read.delim(paste0(all_trial_path,'QA/female/QA_PE_fem_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 ```
 ### Summary of results 
@@ -166,14 +166,14 @@ knitr::kable(QA_patheff_female_neg, row.names=F)
 ## MD {.tabset}
 ```{r MD variables ,echo=FALSE, results='hide',message=FALSE}
 # All subjects
-MD_patheff_all_pos <- read.delim(paste0(working_dir,'MD/all_subs/MD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+MD_patheff_all_pos <- read.delim(paste0(all_trial_path,'MD/all_subs/MD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # MEN
-MD_patheff_male_pos <- read.delim(paste0(working_dir,'MD/male/MD_PE_male.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_patheff_male_pos <- read.delim(paste0(all_trial_path,'MD/male/MD_PE_male.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 
 # Women 
-MD_patheff_female_pos <- read.delim(paste0(working_dir,'MD/female/MD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+MD_patheff_female_pos <- read.delim(paste0(all_trial_path,'MD/female/MD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 ```
 
@@ -210,14 +210,14 @@ No Significant Tracts
 ## AD {.tabset}
 ```{r AD variables ,echo=FALSE, results='hide',message=FALSE}
 # All subjects
-AD_patheff_all_pos <- read.delim(paste0(working_dir,'AD/all_subs/AD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+AD_patheff_all_pos <- read.delim(paste0(all_trial_path,'AD/all_subs/AD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # MEN
-AD_patheff_male_pos <- read.delim(paste0(working_dir,'AD/male/AD_PE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_patheff_male_pos <- read.delim(paste0(all_trial_path,'AD/male/AD_PE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 
 # Women 
-AD_patheff_female_pos <- read.delim(paste0(working_dir,'AD/female/AD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+AD_patheff_female_pos <- read.delim(paste0(all_trial_path,'AD/female/AD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 ```
 
@@ -251,14 +251,14 @@ No Significant Tracts
 ## RD {.tabset}
 ```{r RD variables ,echo=FALSE, results='hide',message=FALSE}
 # All subjects
-RD_patheff_all_pos <- read.delim(paste0(working_dir,'RD/all_subs/RD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+RD_patheff_all_pos <- read.delim(paste0(all_trial_path,'RD/all_subs/RD_PE_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # MEN
-RD_patheff_male_pos <- read.delim(paste0(working_dir,'RD/male/RD_PE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_patheff_male_pos <- read.delim(paste0(all_trial_path,'RD/male/RD_PE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 
 # Women 
-RD_patheff_female_pos <- read.delim(paste0(working_dir,'RD/female/RD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+RD_patheff_female_pos <- read.delim(paste0(all_trial_path,'RD/female/RD_PE_fem_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 ```
 ### Summary of results 
@@ -287,6 +287,76 @@ knitr::kable(RD_patheff_female_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
 No Significant Tracts  
+
+<!---------------------------------------END --------------------------------->
+
+# <span style="color: darkorange;"> Results with only correct trial path efficiency  </span>  
+
+<!---------------------------------------QA correct trial PAth Efficiency --------------------------------->
+## QA {.tabset}
+
+```{r correct PE QA variables ,echo=FALSE, results='hide',message=FALSE}
+# All subjects
+
+# MEN
+QA_CorrPE_male_pos <- read.delim(paste0(correct_trial_path,'QA/male/QA_acctrialPE_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_CorrPE_male_neg <- read.delim(paste0(correct_trial_path,'QA/male/QA_acctrialPE_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# Women 
+QA_CorrPE_female_neg <- read.delim(paste0(correct_trial_path,'QA/female/QA_acctrialPE_fem_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+### Summary of results 
+
+### Men
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.009276) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_CorrPE_male_pos, row.names=F)
+```
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.008850)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_CorrPE_male_neg, row.names=F)
+```
+
+### Women
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.003650)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_CorrPE_female_neg, row.names=F)
+```
+
+
+## MD {.tabset}
+
+### Summary of results 
+No significant correlations across any groups 
+
+
+## AD {.tabset}
+```{r correct trials AD variables ,echo=FALSE, results='hide',message=FALSE}
+# MEN
+AD_CorrPE_male_neg <- read.delim(paste0(correct_trial_path,'AD/male/AD_acctrialPE_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+```
+
+### Summary of results 
+Only males had significant negative correlations between AD and PE score 
+
+### Men
+#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+No Significant Tracts  
+
+####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.005882)</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_CorrPE_male_neg, row.names=F)
+```
+
+## RD {.tabset}
+
+### Summary of results 
+No significant correlations across any groups 
 
 <!---------------------------------------END --------------------------------->
 # <span style="color: darkorange;"> END  </span>  
