@@ -56,6 +56,8 @@ h1, h2 {
 # Overview 
 This is the analysis of white matter dsi studio connectometry for Maze and Loop 
 
+For all images see [Midlife google drive](https://drive.google.com/drive/folders/1CUghNHQs4s1ys3DonsHz7-2EoX4ZUxFU?usp=sharing)
+
 # <span style="color: darkblue;">Methods </span> 
 ##### **Participants** 
 * Total number of scans = 120 (males and females )
@@ -469,6 +471,11 @@ No significant findings
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_female_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/female/AD_acc_fem_neg_ax.png)
+
+![Glass Brain displaying tracts that had AD negatively correlated with maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/female/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
 ### pre
 #### <span style="color: hotpink;"> Positive ( FDR = 1.000000 ) </span> 
@@ -478,6 +485,12 @@ No significant findings
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_pre_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in Pre- Menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/pre/AD_acc_pre_cor.png)
+![Glass Brain displaying tracts that had AD negatively correlated with maze learning accuracy in Pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/pre/maze_accuracy_pct.t2.length25.neg_corr.jpg)
+
+
 
 ### peri 
 #### <span style="color: hotpink;"> Positive ( FDR= 0.000282 ) </span> 
@@ -488,6 +501,13 @@ knitr::kable(AD_acc_peri_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_peri_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy in peri-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri/AD_acc_peri_pos_ax.png)
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in peri- Menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri/AD_acc_peri_neg_ax.png)
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with maze learning accuracy in Pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
 ### post
 #### <span style="color: hotpink;"> Positive ( FDR= 0.000941 ) </span> 
@@ -499,6 +519,12 @@ knitr::kable(AD_acc_post_pos, row.names=F)
 knitr::kable(AD_acc_post_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/AD_acc_post_pos_ax.png)
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in post- Menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/AD_acc_post_neg_ax.png)
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
 <!------------------------------------RD Accuracy----------------------------------->
 ## RD {.tabset}
@@ -539,6 +565,11 @@ knitr::kable(RD_acc_all_pos, row.names=F)
 ####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
 No significant findings
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/allSubs/RD_acc_all_pos_ax.png)
+
+![Glass Brain displaying tracts that had RD positively correlated with maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/allSubs/maze_accuracy_pct.t2.length25.pos_corr.jpg)
+
 ### Men
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.019254)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -546,6 +577,12 @@ knitr::kable(RD_acc_male_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.800000)</span> 
 No Significant Findings
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/male/RD_acc_male_pos_ax.png)
+
+![Glass Brain displaying tracts that had RD positively correlated with maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/male/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
 ### Women
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span> 
@@ -555,6 +592,9 @@ No Significant Findings
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_female_neg, row.names=F)
 ```
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/female/RD_acc_fem_neg_ax.png)
+
+![Glass Brain displaying tracts that had RD negatively correlated with maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/female/maze_accuracy_pct.t2.length25.neg_corr.jpg)
 
 ### pre
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span> 
@@ -565,6 +605,10 @@ No Significant Findings
 knitr::kable(RD_acc_pre_neg, row.names=F)
 ```
 
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/pre/RD_acc_pre_neg_cor.png)
+
+![Glass Brain displaying tracts that had RD negatively correlated with maze learning accuracy in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/pre/maze_accuracy_pct.t2.length25.neg_corr.jpg)
+
 ### peri 
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000248) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -574,6 +618,9 @@ knitr::kable(RD_acc_peri_pos, row.names=F)
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000000)</span> 
 No Significant Findings
 
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/RD_acc_peri_pos_ax.png)
+
+![Glass Brain displaying tracts that had RD positively correlated with maze learning accuracy in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
 ### post
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000777) </span> 
@@ -585,6 +632,12 @@ knitr::kable(RD_acc_post_pos, row.names=F)
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_post_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/post/RD_acc_post_pos_ax.png)
+
+![PLACEHOLDER: NOT CORRECT IMAGE!!!!!Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in post- Menopausal women]()
+
+![Glass Brain displaying tracts that had RD positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/post/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
 ### peri post combination
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000994) </span> 
@@ -597,16 +650,17 @@ knitr::kable(RD_acc_peripost_pos, row.names=F)
 knitr::kable(RD_acc_peripost_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in peri and post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/RD_acc_peri_pos_cor.png)
+
+![SPLACEHOLDER: NOT CORRECT IMAGE!!!!!Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in peri and post- Menopausal women]()
+
+![Glass Brain displaying tracts that had RD positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
 <!---------------------------------------Loop Position Error ---------------------------------  -->
 
 
 <!----------------------------------Loop position error rad3------------------------------->
-
-
-
-<!-------------------------LOOP position error  rad 3 -------------------------->
-
 
 # <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 
@@ -658,6 +712,15 @@ knitr::kable(QA_peRad3_all_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_all_neg, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_pos_ax.png)
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_neg_cor.png)
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+
 ### Men
 #### <span style="color: hotpink;"> Positive Corrs (FDR= 0.074986) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -665,6 +728,14 @@ knitr::kable(QA_peRad3_male_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.316832) </span> 
 Not significant
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/male/loop_qa_pos_cor.png)
+
+![Glass Brain displaying tracts that had QA positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
+
+
 
 ### Women
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.076923)  </span>
@@ -675,6 +746,15 @@ knitr::kable(QA_peRad3_female_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_female_neg, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_qa_pos_cor.png)
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_qa_neg_cor.png)
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+
 ### pre
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.035113)  </span>
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -685,6 +765,13 @@ knitr::kable(QA_peRad3_pre_pos, row.names=F)
 knitr::kable(QA_peRad3_pre_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_qa_pos_cor.png)
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_qa_neg_cor.png)
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
 ### peri 
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.331167)  </span> 
 No Significant Findings
@@ -693,6 +780,12 @@ No Significant Findings
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_peri_neg, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peri/looop_qa_neg_cor.png)
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
 ### post
   * No significant results
 
@@ -705,6 +798,13 @@ knitr::kable(QA_peRad3_peripost_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_peripost_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_pos_cor.png)
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_neg_cor.png)
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
 
 ## MD {.tabset}
 ```{r MD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
@@ -741,6 +841,11 @@ No significant results
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_all_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/allSubs/loop_md_neg_cor.png)
+
+![Glass Brain displaying tracts that had MD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
 ### Men
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.058621) </span>
 ```{r, layout="l-body-outset",echo=FALSE}
@@ -748,6 +853,14 @@ knitr::kable(MD_peRad3_male_pos, row.names=F)
 ```
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
 No significant results
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_pos_cor.png)
+
+![Glass Brain displaying tracts that had MD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
+
+
 
 ### Women
 #### <span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
@@ -757,6 +870,13 @@ No Significant Results
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_female_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/female/loop_md_neg_cor.png)
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/female/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+
 
 ### pre
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
@@ -767,6 +887,13 @@ No Significant Results
 knitr::kable(MD_peRad3_pre_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/pre/loop_md_neg_cor.png)
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in pre-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+
 ### peri 
 #### <span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
 No Significant Results
@@ -775,6 +902,13 @@ No Significant Results
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_peri_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peri/loop_md_neg_ax.png)
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in peri-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+
 
 ### post
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
@@ -785,6 +919,14 @@ No Significant Results
 knitr::kable(MD_peRad3_post_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/post/loop_md_neg_cor.png)
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in post-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+
+
 ### Peri + Post
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
 No Significant Results
@@ -793,7 +935,10 @@ No Significant Results
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_peripost_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peripost/loop_md_neg_ax.png)
 
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in peri and post-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peripost/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 ## AD {.tabset}
@@ -840,6 +985,14 @@ knitr::kable(AD_peRad3_all_pos, row.names=F)
 knitr::kable(AD_peRad3_all_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_pos_ax.png)
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/allSubs/loop_ad_pos_ax.png)
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/allSubs/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+
 ### Men
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.064215)  </span> 
 ```{r, echo=FALSE}
@@ -850,6 +1003,14 @@ knitr::kable(AD_peRad3_male_pos, row.names=F)
 knitr::kable(AD_peRad3_male_neg, row.names=F)
 ```
 
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_ad_pos_ax.png)
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_ad_neg_sag.png)
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+
 ### Women
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
 ```{r, echo=FALSE}
@@ -859,6 +1020,11 @@ knitr::kable(AD_peRad3_female_pos, row.names=F)
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_female_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/female/loop_ad_neg_cor.png)
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/female/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
 
 ### pre
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span> 
@@ -868,16 +1034,27 @@ No significant results
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_pre_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/pre/loop_ad_neg_cor.png)
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+
 
 ### peri 
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
 No significant results
 
-
 ####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.008203) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_peri_neg, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peri/loop_ad_neg_corr.png)
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
 
 ### post
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
@@ -887,6 +1064,11 @@ No significant results
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_post_neg, row.names=F)
 ```
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/post/loop_ad_neg_cor.png)
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
 
 ### Peri + Post
 #### <span style="color: hotpink;"> Positive Corrs (FDR = 0.652842)  </span> 
@@ -896,6 +1078,13 @@ No significant results
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_peripost_neg, row.names=F)
 ```
+
+####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peripost/loop_ad_neg_ax.png)
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peripost/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+
 
 ## RD {.tabset}
 ```{r RD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
