@@ -1,8 +1,13 @@
 ---
 title: "28andb DSI studio analysis"
 author: "Daniela Cossio"
-date: "02/27/2023"
-output: html_document
+date: "03/13/2023"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
 ---
 
 ```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
@@ -12,6 +17,7 @@ library(tidyverse)
 # library(dplyr)
 # library(tidyr)
 library(stringr)
+library(kableExtra)
 # library(data.table)
 # library(network)
 # library(tidygraph)
@@ -34,14 +40,9 @@ library(ggpubr)
 #library(afex)
 library(knitr)
 
-```
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
+                      fig.align = "center")
 
-```{css, echo=FALSE}
-h1, h2 {
-  text-align: center;
-  color: darkblue;
-  font-weight: bold;
-}
 ```
 
 ```{r Global Vars, echo=FALSE, results='hide',message=FALSE}
@@ -53,43 +54,74 @@ Gest_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
 ```
-## Overview 
-This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
 
-#### **Participants** 
-  * One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+```{css}
+h1, h2, h3,h4 {
+  text-align: center;
+}
+```
+# Overview
+
+This is the analysis of the relationship between white matter microstructure and hormones across 
+
+pregnancy in one single subject.
+
+
+##### **Participants**
+
+  * One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF
+  
+  to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+  
+  
   
   * 18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.
+  
     * **2019-07-12_ucsb** : No DWI 
+    
     * **2019-08-13_ucsb** : DSI Low Quality Outliar 
+    
     * **20191025** :  No DWI 
+    
     * **LC002_11_12_19**: No DWI
+    
     * **LC002_2_7_20** : No DWI
-    * **20200312_20200312_100001_490000** : Had DWI but i think there was a conversion error because it failed QSIprep.  so I may re try converting to BidSkit and then re preprocessing
-    * **2019-10-10_uci**: Was missing for a while but had an issue when converting to bidskit. Missing one of the fmaps needed for proper bids and also needed for DSI. I'll try to reconvert this in case it was an error on my end. 
+    
+    * **20200312_20200312_100001_490000** : Had DWI but i think there was a conversion error because 
+    it failed QSIprep.  so I may re try converting to BidSkit and then re preprocessing
+    
+    * **2019-10-10_uci**: Was missing for a while but had an issue when converting to bidskit.  
+    Missing one of the fmaps needed for proper bids and also needed for DSI. I'll try to reconvert 
+    this in case it was an error on my end. 
 
-#### **Scan parameters** 
+##### **Scan parameters** 
   * Locations from UCSB and UCI
 
-#### **Blood work**
+##### **Blood work**
   * Subject was measured for various levels of hormones including estrogen, progesterone, LH, FSH
 
-#### **Exclusions** 
+##### **Exclusions** 
   * Scan 08/13/19 (labeled as sub-003) was excluded 
 
-#### **QSIprep** 
+##### **QSIprep** 
   * Version used
+  
+##### **DSI Studio : Correlational connectometry **
 
-#### **DSI Studio : Correlational connectometry **
-###### Version and tags used **chen-2022-07-31**
-###### Parameters 
-* Length = 25
-* Permutation = 10,000
-* pruning 4
-* non normalized QA T threshold: 2.5
+  * Version and tags used **chen-2022-07-31**
+  
+  * Parameters 
+    * Length = 25
+    * Permutation = 10,000
+    * pruning 4
+    * non normalized QA
+    * T threshold: 2.5
 
-###### 
+
+# Methods
 A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.
+
+
 
 ##### Analyses {.tabset}
 ###### Estrogen 
@@ -127,7 +159,9 @@ Est_QA_pregnancy_pos <- read.csv(paste0(estrogen_path,'QA/pregnancy/pos_stats_2.
 #### All weeks 
 ##### <span style="color: hotpink;"> Positive (FDR= 0.002484) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_QA_all_pos, row.names=F)
+knitr::kable(Est_QA_all_pos,row.names=F) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 #####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.250000)</span> 
 No significant Findings
@@ -158,7 +192,7 @@ Est_MD_allwks_neg <- read.csv(paste0(estrogen_path,'MD/Allwks/neg_stats_2.5.csv'
 No significant findings
 
 #####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.002002)</span> 
-```{r, layout="l-body-outset",echo=FALSE}
+```{r, layout="l-body-outset",echo=FALSE, max.height='100px'}
 knitr::kable(Est_MD_allwks_neg, row.names=F)
 ```
 
@@ -497,7 +531,7 @@ knitr::kable(gest_RD_neg, row.names=F)
 
 ![Glass brain displaying tracts that had MD positively and negatively  correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
 
-
+# Results Write up 
 
 ## END
 
