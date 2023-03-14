@@ -3,14 +3,15 @@ title: "SNAG_dsi_Loop"
 author: "Daniela Cossio"
 date: "3/13/2023"
 output:
-   html_document:
-    toc: true
-    toc_float: true
-    toc_depth: 6
-    theme: flatly
-    code_folding: "hide"
+   html_document: 
+     toc: yes
+     toc_float: yes
+     toc_depth: 6
+     theme: flatly
+     code_folding: hide
+
 ---
-```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+```{r adding libraries, echo=FALSE, message=FALSE, results='hide'}
 library(ggplot2)
 #(plyr)
 library(tidyverse)
@@ -166,16 +167,19 @@ QA_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/peripost
 ```
 
 #### Summary of results
-QA values in several tracts were negatively correlated with Loop Position Error performance in a circle with a 3 m radius. When men and women were analyzed separately, there were different relationships observed. The majority of tracts in men were positively correlated with Position Error and QA values.Suggesting that better QA and white matter integrity is associated with increased Position error. The majority of tracts in women were negatively correlated with QA values and Position error, with a few that were positive. This suggests that in women, white matter integrity is associated with lower position error scores. When splitting by meno pause stage, Pre menopausal women displayed both negative and positive relationships between QA and position error. Peri menopausal women displayed negative correlations between QA and position error. .
+QA values in several tracts were negatively correlated with Loop Position Error performance in a circle with a 3 m radius. When men and women were analyzed separately, there were different relationships observed. The majority of tracts in men were positively correlated with Position Error and QA values.Suggesting that better QA and white matter integrity is associated with increased Position error. The majority of tracts in women were negatively correlated with QA values and Position error, with a few that were positive. This suggests that in women, white matter integrity is associated with lower position error scores. When splitting by meno pause stage, Pre menopausal women displayed both negative and positive relationships between QA and position error. Peri menopausal women displayed negative correlations between QA and position error. 
+
+<br><br><br><br><br><br> 
 
 #### All subjects
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.077333)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.077333)  </span>  
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_all_pos, row.names=F) %>% 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "100px")
-```
+```  
 
+<br><br> 
 
 <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001964) </span>
 ```{r, echo=FALSE}
@@ -184,87 +188,125 @@ knitr::kable(QA_peRad3_all_neg, row.names=F)%>%
   scroll_box(width = "800px", height = "200px")
 ```
 
-##### <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_pos_ax.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (FDR= 0.074986) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR= 0.074986) </span>
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_peRad3_male_pos, row.names=F) %>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.316832) </span>
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.316832) </span>
+
 Not significant
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br><br>
 
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/male/loop_qa_pos_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
 
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.076923)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.076923)  </span>
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_peRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+  scroll_box(width = "800px", height = "100px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000559)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000559)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_qa_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_qa_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.035113)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.035113)  </span>
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_peRad3_pre_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.009547) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.009547) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_qa_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_qa_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.331167)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.331167)  </span>
 No Significant Findings
 
-##### <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.097716)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.097716)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peri/looop_qa_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
@@ -272,22 +314,33 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)%>%
   * No significant results
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.058838) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.058838) </span>
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_peRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.103819)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.103819)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_peRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
@@ -319,124 +372,176 @@ MD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/peripo
 #### Summary of results
 When analyzing all subjects, tracts in fornix and thalamix radion were negatively associated with PE scores. In men, tracts in the fornix were positively associated with loop PE scores. In women, and all menopause stages, tracts were negatively associated with MD and loop PE scores. Increased scores signify poor performance.
 
+<br><br><br><br><br><br> 
+
+
 #### All subjects
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000616)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000616)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/allSubs/loop_md_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
+
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.058621) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.058621) </span>
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_peRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_pos_cor.png)
 
 ![Glass Brain displaying tracts that had MD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
 
 
-
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
+
 No Significant Results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000443)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000443)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-##### <span class="text-center" style="color: Dark Magenta;"> Figures </span>
 
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/female/loop_md_neg_cor.png)
+
+<br><br> 
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/female/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No Significant Results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.044429)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.044429)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
 
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/pre/loop_md_neg_cor.png)
 
+<br>
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in pre-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
+
 No Significant Results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.017058)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.017058)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
 
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peri/loop_md_neg_ax.png)
+
+<br><br> 
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in peri-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
-
 #### post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
 No Significant Results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.064410)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.064410)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
 
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/post/loop_md_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in post-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
-
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
 No Significant Results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.161324)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.161324)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peripost/loop_md_neg_ax.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in peri and post-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peripost/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
@@ -474,134 +579,198 @@ AD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/peripo
 #### Summary of results
 The majority of tracts with AD were negatively correlated with position error when looking at all subjects. Men displayed positive correlations. women and all menopause groups displayed negative correlations with PE.
 
+<br><br><br><br><br><br> 
+
 
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.010526) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.010526) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+  scroll_box(width = "800px", height = "100px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000260)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000260)</span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_pos_ax.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/allSubs/loop_ad_pos_ax.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/allSubs/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.064215)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.064215)  </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.111111) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.111111) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_male_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+  scroll_box(width = "800px", height = "100px")
 ```
+<br><br> 
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_ad_pos_ax.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_ad_neg_sag.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+  scroll_box(width = "800px", height = "100px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000332)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000332)</span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/female/loop_ad_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/female/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.047725) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.047725) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/pre/loop_ad_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.008203) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.008203) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peri/loop_ad_neg_corr.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.059079) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.059079) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/post/loop_ad_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.652842)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.652842)  </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.063222)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.063222)</span>
 ```{r, echo=FALSE}
 knitr::kable(AD_peRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peripost/loop_ad_neg_ax.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peripost/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
@@ -641,105 +810,149 @@ RD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/peripo
 #### Summary of results
 Tracts with RD displayed negtive correlations with PE. In men, this was opposite with men displaying positive correlations. Women, and those in the peri and post stages  displayed negative correlations. Those in the pre and peri+post group displayed positive and negative correlations.
 
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.625000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.625000) </span>
+
 No significant correlations
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000639)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000639)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
+
  ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/allSubs/loop_rd_neg_cor.png)
+ 
+ <br>
 
 ![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.057317) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.057317) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs Not significant (1.000000)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs Not significant (1.000000)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_male_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/male/loop_rd_pos_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002117)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002117)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/female/loop_rd_neg_cor.png)
+<br>
 
 ![Glass Brain displaying tracts that had RD positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No significant correlations
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.033719)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.033719)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
 
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/pre/loop_rd_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.016568)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.016568)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peri/loop_rd_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
 
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)</span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)</span>
+
 No significant results
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = .065219))</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = .065219))</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/post/loop_rd_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3 in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
 
@@ -747,25 +960,37 @@ knitr::kable(RD_peRad3_all_neg, row.names=F)%>%
 
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.157199)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.157199)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with loop position error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peripost/loop_rd_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peripost/loop_rd_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD positively and negatively correlated with loop position error rad3 in peripost menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peripost/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 
+
+<br><br><br><br>
 ## <span style="color: PaleVioletRed;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
 #### All subjects
@@ -800,6 +1025,8 @@ knitr::kable(RD_peRad3_peripost_neg, row.names=F)%>%
 #### post
 
 <!---------------------------------------Loop Degree error--------------------------------  -->
+<br><br><br><br>
+
 ## <span style="color: Indigo;"> Loop Degree error Rad3 </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
 ```{r QA Loop Degree error Radd3 variables , echo=FALSE, results='hide',message=FALSE}
@@ -834,87 +1061,190 @@ QA_deRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/QA/peripo
 #### Summary of Results
 For all subjects, Degree error was correlated with QA values with age and sex marked as covariates. Tracts with QA values were both positively and negatively correlated with DE performance. When analyzed by sex, Men displayed tracts that were significantly negatively correlated with DE, DSI found no tracts positively correlated with DE (FDR=1.00). DSI  studio found that tracts with QA in women displayed both positive and negative associations with DE performance. Women were further analyzed by menopause stage. Pre-menopause women displayed positive and negative relationships between tracts with QA and DE performance. DSI sutdio found that peri-menopause women displayed significant negative correlations between tracts with QA and DE and there were not significant positive correlations ( FDR= 0.7516098). Women in post menopause displayed no significant positive or negtive correlations (FDR= 1.000, 0.354664, respectively). When peri and post menopause women were grouped together, tracts with QA were positively and negatively correlated with DE performance
 
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.180868)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.180868)  </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.047850)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.047850)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/allSubs/loop_qa_all_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/allSubs/loop_qa_all_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/allSubs/loop_de_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br> 
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.212234)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.212234)</span>
+
 Not significant
 
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000325)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000325)  </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002141)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002141)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop degree error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/female/loop_qa_fem_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop degree error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/female/loop_qa_fem_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop degree error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/female/loop_de_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br> 
+
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs   (FDR = 0.020756)  </span>
+<span style="color: hotpink;"> Positive Corrs   (FDR = 0.020756)  </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_pre_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.067453)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.067453)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/pre/loop_qa_pre_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/pre/loop_qa_pre_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/pre/loop_de_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br> 
+
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs   (FDR = 0.751698)  </span>
+<span style="color: hotpink;"> Positive Corrs   (FDR = 0.751698)  </span>
+
 No significant correlations
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.067830)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.067830)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop degree error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/peri/loop_qa_peri_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop degree error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/peri/loop_de_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br> 
+
 #### post
-##### <span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs(FDR = 1.000000)  </span>
+
 No significant correlations
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.354664)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.354664)</span>
+
 No significant correlations
+
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs(FDR = 0.009696)  </span>
+<span style="color: hotpink;"> Positive Corrs(FDR = 0.009696)  </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.099355)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.099355)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/peripost/loop_qa_peri+post_pos_ax.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/peripost/loop_qa_peri+post_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/peripost/loop_de_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br> 
 
 
 ### MD {.tabset}
@@ -947,51 +1277,69 @@ MD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/MD/peripo
 #### Summary of Results
 Tracts with MD were positively correlated with DE performance when all subjects were analyzed. In men, there were no significantly correlated tracts associated with DE performance. In women, tracts with MD were positively associated with DE performance. Pre-menopause women displayed MD tracts with significantly positively correlations to DE. Peri and Post -menopause women displayed significantly negative relationships between MD and DE performance when analyzed seperately. When analyzed together, tracts were positively correlated with DE.
 
+<br><br><br><br><br><br> 
+
 #### All Subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.029053)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.029053)  </span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.0000)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.0000)</span>
 Not significant
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs Not significant (FDR = 0.667369)  </span>
+<span style="color: hotpink;"> Positive Corrs Not significant (FDR = 0.667369)  </span>
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.0000)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.0000)</span>
+
 Not significant
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.065079)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.065079)  </span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.004739)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.004739)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.146316)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.146316)  </span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_pre_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
+<br><br> 
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 Not significant
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.022007)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.022007)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -999,23 +1347,30 @@ knitr::kable(MD_deRad3_peri_neg, row.names=F)%>%
 ```
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span>
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.028408)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.028408)</span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.150602)  </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.150602)  </span>
 ```{r, echo=FALSE}
 knitr::kable(MD_deRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.219578)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.219578)</span>
+
 Not significant
 
 ### AD {.tabset}
@@ -1048,51 +1403,72 @@ AD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/AD/peripo
 AD_deRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
 #### Summary of Results
+
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.019142) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.019142) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_all_pos, row.names=F) %>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 No Significant Findings
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.663721) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.663721) </span>
+
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 No Significant Findings
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.056502) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.056502) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002967)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002967)</span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.158581)) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.158581)) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_pre_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 No Significant Findings
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.011568) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.011568) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1100,10 +1476,13 @@ knitr::kable(AD_deRad3_peri_neg, row.names=F)%>%
 ```
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.036173) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.036173) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1111,14 +1490,16 @@ knitr::kable(AD_deRad3_post_neg, row.names=F)%>%
 ```
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.109957) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.109957) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_deRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.602679) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.602679) </span>
 No Significant Findings
 
 
@@ -1148,50 +1529,67 @@ RD_deRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/post/RD_po
 RD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peripost/RD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
 #### Summary
+
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.027027) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.027027) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
 No Significant Findings
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs (Not Significant?) (FDR = 0.553308) </span> No Significant Findings
+<span style="color: hotpink;"> Positive Corrs (Not Significant?) (FDR = 0.553308) </span> 
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+No Significant Findings
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 No Significant Findings
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.105231) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.105231) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.063559)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.063559)</span>
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.181320)) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.181320)) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_pre_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>
+
 No Significant Findings
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>  
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.020058) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.020058) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1199,10 +1597,12 @@ knitr::kable(RD_deRad3_peri_neg, row.names=F)%>%
 ```
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>  
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.035618) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.035618) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1210,16 +1610,21 @@ knitr::kable(RD_deRad3_post_neg, row.names=F)%>%
 ```
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.141074) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.141074) </span>  
 ```{r, echo=FALSE}
 knitr::kable(RD_deRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.240841) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.240841) </span>  
 No Significant Findings
 
+
+
+<br><br><br><br>
 
 ## <span style="color: Indigo;"> Loop Degree error average </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
@@ -1230,7 +1635,7 @@ No Significant Findings
 #### peri
 #### post
 
-## MD {.tabset}
+### MD {.tabset}
 #### All subjects
 #### Men
 #### Women
@@ -1238,7 +1643,7 @@ No Significant Findings
 #### peri
 #### post
 
-## AD {.tabset}
+### AD {.tabset}
 #### All subjects
 #### Men
 #### Women
@@ -1246,8 +1651,7 @@ No Significant Findings
 #### peri
 #### post
 
-## RD {.tabset}
-
+### RD {.tabset}
 #### All subjects
 #### Men
 #### Women
@@ -1258,6 +1662,9 @@ No Significant Findings
 
 
 <!---------------------------------------Loop Angular Error--------------------------------  -->
+
+<br><br><br><br>
+
 ## <span style="color: DarkSlateGrey;"> Loop angular error Rad3 </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
 ```{r QA Loop Angular error Rad3 variables , echo=FALSE, results='hide',message=FALSE}
@@ -1296,123 +1703,175 @@ QA_aeRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/AE/QA/peripo
 QA_aeRad3_peripost_neg <- read.delim(paste0(working_dir,'loop/rad3/AE/QA/peripost/QA_loopAErad3_peripost_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
 #### Summary
+<br><br><br><br><br><br> 
+
 
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000675) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000675) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.004296)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.004296)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop Angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/allSubs/QA_loopAErad3_all_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/allSubs/QA_loopAErad3_all_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop angular error rad3 ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/allSubs/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.012481) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.012481) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.024096)</span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.024096)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_male_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop Angular error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/male/QA_loopAErad3_male_pos_cor.png)
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop angular error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/male/QA_loopAErad3_male_neg_cor.png)
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop angular error rad3 in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/male/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.015385) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.015385) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001027)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001027)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop Angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/female/QA_loopAErad3_female_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/female/QA_loopAErad3_female_neg_cor.png)
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop angular error rad3 in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/female/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.036981) </span>
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.036981) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_pre_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.009185)</span>
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.009185)</span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop Angular error rad3 in pre menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/pre/QA_loopAErad3_pre_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop angular error rad3 in pre menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/pre/QA_loopAErad3_pre_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop angular error rad3 in pre menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/pre/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
 #### peri
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.317868) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.317868) </span>  
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.029057) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.029057) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop angular error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/peri/QA_loopAErad3_peri_neg_cor.png)
+<br>
 
 ![Glass Brain displaying tracts that had QA negatively correlated with loop angular error rad3 in peri menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/peri/loop_ae_rad3_degree.t2.length25.neg_corr.jpg)
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>  
 No Significant Findings
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.302332) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.302332) </span>  
 No Significant Findings
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.082506) </span>
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.082506) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.081279) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.081279) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_aeRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop Angular error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/peripost/QA_loopAErad3_peripost_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop angular error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/peripost/QA_loopAErad3_peripost_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop angular error rad3 in peri and post menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/QA/peripost/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
@@ -1445,102 +1904,152 @@ MD_aeRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/peri/MD_pe
 MD_aeRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
 #### Summary
+
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.052632) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.052632) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.001083)</span> 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.001083)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop Angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/allSubs/MD_loopAErad3_all_pos_cor.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop angular error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/allSubs/MD_loopAErad3_all_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop angular error rad3 in peri and post menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/allSubs/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.052789) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.052789) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span>   
 Not significant  
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop Angular error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/male/MD_loopAErad3_male_pos_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD positively correlated with loop angular error rad3 in peri and post menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/male/loop_ae_rad3_degree.t2.length25.pos_corr.jpg)
 
 
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>   
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000594)</span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000594)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop angular error rad3 women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/female/MD_loopAErad3_female_sag_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD negatively correlated with loop angular error rad3 in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/female/loop_ae_rad3_degree.t2.length25.neg_corr.jpg)
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>   
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.027414)</span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.027414)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop angular error rad3 pre menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/pre/MD_loopAErad3_pre_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD negatively correlated with loop angular error rad3 in pre menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/pre/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
 
 #### peri 
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span>   
 Not significant  
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.018769) </span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.018769) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop angular error rad3 peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/peri/MD_loopAErad3_peri_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD negatively correlated with loop angular error rad3 in peri menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/peri/loop_ae_rad3_degree.t2.length25.neg_corr.jpg)
 
 #### post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+
 No Significant Findings  
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.289057) </span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.289057) </span> 
+
 No Significant Findings  
 
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span>  
+
 No Significant Findings  
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.187319) </span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.187319) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_aeRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop angular error rad3 peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/peripost/MD_loopAErad3_peripost_neg_cor.png)
+<br>
 
 ![Glass Brain displaying tracts that had MD negatively correlated with loop angular error rad3 in peri and post menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/MD/peripost/loop_ae_rad3_degree.t2.length25.neg_corr.jpg)
 
@@ -1573,84 +2082,186 @@ AD_aeRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/post/AD_po
 AD_aeRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
 #### Summary
+
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.000569)</span> 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.000569)</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>  
+<br>
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/allSubs/AD_loopAE_allsubs_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/allSubs/AD_LoopAE_all_neg_glassbrain.png)
+
+
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.039599) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.039599) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+
 Not significant 
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop Angular error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/male/AD_loopAE_male_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3 in Men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/allSubs/AD_loopAE_allsubs_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD positively correlated with loop angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/male/AD_LoopAE_male_pos_glassbrain.png)
+
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000311)</span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000311)</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_female_neg, row.names=F) %>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/female/AD_LoopAE_fem_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/female/AD_LoopAE_fem_neg_glassbrain.png)
 
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.035371)</span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.035371)</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3 in pre menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/pre/AD_LoopAE_pre_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/pre/AD_LoopAE_pre_neg_glassbrain.png)
+
 #### peri 
-##### <span style="color: hotpink;"> Positive Corrs (not significant) (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (not significant) (FDR = 1.000000) </span> 
+
 Not significant  
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.007165) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.007165) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/peri/AD_LoopAE_peri_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop angular error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/peri/AD_LoopAE_peri_neg_glassbrain.png)
+
 #### post
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
 No Significant Findings  
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.168946) </span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.168946) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3 in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/post/AD_loopAE_post_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error rad3 in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/post/AD_loopAE_post_neg_glassbrain.png)
+
 #### Peri + Post
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 No significant   
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.059775) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.059775) </span>
 ```{r, echo=FALSE}
 knitr::kable(AD_aeRad3_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/peripost/AD_LoopAE_peripost_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop angular error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/AD/peripost/AD_LoopAE_peripost_neg_glassbrain.png)
 
 ### RD {.tabset}
 ```{r RD Loop Angular error Rad3 variables , echo=FALSE, results='hide',message=FALSE}
@@ -1674,77 +2285,185 @@ RD_aeRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/AE/RD/peri/RD_pe
 
 ```
 #### Summary
+
+<br><br><br><br><br><br> 
+
 #### All subjects
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 0.050000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.050000) </span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_aeRad3_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.000506)</span> 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR =  0.000506)</span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_aeRad3_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/allSubs/RD_LoopAE_all_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/allSubs/loop_ae_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop angular error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/allSubs/RD_LoopAE_all_neg_glassbrain.png)
+
+
+<br><br><br><br>
+
+
 #### Men
-##### <span style="color: hotpink;"> Positive Corrs  (FDR = 0.040025) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 0.040025) </span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_aeRad3_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+
 Not significant 
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with loop Angular error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/male/RD_LoopAE_male_pos_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD positively correlated with loop angular error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/male/RD_LoopAE_male_pos_glassbrain.png)
+
+<br><br><br><br>
+
+
 #### Women
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000631)</span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000631)</span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_aeRad3_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/female/RD_LoopAE_fem_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD positively and negatively correlated with loop angular error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/female/RD_LoopAE_fem_neg_glassbrain.png)
+
+
+<br><br><br><br>
+
+
+
 #### pre
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 Not significant
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.030260)</span> 
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.030260)</span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_aeRad3_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop angular error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/pre/RD_LoopAE_pre_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop angular error rad3 in pre-menopausalwomen](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/pre/RD_LoopAE_pre_neg_glassbrain.png)
+
+
+<br><br><br><br>
+
+
 
 #### peri 
-##### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 Not significant  
 
-#####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.017967) </span>
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.017967) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_aeRad3_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
 
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>   
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop angular error rad3 in perimenopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/peri/RD_LoopAE_peri_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop angular error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/AE/RD/peri/RD_LoopAE_peri_neg_glassbrain.png)
+
+
+<br><br><br><br>
+
+
+
 #### post
-###### <span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Corrs  (FDR = 1.000000) </span> 
 No Significant Findings  
 
-######  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.273451) </span> 
-No Significant Findings  
+<br><br> 
 
-##### Peri + Post
-###### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.273451) </span> 
+
+No Significant Findings 
+
+
+#### Peri + Post
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 No significant   
 
-######  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.231903) </span>
-No significant  
+<br><br> 
 
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.231903) </span>
+
+No significant
+
+
+<br><br><br><br>
 
 
 ## <span style="color: DarkSlateGrey;"> Loop Angular error average </span>  {.tabset .tabset-dropdown}
