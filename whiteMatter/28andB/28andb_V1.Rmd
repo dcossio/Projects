@@ -53,6 +53,12 @@ Prog_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci
 Gest_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/"
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
+
+# REading in subject info for each analysis 
+#Estrogen 
+
+Est_subinfo <- read_csv(paste0(estrogen_path,'estr_demo.csv'))
+
 ```
 
 ```{css}
@@ -146,14 +152,19 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 QA was positively correlated with estrogen levels across numerous tracts including corpus callosum and cingulum. DSI found tracts in the cerebellum with AD, RD, and MD were negatively associated with estrogen levels. Suggesting that increased levels of estrogen are associated with better white matter micro structure. When analyzing pregnancy only scans, DSI only found significant results in the QA analysis. QA was positively associated with estrogen levels.
 
 ### QA {.tabset}
-```{r QA  correlations,echo=FALSE, results='hide',message=FALSE}
+```{r QA correlations,echo=FALSE, results='hide',message=FALSE}
 # ALl weeks 
-Est_QA_all_pos <- read.csv(paste0(estrogen_path,'QA/Allwks/pos_stats.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+Est_QA_all_pos <-
+  read.csv(paste0(estrogen_path, 'QA/Allwks/pos_stats.csv'), header = FALSE) %>% 
+  filter(V1 %in% rows2grab) %>% 
+  t() %>% 
+  `colnames<-`(rows2grab) %>% 
+  `[`(-c(1), ) %>% 
+  as.data.frame()
+
 
 # Pregnancy only
-
 Est_QA_pregnancy_pos <- read.csv(paste0(estrogen_path,'QA/pregnancy/pos_stats_2.csv'), header=FALSE) %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
 ```
 
 #### All weeks 
@@ -182,6 +193,36 @@ knitr::kable(Est_QA_pregnancy_pos, row.names=F)
 
 #####  <span class="text-center" style="color: Teal;"> Negative (FDR= 1.0000)</span> 
 No significant Findings
+
+
+```{r QA Raw data box plot}
+#GEtting my variables together 
+estr_cols <- c("Subjects", as.character(Est_QA_all_pos[,1]))
+Est_QA_all_pos_values <-
+  read.csv(paste0(estrogen_path, 'QA/Allwks/pos_stats.csv'), header = FALSE) %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(estr_cols) %>%
+  mutate(estrogen = Est_subinfo$Estrogen) %>% 
+  mutate(status = as.factor(Est_subinfo$`Endocrine Status`))
+
+# Reorder for my sanity check 
+Est_QA_all_pos_values <- Est_QA_all_pos_values[,c(1,19,20,2:18)]
+
+
+# play with plot 
+
+ggplot(Est_QA_all_pos_values, aes(x=status,y= Corpus_Callosum_Body)) +
+  geom_boxplot()
+
+
+
+```
+
+
+
+
+
 
 ### MD {.tabset}
 ```{r MD all scans correlations,echo=FALSE, results='hide',message=FALSE}
