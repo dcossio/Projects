@@ -970,7 +970,62 @@ knitr::kable(RD_acc_peripost_neg, row.names=F)
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
-# <span style="color: darkorange;"> Maze PAth Efficiency  </span>  {.tabset .tabset-dropdown}  
+# <span style="color: darkorange;"> Maze Path Efficiency  </span>  {.tabset .tabset-dropdown}  
+
+```{r QA ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+
+QA_alltrialsPE_all_pos <- read.delim(paste0(working_dir,'maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_alltrialsPE_all_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#MEN
+QA_alltrialsPE_male_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/male/QA_alltrialspatheff_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/male/QA_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#women
+
+QA_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/female/QA_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/female/QA_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#PRE
+QA_alltrialsPE_pre_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# PERI
+QA_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri/QA_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# POST
+QA_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 
+
+# PEri Post
+QA_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peripost/QA_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+QA_acc_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peripost/QA_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+```
+
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/QA_all_acc_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/QA_all_acc_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/maze_accuracy_pct.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br>
