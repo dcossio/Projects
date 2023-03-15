@@ -67,46 +67,18 @@ h1, h2 {
 This is the analysis of white matter dsi studio connectometry for Maze and Loop 
 
 # <span style="color: darkblue;">Methods </span> 
-##### **Participants** 
-* Total number of scans = 120 (males and females )
-  * Total scans used in analysis= 118 
-  *Exclude subs 329 and 372 from analyses
-        
-##### **Scan parameters** 
-* Locations from UCSB and UCI
 
-##### **QSIprep** 
-* Version used: 0.16.0RC3
-* The following parameters were used
-  * dwi_denoise_window **5** 
-  * hmc_model **3dSHORE** 
-  * hmc-transform **Rigid** 
-  * shoreline_iters **2**
+**Participants** 
 
-### **DSI Studio**
-*Version and tags used 
-  * **chen-2022-07-31**
-A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
-<h4>Connectometry analysis</h4>
-<p>
-Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
- The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 118  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
+  control check in DSI
+   * Several subjects removed because they did not have rad3 score  
+<br>
 
-
-###### **Parameters** 
-* T-threshold = 2.5
-* Length = 25
-* Permutation = 4,000
-* pruning 4
-* non normalized QA
-
-#### **Analyses and Final sample sizes ** 
-
-##### **Exclusions** 
-* 347 was excluded due to low quality out liar in DSI 
-
-##### Maze Accuracy and Path Efficiency {.tabset} 
-###### N
+**Maze Accuracy and Path Efficiency**
 * All subjects = 82
 * Men = 22
 * Women = 60
@@ -114,6 +86,50 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
   * Pre = 23
   * Peri = 20 
   * Post = 17
+  
+  
+  **Scan parameters** 
+
+  * Locations from UCSB and UCI
+<br>
+
+**QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br>
+**DSI Studio**
+
+  * Version and tags used via singularity container: **chen-2022-07-31**
+  
+  * **Parameters** 
+    * T-threshold = 2.5
+    * Length = 25
+    * Permutation = 4,000
+    * pruning 4
+    * non normalized QA
+  
+**Connectronomy analysis methods write up **
+<br>
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired.  
+The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was  
+1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those
+of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by 
+The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction
+(Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
+<br>
+
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
+<br>
+
+ The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
+
+<br><br><br><br><br><br>
 
 
 
@@ -121,18 +137,22 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 <!---------------------------------------Results---------------------------------->
 
-# <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}  
 
-#### <span style="color: darkgreen;"> Summary</span>  {.tabset}
+
+
+## <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}  
+<br><br>
+
+### <span style="color: darkgreen;"> Summary</span>
 A total of 82 diffusion MRI scans were included in the connectometry database. For the connectometry analysis, age, sex and repo status were listed as covariates. All subjects displayed positive and negative correlations between tracts with QA and Maze accuracy.Teacts in the fornix with MD and RD displayed positive relationships with Maze accuracy. AD displayed a negative relationship between tracts in the fornix and maze accuracy. All together the results suggest that increased diffusion (Md and RD) are associated with increased performance in scores in midlife participants and these associations are found in regions associated with spatial navigation. When split by sex, Men displayed a negative association between maze performance and a majority of tracts in the corpus callosum with QA. For AD, RD, and MD, men displayed significant positive relationships between performance. Altogether it suggests that better maze accuracy is associated with increased diffusion in midlife men.  Women displayed the opposite, tracts in the fornix with QA were positively associated with performance while tracts in the fornix, cingulum, and cerebellum  and  with AD,RD, and MD were negatively associated with performance. Suggesting that more specific diffusion is associated with better maze accuracy. Next, Menopause stages were analyzed separately. Pre menopausal women displayed both positive and negative correlations with QA while tracts with AD,RD and MD displayed negative relationships. Peri menopausal women displayed positive associations in tracts with QA, MD, RD, and AD and performance. This suggests that in peri menopasual women, maze accuracy is associated with increased diffusion in tracts on the fornix, cerebellum, and cingulum. Post menopausal women displayed both positive and negative associations between acc and QA. Post menopausal women displayed positive and negative assocoations with QA< MD, RD, and AD and maze accuracy. A majority of tracts in the fornix with AD,MD, and RD were positively associated with maze accuracy 
 
+### QA {.tabset}
 
-#### <span style="color: darkteal;"> DSI output </span>  {.tabset}
-
-## QA {.tabset}
-
-### Summary of results 
+#### Summary of results 
 There were both positive and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly positive correlations between QA and performance. When split by menopause stagge, Pre and post displayed both positive and negative correlations while peri displayed only positive correlations with performance. 
+
+
+<br><br><br><br><br><br><br><br>
 
 ```{r GRabbing all variables ,echo=FALSE, results='hide',message=FALSE}
 # All subjects
@@ -165,107 +185,188 @@ QA_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_ne
 
 ```
 
-### All subjects
-#### <span style="color: hotpink;"> Positive ( FDR= 0.043228) </span> 
+#### All subjects
+<span style="color: hotpink;"> Positive ( FDR= 0.043228) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_acc_all_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.122807)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.122807)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_all_neg, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/QA_all_acc_pos_cor.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/QA_all_acc_neg_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br>
 
-### Men
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.018519) </span> 
+
+#### Men
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.018519) </span> 
 ```{r QA Males pos, echo=FALSE}
 knitr::kable(QA_acc_male_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001161)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001161)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_male_neg, row.names=F)
 ```
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/male/QA_male_acc_pos_cor.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/male/QA_male_acc_neg_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/male/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### Women
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000263) </span> 
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000263) </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_female_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002809)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002809)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_female_neg, row.names=F)
 ```
-####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/QA_fem_acc_pos_cor.png)
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/QA_fem_acc_neg_cor.png)
+<br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/female/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br>
 
-### pre
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.044369)  </span> 
+
+#### pre
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.044369)  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_pre_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.011788)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.011788)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_pre_neg, row.names=F)
 ```
 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/pre/QA_pre_acc_pos_cor.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/pre/QA_pre_acc_neg_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/pre/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### peri 
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000231)  </span> 
+<br><br><br><br><br><br><br>
+
+#### peri 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000231)  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_peri_pos, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+
 No Significant Findings
+
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy in peri-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/peri/QA_peri_acc_pos_cor.png)
 
+<br><br>
+
 ![Glass Brain displaying tracts that had QA positively correlated with maze learning accuracy in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/peri/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
-### post
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000418)  </span> 
+<br><br><br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000418)  </span> 
 ```{r post positve, echo=FALSE}
 knitr::kable(QA_acc_post_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.015152)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.015152)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_post_neg, row.names=F)
 ```
 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/post/QA_post_acc_pos_cor.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/post/QA_post_acc_neg_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/post/maze_accuracy_pct.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br><br>
 <!---------------------------------------MD Accuracy--------------------------------  -->
 
-## MD {.tabset}
-### Summary of results 
+### MD {.tabset}
+#### Summary of results 
 DSI was run on all subjects, with sex and age listed as covariates. There were positive correlations between MD values in the Fornix (L&R) and performance. Using a sex stratified apporoach we viewed the relationship between white matter and performance in men and women separately. Men, displayed a majortiy of positive correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of positive correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both positive and negative relationships between MD and  performance. The majority of tracts with positive correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
+
+<br><br><br><br><br>
 
 ```{r MD ALL Variables ,echo=FALSE, results='hide',message="FALSE"}
 # all subjects
@@ -293,99 +394,167 @@ MD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_po
 
 MD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-### All subjects
+#### All subjects
 
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.124661) </span> 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.124661) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_all_pos, row.names=F)
 ```
 
-#### <span style="color: teal;"> Negative Corrs (FDR = 1.000000)  </span> 
+<br><br>
+
+<span style="color: teal;"> Negative Corrs (FDR = 1.000000)  </span> 
+
 No significant findings
+
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Maze learning accuracy  ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/allSubs/MD_acc_all_pos_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had MD positively correlated with maze learning accuracy in ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/allSubs/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
-### Men
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.012068) </span> 
+<br><br><br><br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.012068) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_male_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.075269) </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.075269) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_male_neg, row.names=F)
 
 #![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze learning accuracy in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/post/QA_post_acc_neg_cor.png)
 ```
 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Maze learning accuracy in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/male/MD_male_acc_pos_cor.png)
 
+<br>
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/male/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### Women
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.071429) </span> 
+<br><br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.071429) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_female_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.061328)</span> 
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.061328)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_female_neg, row.names=F)
 ```
 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze learning accuracy in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/female/MD_fem_acc_neg_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had MD negatively correlated with maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/female/maze_accuracy_pct.t2.length25.neg_corr.jpg)
 
-### pre
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<br><br><br><br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+
 No significant findings
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002473)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002473)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_pre_neg, row.names=F)
 ```
 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/pre/MD_acc_pre_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD negatively correlated with maze learning accuracy in pre-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/pre/maze_accuracy_pct.t2.length25.neg_corr.jpg)
 
-### peri 
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000106)  </span> 
+<br><br><br><br><br><br><br><br>
+
+#### peri 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000106)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_peri_pos, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.351351) </span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.351351) </span> 
+
 No significant findings
+
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had MD positvely correlated with Maze learning accuracy in peri-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/peri/MD_acc_peri_pos_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had MD positively  correlated with maze learning accuracy in peri-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/peri/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
+<br><br><br><br><br><br><br>
 
-### post
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000106) </span> 
+
+#### post
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000106) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_post_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.351351) </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.351351) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_post_neg, row.names=F)
 ```
+
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD positvely correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/post/MD_acc_post_pos_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had MD positively correlated with maze learning accuracy in pre-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/post/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
-### combined peri/post
+<br><br><br><br><br><br>
 
+#### combined peri/post
 
+<br><br><br><br><br><br><br><br><br><br><br>
 
 <!------------------------------------AD Accuracy--------------------------------->
 
-## AD {.tabset}
+### AD {.tabset}
 ```{r AD all vars,echo=FALSE, results='hide',message="FALSE"}
 # ALL subjects
 AD_all_acc_pos <- read.delim(paste0(working_dir,'maze/Accuracy/AD/allSubs/AD_all__acc_pos.csv'),header=FALSE, sep="\t") %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
@@ -414,110 +583,183 @@ AD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_ac
 
 AD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-### Summary of results 
+#### Summary of results 
 Only fornix was negatively associated with performance when all subejcts were analyzed. Fornix and thalamic raditions were positively associated with accuracy.Women displayed negative relationships with tracts int he fornix and cingulum and maze acc. Women in the pre menopasual groups showed tracts were negatively correlated with acc in fornix ,and  corpus callosum. Peri menopausal women showed that a majority of tracts in the fornix, cingulum, and cerebellum were positively associated with Acc. Post menopasual women showed positive tracts in the fornix and negative tracts in the cerbebellum. 
 
-### All subjects
-#### <span style="color: hotpink;"> Positive Corrs  (FDR= 0.031496) </span> 
+#### All subjects
+<span style="color: hotpink;"> Positive Corrs  (FDR= 0.031496) </span> 
 ```{r AD_all_acc_pos, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_all_acc_pos, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Teal;"> Negative Corrs ( FDR = 0.150000)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Corrs ( FDR = 0.150000)</span> 
 ```{r AD_all_acc_neg, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_all_acc_neg, row.names=F)
 ```
+<br><br>
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/allSubs/AD_acc_all_pos_ax.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/allSubs/AD_acc_all_neg_ax.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/allSubs/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br><br><br><br>
 
-### Men
-#### <span style="color: hotpink;"> Positive ( FDR= 0.005460) </span> 
+
+#### Men
+<span style="color: hotpink;"> Positive ( FDR= 0.005460) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_acc_male_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR = FDR = 0.004202 )</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR = FDR = 0.004202 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_male_neg, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/male/AD_acc_male_pos_cor.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/male/AD_acc_male_neg_sag.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/male/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### Women
-#### <span style="color: hotpink;"> Positive ( FDR= 1.000000 ) </span> 
+<br><br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive ( FDR= 1.000000 ) </span> 
+
 No significant findings
 
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR=0.006928 )</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR=0.006928 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_female_neg, row.names=F)
 ```
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/female/AD_acc_fem_neg_ax.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had AD negatively correlated with maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/female/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### pre
-#### <span style="color: hotpink;"> Positive ( FDR = 1.000000 ) </span> 
+<br><br><br><br><br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive ( FDR = 1.000000 ) </span> 
+
 No significant findings
 
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR = 0.000197 )</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR = 0.000197 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_pre_neg, row.names=F)
 ```
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in Pre- Menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/pre/AD_acc_pre_cor.png)
+
+<br>
+
 ![Glass Brain displaying tracts that had AD negatively correlated with maze learning accuracy in Pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/pre/maze_accuracy_pct.t2.length25.neg_corr.jpg)
 
+<br><br><br><br><br><br><br><br>
 
 
-### peri 
-#### <span style="color: hotpink;"> Positive ( FDR= 0.000282 ) </span> 
+
+#### peri 
+<span style="color: hotpink;"> Positive ( FDR= 0.000282 ) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_peri_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR=0.016393 )</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR=0.016393 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_peri_neg, row.names=F)
 ```
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy in peri-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri/AD_acc_peri_pos_ax.png)
 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in peri- Menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri/AD_acc_peri_neg_ax.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with maze learning accuracy in Pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/peri/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### post
-#### <span style="color: hotpink;"> Positive ( FDR= 0.000941 ) </span> 
+<br><br><br><br><br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive ( FDR= 0.000941 ) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_post_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.001445 )</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.001445 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_post_neg, row.names=F)
 ```
 
+<br><br>
+
 ####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/AD_acc_post_pos_ax.png)
+
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze learning accuracy in post- Menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/AD_acc_post_neg_ax.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br><br>
+
 <!------------------------------------RD Accuracy----------------------------------->
-## RD {.tabset}
+### RD {.tabset}
 ```{r RD all subjects, echo=FALSE, results='hide',message="FALSE"}
 
 RD_acc_all_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/allSubs/RD_all_acc_pos.csv'), header=FALSE) %>% filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
@@ -544,107 +786,191 @@ RD_acc_peripost_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/R
 
 RD_acc_peripost_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/RD_peripost_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
-### Summary of results 
+#### Summary of results 
 All subjects analyzed, tracts in the fornix were positively associated with acc. In Men, tracts in the fornix were positvely associated with acc. Women showed tracts in the fornix were negatively associated with acc. Pre menopausal women showed a similar findings to women with negative correlations in tracts in the fornix. Peri menopasual women showed results similar to men, with tracts in the fornix positively associated. Post menopausal women displayed positive and negative associations with a majority of positive tracts located in the fornix and negative tracts in the cerebellum. 
 
-### All subjects
-#### <span style="color: hotpink;"> Positive ( FDR= 0.146417 ) </span> 
+<br><br><br><br><br>
+
+#### All subjects
+<span style="color: hotpink;"> Positive ( FDR= 0.146417 ) </span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_acc_all_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
+
 No significant findings
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/allSubs/RD_acc_all_pos_ax.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD positively correlated with maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/allSubs/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
-### Men
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.019254)  </span> 
+<br><br><br><br><br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.019254)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_male_pos, row.names=F)
 ```
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.800000)</span> 
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.800000)</span>
+
 No Significant Findings
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/male/RD_acc_male_pos_ax.png)
 
+<br><br>
+
 ![Glass Brain displaying tracts that had RD positively correlated with maze learning accuracy in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/male/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
-### Women
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span> 
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span>
+
 No Significant Findings
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.074362)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.074362)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_female_neg, row.names=F)
 ```
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/female/RD_acc_fem_neg_ax.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD negatively correlated with maze learning accuracy in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/female/maze_accuracy_pct.t2.length25.neg_corr.jpg)
 
-### pre
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span> 
+<br><br><br><br><br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span> 
+
 No Significant Findings
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.010636) </span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.010636) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_pre_neg, row.names=F)
 ```
 
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/pre/RD_acc_pre_neg_cor.png)
+
+<br>
 
 ![Glass Brain displaying tracts that had RD negatively correlated with maze learning accuracy in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/pre/maze_accuracy_pct.t2.length25.neg_corr.jpg)
 
-### peri 
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000248) </span> 
+<br><br><br><br><br><br><br>
+
+#### peri 
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000248) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_peri_pos, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000000)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000000)</span> 
+
 No Significant Findings
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<br>
 
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in pre-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/RD_acc_peri_pos_ax.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had RD positively correlated with maze learning accuracy in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/maze_accuracy_pct.t2.length25.pos_corr.jpg)
 
-### post
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000777) </span> 
+<br><br><br><br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000777) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_post_pos, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.040343)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.040343)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_post_neg, row.names=F)
 ```
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/post/RD_acc_post_pos_ax.png)
+
+<br>
 
 <!-- ![PLACEHOLDER: NOT CORRECT IMAGE!!!!!Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze learning accuracy in post- Menopausal women]() -->
 
 ![Glass Brain displaying tracts that had RD positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/post/maze_accuracy_pct.t2.length25.pos_neg.jpg)
 
-### peri post combination
-#### <span style="color: hotpink;"> Positive Corrs (FDR = 0.000994) </span> 
+<br><br><br><br><br><br><br><br><br><br>
+
+#### peri post combination
+<span style="color: hotpink;"> Positive Corrs (FDR = 0.000994) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_peripost_pos, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.009259)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.009259)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_peripost_neg, row.names=F)
 ```
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br><br>
+
+<span class="text-center" style="color: Dark Magenta;"> Figures </span>
+<br>
+
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze learning accuracy in peri and post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/RD_acc_peri_pos_cor.png)
 
+<br>
+
 ![Glass Brain displaying tracts that had RD positively and negatively correlated with maze learning accuracy in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/RD/peri/maze_accuracy_pct.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # <span style="color: darkorange;"> Maze PAth Efficiency  </span>  {.tabset .tabset-dropdown}  
 
 
+<br><br><br><br><br><br><br><br><br><br><br><br>
