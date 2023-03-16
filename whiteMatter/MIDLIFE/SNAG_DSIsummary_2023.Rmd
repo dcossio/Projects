@@ -136,20 +136,17 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 <!---------------------------------------QA Accuracy--------------------------------->
 
 <!---------------------------------------Results---------------------------------->
-
-
-
-
+# Results 
 ## <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}  
 <br><br>
 
 ### <span style="color: darkgreen;"> Summary</span>
-A total of 82 diffusion MRI scans were included in the connectometry database. For the connectometry analysis, age, sex and repo status were listed as covariates. All subjects displayed positive and negative correlations between tracts with QA and Maze accuracy.Teacts in the fornix with MD and RD displayed positive relationships with Maze accuracy. AD displayed a negative relationship between tracts in the fornix and maze accuracy. All together the results suggest that increased diffusion (Md and RD) are associated with increased performance in scores in midlife participants and these associations are found in regions associated with spatial navigation. When split by sex, Men displayed a negative association between maze performance and a majority of tracts in the corpus callosum with QA. For AD, RD, and MD, men displayed significant positive relationships between performance. Altogether it suggests that better maze accuracy is associated with increased diffusion in midlife men.  Women displayed the opposite, tracts in the fornix with QA were positively associated with performance while tracts in the fornix, cingulum, and cerebellum  and  with AD,RD, and MD were negatively associated with performance. Suggesting that more specific diffusion is associated with better maze accuracy. Next, Menopause stages were analyzed separately. Pre menopausal women displayed both positive and negative correlations with QA while tracts with AD,RD and MD displayed negative relationships. Peri menopausal women displayed positive associations in tracts with QA, MD, RD, and AD and performance. This suggests that in peri menopasual women, maze accuracy is associated with increased diffusion in tracts on the fornix, cerebellum, and cingulum. Post menopausal women displayed both positive and negative associations between acc and QA. Post menopausal women displayed positive and negative assocoations with QA< MD, RD, and AD and maze accuracy. A majority of tracts in the fornix with AD,MD, and RD were positively associated with maze accuracy 
+A total of 82 diffusion MRI scans were included in the connectometry database. For the connectometry analysis, age, sex and repo status were listed as covariates. All subjects displayed Positive Correlations and negative correlations between tracts with QA and Maze accuracy.Teacts in the fornix with MD and RD displayed Positive Correlations relationships with Maze accuracy. AD displayed a negative relationship between tracts in the fornix and maze accuracy. All together the results suggest that increased diffusion (Md and RD) are associated with increased performance in scores in midlife participants and these associations are found in regions associated with spatial navigation. When split by sex, Men displayed a negative association between maze performance and a majority of tracts in the corpus callosum with QA. For AD, RD, and MD, men displayed significant Positive Correlations relationships between performance. Altogether it suggests that better maze accuracy is associated with increased diffusion in midlife men.  Women displayed the opposite, tracts in the fornix with QA were positively associated with performance while tracts in the fornix, cingulum, and cerebellum  and  with AD,RD, and MD were negatively associated with performance. Suggesting that more specific diffusion is associated with better maze accuracy. Next, Menopause stages were analyzed separately. Pre menopausal women displayed both Positive Correlations and negative correlations with QA while tracts with AD,RD and MD displayed negative relationships. Peri menopausal women displayed Positive Correlations associations in tracts with QA, MD, RD, and AD and performance. This suggests that in peri menopasual women, maze accuracy is associated with increased diffusion in tracts on the fornix, cerebellum, and cingulum. Post menopausal women displayed both Positive Correlations and negative associations between acc and QA. Post menopausal women displayed Positive Correlations and negative assocoations with QA< MD, RD, and AD and maze accuracy. A majority of tracts in the fornix with AD,MD, and RD were positively associated with maze accuracy 
 
 ### QA {.tabset}
 
 #### Summary of results 
-There were both positive and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly positive correlations between QA and performance. When split by menopause stagge, Pre and post displayed both positive and negative correlations while peri displayed only positive correlations with performance. 
+There were both Positive Correlations and negative correlations between QA and maze performance when all subjects were included in the analysis. When men were analyzed separately, men displayed more negatively associated correlations between QA and maze performance. Women displayed tracts with predominantly Positive Correlations correlations between QA and performance. When split by menopause stagge, Pre and post displayed both Positive Correlations and negative correlations while peri displayed only Positive Correlations correlations with performance. 
 
 
 <br><br><br><br><br><br><br><br>
@@ -186,14 +183,14 @@ QA_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_ne
 ```
 
 #### All subjects
-<span style="color: hotpink;"> Positive ( FDR= 0.043228) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.043228) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(QA_acc_all_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.122807)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.122807)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_all_neg, row.names=F)
 ```
@@ -218,14 +215,14 @@ knitr::kable(QA_acc_all_neg, row.names=F)
 
 
 #### Men
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.018519) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.018519) </span> 
 ```{r QA Males pos, echo=FALSE}
 knitr::kable(QA_acc_male_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.001161)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.001161)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_male_neg, row.names=F)
 ```
@@ -248,14 +245,14 @@ knitr::kable(QA_acc_male_neg, row.names=F)
 <br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000263) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000263) </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_female_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002809)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.002809)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_female_neg, row.names=F)
 ```
@@ -277,14 +274,14 @@ knitr::kable(QA_acc_female_neg, row.names=F)
 
 
 #### pre
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.044369)  </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.044369)  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_pre_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.011788)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.011788)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_pre_neg, row.names=F)
 ```
@@ -307,14 +304,14 @@ knitr::kable(QA_acc_pre_neg, row.names=F)
 <br><br><br><br><br><br><br>
 
 #### peri 
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000231)  </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000231)  </span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_peri_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 1.000000)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 1.000000)</span> 
 
 No Significant Findings
 
@@ -332,14 +329,14 @@ No Significant Findings
 <br><br><br><br><br><br>
 
 #### post
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000418)  </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000418)  </span> 
 ```{r post positve, echo=FALSE}
 knitr::kable(QA_acc_post_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.015152)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.015152)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_post_neg, row.names=F)
 ```
@@ -364,7 +361,7 @@ knitr::kable(QA_acc_post_neg, row.names=F)
 
 ### MD {.tabset}
 #### Summary of results 
-DSI was run on all subjects, with sex and age listed as covariates. There were positive correlations between MD values in the Fornix (L&R) and performance. Using a sex stratified apporoach we viewed the relationship between white matter and performance in men and women separately. Men, displayed a majortiy of positive correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of positive correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both positive and negative relationships between MD and  performance. The majority of tracts with positive correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
+DSI was run on all subjects, with sex and age listed as covariates. There were Positive Correlations correlations between MD values in the Fornix (L&R) and performance. Using a sex stratified apporoach we viewed the relationship between white matter and performance in men and women separately. Men, displayed a majortiy of Positive Correlations correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R).  Women, displayed a majortiy of negative correlations between tracts with MD and accuracy. Specifically in regions associated with navigation such as the fornix (L & R), and cerebelllum. We then investigated the relationship of white matter and performance when splitting by menopause stage. Pre menopause women displayed a majortiy of negative correlations between tracts with MD and accuracy in the fornix(L&R) and corpus callosum. Peri menopause women displayed a majority of Positive Correlations correlations between tracts with MD and accuracy in the fornix(L&R) cerebellum and cingulum. Post Menopause displayed both Positive Correlations and negative relationships between MD and  performance. The majority of tracts with Positive Correlations correlations were in the fornix, while a majority of the negative correlations were found in tracts in the parietal cortex and cerebellum. 
 
 <br><br><br><br><br>
 
@@ -396,7 +393,7 @@ MD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_ne
 ```
 #### All subjects
 
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.124661) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.124661) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_all_pos, row.names=F)
 ```
@@ -421,14 +418,14 @@ No significant findings
 <br><br><br><br><br><br><br>
 
 #### Men
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.012068) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.012068) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_male_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.075269) </span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.075269) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_male_neg, row.names=F)
 
@@ -449,11 +446,11 @@ knitr::kable(MD_acc_male_neg, row.names=F)
 <br><br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.071429) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.071429) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_female_pos, row.names=F)
 ```
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.061328)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.061328)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_female_neg, row.names=F)
 ```
@@ -472,13 +469,13 @@ knitr::kable(MD_acc_female_neg, row.names=F)
 <br><br><br><br><br><br><br>
 
 #### pre
-<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 1.000000) </span> 
 
 No significant findings
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.002473)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.002473)</span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_pre_neg, row.names=F)
 ```
@@ -497,14 +494,14 @@ knitr::kable(MD_acc_pre_neg, row.names=F)
 <br><br><br><br><br><br><br><br>
 
 #### peri 
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000106)  </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000106)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_peri_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.351351) </span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.351351) </span> 
 
 No significant findings
 
@@ -523,14 +520,14 @@ No significant findings
 
 
 #### post
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000106) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000106) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(MD_acc_post_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.351351) </span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.351351) </span> 
 ```{r, echo=FALSE}
 knitr::kable(MD_acc_post_neg, row.names=F)
 ```
@@ -584,10 +581,10 @@ AD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_ac
 AD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
 #### Summary of results 
-Only fornix was negatively associated with performance when all subejcts were analyzed. Fornix and thalamic raditions were positively associated with accuracy.Women displayed negative relationships with tracts int he fornix and cingulum and maze acc. Women in the pre menopasual groups showed tracts were negatively correlated with acc in fornix ,and  corpus callosum. Peri menopausal women showed that a majority of tracts in the fornix, cingulum, and cerebellum were positively associated with Acc. Post menopasual women showed positive tracts in the fornix and negative tracts in the cerbebellum. 
+Only fornix was negatively associated with performance when all subejcts were analyzed. Fornix and thalamic raditions were positively associated with accuracy.Women displayed negative relationships with tracts int he fornix and cingulum and maze acc. Women in the pre menopasual groups showed tracts were negatively correlated with acc in fornix ,and  corpus callosum. Peri menopausal women showed that a majority of tracts in the fornix, cingulum, and cerebellum were positively associated with Acc. Post menopasual women showed Positive Correlations tracts in the fornix and negative tracts in the cerbebellum. 
 
 #### All subjects
-<span style="color: hotpink;"> Positive Corrs  (FDR= 0.031496) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs  (FDR= 0.031496) </span> 
 ```{r AD_all_acc_pos, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_all_acc_pos, row.names=F)
 ```
@@ -617,14 +614,14 @@ knitr::kable(AD_all_acc_neg, row.names=F)
 
 
 #### Men
-<span style="color: hotpink;"> Positive ( FDR= 0.005460) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.005460) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(AD_acc_male_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR = FDR = 0.004202 )</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR = FDR = 0.004202 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_male_neg, row.names=F)
 ```
@@ -647,13 +644,13 @@ knitr::kable(AD_acc_male_neg, row.names=F)
 <br><br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive ( FDR= 1.000000 ) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.000000 ) </span> 
 
 No significant findings
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR=0.006928 )</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR=0.006928 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_female_neg, row.names=F)
 ```
@@ -672,13 +669,13 @@ knitr::kable(AD_acc_female_neg, row.names=F)
 <br><br><br><br><br><br><br><br>
 
 #### pre
-<span style="color: hotpink;"> Positive ( FDR = 1.000000 ) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR = 1.000000 ) </span> 
 
 No significant findings
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR = 0.000197 )</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR = 0.000197 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_pre_neg, row.names=F)
 ```
@@ -699,14 +696,14 @@ knitr::kable(AD_acc_pre_neg, row.names=F)
 
 
 #### peri 
-<span style="color: hotpink;"> Positive ( FDR= 0.000282 ) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.000282 ) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_peri_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR=0.016393 )</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR=0.016393 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_peri_neg, row.names=F)
 ```
@@ -729,14 +726,14 @@ knitr::kable(AD_acc_peri_neg, row.names=F)
 <br><br><br><br><br><br><br><br>
 
 #### post
-<span style="color: hotpink;"> Positive ( FDR= 0.000941 ) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.000941 ) </span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_post_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.001445 )</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.001445 )</span> 
 ```{r, echo=FALSE}
 knitr::kable(AD_acc_post_neg, row.names=F)
 ```
@@ -787,19 +784,19 @@ RD_acc_peripost_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/R
 RD_acc_peripost_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/RD_peripost_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
 ```
 #### Summary of results 
-All subjects analyzed, tracts in the fornix were positively associated with acc. In Men, tracts in the fornix were positvely associated with acc. Women showed tracts in the fornix were negatively associated with acc. Pre menopausal women showed a similar findings to women with negative correlations in tracts in the fornix. Peri menopasual women showed results similar to men, with tracts in the fornix positively associated. Post menopausal women displayed positive and negative associations with a majority of positive tracts located in the fornix and negative tracts in the cerebellum. 
+All subjects analyzed, tracts in the fornix were positively associated with acc. In Men, tracts in the fornix were positvely associated with acc. Women showed tracts in the fornix were negatively associated with acc. Pre menopausal women showed a similar findings to women with negative correlations in tracts in the fornix. Peri menopasual women showed results similar to men, with tracts in the fornix positively associated. Post menopausal women displayed Positive Correlations and negative associations with a majority of Positive Correlations tracts located in the fornix and negative tracts in the cerebellum. 
 
 <br><br><br><br><br>
 
 #### All subjects
-<span style="color: hotpink;"> Positive ( FDR= 0.146417 ) </span> 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.146417 ) </span> 
 ```{r, echo=FALSE}
 knitr::kable(RD_acc_all_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.000000)</span> 
 
 No significant findings
 
@@ -817,14 +814,14 @@ No significant findings
 <br><br><br><br><br><br><br><br>
 
 #### Men
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.019254)  </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.019254)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_male_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.800000)</span>
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.800000)</span>
 
 No Significant Findings
 
@@ -842,13 +839,13 @@ No Significant Findings
 <br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.083333) </span>
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.083333) </span>
 
 No Significant Findings
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.074362)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.074362)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_female_neg, row.names=F)
 ```
@@ -867,13 +864,13 @@ knitr::kable(RD_acc_female_neg, row.names=F)
 <br><br><br><br><br><br><br><br>
 
 #### pre
-<span style="color: hotpink;"> Positive Corrs (FDR = 1.000000)  </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 1.000000)  </span> 
 
 No Significant Findings
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.010636) </span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.010636) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_pre_neg, row.names=F)
 ```
@@ -892,14 +889,14 @@ knitr::kable(RD_acc_pre_neg, row.names=F)
 <br><br><br><br><br><br><br>
 
 #### peri 
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000248) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000248) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_peri_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.000000)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.000000)</span> 
 
 No Significant Findings
 
@@ -917,14 +914,14 @@ No Significant Findings
 <br><br><br><br><br><br><br>
 
 #### post
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000777) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000777) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_post_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs (FDR = 0.040343)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.040343)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_post_neg, row.names=F)
 ```
@@ -945,14 +942,14 @@ knitr::kable(RD_acc_post_neg, row.names=F)
 <br><br><br><br><br><br><br><br><br><br>
 
 #### peri post combination
-<span style="color: hotpink;"> Positive Corrs (FDR = 0.000994) </span> 
+<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000994) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_peripost_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Neg Corrs  (FDR = 0.009259)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations Corrs  (FDR = 0.009259)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(RD_acc_peripost_neg, row.names=F)
 ```
@@ -970,8 +967,10 @@ knitr::kable(RD_acc_peripost_neg, row.names=F)
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
-# <span style="color: darkorange;"> Maze Path Efficiency  </span>  {.tabset .tabset-dropdown}  
 
+## <span style="color: darkorange;"> Maze Path Efficiency  </span>  {.tabset .tabset-dropdown}  
+
+### QA {.tabset}
 ```{r QA ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
 
 QA_alltrialsPE_all_pos <- read.delim(paste0(working_dir,'maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
@@ -994,8 +993,8 @@ QA_alltrialsPE_pre_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_tria
 
 QA_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
-# PERI
-QA_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri/QA_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+# # PERI
+# QA_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri/QA_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 # POST
 QA_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
@@ -1005,11 +1004,195 @@ QA_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_tri
 
 
 # PEri Post
-QA_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peripost/QA_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri_post/QA_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
-QA_acc_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peripost/QA_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri_post/QA_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 ```
 
+#### All Subjects 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.003279) </span> 
+```{r,echo=FALSE}
+knitr::kable(QA_alltrialsPE_all_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.001618)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_all_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.005510) </span>
+
+```{r,echo=FALSE}
+knitr::kable(QA_alltrialsPE_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.007274)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_male_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/male/QA_alltrialspatheff_male_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/male/QA_alltrialspatheff_male_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/male/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.007246) </span>
+
+```{r,echo=FALSE}
+knitr::kable(QA_alltrialsPE_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000369)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_female_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/female/QA_alltrialspatheff_female_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/female/QA_alltrialspatheff_female_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/female/AllTrials_path_effi.t2.length25.pos_corr.jpg)
+
+<br><br><br><br><br><br>
+
+#### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001502) </span>
+
+```{r,echo=FALSE}
+knitr::kable(QA_alltrialsPE_pre_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001490)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_pre_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in pre- menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/pre/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
+#### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.000000) </span>
+
+No Significant Correlations
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000374)</span> 
+```{r, echo=FALSE}
+# knitr::kable(QA_alltrialsPE_peri_neg, row.names=F) %>% 
+#   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+#   scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/peri/QA_alltrialspatheff_peri_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/peri/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
+#### Post 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001024) </span>
+
+```{r,echo=FALSE}
+knitr::kable(QA_alltrialsPE_post_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001339)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_post_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
 
 <br><br>
 
@@ -1017,15 +1200,113 @@ QA_acc_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/
 
 <br>
 
-![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/QA_all_acc_pos_cor.png)
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_pos_cor.png)
 
 <br>
 
-![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/QA_all_acc_neg_cor.png)
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_neg_cor.png)
 
 <br>
 
-![Glass Brain displaying tracts that had QA positively and negatively correlated with maze learning accuracy](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/allSubs/maze_accuracy_pct.t2.length25.pos_neg.jpg)
+![Glass brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/post/AllTrials_path_effi.t2.length25.pos_neg.jpg)
 
 <br><br><br><br><br><br>
+
+#### Peri and Post
+
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.006944) </span>
+
+```{r,echo=FALSE}
+knitr::kable(QA_alltrialsPE_peripost_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000330)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_peripost_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/peri_post/QA_alltrialspatheff_peripost_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/peri_post/QA_alltrialspatheff_peripost_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/peri_post/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
+### MD {.tabset}
+```{r MD ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+
+MD_alltrialsPE_all_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/allSubs/MD_alltrialspatheff_allsubs_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#MEN
+MD_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/male/MD_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#women
+
+MD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+MD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#PRE
+MD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/pre/MD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# # PERI
+MD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# POST
+MD_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/post/MD_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+MD_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/post/MD_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# PEri Post
+MD_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peripost/MD_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+MD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peripost/MD_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+```
+
+#### All Subjects 
+#### Men
+#### Women
+#### Pre
+#### Peri
+#### Post 
+#### Peri and Post
+
+
+### AD {.tabset}
+#### All Subjects
+#### Men
+#### Women
+#### Pre
+#### Peri
+#### Post 
+#### Peri and Post
+
+### RD {.tabset}
+#### All Subjects
+#### Men
+#### Women
+#### Pre
+#### Peri
+#### Post 
+#### Peri and Post
+
 <br><br><br><br><br><br><br><br><br><br><br><br>
