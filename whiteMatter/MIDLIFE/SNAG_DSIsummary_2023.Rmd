@@ -1219,7 +1219,7 @@ knitr::kable(QA_alltrialsPE_post_neg, row.names=F) %>%
 ```{r,echo=FALSE}
 knitr::kable(QA_alltrialsPE_peripost_pos, row.names=F) %>% 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+  scroll_box(width = "800px", height = "100px")
 ```
 
 <br><br>
@@ -1265,9 +1265,12 @@ MD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_t
 MD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 #PRE
+
 MD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/pre/MD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 # # PERI
+MD_alltrialsPE_peri_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
 MD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 # POST
@@ -1283,30 +1286,755 @@ MD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All
 ```
 
 #### All Subjects 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.000000) </span>
+
+No Significant Correlations
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000364)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_all_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze Path Eff ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/allSubs/MD_alltrialspatheff_allsubs_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had MD positively and negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/allSubs/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Men
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.242767) </span>
+
+No Significant Correlations
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001337)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_male_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/male/MD_alltrialspatheff_male_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had MD negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/male/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.046512) </span>
+
+```{r,echo=FALSE}
+knitr::kable(MD_alltrialsPE_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.00032)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_female_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff in  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/female/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.000000) </span>
+
+No Significant Corrleations
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.021415)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_pre_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze Path Eff in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/pre/MD_alltrialspatheff_pre_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had MD negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/pre/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.002496) </span>
+
+```{r,echo=FALSE}
+knitr::kable(MD_alltrialsPE_peri_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  002323)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_peri_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Maze Path Eff in peri  menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had MD positively and negatively correlated with Maze Path Eff in perimenopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/peri/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Post 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.002926) </span>
+
+```{r,echo=FALSE}
+knitr::kable(MD_alltrialsPE_post_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.002119)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_post_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Maze Path Eff in  post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/post/MD_alltrialspatheff_post_neg_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze Path Eff and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/post/MD_alltrialspatheff_post_pos_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had MD positively and negatively correlated with Maze Path Eff in  post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/post/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Peri and Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.024953) </span>
+
+```{r,echo=FALSE}
+knitr::kable(MD_alltrialsPE_peripost_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.163978)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_alltrialsPE_peripost_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Maze Path Eff in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/peripost/MD_alltrialspatheff_peripost_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/peripost/MD_alltrialspatheff_peripost_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had MD positively and negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/MD/peripost/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
+
+
+
 
 
 ### AD {.tabset}
+```{r AD ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+
+#MEN
+AD_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/male/AD_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#women
+AD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/female/AD_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+AD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/female/AD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#PRE
+
+AD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/pre/AD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# # PERI
+AD_alltrialsPE_peri_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/peri/AD_alltrialspatheff_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+AD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/peri/AD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# POST
+AD_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/post/AD_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+AD_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/post/AD_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# PEri Post
+
+AD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/peri_post/AD_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+```
 #### All Subjects
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.055556) </span>
+
+Less than 10 tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.083333)</span> 
+
+Less than 10 tracts
+
+
+<br><br><br><br><br><br><br><br><br><br>
+
 #### Men
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.677419) </span>
+
+No Significant Findings
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.183673)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(QA_alltrialsPE_peripost_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/male/AD_alltrialspatheff_male_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had AD positively and negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/male/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.008333) </span>
+
+```{r,echo=FALSE}
+knitr::kable(AD_alltrialsPE_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.003215)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_alltrialsPE_female_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze Path Eff women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/female/AD_alltrialspatheff_female_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/female/AD_alltrialspatheff_female_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had AD positively and negatively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/female/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.000000) </span>
+
+No significant tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.016484)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_alltrialsPE_pre_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze Path Eff in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/pre/AD_alltrialspatheff_pre_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had AD positively and negatively correlated with Maze Path Eff in pre menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/pre/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.000991) </span>
+
+```{r,echo=FALSE}
+knitr::kable(AD_alltrialsPE_peri_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001513)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_alltrialsPE_peri_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/peri/AD_alltrialspatheff_peri_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/peri/AD_alltrialspatheff_peri_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had AD positively and negatively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/peri/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Post 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001510) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_alltrialsPE_post_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.019694)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_alltrialsPE_post_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze Path Eff in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/post/AD_alltrialspatheff_post_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze Path Eff in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/post/AD_alltrialspatheff_post_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had AD positively and negatively correlated with Maze Path Eff in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/post/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Peri and Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.003250) </span>
+
+```{r,echo=FALSE}
+knitr::kable(AD_alltrialsPE_peripost_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.408696)</span> 
+
+No Significant Correlations
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/peri_post/AD_alltrialspatheff_peripost_pos-cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had AD positively and negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/AD/peri_post/AllTrials_path_effi.t2.length25.pos_corr.jpg)
+
+<br><br><br><br><br><br>
+
 
 ### RD {.tabset}
+```{r RD ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+
+RD_alltrialsPE_all_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/allSubs/RD_alltrialspatheff_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#MEN
+RD_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/male/RD_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#women
+RD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/female/RD_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+RD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/female/RD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#PRE
+
+RD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/pre/RD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# # PERI
+RD_alltrialsPE_peri_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri/RD_alltrialspatheff_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+RD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri/RD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# POST
+RD_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/post/RD_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+RD_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/post/RD_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+
+# PEri Post
+
+RD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri_post/RD_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+RD_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri_post/RD_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+```
+
 #### All Subjects
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.500000) </span>
+
+No Significant Correlations
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.013981)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_all_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/allSubs/RD_alltrialspatheff_all_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD positively and negatively correlated with Maze Path Eff ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/allSubs/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Men
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.321383) </span>
+
+No Significant Correlations
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.005025)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_male_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/male/RD_alltrialspatheff_male_neg-cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD negatively correlated with Maze Path Eff in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/male/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.007353) </span>
+
+```{r,echo=FALSE}
+knitr::kable(RD_alltrialsPE_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR=0.000514)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_female_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/female/RD_alltrialspatheff_female_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/female/RD_alltrialspatheff_female_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD positively and negatively correlated with Maze Path Eff in  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/female/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.000000) </span>
+
+No Significant correlations
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.021390)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_pre_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff in pre- menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/pre/RD_alltrialspatheff_pre_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD negatively correlated with Maze Path Eff in pre women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/pre/AllTrials_path_effi.t2.length25.neg_corr.jpg)
+
+<br><br><br><br><br><br>
+
 #### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001243) </span>
+
+```{r,echo=FALSE}
+knitr::kable(RD_alltrialsPE_peri_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.001323)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_peri_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/peri/RD_alltrialspatheff_peri_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/peri/RD_alltrialspatheff_peri_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD positively and negatively correlated with Maze Path Eff in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/peri/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Post 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.007082) </span>
+
+```{r,echo=FALSE}
+knitr::kable(RD_alltrialsPE_post_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.006757)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_post_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze Path Eff in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/post/RD_alltrialspatheff_post_pos-cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/post/RD_alltrialspatheff_post_neg-cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD positively and negatively correlated with Maze Path Eff in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/post/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 #### Peri and Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.006927) </span>
+
+```{r,echo=FALSE}
+knitr::kable(RD_alltrialsPE_peripost_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.188596)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(RD_alltrialsPE_peripost_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Maze Path Eff in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/peri_post/RD_alltrialspatheff_peripost_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/peri_post/RD_alltrialspatheff_peripost_neg_cor.png)
+
+<br>
+
+![Glass brain displaying tracts that had RD positively and negatively correlated with Maze Path Eff in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/RD/peri_post/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br>
+
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
