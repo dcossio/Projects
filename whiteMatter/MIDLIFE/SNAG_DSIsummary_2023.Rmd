@@ -141,7 +141,7 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 <br><br>
 
 ### <span style="color: darkgreen;"> Summary</span>
-A total of 82 diffusion MRI scans were included in the connectometry database. For the connectometry analysis, age, sex and repo status were listed as covariates. All subjects displayed Positive Correlations and negative correlations between tracts with QA and Maze accuracy.Teacts in the fornix with MD and RD displayed Positive Correlations relationships with Maze accuracy. AD displayed a negative relationship between tracts in the fornix and maze accuracy. All together the results suggest that increased diffusion (Md and RD) are associated with increased performance in scores in midlife participants and these associations are found in regions associated with spatial navigation. When split by sex, Men displayed a negative association between maze performance and a majority of tracts in the corpus callosum with QA. For AD, RD, and MD, men displayed significant Positive Correlations relationships between performance. Altogether it suggests that better maze accuracy is associated with increased diffusion in midlife men.  Women displayed the opposite, tracts in the fornix with QA were positively associated with performance while tracts in the fornix, cingulum, and cerebellum  and  with AD,RD, and MD were negatively associated with performance. Suggesting that more specific diffusion is associated with better maze accuracy. Next, Menopause stages were analyzed separately. Pre menopausal women displayed both Positive Correlations and negative correlations with QA while tracts with AD,RD and MD displayed negative relationships. Peri menopausal women displayed Positive Correlations associations in tracts with QA, MD, RD, and AD and performance. This suggests that in peri menopasual women, maze accuracy is associated with increased diffusion in tracts on the fornix, cerebellum, and cingulum. Post menopausal women displayed both Positive Correlations and negative associations between acc and QA. Post menopausal women displayed Positive Correlations and negative assocoations with QA< MD, RD, and AD and maze accuracy. A majority of tracts in the fornix with AD,MD, and RD were positively associated with maze accuracy 
+A total of 82 diffusion MRI scans were included in the connectometry database. For the connectometry analysis, age, sex and repo status were listed as covariates. All subjects displayed Positive Correlations and negative correlations between tracts with QA and Maze accuracy.Tracts in the fornix with MD and RD displayed Positive Correlations relationships with Maze accuracy. AD displayed a negative relationship between tracts in the fornix and maze accuracy. All together the results suggest that increased diffusion (Md and RD) are associated with increased performance in scores in midlife participants and these associations are found in regions associated with spatial navigation. When split by sex, Men displayed a negative association between maze performance and a majority of tracts in the corpus callosum with QA. For AD, RD, and MD, men displayed significant Positive correlations relationships between performance. Altogether it suggests that better maze accuracy is associated with increased diffusion in midlife men.  Women displayed the opposite, tracts in the fornix with QA were positively associated with performance while tracts in the fornix, cingulum, and cerebellum  and  with AD,RD, and MD were negatively associated with performance. Suggesting that more specific diffusion is associated with better maze accuracy. Next, Menopause stages were analyzed separately. Pre menopausal women displayed both positive correlations and negative correlations with QA while tracts with AD,RD and MD displayed negative relationships. Peri menopausal women displayed Positive Correlations associations in tracts with QA, MD, RD, and AD and performance. This suggests that in peri menopasual women, maze accuracy is associated with increased diffusion in tracts on the fornix, cerebellum, and cingulum. Post menopausal women displayed both positive correlations and negative associations between acc and QA. Post menopausal women displayed Positive Correlations and negative associations with QA< MD, RD, and AD and maze accuracy. A majority of tracts in the fornix with AD,MD, and RD were positively associated with maze accuracy 
 
 ### QA {.tabset}
 
@@ -215,14 +215,14 @@ knitr::kable(QA_acc_all_neg, row.names=F)
 
 
 #### Men
-<span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.018519) </span> 
+<span style="color: hotpink;"> Positive Correlations  (FDR = 0.018519) </span> 
 ```{r QA Males pos, echo=FALSE}
 knitr::kable(QA_acc_male_pos, row.names=F)
 ```
 
 <br><br>
 
-<span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.001161)</span> 
+<span class="text-center" style="color: Teal;"> Negative Correlations  (FDR = 0.001161)</span> 
 ```{r, echo=FALSE}
 knitr::kable(QA_acc_male_neg, row.names=F)
 ```
@@ -970,6 +970,53 @@ knitr::kable(RD_acc_peripost_neg, row.names=F)
 
 ## <span style="color: darkorange;"> Maze Path Efficiency  </span>  {.tabset .tabset-dropdown}  
 
+We would expect that lower QA values would correspond to higher PE scores. higher PE scores indicate worse efficiency 
+
+- All subjects
+  - Negative correlations in corpus callosum and cingulum. Meaning that those with higher QA values had better efficiency scores ( correct trial only also had negatve only.)
+  - MD exhibited negative correlations suggesting lower MD corresponded to higher scores. Lower diffusivity corresponded to worse efficincy  ( same for correct trials only)
+  - AD had tracts but they were less than 10. nothing significant for correct trials
+  - RD was negative only correlations ( Same with corect trials only : Fornix only)
+
+- Men
+  - QA had tracts that were positively and negatively correlated
+  - MD was negatively correlated with PE scores. ( Correct only had pos and negative)
+  - AD displayed negative correlations suggesting more specific diffusivity corresponded to better efficicency ( correct trials had pos and neg)
+  - RD had negative correlations 
+  
+- Women
+  - QA displayed pos and negative correlations but mostly negative ( same for correct trials)
+  - MD displayed pos and negative correlations but mostly negative corrs. (correct only did not have any correlations
+  - AD  displayed pos and negative correlations but mostly negative corrs (correct only did not have any correlations)
+  -RD displayed pos and negative correlations but mostly negative corrs (correct showed same po/neg)
+  
+- Pre
+  - QA displayed pos and negative correlations but mostly negative ( same for correct trials)
+  - MD displayed pos and negative correlations 
+  - AD displayed negative correlations 
+  - RD displayed negative correlations 
+  
+- Peri
+  - QA displayed negative correlations 
+  - MD displayed pos and negative correlations with tracts in the fornix displaying a pos relationship
+  - AD displayed pos and negative correlations with tracts in the fornix displaying a pos relationship
+  - RD displayed pos and negative correlations with tracts in the fornix displaying a pos relationship
+  
+- Post
+  - QA displayed negative correlations 
+  - MD displayed pos and negative correlations 
+  - AD displayed pos and negative correlations with most being negative
+  - RD displayed pos and negative correlations
+  
+- Peri and Post
+  - QA displayed negative correlations 
+  - MD displayed pos and negative correlations 
+  - AD displayed positive
+  - RD displayed pos and negative correlations but mostly positive
+  
+
+- Men
+
 ### QA {.tabset}
 ```{r QA ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
 
@@ -999,7 +1046,7 @@ QA_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_tria
 # POST
 QA_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
-QA_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_post_neg <- read.csv(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 
 
