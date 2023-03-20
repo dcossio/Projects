@@ -395,12 +395,10 @@ knitr::kable(QA_acc_post_neg, row.names=F)%>%
 #### Box plots
 ```{r Fixing up variables for displaying sex differences}
 
-QA_acc_male_pos_cols <- c("Subjects", as.character(QA_acc_male_pos[,1]))
-
 QA_acc_male_neg_cols <-  c("Subjects", as.character(QA_acc_male_neg[,1]))
 
   
-# Lets do just negative since most tracts are neg
+# Lets do just male negative since most tracts are neg
 #reading in my csv with the stats and adding in the subject info 
 QA_acc_male_neg_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE)%>%
   filter(str_detect(V1, c("mean_qa"))) %>%
@@ -408,7 +406,7 @@ QA_acc_male_neg_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_m
   `colnames<-`(QA_acc_male_neg_cols) %>%
   mutate(sex = Acc_sub_info$sex) %>% 
   mutate(age = Acc_sub_info$age_scan_years) %>% 
-  mutate(repo_status = Acc_sub_info$repo_status)
+  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="male")
 
 # Reorder for my sanity check 
 QA_acc_male_neg_values <- QA_acc_male_neg_values[,c(1,12:14,2:11)]
@@ -421,6 +419,31 @@ QA_acc_male_neg_values[5:14] <- apply(QA_acc_male_neg_values[5:14],2, as.numeric
 QA_acc_male_neg_values_long <- gather(QA_acc_male_neg_values, ROI, QA ,QA_acc_male_neg_gathercols, factor_key = TRUE) %>% select(!(Subjects))
 
 
+# Lets do female positive
+
+QA_acc_female_pos_cols <- c("Subjects", as.character(QA_acc_female_pos[,1]))
+
+  
+# Lets do just male negative since most tracts are neg
+#reading in my csv with the stats and adding in the subject info 
+QA_acc_female_pos_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_pos.csv'), header=FALSE)%>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(QA_acc_female_pos_cols) %>%
+  mutate(sex = Acc_sub_info$sex) %>% 
+  mutate(age = Acc_sub_info$age_scan_years) %>% 
+  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="female")
+
+# Reorder for my sanity check 
+QA_acc_female_pos_values <- QA_acc_female_pos_values[,c(1,19:21,2:18)]
+QA_acc_female_pos_gathercols <- colnames(QA_acc_female_pos_values[5:21])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+QA_acc_female_pos_values[5:21] <- apply(QA_acc_female_pos_values[5:21],2, as.numeric) 
+
+## GAther it long for large compiled figure
+QA_acc_female_pos_values_long <- gather(QA_acc_female_pos_values, ROI, QA ,QA_acc_female_pos_gathercols, factor_key = TRUE) %>% select(!(Subjects))
+
 ```
 
 ```{r actaully grabbing the figure}
@@ -429,9 +452,13 @@ QA_acc_male_neg_values_long <- gather(QA_acc_male_neg_values, ROI, QA ,QA_acc_ma
 
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/"
 
+QA_acc_df <- QA_acc_female_pos_values %>% select("Subjects","sex", "Corpus_Callosum_Tapetum")
+temp_QA_acc_df <- QA_acc_male_neg_values %>% select("Subjects","sex", "Corpus_Callosum_Tapetum")
+QA_acc_df <- rbind(QA_acc_df, temp_QA_acc_df)
+
 #for (ROI in gathercols) {
  # print(ROI)
-  y <- QA_acc_male_neg_values %>%
+  y <- QA_acc_df %>%
     ggplot( aes(x=sex, y= Corpus_Callosum_Tapetum, group=sex)) +
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
@@ -565,6 +592,7 @@ knitr::kable(MD_acc_female_neg, row.names=F)%>%
   scroll_box(width = "800px", height = "200px")
 ```
 
+
 <br><br>
 
 <span class="text-center" style="color: Dark Blue;"> Figures </span> 
@@ -669,7 +697,125 @@ knitr::kable(MD_acc_post_neg, row.names=F)%>%
 
 <!------------------------------------AD Accuracy--------------------------------->
 
-#### Box plots fig 
+#### Box plots
+```{r Fixing up variables for displaying sex differences}
+
+MD_acc_male_pos_cols <-  c("Subjects", as.character(MD_acc_male_pos[,1]))
+
+# Lets do just male negative since most tracts are neg
+#reading in my csv with the stats and adding in the subject info 
+MD_acc_male_pos_values <-read.csv(paste0(working_dir,'maze/Accuracy/MD/male/MD_male_pos.csv'), header=FALSE)%>%
+  filter(str_detect(V1, c("mean_md"))) %>%
+  `colnames<-`(MD_acc_male_pos_cols) %>% cbind(Acc_sub_info[,c("sex", "age_scan_years", "repo_status","maze_accuracy_pct")]) %>% filter(sex=="male")
+
+# Reorder for my sanity check 
+MD_acc_male_pos_values <- MD_acc_male_pos_values[,c(1,8:11,2:7)]
+MD_acc_male_pos_gathercols <- colnames(MD_acc_male_pos_values[5:11])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+MD_acc_male_pos_values[5:11] <- apply(MD_acc_male_pos_values[5:11],2, as.numeric) 
+
+## GAther it long for large compiled figure
+MD_acc_male_pos_values_long <- gather(MD_acc_male_pos_values, ROI, MD ,MD_acc_male_pos_gathercols, factor_key = TRUE) %>% select(!(Subjects))
+
+
+# Lets do female positive
+
+MD_acc_female_neg_cols <- c("Subjects", as.character(MD_acc_female_neg[,1]))
+
+  
+# Lets do just male negative since most tracts are neg
+#reading in my csv with the stats and adding in the subject info 
+MD_acc_female_neg_values <-read.delim(paste0(working_dir,'maze/Accuracy/MD/female/MD_female_neg.csv'), header=FALSE, sep="\t") %>%
+  remove_empty("cols") %>% 
+  filter(str_detect(V1, c("mean_md"))) %>%
+  `colnames<-`(MD_acc_female_neg_cols) %>%
+  cbind(Acc_sub_info[,c("sex", "age_scan_years", "repo_status","maze_accuracy_pct")]) %>%  filter(sex=="female") 
+
+# Reorder for my sanity check 
+MD_acc_female_neg_values <- MD_acc_female_neg_values[,c(1,8:11,2:7)]
+MD_acc_female_neg_gathercols <- colnames(MD_acc_female_neg_values[5:11])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+MD_acc_female_neg_values[5:11] <- apply(MD_acc_female_neg_values[5:11],2, as.numeric) 
+
+## GAther it long for large compiled figure
+MD_acc_female_neg_values_long <- gather(MD_acc_female_neg_values, ROI, MD ,MD_acc_female_neg_gathercols, factor_key = TRUE) %>% select(!(Subjects))
+
+```
+
+```{r actaully grabbing the figure}
+
+# I will be commenting out the loop since I just need one fig
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
+
+MD_acc_df <- MD_acc_female_neg_values %>% select("Subjects","sex", "Fornix_L", "Fornix_R")
+temp_MD_acc_df <- MD_acc_male_pos_values %>% select("Subjects","sex", "Fornix_L", "Fornix_R")
+MD_acc_df <- rbind(MD_acc_df, temp_MD_acc_df)
+
+#for (ROI in gathercols) {
+ # print(ROI)
+  y <- MD_acc_df %>%
+    ggplot( aes(x=sex, y= Fornix_R, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) + 
+      labs(x= "Sex", y= " QA", title ="Fornix_R" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  
+   png(file = paste0(figpath,"sex_diff_MD_FornixR.png"))  #ROI,".png"))
+   print(y)
+   dev.off() 
+#}
+
+```
+
+```{r Correlations}
+
+MD_acc_corr_DF <- MD_acc_female_neg_values  %>% select("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R") %>% rbind(MD_acc_male_pos_values[,c("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R")])
+
+
+png(file = paste0(figpath,"corr_MD_FornixL.png"))  #ROI,".png"))
+
+  ggplot(data = MD_acc_corr_DF, aes(x = Fornix_L, y = maze_accuracy_pct)) +
+  geom_point(aes(color = factor(sex))) +
+  scale_color_manual(values = c("#CF92BF", "#90A0C9"),name="Gender")+
+  geom_smooth(method = lm, fullrange=TRUE,
+               aes(color = factor(sex))) +
+  labs(title = "Accuracy correlated with MD \n in the fornix in men and women",
+       x = "Fornix R",
+       y = "Proportion Correct")+
+  theme(legend.position = "right", 
+        axis.title.x = element_text(vjust=- 4, size = 16),
+        axis.title.y = element_text(vjust=8, size = 16), 
+        axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12),
+        panel.background =element_blank(),
+        axis.line = element_line(colour = "black"),  
+        #plot.margin = margin(0.5, 1, ,1, "cm"),
+        legend.key.size = unit(1, 'cm'),
+        aspect.ratio = 20 / 30,
+        plot.title = element_text(hjust = 0.5, vjust = 5, size = 16, face="bold"))  +
+   stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.7, label.y.npc = 0.9, size=4)  +
+  xlim(min(MD_acc_corr_DF$Fornix_L), max(MD_acc_corr_DF$Fornix_L)) +
+    annotate("text", label = "FDR=", x = 1.68 , y = 0.75, color="#90A0C9", size=4) +
+    annotate("text", label = "FDR=", x = 1.68 , y = 0.70, color="#CF92BF", size=4) 
+  
+dev.off() 
+
+
+```
+
+
 
 ### AD {.tabset}
 ```{r AD all vars,echo=FALSE, results='hide',message="FALSE"}
