@@ -51,6 +51,16 @@ working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@u
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
+Acc_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv")
+
+for (row in 1:nrow(Acc_sub_info)) {
+  if (Acc_sub_info[row,2] == 0) {
+  Acc_sub_info[row,2] <- "female"
+} else {
+     Acc_sub_info[row,2] <- "male"
+}
+}
+
 ```
 
 ```{css, echo=FALSE}
@@ -185,14 +195,18 @@ QA_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_ne
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.043228) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(QA_acc_all_pos, row.names=F)
+knitr::kable(QA_acc_all_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.122807)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_all_neg, row.names=F)
+knitr::kable(QA_acc_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -217,14 +231,18 @@ knitr::kable(QA_acc_all_neg, row.names=F)
 #### Men
 <span style="color: hotpink;"> Positive Correlations  (FDR = 0.018519) </span> 
 ```{r QA Males pos, echo=FALSE}
-knitr::kable(QA_acc_male_pos, row.names=F)
+knitr::kable(QA_acc_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations  (FDR = 0.001161)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_male_neg, row.names=F)
+knitr::kable(QA_acc_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -247,14 +265,18 @@ knitr::kable(QA_acc_male_neg, row.names=F)
 #### Women
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000263) </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_female_pos, row.names=F)
+knitr::kable(QA_acc_female_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.002809)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_female_neg, row.names=F)
+knitr::kable(QA_acc_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -276,14 +298,18 @@ knitr::kable(QA_acc_female_neg, row.names=F)
 #### pre
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.044369)  </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_pre_pos, row.names=F)
+knitr::kable(QA_acc_pre_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.011788)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_pre_neg, row.names=F)
+knitr::kable(QA_acc_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -306,7 +332,9 @@ knitr::kable(QA_acc_pre_neg, row.names=F)
 #### peri 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000231)  </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_peri_pos, row.names=F)
+knitr::kable(QA_acc_peri_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -331,14 +359,18 @@ No Significant Findings
 #### post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000418)  </span> 
 ```{r post positve, echo=FALSE}
-knitr::kable(QA_acc_post_pos, row.names=F)
+knitr::kable(QA_acc_post_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.015152)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_post_neg, row.names=F)
+knitr::kable(QA_acc_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -358,6 +390,74 @@ knitr::kable(QA_acc_post_neg, row.names=F)
 
 <br><br><br><br><br><br><br>
 <!---------------------------------------MD Accuracy--------------------------------  -->
+
+
+#### Box plots
+```{r Fixing up variables for displaying sex differences}
+
+QA_acc_male_pos_cols <- c("Subjects", as.character(QA_acc_male_pos[,1]))
+
+QA_acc_male_neg_cols <-  c("Subjects", as.character(QA_acc_male_neg[,1]))
+
+  
+# Lets do just negative since most tracts are neg
+#reading in my csv with the stats and adding in the subject info 
+QA_acc_male_neg_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE)%>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(QA_acc_male_neg_cols) %>%
+  mutate(sex = Acc_sub_info$sex) %>% 
+  mutate(age = Acc_sub_info$age_scan_years) %>% 
+  mutate(repo_status = Acc_sub_info$repo_status)
+
+# Reorder for my sanity check 
+QA_acc_male_neg_values <- QA_acc_male_neg_values[,c(1,12:14,2:11)]
+QA_acc_male_neg_gathercols <- colnames(QA_acc_male_neg_values[5:14])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+QA_acc_male_neg_values[5:14] <- apply(QA_acc_male_neg_values[5:14],2, as.numeric) 
+
+## GAther it long for large compiled figure
+QA_acc_male_neg_values_long <- gather(QA_acc_male_neg_values, ROI, QA ,QA_acc_male_neg_gathercols, factor_key = TRUE) %>% select(!(Subjects))
+
+
+```
+
+```{r actaully grabbing the figure}
+
+# I will be commenting out the loop since I just need one fig
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/"
+
+#for (ROI in gathercols) {
+ # print(ROI)
+  y <- QA_acc_male_neg_values %>%
+    ggplot( aes(x=sex, y= Corpus_Callosum_Tapetum, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) + 
+      labs(x= "Sex", y= " QA", title ="Corpus Callosum Tapetum" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  
+   png(file = paste0(figpath,"sex_diff_QA.png"))  #ROI,".png"))
+   print(y)
+   dev.off()
+#}
+
+
+```
+
+
+<br><br><br><br><br><br>
+
 
 ### MD {.tabset}
 #### Summary of results 
@@ -395,7 +495,9 @@ MD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_ne
 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.124661) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_all_pos, row.names=F)
+knitr::kable(MD_acc_all_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -420,14 +522,18 @@ No significant findings
 #### Men
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.012068) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_male_pos, row.names=F)
+knitr::kable(MD_acc_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.075269) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_male_neg, row.names=F)
+knitr::kable(MD_acc_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 
 #![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze learning accuracy in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/post/QA_post_acc_neg_cor.png)
 ```
@@ -448,11 +554,15 @@ knitr::kable(MD_acc_male_neg, row.names=F)
 #### Women
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.071429) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_female_pos, row.names=F)
+knitr::kable(MD_acc_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.061328)</span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_female_neg, row.names=F)
+knitr::kable(MD_acc_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -477,7 +587,9 @@ No significant findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.002473)</span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_pre_neg, row.names=F)
+knitr::kable(MD_acc_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -496,7 +608,9 @@ knitr::kable(MD_acc_pre_neg, row.names=F)
 #### peri 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000106)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_peri_pos, row.names=F)
+knitr::kable(MD_acc_peri_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -522,14 +636,18 @@ No significant findings
 #### post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000106) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_post_pos, row.names=F)
+knitr::kable(MD_acc_post_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.351351) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_post_neg, row.names=F)
+knitr::kable(MD_acc_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -550,6 +668,8 @@ knitr::kable(MD_acc_post_neg, row.names=F)
 <br><br><br><br><br><br><br><br><br><br><br>
 
 <!------------------------------------AD Accuracy--------------------------------->
+
+#### Box plots fig 
 
 ### AD {.tabset}
 ```{r AD all vars,echo=FALSE, results='hide',message="FALSE"}
@@ -586,14 +706,18 @@ Only fornix was negatively associated with performance when all subejcts were an
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations Corrs  (FDR= 0.031496) </span> 
 ```{r AD_all_acc_pos, layout="l-body-outset",echo=FALSE}
-knitr::kable(AD_all_acc_pos, row.names=F)
+knitr::kable(AD_all_acc_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Corrs ( FDR = 0.150000)</span> 
 ```{r AD_all_acc_neg, layout="l-body-outset",echo=FALSE}
-knitr::kable(AD_all_acc_neg, row.names=F)
+knitr::kable(AD_all_acc_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 <br><br>
 
@@ -616,14 +740,18 @@ knitr::kable(AD_all_acc_neg, row.names=F)
 #### Men
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.005460) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(AD_acc_male_pos, row.names=F)
+knitr::kable(AD_acc_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR = FDR = 0.004202 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_male_neg, row.names=F)
+knitr::kable(AD_acc_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -652,7 +780,9 @@ No significant findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR=0.006928 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_female_neg, row.names=F)
+knitr::kable(AD_acc_female_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -677,7 +807,9 @@ No significant findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR = 0.000197 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_pre_neg, row.names=F)
+knitr::kable(AD_acc_pre_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -698,14 +830,18 @@ knitr::kable(AD_acc_pre_neg, row.names=F)
 #### peri 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000282 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_peri_pos, row.names=F)
+knitr::kable(AD_acc_peri_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR=0.016393 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_peri_neg, row.names=F)
+knitr::kable(AD_acc_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -728,19 +864,23 @@ knitr::kable(AD_acc_peri_neg, row.names=F)
 #### post
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000941 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_post_pos, row.names=F)
+knitr::kable(AD_acc_post_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.001445 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_post_neg, row.names=F)
+knitr::kable(AD_acc_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
-####  <span class="text-center" style="color: Dark Magenta;"> Figures </span> 
+<span class="text-center" style="color: Dark Magenta;"> Figures </span> 
 <br>
 
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Maze learning accuracy in post-menopausal women ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/AD/post/AD_acc_post_pos_ax.png)
@@ -790,8 +930,11 @@ All subjects analyzed, tracts in the fornix were positively associated with acc.
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.146417 ) </span> 
+
 ```{r, echo=FALSE}
-knitr::kable(RD_acc_all_pos, row.names=F)
+knitr::kable(RD_acc_all_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -816,7 +959,9 @@ No significant findings
 #### Men
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.019254)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_male_pos, row.names=F)
+knitr::kable(RD_acc_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -847,7 +992,9 @@ No Significant Findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.074362)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_female_neg, row.names=F)
+knitr::kable(RD_acc_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -872,7 +1019,9 @@ No Significant Findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.010636) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_pre_neg, row.names=F)
+knitr::kable(RD_acc_pre_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -891,7 +1040,9 @@ knitr::kable(RD_acc_pre_neg, row.names=F)
 #### peri 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000248) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peri_pos, row.names=F)
+knitr::kable(RD_acc_peri_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -916,14 +1067,18 @@ No Significant Findings
 #### post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000777) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_post_pos, row.names=F)
+knitr::kable(RD_acc_post_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.040343)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_post_neg, row.names=F)
+knitr::kable(RD_acc_post_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
@@ -944,14 +1099,18 @@ knitr::kable(RD_acc_post_neg, row.names=F)
 #### peri post combination
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000994) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peripost_pos, row.names=F)
+knitr::kable(RD_acc_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs  (FDR = 0.009259)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peripost_neg, row.names=F)
+knitr::kable(RD_acc_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
 <br><br>
