@@ -1,5 +1,5 @@
 ---
-title: "SNAG_dsi_Loop"
+title: "SNAG Loop DSI results"
 author: "Daniela Cossio"
 date: "3/13/2023"
 output:
@@ -135,7 +135,23 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
  The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
 
-<br><br><br><br>
+<br><br><br><br><br><br>
+
+# ROIs {.tabset .tabset-dropdown}
+
+## Corpus Callosum
+
+## Cerebellum
+
+## Fasciculus
+
+## Cingulum 
+
+<br><br><br><br><br><br><br><br>
+
+# FDR Explained
+
+<br><br><br><br><br><br><br><br>
 
 # Results 
 
@@ -143,12 +159,20 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 ## <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 
+### Overall Summary 
+
+Loop task is more dependent on egocentric regions which may be why we see that better performers are those that have better QA in regions not in parietal lobe. 
+
+Men's performance suggest that those with lower PE scores are relying on stronger connectivity in fornix regions and less in cerebellum and corpus callosum. 
+
+While women may be relying on regions such as corpus callosum, cingulum, fasciculus over fornix to perform better.
+
+
 ### QA {.tabset}
 ```{r Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
 QA_peRad3_all_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/allSubs/QA_all_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-# ALL SUBS
 QA_peRad3_all_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/allSubs/QA_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 # MEN
@@ -180,7 +204,19 @@ QA_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/peripost
 ```
 
 #### Summary of results
-QA values in several tracts were negatively correlated with Loop Position Error performance in a circle with a 3 m radius. When men and women were analyzed separately, there were different relationships observed. The majority of tracts in men were positively correlated with Position Error and QA values.Suggesting that better QA and white matter integrity is associated with increased Position error. The majority of tracts in women were negatively correlated with QA values and Position error, with a few that were positive. This suggests that in women, white matter integrity is associated with lower position error scores. When splitting by meno pause stage, Pre menopausal women displayed both negative and positive relationships between QA and position error. Peri menopausal women displayed negative correlations between QA and position error. 
+- QA Tractography using all subjects and controlling for age and sex reveled positive and negative correlations.   
+
+- QA Tractography when looking at men only revealed tracts with positive correlations only. Higher QA scores were associated with higher PE scores. One way to think about this is that poor performers are showing stronger connectivity in regions that are not supporting path integration and this altered recruitment of regions may be associated with worse performance.   
+
+- QA Tractography when looking at women only revealed tracts with negative correlations and positive. Cerebellum was the only tract that was positively correlated with PE score. suggesting that recruitment of PE may be associated with lower path integration performance. NEgative correlations suggest that stronger integrity and connectivity of these regions correlated to lower PE scores and therefore better path integration performance.  
+
+- pre menopausal women displayed both positive and negative tracts suggesting that recruitment of certain regions are differentially associated with performance in path integration  
+
+- Peri menopausal women displayed negative correlations with tracts in the corpus callosum, cerebellum, and several fasciculus tracts.   
+
+-  No significant correlations in post menopausal women  
+
+- Peri- post showed positive and negative tracts in several overlapping regions which may be due to low sample size.
 
 <br><br><br><br><br><br> 
 
@@ -339,6 +375,7 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)%>%
 <br><br><br><br>
 
 #### post
+
   * No significant results
   
 <br><br><br><br><br><br><br><br>
@@ -403,7 +440,15 @@ MD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/peripo
 
 ```
 #### Summary of results
-When analyzing all subjects, tracts in fornix and thalamix radion were negatively associated with PE scores. In men, tracts in the fornix were positively associated with loop PE scores. In women, and all menopause stages, tracts were negatively associated with MD and loop PE scores. Increased scores signify poor performance.
+
+- MD Tractography of all subjects, regressing age and sex, revealed tracts negatively correlated with PE score in the fornix and thalamic radiation. This suggests that subjects with lower PE score displayed increased diffusivity in these regions. Perhaps we see this because they scored so low due to having lower connectivity in these regions.
+
+- MD Tractography of men only, regressing age , revealed tracts positively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with lower PE score and therefore better performance. 
+
+- MD Tractography of women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score. 
+
+-  MD Tractography of pre, peri, post adn combined peri post menopausal women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score.  
+
 
 <br><br><br><br><br><br> 
 
@@ -627,7 +672,13 @@ AD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/peripo
 
 ```
 #### Summary of results
-The majority of tracts with AD were negatively correlated with position error when looking at all subjects. Men displayed positive correlations. women and all menopause groups displayed negative correlations with PE.
+
+- AD tractography of all subs showed negative and positive correlations. The majority here were negative suggesting that lower AD is associated with increased PE score. 
+
+-AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
+
+-AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
+
 
 <br><br><br><br><br><br><br><br><br> 
 
@@ -867,7 +918,15 @@ RD_peRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/peripo
 RD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
 #### Summary of results
-Tracts with RD displayed negtive correlations with PE. In men, this was opposite with men displaying positive correlations. Women, and those in the peri and post stages  displayed negative correlations. Those in the pre and peri+post group displayed positive and negative correlations.
+
+- RD tractography of all subs showed negative correlations. Suggesting that higher RD is associated with decreased PE score.  Better performers have increased RD in fornix, perhaps they are not using these regions to complete the task. part of the reson they may have done so poorly is because they attempted to rely on fornix and there's less connectivity there.
+
+-AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
+
+-AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
+
+
+Tracts with RD displayed negative correlations with PE. In men, this was opposite with men displaying positive correlations. Women, and those in the peri and post stages  displayed negative correlations. Those in the pre and peri+post group displayed positive and negative correlations.
 
 <br><br><br><br><br><br> 
 

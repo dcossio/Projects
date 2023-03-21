@@ -9,7 +9,7 @@ output:
     toc_depth: 6
     theme: flatly
 ---
-code_folding: "hide"
+<!-- code_folding: "hide" -->
 
 ---
 
@@ -42,6 +42,12 @@ library(ggpubr)
 #library(stats)
 #library(afex)
 library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+
 
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
@@ -426,7 +432,7 @@ QA_acc_female_pos_cols <- c("Subjects", as.character(QA_acc_female_pos[,1]))
   
 # Lets do just male negative since most tracts are neg
 #reading in my csv with the stats and adding in the subject info 
-QA_acc_female_pos_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_pos.csv'), header=FALSE)%>%
+QA_acc_female_pos_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_neg.csv'), header=FALSE)%>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
   `colnames<-`(QA_acc_female_pos_cols) %>%
@@ -436,7 +442,7 @@ QA_acc_female_pos_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/
 
 # Reorder for my sanity check 
 QA_acc_female_pos_values <- QA_acc_female_pos_values[,c(1,19:21,2:18)]
-QA_acc_female_pos_gathercols <- colnames(QA_acc_female_pos_values[5:21])
+QA_acc_female_pos_gathercols <- colnames(QA_acc_male_neg_cols[5:21])
 
 # for some reason things are being read as a a character and it needs to be a numerical value
 QA_acc_female_pos_values[5:21] <- apply(QA_acc_female_pos_values[5:21],2, as.numeric) 
@@ -752,17 +758,17 @@ figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.e
 
 MD_acc_df <- MD_acc_female_neg_values %>% select("Subjects","sex", "Fornix_L", "Fornix_R")
 temp_MD_acc_df <- MD_acc_male_pos_values %>% select("Subjects","sex", "Fornix_L", "Fornix_R")
-MD_acc_df <- rbind(MD_acc_df, temp_MD_acc_df)
+MD_acc_df <- rbind(MD_acc_df, temp_MD_acc_df) 
 
 #for (ROI in gathercols) {
  # print(ROI)
   y <- MD_acc_df %>%
-    ggplot( aes(x=sex, y= Fornix_R, group=sex)) +
+    ggplot( aes(x=sex, y= whole_fornix, group=sex)) +
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
        stat_boxplot(geom = "errorbar",
                width = 0.15) + 
-      labs(x= "Sex", y= " QA", title ="Fornix_R" ) +
+      labs(x= "Sex", y= " QA", title ="Fornix" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
             axis.title.y = element_text(vjust=8, size = 16), 
             axis.text.x = element_text(size = 12),
@@ -771,7 +777,7 @@ MD_acc_df <- rbind(MD_acc_df, temp_MD_acc_df)
             axis.line = element_line(colour = "black"),  
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-  
+
    png(file = paste0(figpath,"sex_diff_MD_FornixR.png"))  #ROI,".png"))
    print(y)
    dev.off() 
@@ -781,16 +787,44 @@ MD_acc_df <- rbind(MD_acc_df, temp_MD_acc_df)
 
 ```{r Correlations}
 
-MD_acc_corr_DF <- MD_acc_female_neg_values  %>% select("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R") %>% rbind(MD_acc_male_pos_values[,c("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R")])
+##### NEED TO CLEAN AND REDO THIS REGRESSION  
+#MD_acc_corr_DF <- MD_acc_female_neg_values  %>% select("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R") %>% rbind(MD_acc_male_pos_values[,c("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R")]) %>%  mutate(whole_fornix = rs)
+
+ MD_acc_corr_DF <- read.delim(paste0(working_dir,'maze/Accuracy/MD/allSubs/MD_all_pos_merged.csv'), header=FALSE, sep="\t") %>%
+  remove_empty("cols") %>% 
+  filter(str_detect(V1, c("mean_md"))) %>%
+  `colnames<-`(c("subjects", "all_positive_tracts")) %>%
+  cbind(Acc_sub_info[,c("sex", "age_scan_years", "repo_status","maze_accuracy_pct")]) 
+
+MD_acc_corr_DF$all_positive_tracts <- as.numeric(MD_acc_corr_DF$all_positive_tracts)
+MD_acc_corr_DF$age_scan_years <- as.numeric(MD_acc_corr_DF$age_scan_years)
+
+  
+  model <- lm(maze_accuracy_pct ~ all_positive_tracts + sex + age_scan_years, data = MD_acc_corr_DF)
+
+  equation1=function(x){coef(model)[2]*x+coef(model)[1]}
+equation2=function(x){coef(model)[2]*x+coef(model)[1]+coef(model)[3]}
+  
+
+ggplot(MD_acc_corr_DF,aes(y=maze_accuracy_pct,x=all_positive_tracts,color=sex))+geom_point()+ geom_line()
+  
+        stat_function(fun=equation1,geom="line")+
+        stat_function(fun=equation2,geom="line",color=scales::hue_pal()(2)[2])
+
+
+  avPlots(model)
+  
+  
+  ggPredict(model)
+  
 
 
 png(file = paste0(figpath,"corr_MD_FornixL.png"))  #ROI,".png"))
 
-  ggplot(data = MD_acc_corr_DF, aes(x = Fornix_L, y = maze_accuracy_pct)) +
-  geom_point(aes(color = factor(sex))) +
+  ggplot(data = MD_acc_corr_DF, aes(x = all_positive_tracts, y = maze_accuracy_pct)) +
+  geom_point() + #aes(color = factor(sex))) +
   scale_color_manual(values = c("#CF92BF", "#90A0C9"),name="Gender")+
-  geom_smooth(method = lm, fullrange=TRUE,
-               aes(color = factor(sex))) +
+  geom_smooth(method = "lm", aes(color = factor(sex))) +
   labs(title = "Accuracy correlated with MD \n in the fornix in men and women",
        x = "Fornix R",
        y = "Proportion Correct")+
@@ -805,8 +839,8 @@ png(file = paste0(figpath,"corr_MD_FornixL.png"))  #ROI,".png"))
         legend.key.size = unit(1, 'cm'),
         aspect.ratio = 20 / 30,
         plot.title = element_text(hjust = 0.5, vjust = 5, size = 16, face="bold"))  +
-   stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.7, label.y.npc = 0.9, size=4)  +
-  xlim(min(MD_acc_corr_DF$Fornix_L), max(MD_acc_corr_DF$Fornix_L)) +
+   stat_cor( aes(color= sex),method = "spearman")  +
+  xlim(min(MD_acc_corr_DF$all_positive_tracts), max(MD_acc_corr_DF$all_positive_tracts)) +
     annotate("text", label = "FDR=", x = 1.68 , y = 0.75, color="#90A0C9", size=4) +
     annotate("text", label = "FDR=", x = 1.68 , y = 0.70, color="#CF92BF", size=4) 
   
