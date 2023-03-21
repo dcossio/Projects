@@ -43,16 +43,14 @@ distancecalc <- function(X1, X2, Z1, Z2) {
   sqrt((X2 - X1) ^ 2 + (Z2 - Z1) ^ 2)
 }
 
-master_file <- tibble()
-master_trial <- tibble()
-master_participant <- tibble()
+
 
 # data.frame(matrix(nrow = 0, ncol = length(Column_names))) %>% `colnames<-`(Column_names)
 
 # Note: Loopwalk_clockwise is now degrees traveled
 Column_names <-
   c(
-    "SubjectID",
+    "sub_id",
     "sceneName",
     "sceneNumber",
     "task",
@@ -67,6 +65,10 @@ Column_names <-
     "Position_Error"
   )
 
+
+master_file <- tibble()
+master_trial <- tibble()
+master_participant <- tibble() 
 ### REad in a file and clean it up
 #set directory to dir that contains all subject subdirs
 working_dir <- "/Users/danielacossio/Downloads/Loop Closure"
@@ -127,6 +129,7 @@ for (participant_file_folder in 1:length(Loop_folders)) {
   master_file <- rbind(master_file , subs) %>%
     arrange(id)
   
+  write.csv(master_file, "Indiv_loop_master_file.csv")
   
   for (dist in 1:3) {
     meter <- subs %>%
@@ -150,20 +153,60 @@ for (participant_file_folder in 1:length(Loop_folders)) {
     
     
     trial_df <- rbind(trial_df, temp) 
+    
+    sub_id <- trial_df[1,c("id")]
+    sceneName <- trial_df[1,c("sceneName")]
+    sceneNumber <-  trial_df[1,c("sceneName")] 
+    task <- trial_df[1,c("task")] 
+    block<- trial_df[1,c( "block")] 
+    # aCtual path for each radius
+    actual_path_rad1<-trial_df[1,c("LoopWalk_actualPath")]
+    actual_path_rad2<-trial_df[2,c("LoopWalk_actualPath")]
+    actual_path_rad3<-trial_df[3,c("LoopWalk_actualPath")]
+    #optimal path for each radius 
+    optimalPath_rad1<-trial_df[1,c("LoopWalk_optimalPath")]
+    optimalPath_rad2<-trial_df[2,c("LoopWalk_optimalPath")]
+    optimalPath_rad3<-trial_df[3,c("LoopWalk_optimalPath")]
+    #Excess path for each radius 
+    excessPath_rad1<-trial_df[1,c("LoopWalk_excessPath")]
+    excessPath_rad2<-trial_df[2,c("LoopWalk_excessPath")]
+    excessPath_rad3<- trial_df[3,c("LoopWalk_excessPath")]
+    
+    #Degrees Traveled  for each radius 
+    Degrees_Traveled_rad1<-trial_df[1,c("LoopWalk_clockwiseTravel")]
+    Degrees_Traveled_rad2<-trial_df[2,c("LoopWalk_clockwiseTravel")]
+    Degrees_Traveled_rad3<-trial_df[3,c("LoopWalk_clockwiseTravel")]
+    
+    #Walk Duration   for each radius 
+    Walk_duration_rad1<-trial_df[1,c("LoopWalk_duration")]
+    Walk_duration_rad2<-trial_df[2,c("LoopWalk_duration")]
+    Walk_duration_rad3<-trial_df[3,c("LoopWalk_duration")]
+    
+    #Position Error for each radius 
+    Position_Error_rad1<-trial_df[1,c("Position_Error")]
+    Position_Error_rad2<-trial_df[2,c("Position_Error")]
+    Position_Error_rad3<-trial_df[3,c("Position_Error")]
+    
+    temp_participantdf <- cbind(sub_id,sceneName,sceneNumber,task, block,actual_path_rad1,actual_path_rad2, actual_path_rad3,optimalPath_rad1, optimalPath_rad2, optimalPath_rad3, excessPath_rad1,excessPath_rad2,excessPath_rad3,Degrees_Traveled_rad1,Degrees_Traveled_rad2, Degrees_Traveled_rad3, Walk_duration_rad1, Walk_duration_rad2, Walk_duration_rad3, Position_Error_rad1,Position_Error_rad2, Position_Error_rad3) %>% as.data.frame()
+    
+    
   }
   
   master_trial <- rbind(master_trial,trial_df) %>%
     arrange(id) 
+  print(" Starting to compile participant folder")
+
+  master_participant <- rbind(master_participant,temp_participantdf)
 
 }
 
 
 colnames(master_trial) <- c(Column_names)
 
+write.csv(master_trial, "Indiv_loop_master_trial.csv")
+write.csv(master_participant, "Indiv_loop_master_participant.csv")
 
-# need to export 
-
-# Now we need to break it down by trials 
+print("finished")
 
 
 
