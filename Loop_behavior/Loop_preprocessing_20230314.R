@@ -1,7 +1,9 @@
 ######### Loop Indiv behavior processing script V1
 ###
+# created by DC 
+# created in  rstudio 4.1.1
 
-library(ggplot2)
+#library(ggplot2)
 #(plyr)
 library(tidyverse)
 # library(dplyr)
@@ -36,9 +38,6 @@ library(stringr)
 # library(ggiraph)
 # library(ggiraphExtra)
 # library(moonBook)
-
-
-
 
 
 
@@ -139,18 +138,21 @@ for (participant_file_folder in 1:length(Loop_folders)) {
   subs$LoopWalk_clockwiseTravel <-
     abs(subs$LoopWalk_clockwiseTravel)
   
-  # Now we're going to bind all of this into one big CSV for clean raw data
+  # Now we're going to bind all of this into one big CSV for clean raw data. This is the combined raw data for every single subject in one csv 
   master_file <- rbind(master_file , subs) %>%
     arrange(id)
   
   # This will give us a clean csv with every trial for every subject 
-  #write.csv(master_file, "Indiv_loop_master_file.csv")
+  write.csv(master_file, "Indiv_loop_master_file.csv")
   
-# now we're going to start getting the average  of each trial for each participant   
+# now we're going to start getting the average trial score for each participant for each radius   
   for (dist in 1:3) {
+    
+    # creating df with one radius 
     meter <- subs %>%
       filter(str_detect(LoopWalk_target, c(as.character(dist))))
     
+    # Grabbing the averages for each radius
     var_averages <-
       meter %>% select(
         'LoopWalk_actualPath',
@@ -161,57 +163,67 @@ for (participant_file_folder in 1:length(Loop_folders)) {
         'Position_Error'
       ) %>% summarise_all(mean)
     
+    # creating a temp df to bind and grab all of the mean scores for one radius in one df
     temp <-
       cbind(meter[1, 1:8], var_averages) %>% 
       mutate(LoopWalk_target = dist) %>%
       mutate(trial = nrow(meter)) %>%
       select(-c(condition)) 
     
-    
+    # placing it into a df where we'll add them all 
     trial_df <- rbind(trial_df, temp) 
     
     sub_id <- trial_df[1,c("id")]
     sceneName <- trial_df[1,c("sceneName")]
-    sceneNumber <-  trial_df[1,c("sceneName")] 
+    sceneNumber <-  trial_df[1,c("sceneNumber")] 
     task <- trial_df[1,c("task")] 
     block<- trial_df[1,c( "block")] 
-    # aCtual path for each radius
+    # actual path for each radius
     actual_path_rad1<-trial_df[1,c("LoopWalk_actualPath")]
     actual_path_rad2<-trial_df[2,c("LoopWalk_actualPath")]
     actual_path_rad3<-trial_df[3,c("LoopWalk_actualPath")]
+    actual_path_avg <- mean(trial_df[1:3,c("LoopWalk_actualPath")])
+    
     #optimal path for each radius 
     optimalPath_rad1<-trial_df[1,c("LoopWalk_optimalPath")]
     optimalPath_rad2<-trial_df[2,c("LoopWalk_optimalPath")]
     optimalPath_rad3<-trial_df[3,c("LoopWalk_optimalPath")]
+    optimalPath_avg <- mean(trial_df[1:3,c("LoopWalk_optimalPath")])
     #Excess path for each radius 
     excessPath_rad1<-trial_df[1,c("LoopWalk_excessPath")]
     excessPath_rad2<-trial_df[2,c("LoopWalk_excessPath")]
     excessPath_rad3<- trial_df[3,c("LoopWalk_excessPath")]
+    excessPath_avg <- mean(trial_df[1:3,c("LoopWalk_excessPath")])
     
     #Degrees Traveled  for each radius 
     Degrees_Traveled_rad1<-trial_df[1,c("LoopWalk_clockwiseTravel")]
     Degrees_Traveled_rad2<-trial_df[2,c("LoopWalk_clockwiseTravel")]
     Degrees_Traveled_rad3<-trial_df[3,c("LoopWalk_clockwiseTravel")]
+    Degrees_Traveled_avg <- mean(trial_df[1:3,c("LoopWalk_clockwiseTravel")])
     
     #Walk Duration   for each radius 
     Walk_duration_rad1<-trial_df[1,c("LoopWalk_duration")]
     Walk_duration_rad2<-trial_df[2,c("LoopWalk_duration")]
     Walk_duration_rad3<-trial_df[3,c("LoopWalk_duration")]
-    
+    Walk_duration_avg <- mean(trial_df[1:3,c("LoopWalk_duration")])
     #Position Error for each radius 
     Position_Error_rad1<-trial_df[1,c("Position_Error")]
     Position_Error_rad2<-trial_df[2,c("Position_Error")]
     Position_Error_rad3<-trial_df[3,c("Position_Error")]
+    Position_Error_avg <- mean(trial_df[1:3,c("Position_Error")])
     
-    temp_participantdf <- cbind(sub_id,sceneName,sceneNumber,task, block,actual_path_rad1,actual_path_rad2, actual_path_rad3,optimalPath_rad1, optimalPath_rad2, optimalPath_rad3, excessPath_rad1,excessPath_rad2,excessPath_rad3,Degrees_Traveled_rad1,Degrees_Traveled_rad2, Degrees_Traveled_rad3, Walk_duration_rad1, Walk_duration_rad2, Walk_duration_rad3, Position_Error_rad1,Position_Error_rad2, Position_Error_rad3) %>% as.data.frame()
-    
+    temp_participantdf <- cbind(sub_id,sceneName,sceneNumber,task, block,actual_path_rad1,actual_path_rad2, actual_path_rad3,actual_path_avg, optimalPath_rad1, optimalPath_rad2, optimalPath_rad3, optimalPath_avg, excessPath_rad1,excessPath_rad2,excessPath_rad3,excessPath_avg ,Degrees_Traveled_rad1,Degrees_Traveled_rad2, Degrees_Traveled_rad3, Degrees_Traveled_avg,  Walk_duration_rad1, Walk_duration_rad2, Walk_duration_rad3, Walk_duration_avg, Position_Error_rad1,Position_Error_rad2, Position_Error_rad3, Position_Error_avg) %>% as.data.frame()
     
   }
   
+  # this is the cleaned average scores of trials for each radius for each participant
   master_trial <- rbind(master_trial,trial_df) %>%
     arrange(id) 
+  
   print(" Starting to compile participant folder")
-
+  
+  # this is a cleaned csv where we have the average of every radius anf average of those into one single row for each subject
+  
   master_participant <- rbind(master_participant,temp_participantdf)
 
 }
@@ -219,8 +231,9 @@ for (participant_file_folder in 1:length(Loop_folders)) {
 
 colnames(master_trial) <- c(Column_names)
 
-#write.csv(master_trial, "Indiv_loop_master_trial.csv")
-#write.csv(master_participant, "Indiv_loop_master_participant.csv")
+write.csv(master_trial, "Indiv_loop_master_trial.csv")
+
+write.csv(master_participant, "Indiv_loop_master_participant.csv")
 
 print("finished")
 
