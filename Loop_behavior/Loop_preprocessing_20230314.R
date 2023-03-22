@@ -16,20 +16,26 @@ library(stringr)
 # library(CINNA)
 # library(umap)
 # library(plotly)
-library(factoextra)
-library(lsr)
+#library(factoextra)
+# library(lsr)
+# # library(car)
+# library(ggpubr)
+# library(entropy)
+# #library(ds4psy)
+# # library(pROC)
+# library(devtools)
+# library(BRRR)
+# library(stats)
+# library(afex)
+# library(nationalparkcolors) # for palettes
+# library(wesanderson)
+# library(philentropy)
+# library(knitr)
+# library(janitor)
 # library(car)
-library(ggpubr)
-library(entropy)
-#library(ds4psy)
-# library(pROC)
-library(devtools)
-library(BRRR)
-library(stats)
-library(afex)
-library(nationalparkcolors) # for palettes
-library(wesanderson)
-library(philentropy)
+# library(ggiraph)
+# library(ggiraphExtra)
+# library(moonBook)
 
 
 
@@ -83,10 +89,7 @@ for (participant_file_folder in 1:length(Loop_folders)) {
     Loop_folders[participant_file_folder] # Print the current subject
   print(current_sub)
   
-  # creating temporary df for the loop 
-  temp_participant <- tibble()
-  trial_df <- tibble()
-  
+
   # Find the csv we need
   csv_files <-
     list.files(Loop_folders[participant_file_folder], pattern = ".*_1.csv")
@@ -98,6 +101,10 @@ for (participant_file_folder in 1:length(Loop_folders)) {
   
   # if the folder has the correct csv, then we print this message and continue 
   print(paste0(Loop_folders[participant_file_folder], " ", "Has CSV. Continuing the loop"))
+  
+  # creating temporary df for the loop 
+  temp_participant <- tibble()
+  trial_df <- tibble()
   
   # Here we are reading in the CSV, cleaning it and putting it into a variable called subs
   subs <-
@@ -136,9 +143,10 @@ for (participant_file_folder in 1:length(Loop_folders)) {
   master_file <- rbind(master_file , subs) %>%
     arrange(id)
   
-  write.csv(master_file, "Indiv_loop_master_file.csv")
+  # This will give us a clean csv with every trial for every subject 
+  #write.csv(master_file, "Indiv_loop_master_file.csv")
   
-# now we're going to start getting everything into trials   
+# now we're going to start getting the average  of each trial for each participant   
   for (dist in 1:3) {
     meter <- subs %>%
       filter(str_detect(LoopWalk_target, c(as.character(dist))))
@@ -211,8 +219,8 @@ for (participant_file_folder in 1:length(Loop_folders)) {
 
 colnames(master_trial) <- c(Column_names)
 
-write.csv(master_trial, "Indiv_loop_master_trial.csv")
-write.csv(master_participant, "Indiv_loop_master_participant.csv")
+#write.csv(master_trial, "Indiv_loop_master_trial.csv")
+#write.csv(master_participant, "Indiv_loop_master_participant.csv")
 
 print("finished")
 
