@@ -38,15 +38,14 @@ library(philentropy)
 
 #### Functions
 
-
+# Here I am creating a function to calculate position error using the disntance formula 
 distancecalc <- function(X1, X2, Z1, Z2) {
   sqrt((X2 - X1) ^ 2 + (Z2 - Z1) ^ 2)
 }
 
 
 
-# data.frame(matrix(nrow = 0, ncol = length(Column_names))) %>% `colnames<-`(Column_names)
-
+# creating a list of all of the column names I will need 
 # Note: Loopwalk_clockwise is now degrees traveled
 Column_names <-
   c(
@@ -65,23 +64,26 @@ Column_names <-
     "Position_Error"
   )
 
-
+# creating empty data frames to put the data in during different stages 
 master_file <- tibble()
 master_trial <- tibble()
 master_participant <- tibble() 
+
 ### REad in a file and clean it up
 #set directory to dir that contains all subject subdirs
 working_dir <- "/Users/danielacossio/Downloads/Loop Closure"
 setwd(working_dir)
 
-# craete a list of subdir folders
+# create a list of subdir folders that are in our main loop behavior folder
 Loop_folders <- list.dirs(recursive = FALSE, full.names = FALSE)
 
 #Loop through each subject folder
 for (participant_file_folder in 1:length(Loop_folders)) {
   current_sub <-
     Loop_folders[participant_file_folder] # Print the current subject
-  #print(current_sub)
+  print(current_sub)
+  
+  # creating temporary df for the loop 
   temp_participant <- tibble()
   trial_df <- tibble()
   
@@ -89,28 +91,33 @@ for (participant_file_folder in 1:length(Loop_folders)) {
   csv_files <-
     list.files(Loop_folders[participant_file_folder], pattern = ".*_1.csv")
   
+  # quality check. If the folder does not have the correct CSV, then we skip into the next folder 
   if (length(csv_files) == 0) {
     next
   }
   
+  # if the folder has the correct csv, then we print this message and continue 
   print(paste0(Loop_folders[participant_file_folder], " ", "Has CSV. Continuing the loop"))
   
+  # Here we are reading in the CSV, cleaning it and putting it into a variable called subs
   subs <-
     read_csv(paste0(Loop_folders[participant_file_folder], "/", csv_files), show_col_types = FALSE) %>%
-    filter(!str_detect(sceneName, c("loopClosurePractice"))) %>%
-    filter(!str_detect(LoopWalk_target, c("0.5"))) %>%
+    filter(!str_detect(sceneName, c("loopClosurePractice"))) %>% # Ignore all rows that are practice trials 
+    # Ignoring any fill trial using the code below
+    filter(!str_detect(LoopWalk_target, c("0.5"))) %>%  
     filter(!str_detect(LoopWalk_target, c("1.5"))) %>%
     filter(!str_detect(LoopWalk_target, c("2.5"))) %>%
-    discard( ~ all(is.na(.) | . == "")) %>%
-    add_column(Position_Error = NA)
+    discard( ~ all(is.na(.) | . == "")) %>% # remove rows with na 
+    add_column(Position_Error = NA) # Create an empty column called position error 
   
+  # another quality check to make sure we have all the trials
   if (nrow(subs) < 30) {
     next
   } else {
     print("CSV looks good to continue ")
   }
   
-  ##  Calculating Position Error using distance t
+  ##  Calculating Position Error using distance function above and putting it into the new column
   for (PE in 1:nrow(subs)) {
     X1 <- subs$LoopWalk_startX[PE]
     Z1 <- subs$LoopWalk_startZ[PE]
@@ -131,6 +138,7 @@ for (participant_file_folder in 1:length(Loop_folders)) {
   
   write.csv(master_file, "Indiv_loop_master_file.csv")
   
+# now we're going to start getting everything into trials   
   for (dist in 1:3) {
     meter <- subs %>%
       filter(str_detect(LoopWalk_target, c(as.character(dist))))
