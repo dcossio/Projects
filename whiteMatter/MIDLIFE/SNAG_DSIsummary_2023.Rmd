@@ -95,10 +95,11 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 <br>
 
 **Maze Accuracy and Path Efficiency**
-* All subjects = 82
-* Men = 22
-* Women = 60
-* Stage
+
+  * All subjects = 82
+  * Men = 22
+  * Women = 60
+  * Stage
   * Pre = 23
   * Peri = 20 
   * Post = 17
@@ -1307,7 +1308,9 @@ knitr::kable(RD_acc_peripost_neg, row.names=F)%>%
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-## <span style="color: darkorange;"> Maze Path Efficiency  </span>  {.tabset .tabset-dropdown}  
+## <span style="color: darkorange;"> Maze Path Efficiency (all trials)  </span>  {.tabset .tabset-dropdown}  
+
+### Summary 
 
 We would expect that lower QA values would correspond to higher PE scores. higher PE scores indicate worse efficiency 
 
@@ -2423,4 +2426,1364 @@ knitr::kable(RD_alltrialsPE_peripost_neg, row.names=F) %>%
 <br><br><br><br><br><br>
 
 
+## <span style="color: darkorange;"> Maze Path Efficiency (correct trials only)  </span>  {.tabset .tabset-dropdown}
+
+### Summary 
+### QA {.tabset}
+
+```{r QA Correct trials only path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+
+#### All subjects ####
+QA_correcttrialsPE_all_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/all_subs/QA_correcttrialspatheff_all_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+                
+
+#### Males #####
+QA_correcttrialsPE_male_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/male/QA_correcttrialspatheff_male_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+               as.data.frame() %>%
+                `[`(-c(1), ) 
+
+
+QA_correcttrialsPE_male_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/male/QA_correcttrialspatheff_male_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>% 
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame() 
+                
+
+#### Females #####
+
+QA_correcttrialsPE_female_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/pre/QA_correcttrialspatheff_pre_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                as.data.frame() %>% 
+                  `[`(-c(1), ) 
+
+#### Pre #####
+
+QA_correcttrialsPE_pre_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/pre/QA_correcttrialspatheff_pre_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                as.data.frame() %>% 
+                  `[`(-c(1), )  
+               
+
+QA_correcttrialsPE_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/pre/QA_correcttrialspatheff_pre_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame() 
+                 
+
+
+#### Peri ####
+
+QA_correcttrialsPE_peri_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri/QA_correcttrialspatheff_peri_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame() 
+
+QA_correcttrialsPE_peri_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri/QA_correcttrialspatheff_peri_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                as.data.frame()%>% 
+                  `[`(-c(1), )  
+#### post ####
+
+QA_correcttrialsPE_post_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/post/QA_correcttrialspatheff_post_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame() 
+
+
+#### Peri and post ####
+
+QA_correcttrialsPE_peripost_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri_post/QA_correcttrialspatheff_peripost_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame() 
+
+QA_correcttrialsPE_peripost_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri_post/QA_correcttrialspatheff_peripost_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%  
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame() 
+
+```
+#### Summary 
+
+#### All Subjects
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000	) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.000274)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Men 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.025) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.000228	)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.477486	) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.015221		)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->\
+
+<br><br><br><br><br><br>
+
+#### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.011765 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_pre_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.000224 )</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001271	 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_peri_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.025 )</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+#### Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.126372		 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_post_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.283735	)</span> 
+
+No Significant Tracts
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri and post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.027368	) </span> 
+
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.003425	)</span> 
+```{r, echo=FALSE}
+knitr::kable(QA_correcttrialsPE_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+
+### MD {.tabset}
+```{r MD Correct trials only path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+
+#### All subjects ####
+MD_correcttrialsPE_all_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/all_subs/MD_correcttrialspatheff_all_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### Males ####
+MD_correcttrialsPE_male_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/male/MD_correcttrialspatheff_male_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+MD_correcttrialsPE_male_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/male/MD_correcttrialspatheff_male_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### Females ####
+
+#### pre ####
+MD_correcttrialsPE_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/pre/MD_correcttrialspatheff_pre_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### peri ####
+
+MD_correcttrialsPE_peri_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/peri/MD_correcttrialspatheff_peri_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### post ####
+MD_correcttrialsPE_post_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/post/MD_correcttrialspatheff_post_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### Peri Post ####
+MD_correcttrialsPE_peripost_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/peri_post/MD_correcttrialspatheff_peripost_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+```
+
+#### Summary 
+#### All Subjects
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.604167 ) </span> 
+
+No Significicant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.047977	)</span> 
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Men 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.033322 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.061897	)</span> 
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000	 ) </span> 
+
+No significant tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.00000 )</span> 
+
+No significant tracts
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000	) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.083868	)</span> 
+
+no significant tracts
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001254 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_peri_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.00000 )</span> 
+
+no significant tracts
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.388155	) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.157511	)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri and post
+
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.06383	) </span> 
+```{r, echo=FALSE}
+knitr::kable(MD_correcttrialsPE_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.416058	)</span> 
+
+No Significant Tracts
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+### AD {.tabset}
+
+```{r AD Correct trials only path eff, echo=FALSE, results='hide',message="FALSE"}
+
+#### Males ####
+AD_correcttrialsPE_male_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/male/AD_correcttrialspatheff_male_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+AD_correcttrialsPE_male_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/male/AD_correcttrialspatheff_male_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+#### pre ####
+AD_correcttrialsPE_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/pre/AD_correcttrialspatheff_pre_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### Peri ####
+AD_correcttrialsPE_peri_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/peri/AD_correcttrialspatheff_peri_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+#### Post ####
+AD_correcttrialsPE_post_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/post/AD_correcttrialspatheff_post_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+#### Peri and Post ####
+AD_correcttrialsPE_post_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/peri_post/AD_correcttrialsPATHEFF_peripost_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+```
+
+#### Summary 
+#### All Subjects
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000	) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.00000	)</span> 
+
+No Significant Tracts
+
 <br><br><br><br><br><br><br><br><br><br><br><br>
+
+#### Men 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.001011 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_correcttrialsPE_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.043478		)</span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_correcttrialsPE_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000 ) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.00000 )</span> 
+
+No Significant Tracts
+
+
+<br><br><br><br><br><br>
+
+#### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000 ) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.056391 )</span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_correcttrialsPE_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.054795 ) </span> 
+
+```{r, echo=FALSE}
+knitr::kable(AD_correcttrialsPE_peri_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.00000 )</span> 
+
+No Significant Tracts
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.258615 ) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.011824	)</span> 
+```{r, echo=FALSE}
+knitr::kable(AD_correcttrialsPE_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri and post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.004762	) </span> 
+```{r, echo=FALSE}
+knitr::kable(AD_correcttrialsPE_post_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.090909	)</span> 
+
+No Significant Tracts
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+### RD {.tabset}
+```{r RD Correct trials only path eff, echo=FALSE, results='hide',message="FALSE"}
+#### ALl subs ####
+RD_correcttrialsPE_all_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/all_subs/RD_correcttrialspatheff_all_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+#### male ####
+RD_correcttrialsPE_male_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/male/RD_correcttrialspatheff_male_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+RD_correcttrialsPE_male_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/male/RD_correcttrialspatheff_male_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### female ####
+
+#### pre ####
+RD_correcttrialsPE_pre_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/pre/RD_correcttrialspatheff_pre_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                as.data.frame() %>% 
+                  `[`(-c(1), ) 
+
+RD_correcttrialsPE_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/pre/RD_correcttrialspatheff_pre_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+#### peri ####
+RD_correcttrialsPE_peri_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/peri/RD_correcttrialspatheff_peri_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+#### post ####
+RD_correcttrialsPE_post_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/post/RD_correcttrialspatheff_post_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+#### peri and post ####
+RD_correcttrialsPE_peripost_pos <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/peri_post/RD_correcttrialpatheff_peripost_pos.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+
+RD_correcttrialsPE_peripost_neg <-
+  read.delim(
+    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/peri_post/RD_correcttrialpatheff_peripost_neg.csv'),
+    header = FALSE,
+    sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1), ) %>% 
+                as.data.frame()
+```
+
+#### Summary 
+#### All Subjects
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.660714 ) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.042296 )</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+<br><br><br><br><br><br>
+
+#### Men 
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.066096 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.199156	)</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations ( FDR=  ) </span> 
+```{r, echo=FALSE}
+# knitr::kable(RD_correcttrialsPE_male_pos, row.names=F)%>% 
+#   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+#   scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 	)</span> 
+```{r, echo=FALSE}
+# knitr::kable(, row.names=F)%>% 
+#   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+#   scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Pre
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.03535 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_pre_pos, row.names=F)%>%
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.06983 )</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_pre_neg, row.names=F)%>%
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.000515 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_peri_pos, row.names=F)%>%
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 1.00000 )</span> 
+
+No Significant Tracts
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.425199 ) </span> 
+
+No Significant Tracts
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.156608	 )</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_post_neg, row.names=F)%>%
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri and post
+<span style="color: hotpink;"> Positive Correlations ( FDR= 0.13468	 ) </span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_peripost_pos, row.names=F)%>%
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.110588	 )</span> 
+```{r, echo=FALSE}
+knitr::kable(RD_correcttrialsPE_peripost_neg, row.names=F)%>%
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br><br> 
+
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with path effieciency of correct trials only]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had RD positively and negatively correlated with path effieciency of correct trials only]() -->
+
+<br><br><br><br><br><br>
+
+
+<br><br><br><br><br><br>
