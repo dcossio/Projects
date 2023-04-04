@@ -146,12 +146,17 @@ A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampl
 * Total scans: 12
 * 6 scans not used since they are post natal scans
     
-### Results    
+# Results   
+<br><br>
+
 ## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
+<br><br>
 
 ### Summary 
 Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA AD, MD, and RD correlated with Estrogen. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of Endocrine_Status was removed using a multiple regression model. A total of 16 subjects were included in the analysis. A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29). The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.  
 QA was positively correlated with estrogen levels across numerous tracts including corpus callosum and cingulum. DSI found tracts in the cerebellum with AD, RD, and MD were negatively associated with estrogen levels. Suggesting that increased levels of estrogen are associated with better white matter micro structure. When analyzing pregnancy only scans, DSI only found significant results in the QA analysis. QA was positively associated with estrogen levels.
+
+<br><br><br><br><br><br>
 
 ### QA {.tabset}
 ```{r QA estrogen VAriables ,echo=FALSE, results='hide',message=FALSE}
@@ -196,16 +201,21 @@ Est_QA_all_pos_values_long <- gather(Est_QA_all_pos_values, ROI, QA ,QA_est_gath
 ```
 
 #### All weeks 
-##### <span style="color: hotpink;"> Positive (FDR= 0.002484) </span> 
+<span style="color: hotpink;"> Positive (FDR= 0.002484) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(Est_QA_all_pos,row.names=F) %>% 
   kable_styling(bootstrap_options = "hover") %>% 
   scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.250000)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative (FDR= 0.250000)</span> 
+
 No significant Findings
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 
 ![Slice overlay image displaying tracts that had QA positively correlate with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Est_QA_allstages_pos-cor.png)
 
@@ -213,15 +223,22 @@ No significant Findings
 
 ![Glass brain displaying tracts that had QA positively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/Estrogen.t2.length25.pos_neg.jpg)
 
-#### Pregnancy only
-##### <span style="color: hotpink;"> Positive (FDR= 0.043802) </span> 
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_QA_pregnancy_pos, row.names=F)
-```
+<br><br><br><br><br><br>
 
-#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 1.0000)</span> 
+#### Pregnancy only
+<span style="color: hotpink;"> Positive (FDR= 0.043802) </span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_QA_pregnancy_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative (FDR= 1.0000)</span> 
+
 No significant Findings
 
+<br><br><br><br><br><br>
 
 ```{r QA large all tracks Raw data box plot}
 
@@ -242,7 +259,7 @@ sam_size <- Est_QA_all_pos_values %>% dplyr::group_by(status)%>%dplyr::summarize
 ```{r Looping through all QA pos Estrogen and making plots Specific variables }
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/"
 
-for (ROI in gathercols) {
+for (ROI in QA_est_gathercols) {
   print(ROI)
   y <- Est_QA_all_pos_values %>%
     ggplot( aes(x=trimester, y=Est_QA_all_pos_values[[ROI]], group=trimester)) +
@@ -292,25 +309,35 @@ Est_MD_all_neg_values[5:7] <- apply(Est_MD_all_neg_values[5:7],2, as.numeric)
 Est_MD_all_neg_values_long <- gather(Est_MD_all_neg_values, ROI, MD ,MD_est_gathercols, factor_key = TRUE) %>% select(!(Subjects))
 ```
 
-##### <span style="color: hotpink;"> Positive (FDR= 0.205882) </span> 
+<span style="color: hotpink;"> Positive (FDR= 0.205882) </span> 
+
 No significant findings
 
-#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.002002)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative (FDR= 0.002002)</span> 
 ```{r, layout="l-body-outset",echo=FALSE, max.height='100px'}
-knitr::kable(Est_MD_allwks_neg, row.names=F)
+knitr::kable(Est_MD_allwks_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures  </span> 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures  </span> 
 ![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Est_MD_allstages_neg_cor.png)
 
 ![Directional glass brain displaying tracts that had MD negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.neg_corr.jpg)
 
 ![Glass Brain displaying tracts that had MD negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/Estrogen.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br>
+
 #### Pregnancy 
+
 No significant findings 
 
-
+<br><br><br><br><br><br><br><br>
 ```{r, MD file loop}
 est_MD_figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/"
 
@@ -346,22 +373,33 @@ Est_AD_allwks_pos <- read.csv(paste0(estrogen_path,'AD/Allwks/pos_2.csv'), heade
 ```
 
 #### All weeks 
-##### <span style="color: hotpink;"> Positive (FDR= 0.058824) </span> 
+<span style="color: hotpink;"> Positive (FDR= 0.058824) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_AD_allwks_pos, row.names=F)
+knitr::kable(Est_AD_allwks_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.000125)</span> 
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_AD_allwks_neg, row.names=F)
-```
+<br><br>
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<span class="text-center" style="color: Teal;"> Negative (FDR= 0.000125)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_AD_allwks_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 ![Slice overlay image displaying tracts that had AD negatively correlate with Estrogen levels](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/AD/Allwks/Est_AD_allstages_neg_cor.png)
 
+<br><br><br><br><br><br><br><br>
 
 #### Pregnancy 
+
 No significant findings 
+
+<br><br><br><br><br><br><br><br>
 
 ### RD {.tabset}
 #### All weeks 
@@ -371,23 +409,39 @@ Est_RD_allwks_neg <- read.csv(paste0(estrogen_path,'RD/Allwks/neg_2.5_all.csv'),
 Est_RD_allwks_pos <- read.csv(paste0(estrogen_path,'RD/Allwks/pos_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
-##### <span style="color: hotpink;"> Positive (FDR= 0.122222) </span> 
+
+<br><br>
+
+<span style="color: hotpink;"> Positive (FDR= 0.122222) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_RD_allwks_pos, row.names=F)
-```
-#####  <span class="text-center" style="color: Teal;"> Negative (FDR= 0.001106)</span> 
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(Est_RD_allwks_neg, row.names=F)
+knitr::kable(Est_RD_allwks_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative (FDR= 0.001106)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(Est_RD_allwks_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 ![Slice overlay image displaying tracts that had AD negatively correlate with Estrogen levels](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks/Est_RD_allstages_neg_cor.png)
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with Estrogen levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/RD/Allwks/Est_RD_allstages_pos_neg_glass.png)
 
+<br><br><br><br><br><br>
+
 #### pregnancy only
+
 No significant findings
 
+<br><br><br><br><br><br><br><br><br><br>
 
 ## <span style="color: magenta;"> Progesterone </span>  {.tabset .tabset-dropdown}
 
@@ -395,6 +449,8 @@ No significant findings
 Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has qa,MD, RD and AD correlated with Progesterone. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of Endocrine_Status was removed using a multiple regression model. A total of 15 subjects were included in the analysis. A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) . The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.  
  
 DSI found significant positive and negative correlations between QA and progesterone in various tracts. There were positive and negative correlations between progesterone and AD, RD, and MD but most of the tracts show a positive association. This suggests that higher levels of progesterone may be associated with decreased or altered white matter integrity and increased levels of diffusion. When analyzing pregnancy only, DSI found significant positive correlations with QA only. Interestingly, it appears that tracts in the cerebellum have the opposite relationship with progesterone compared to estrogen. Tracts in the cerebellum show a positive relationship between progesterone and AD, MD and MD. This suggests that higher levels of progesterone in the cerebellum are associated with increased levels of diffusion, a typical signal of weakened or decreased white matter integrity. 
+
+<br><br><br><br><br><br><br><br>
 
 ### QA {.tabset}
 ```{r QA vars,echo=FALSE, results='hide',message=FALSE}
@@ -409,36 +465,52 @@ prog_QA_pregnancy_pos <- read.csv(paste0(Prog_path,'QA/pregnancy/pos_pregnancy-2
 
 ```
 #### All weeks 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+<span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_QA_all_pos, row.names=F)
+knitr::kable(prog_QA_all_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_QA_all_neg, row.names=F)
+knitr::kable(prog_QA_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 ![Slice overlay image displaying ROIs with tracts that had QA positvely  correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_pos_cor.png)
 
-#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> \
+<br><br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_neg_cor.png)
 
-#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+<br><br>
+
 ![Slice overlay image displaying ROIs with tracts that had QA positevely and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_both_cor.png)
 
+<br><br>
+
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/Prog_QA_allstages_pos_neg_allviewsglass.png)
+
+<br><br><br><br><br><br><br><br>
 
 #### Pregnancy only
 ##### <span style="color: hotpink;"> Positive ( FDR= 0.043802 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
 knitr::kable(prog_QA_pregnancy_pos, row.names=F)
 ```
+<br><br>
 
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.0000)</span> 
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 1.0000)</span> 
+
 No significant Findings
 
-
+<br><br><br><br><br><br><br><br>
 
 
 ### MD {.tabset}
@@ -450,33 +522,48 @@ prog_MD_all_neg <- read.csv(paste0(Prog_path,'MD/Allwks/MD_allwks_prog_neg_2.5.c
 
 ```
 #### All weeks 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+<span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_MD_all_pos, row.names=F)
-```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_MD_all_neg, row.names=F)
+knitr::kable(prog_MD_all_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(prog_MD_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<span class="text-center" style="color: Dark Blue;"> Figures  </span> 
+<br><br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_pos_cor.png)
+
 
 ![Glass Brain displaying tracts that had MD positively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
 
-#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
+<br><br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_neg_cor.png)
 
 ![Glass Brain displaying tracts that had MD negatively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
 
-#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+<br><br>
+
 ![Slice overlay image displaying ROIs with tracts that had MD positively and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Prog_MD_allstages_both_cor.png)
 
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with Progesterone levels across all gestational weeks](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br><br><br>
 #### Pregnancy only
+
 No significant Findings
 
+<br><br><br><br><br><br><br><br>
 ### AD {.tabset}
 ```{r AD vars,echo=FALSE, results='hide',message=FALSE}
 # ALl weeks 
@@ -486,15 +573,19 @@ prog_AD_all_neg <- read.csv(paste0(Prog_path,'AD/Allwks/AD_allwks_prog_neg_2.5.c
 
 ```
 #### All weeks 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+<span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_AD_all_pos, row.names=F)
+knitr::kable(prog_AD_all_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_AD_all_neg, row.names=F)
+knitr::kable(prog_AD_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-##### <span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
+<span class="text-center" style="color: Dark Blue;"> Positive Tracts </span> 
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Prog_AD_allwks_pos_cor.png)
 
 ![Glass Brain displaying tracts that had AD positively correlated with Progesterone ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/AD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
@@ -519,26 +610,40 @@ prog_RD_all_pos <- read.csv(paste0(Prog_path,'RD/Allwks/RD_allwks_prog_pos_2.5.c
 prog_RD_all_neg <- read.csv(paste0(Prog_path,'RD/Allwks/RD_allwks_prog_neg_2.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 ```
+
 #### All weeks 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
+<br><br>
+
+<span style="color: hotpink;"> Positive ( FDR= 0.002484 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_RD_all_pos, row.names=F)
+knitr::kable(prog_RD_all_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.250000)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(prog_RD_all_neg, row.names=F)
+knitr::kable(prog_RD_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Dark Blue;"> Positive Tracts  </span> 
+<span class="text-center" style="color: Dark Blue;"> Figures  </span> 
+
 ![Slice overlay image displaying ROIs with tracts that had RD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_pos_cor.png)
+
 
 ![Glass Brain displaying tracts that had RD positively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_corr.jpg)
 
-#####  <span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
+<br><br>
+
+<span class="text-center" style="color: Dark Blue;"> Negative Tracts  </span> 
 ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with Progesterones](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_neg_cor.png)
+
 
 ![Glass Brain displaying tracts that had RD negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.neg_corr.jpg)
 
-#####  <span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
+<span class="text-center" style="color: Dark Blue;"> Positive and Negative Tracts  </span> 
 ![Slice overlay image displaying ROIs with tracts that had ARD positively and negatively correlated with Progesterone](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Prog_RD_allwks_both_cor.png)
 
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with Progesterones](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/RD/Allwks/Progesterone.t2.length25.pos_neg.jpg)
@@ -547,6 +652,7 @@ knitr::kable(prog_RD_all_neg, row.names=F)
 #### Pregnancy only
 No significant Findings
 
+<br><br><br><br><br><br><br><br><br>
 
 ## <span style="color: magenta;"> Gestational Week  </span>  {.tabset .tabset-dropdown}
 
@@ -582,22 +688,26 @@ gest_QA_pos_values_long <- gather(gest_QA_pos_values, ROI, QA ,qa_gest_gathercol
 
 ```
 #### Weeks 1-40
-##### <span style="color: hotpink;"> Positive ( FDR= 0.000214 ) </span> 
+<span style="color: hotpink;"> Positive ( FDR= 0.000214 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(gest_QA_pos, row.names=F)
+knitr::kable(gest_QA_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 1.000000)</span> 
+
 No Significant Findings 
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
-![Slice overlay  displaying ROIs with tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/QA_gest_Pre_Preg_pos_cor.png)
+<br><br>
 
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
+![Slice overlay  displaying ROIs with tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/QA_gest_Pre_Preg_pos_cor.png)
 
 ![Directional glass brain displaying tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/GestWeek.t2.length25.pos_corr.jpg)
 
 ![Glass brain displaying tracts that had QA Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
 
-
+<br><br><br><br><br><br><br><br>
 
 ```{r, Gestational QA}
 gest_QA_figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/QA/Pre_Preg_wks/"
@@ -676,17 +786,21 @@ gest_MD_neg_cols_values_long <- gather(gest_MD_neg_cols_values, ROI, QA ,md_gest
 
 
 ```
-#### All weeks 
-##### <span style="color: hotpink;"> Positive ( FDR= 0.066667 ) </span> 
+#### 1-40 
+<span style="color: hotpink;"> Positive ( FDR= 0.066667 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(gest_MD_pos, row.names=F)
+knitr::kable(gest_MD_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.021684)</span> 
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.021684)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(gest_MD_neg, row.names=F)
+knitr::kable(gest_MD_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 ![Directional glass brain displaying tracts that had MD Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/GestWeek.t2.length25.pos_corr.jpg)
 
 ![Slice overlay  displaying ROIs with tracts that had MD Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/MD/Pre_Preg_wks/MD_gest_Pre_Preg_Pos_roi_cor.png)
@@ -757,18 +871,21 @@ for (ROI in md_gest_negs_gathercols) {
 ```{r Gestational AD vars,echo=FALSE, results='hide',message=FALSE}
 gest_AD_neg <- read.delim(paste0(Gest_path,'AD/Pre_Preg_wks/AD_gestWeek_PreandPreg_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
-
 ```
 #### Weeks 1-40
-##### <span style="color: hotpink;"> Positive ( FDR= 0.273504 ) </span> 
+<span style="color: hotpink;"> Positive ( FDR= 0.273504 ) </span> 
+
 No Significant Tracts
 
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.007377)</span> 
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.007377)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(gest_AD_neg, row.names=F)
+knitr::kable(gest_AD_neg, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
+<br><br>
 
-##### <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 
 ![Slice overlay  displaying ROIs with tracts that had AD negatively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/AD/Pre_Preg_wks/AD_gest_Pre_Preg_neg_cor.png)
 
@@ -776,6 +893,7 @@ knitr::kable(gest_AD_neg, row.names=F)
 
 ![Glass brain displaying tracts that had AD negatively  correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/AD/Pre_Preg_wks/GestWeek.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br><br><br>
 
 ### RD {.tabset}
 ```{r GEstational RD vars,echo=FALSE, results='hide',message=FALSE}
@@ -786,16 +904,20 @@ gest_RD_neg <- read.delim(paste0(Gest_path,'RD/Pre_Preg_wks/RD_gestWeek_PreandPr
 
 ```
 #### Weeks 1-40
-##### <span style="color: hotpink;"> Positive ( FDR= 0.200000 ) </span> 
+<span style="color: hotpink;"> Positive ( FDR= 0.200000 ) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(gest_RD_pos, row.names=F)
+knitr::kable(gest_RD_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
-#####  <span class="text-center" style="color: Teal;"> Neg ( FDR= 0.200000)</span> 
+<span class="text-center" style="color: Teal;"> Neg ( FDR= 0.200000)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(gest_RD_neg, row.names=F)
+knitr::kable(gest_RD_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
 ```
 
-#####  <span class="text-center" style="color: Dark Blue;"> Figures </span> 
+<span class="text-center" style="color: Dark Blue;"> Figures </span> 
 ![Slice overlay  displaying ROIs with tracts that had RD positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/RD_gest_Pre_Preg_pos_roi_ax.png)
 
 ![Directional glass brain displaying tracts that had RD Positively correlated with Gestational Week (Weeks 1-40)](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/GestationalWks/RD/Pre_Preg_wks/GestWeek.t2.length25.pos_corr.jpg)
