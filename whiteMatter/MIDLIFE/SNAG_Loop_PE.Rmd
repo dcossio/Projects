@@ -1,0 +1,2345 @@
+---
+title: "Loop position error"
+author: "Daniela Cossio"
+date: "4/6/2023"
+output:
+   html_document: 
+     toc: yes
+     toc_float: yes
+     toc_depth: 6
+     theme: flatly
+     code_folding: hide
+---
+
+```{r adding libraries, echo=FALSE, message=FALSE, results='hide'}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+# library(car)
+# library(ggiraph)
+# library(ggiraphExtra)
+# library(moonBook)
+
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
+                      fig.align = "center")
+
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/"
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+```
+
+```{css, echo=FALSE}
+h1, h2 {
+  text-align: center;
+  color: darkblue;
+  font-weight: bold;
+}
+```
+
+# Results
+## <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
+
+### Overall Summary 
+
+Loop task is more dependent on egocentric regions which may be why we see that better performers are those that have better QA in regions not in parietal lobe. 
+
+Men's performance suggest that those with lower PE scores are relying on stronger connectivity in fornix regions and less in cerebellum and corpus callosum. 
+
+While women may be relying on regions such as corpus callosum, cingulum, fasciculus over fornix to perform better.
+
+
+### QA {.tabset}
+```{r Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+QA_peRad3_all_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/allSubs/QA_all_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+QA_peRad3_all_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/allSubs/QA_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# MEN
+QA_peRad3_male_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/male/QA_male_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+# WOMEN
+QA_peRad3_female_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/female/QA_female_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+
+QA_peRad3_female_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/female/QA_female_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+############## EVERYTHING BELOW USES DELIMS BECAUSE THE EXTRACTS CSVS HAVE A TITLE THAT MAKES IT UNREADABLE FROM CSV"
+# PRE
+QA_peRad3_pre_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/QA/pre/QA_pre_pos.csv'),header=FALSE, sep="\t") %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+QA_peRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/QA/pre/QA_pre_neg.csv'),header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+######################### END DELIM ########################
+
+# PERI
+QA_peRad3_peri_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/peri/QA_peri_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+#POST
+#No results
+
+# Peri + POST
+QA_peRad3_peripost_pos <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/peripost/QA_peri+post_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+QA_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/loop/rad3/PE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+```
+
+#### Summary of results
+- QA Tractography using all subjects and controlling for age and sex reveled positive and negative correlations.   
+
+- QA Tractography when looking at men only revealed tracts with positive correlations only. Higher QA scores were associated with higher PE scores. One way to think about this is that poor performers are showing stronger connectivity in regions that are not supporting path integration and this altered recruitment of regions may be associated with worse performance.   
+
+- QA Tractography when looking at women only revealed tracts with negative correlations and positive. Cerebellum was the only tract that was positively correlated with PE score. suggesting that recruitment of PE may be associated with lower path integration performance. NEgative correlations suggest that stronger integrity and connectivity of these regions correlated to lower PE scores and therefore better path integration performance.  
+
+- pre menopausal women displayed both positive and negative tracts suggesting that recruitment of certain regions are differentially associated with performance in path integration  
+
+- Peri menopausal women displayed negative correlations with tracts in the corpus callosum, cerebellum, and several fasciculus tracts.   
+
+-  No significant correlations in post menopausal women  
+
+- Peri- post showed positive and negative tracts in several overlapping regions which may be due to low sample size.
+
+<br><br><br><br><br><br> 
+
+#### All subjects
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.077333)  </span>  
+```{r, echo=FALSE}
+knitr::kable(QA_peRad3_all_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.001964) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peRad3_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_pos_ax.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+<br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Correlations (FDR= 0.074986) </span>
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(QA_peRad3_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.316832) </span>
+
+Not significant
+
+<br><br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/male/loop_qa_pos_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
+
+<br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.076923)  </span>
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(QA_peRad3_female_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000559)</span>
+```{r, echo=FALSE}
+knitr::kable(QA_peRad3_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_qa_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_qa_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/female/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+<br><br><br><br>
+
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.035113)  </span>
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(QA_peRad3_pre_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations  (FDR = 0.009547) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peRad3_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_qa_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_qa_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/pre/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+<br><br><br><br>
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.331167)  </span>
+
+No Significant Findings
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.097716)</span>
+```{r, echo=FALSE}
+knitr::kable(QA_peRad3_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peri/looop_qa_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### post
+
+  * No significant results
+  
+<br><br><br><br><br><br><br><br>
+
+#### Peri + Post
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.058838) </span>
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(QA_peRad3_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.103819)</span>
+```{r, echo=FALSE}
+knitr::kable(QA_peRad3_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+<br><br><br><br>
+
+
+### MD {.tabset}
+```{r MD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+MD_peRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/allSubs/MD_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()  %>% na.omit()
+
+# MEN
+MD_peRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/male/MD_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# WOMEN
+MD_peRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/female/MD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# PRE
+MD_peRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/pre/MD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# PERI
+MD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/peri/MD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+#POST
+MD_peRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/post/MD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+# Peri + POST
+MD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+```
+#### Summary of results
+
+- MD Tractography of all subjects, regressing age and sex, revealed tracts negatively correlated with PE score in the fornix and thalamic radiation. This suggests that subjects with lower PE score displayed increased diffusivity in these regions. Perhaps we see this because they scored so low due to having lower connectivity in these regions.
+
+- MD Tractography of men only, regressing age , revealed tracts positively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with lower PE score and therefore better performance. 
+
+- MD Tractography of women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score. 
+
+-  MD Tractography of pre, peri, post adn combined peri post menopausal women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score.  
+
+
+<br><br><br><br><br><br> 
+
+
+#### All subjects
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000616)</span>
+```{r, echo=FALSE}
+knitr::kable(MD_peRad3_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/allSubs/loop_md_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had MD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.058621) </span>
+```{r, layout="l-body-outset",echo=FALSE}
+knitr::kable(MD_peRad3_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "175px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 1.000000)</span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_qa_pos_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had MD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
+
+<br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations(FDR = 1.000000)  </span>
+
+No Significant Results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000443)</span>
+```{r, echo=FALSE}
+knitr::kable(MD_peRad3_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/female/loop_md_neg_cor.png)
+
+<br><br> 
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/female/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No Significant Results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.044429)</span>
+```{r, echo=FALSE}
+knitr::kable(MD_peRad3_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/pre/loop_md_neg_cor.png)
+
+<br>
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in pre-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations(FDR = 1.000000)  </span>
+
+No Significant Results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.017058)</span>
+```{r, echo=FALSE}
+knitr::kable(MD_peRad3_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peri/loop_md_neg_ax.png)
+
+<br><br> 
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in peri-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No Significant Results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.064410)</span>
+```{r, echo=FALSE}
+knitr::kable(MD_peRad3_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/post/loop_md_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in post-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### Peri + Post
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>
+
+No Significant Results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.161324)</span>
+```{r, echo=FALSE}
+knitr::kable(MD_peRad3_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peripost/loop_md_neg_ax.png)
+
+<br>
+
+![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error rad3 in peri and post-menopausal  women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/peripost/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+### AD {.tabset}
+```{r AD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+AD_peRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/allSubs/AD_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+AD_peRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/allSubs/AD_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+AD_peRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/male/AD_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+AD_peRad3_male_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/male/AD_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# WOMEN
+AD_peRad3_female_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/female/AD_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+AD_peRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/female/AD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PRE
+AD_peRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/pre/AD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PERI
+AD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/peri/AD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+#POST
+AD_peRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/post/AD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# Peri + POST
+AD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+```
+#### Summary of results
+
+- AD tractography of all subs showed negative and positive correlations. The majority here were negative suggesting that lower AD is associated with increased PE score. 
+
+-AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
+
+-AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
+
+
+<br><br><br><br><br><br><br><br><br> 
+
+
+#### All subjects
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.010526) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_all_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000260)</span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/allSubs/loop_qa_pos_ax.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/allSubs/loop_ad_pos_ax.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/allSubs/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+<br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.064215)  </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.111111) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_ad_pos_ax.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_ad_neg_sag.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/male/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+
+<br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_female_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "100px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000332)</span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/female/loop_ad_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/female/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.047725) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/pre/loop_ad_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in pre-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.008203) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peri/loop_ad_neg_corr.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in peri-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.059079) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/post/loop_ad_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### Peri + Post
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.652842)  </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.063222)</span>
+```{r, echo=FALSE}
+knitr::kable(AD_peRad3_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error rad3 peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peripost/loop_ad_neg_ax.png)
+
+<br>
+
+![Glass Brain displaying tracts that had AD negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/AD/peripost/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+### RD {.tabset}
+```{r RD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
+# ALL SUBS
+RD_peRad3_all_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/allSubs/RD_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+
+RD_peRad3_all_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/allSubs/RD_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# MEN
+RD_peRad3_male_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/male/RD_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_peRad3_male_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/male/RD_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# WOMEN
+RD_peRad3_female_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/female/RD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PRE
+RD_peRad3_pre_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/pre/RD_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_peRad3_pre_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/pre/RD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# PERI
+RD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/peri/RD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+#POST
+RD_peRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/post/RD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+# Peri + POST
+RD_peRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/peripost/RD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
+RD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/PE/RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+```
+#### Summary of results
+
+- RD tractography of all subs showed negative correlations. Suggesting that higher RD is associated with decreased PE score.  Better performers have increased RD in fornix, perhaps they are not using these regions to complete the task. part of the reson they may have done so poorly is because they attempted to rely on fornix and there's less connectivity there.
+
+-AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
+
+-AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
+
+
+Tracts with RD displayed negative correlations with PE. In men, this was opposite with men displaying positive correlations. Women, and those in the peri and post stages  displayed negative correlations. Those in the pre and peri+post group displayed positive and negative correlations.
+
+<br><br><br><br><br><br> 
+
+#### All subjects
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.625000) </span>
+
+No significant correlations
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000639)</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br>
+
+ ![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/allSubs/loop_rd_neg_cor.png)
+ 
+ <br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.057317) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations Not significant (1.000000)</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br> 
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/male/loop_rd_pos_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD positively correlated with loop position error rad3 in men](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/male/loop_pe_rad3_m.t2.length25.pos_corr.jpg)
+
+<br><br><br><br>
+
+#### Women
+span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.002117)</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br> 
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/female/loop_rd_neg_cor.png)
+<br>
+
+![Glass Brain displaying tracts that had RD positively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/allSubs/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No significant correlations
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.033719)</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br> 
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/pre/loop_rd_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/pre/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br> 
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016568)</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br> 
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peri/loop_rd_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3 in peri menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peri/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)</span>
+
+No significant results
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = .065219))</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br>
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br> 
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/post/loop_rd_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD negatively correlated with loop position error rad3 in post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/post/loop_pe_rad3_m.t2.length25.neg_corr.jpg)
+
+<br><br><br><br>
+
+
+#### Peri + Post
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.157199)</span>
+```{r, echo=FALSE}
+knitr::kable(RD_peRad3_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+<br> 
+
+![Slice overlay image displaying ROIs with tracts that had RD positively correlated with loop position error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peripost/loop_rd_pos_cor.png)
+
+<br>
+
+![Slice overlay image displaying ROIs with tracts that had RD negatively correlated with loop position error rad3 in peri and post menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peripost/loop_rd_neg_cor.png)
+
+<br>
+
+![Glass Brain displaying tracts that had RD positively and negatively correlated with loop position error rad3 in peripost menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/RD/peripost/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
+
+
+<br><br><br><br>
+
+## <span style="color: PaleVioletRed;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
+### QA {.tabset}
+```{r QA PE Average variables , echo=FALSE, results='hide',message=FALSE}
+
+## all subs ####
+
+QA_peAvg_all_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+QA_peAvg_all_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+
+### Males ####
+QA_peAvg_male_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+QA_peAvg_male_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+
+### Females#####
+QA_peAvg_female_pos <-
+  read.delim(
+    paste0(working_dir,'loop/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+QA_peAvg_female_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+
+
+###PRE ####
+QA_peAvg_pre_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/pre/QA_looPAvgPE_pre_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+QA_peAvg_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/pre/QA_looPAvgPE_pre_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+
+
+
+### PERI ####
+QA_peAvg_peri_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/peri/QA_LoopAvgPE_peri_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+### POST ####
+QA_peAvg_post_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/post/QA_loopAvgPE_post_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+
+### PERI and POST ####
+QA_peAvg_peripost_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/peri_post/QA_loopAvgPE_peripost_pos.csv'),     header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+
+QA_peAvg_peripost_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/QA/peri_post/QA_loopAvgPE_peripost_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+```
+
+#### Summary 
+
+<br><br><br><br><br><br>
+
+#### All subjects
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.000547)  </span>  
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_all_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.015697) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Men
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.154305)  </span>  
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.036522) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Women
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.008475)  </span>  
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000699) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+#### pre
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.041934)  </span>  
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_pre_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.007904) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### peri
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.649718)  </span>  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.020944) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+
+<br><br><br><br><br><br>
+
+#### post
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.140042) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+#### Peri  and Post
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.000776)  </span>  
+
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000529) </span>
+```{r, echo=FALSE}
+knitr::kable(QA_peAvg_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+### MD {.tabset}
+
+```{r MD PE Average variables , echo=FALSE, results='hide',message=FALSE}
+
+## all subs ####
+
+MD_peAvg_all_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/MD/allSubs/avg_MD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>%
+          t() %>%
+            `colnames<-`(rows2grab) %>%
+                `[`(-c(1),) %>%
+                    as.data.frame()
+
+
+### Males ####
+MD_peAvg_male_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>%
+          t() %>%
+            `colnames<-`(rows2grab) %>%
+                `[`(-c(1),) %>%
+                    as.data.frame()
+
+
+### Females#####
+MD_peAvg_female_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>%
+          t() %>%
+            `colnames<-`(rows2grab) %>%
+                `[`(-c(1),) %>%
+                    as.data.frame()
+
+###PRE ####
+MD_peAvg_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/MD/pre/avg_MD_pe_pre_neg.csv'), header = FALSE, sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>%
+          t() %>%
+            `colnames<-`(rows2grab) %>%
+                `[`(-c(1),) %>%
+                    as.data.frame()
+### PERI ####
+MD_peAvg_peri_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/MD/peri/avg_MD_pe_peri_neg.csv'), header = FALSE, sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>%
+          t() %>%
+            `colnames<-`(rows2grab) %>%
+                `[`(-c(1),) %>%
+                    as.data.frame()
+
+
+### POST ####
+MD_peAvg_post_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/MD/post/avg_MD_pe_post_neg.csv'), header = FALSE, sep = "\t") %>%
+      remove_empty("cols") %>%
+        filter(V1 %in% rows2grab) %>%
+          t() %>%
+            `colnames<-`(rows2grab) %>%
+                `[`(-c(1),) %>%
+                    as.data.frame()
+### PERI and POST ####
+
+```
+#### Summary 
+
+<br><br><br><br><br><br>
+
+#### All subjects
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000616	) </span>
+```{r, echo=FALSE}
+knitr::kable(MD_peAvg_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Men
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.058621	)  </span>  
+```{r, echo=FALSE}
+knitr::kable(MD_peAvg_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 1.0000		) </span>
+
+No significant tracts
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+
+no significant tracts
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000443	) </span>
+
+```{r, echo=FALSE}
+knitr::kable(MD_peAvg_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+
+no significant tracts
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.044429	) </span>
+
+```{r, echo=FALSE}
+knitr::kable(MD_peAvg_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+
+no significant tracts
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.017058	) </span>
+
+```{r, echo=FALSE}
+knitr::kable(MD_peAvg_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+
+no significant tracts
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.059079	) </span>
+
+```{r, echo=FALSE}
+knitr::kable(MD_peAvg_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+#### PEri  Post
+<br><br><br><br><br><br>
+
+### AD {.tabset}
+#### Summary 
+<br><br><br><br><br><br>
+
+```{r AD PE Average variables , echo=FALSE, results='hide',message=FALSE}
+
+## all subs ####
+
+AD_peAvg_all_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/allSubs/avg_AD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+AD_peAvg_all_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/allSubs/avg_AD_pe_all_pos.csv' ),header = FALSE,sep = "\t") %>% 
+    remove_empty("cols")  %>% 
+      filter(V1 %in% rows2grab) %>%
+        t() %>% 
+          `colnames<-`(rows2grab) %>% 
+              as.data.frame() %>% 
+                `[`(-c(1),) 
+
+
+### Males ####
+AD_peAvg_male_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/male/avg_AD_pe_male_neg.csv'),
+    header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+AD_peAvg_male_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/male/avg_AD_pe_male_pos.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+### Females#####
+
+AD_peAvg_female_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/female/avg_AD_pe_fem_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+AD_peAvg_female_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/female/avg_AD_pe_fem_pos.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+
+###PRE ####
+
+AD_peAvg_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/pre/avg_AD_pe_pre_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+
+### PERI ####
+AD_peAvg_peri_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/peri/avg_AD_pe_peri_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+### POST ####
+
+AD_peAvg_post_neg <-
+  read.delim(
+    paste0(working_dir,'loop/average/PE/AD/post/avg_AD_pe_post_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+### PERI and POST ####
+
+AD_peAvg_peripost_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/AD/peri_post/avg_AD_pe_peri+post_neg.csv' ),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+
+```
+
+#### All subjects
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.122995)  </span>  
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_all_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016199) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+
+
+<br><br><br><br><br><br>
+
+#### Men
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.022862)  </span>  
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_male_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019520) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.037037)  </span>  
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_female_pos, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000098) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>  
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.026400) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.006482) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<br><br><br><br><br><br>
+
+#### post
+
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>  
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.031666) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Peri and  Post
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.477235)  </span>  
+
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.075829) </span>
+```{r, echo=FALSE}
+knitr::kable(AD_peAvg_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+### RD {.tabset}
+```{r RD PE Average variables , echo=FALSE, results='hide',message=FALSE}
+
+## all subs ####
+
+RD_peAvg_all_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/allSubs/avg_RD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+
+### Males ####
+RD_peAvg_male_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/male/avg_RD_pe_male_pos.csv'),
+    header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+RD_peAvg_male_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/male/avg_RD_pe_male_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+### Females#####
+
+RD_peAvg_female_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/female/avg_RD_pe_fem_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+
+###PRE ####
+
+RD_peAvg_pre_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/pre/avg_RD_pe_pre_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+
+### PERI ####
+RD_peAvg_peri_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/peri/avg_RD_pe_peri_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+### POST ####
+
+RD_peAvg_post_neg <-
+  read.delim(
+    paste0(working_dir,'loop/average/PE/RD/post/avg_RD_pe_post_neg.csv'),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+### PERI and POST ####
+
+RD_peAvg_peripost_neg <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/peri_post/avg_RD_pe_peri+post_neg.csv' ),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+RD_peAvg_peripost_pos <-
+  read.delim(
+    paste0(working_dir,'/loop/average/PE/RD/peri_post/avg_RD_pe_peri+post_pos.csv' ),
+    header = FALSE,sep = "\t") %>% 
+      remove_empty("cols") %>%  
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+              `[`(-c(1),) %>% 
+                as.data.frame()
+
+```
+#### Summary 
+
+<br><br><br><br><br><br>
+
+#### All subjects
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+ Not significant 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_all_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Men
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_male_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_male_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### Women
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+ Not significant 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_female_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### pre
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+ Not significant 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_pre_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### peri
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+ Not significant 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_peri_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### post
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+
+ Not significant 
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_post_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+#### PEri  Post
+<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_peripost_pos, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+```{r, echo=FALSE}
+knitr::kable(RD_peAvg_peripost_neg, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br><br> 
+
+<span class="text-center" style="color: Magenta;"> Figures </span>
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+
+<!-- <br> -->
+
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+
+<br><br><br><br><br><br>
+
+<!---------------------------------------Loop Degree error--------------------------------  -->
