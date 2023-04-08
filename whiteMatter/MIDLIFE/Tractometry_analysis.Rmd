@@ -1,0 +1,232 @@
+---
+title: "Tractometry Analysis"
+date: "2023-04-07"
+output:
+   html_document: 
+     toc: yes
+     toc_float: yes
+     toc_depth: 2
+     theme: flatly
+     code_folding: hide
+
+---
+
+```{r adding libraries, echo=FALSE, message=FALSE, results='hide'}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+# library(car)
+# library(ggiraph)
+# library(ggiraphExtra)
+# library(moonBook)
+```
+
+```{r warning=FALSE, message=FALSE, echo = FALSE}
+# WE'll need to make several lists ahead of time in order to get the if statements together 
+
+subjects <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv") %>% select(subject_id) %>% `colnames<-`(c("V1"))
+
+subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv") %>% select(sex,age_scan_years, repo_status)
+
+subInfo$sex <- replace(subInfo$sex, subInfo$sex==0, "female")
+subInfo$sex <- replace(subInfo$sex, subInfo$sex==1, "male")
+
+```
+
+```{r Reading in the results for all subjects in maze, echo=FALSE, message=FALSE, results='hide'}
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/tractometry"
+
+master_tractometryDF <- data.frame(matrix(ncol = 0, nrow = 105))
+databases <- c("ad","rd","qa","md")
+ROI_folders <- list.dirs(working_dir, recursive = FALSE) # finding the main folders for ROI
+for (ROI_folder in ROI_folders) {
+  print(ROI_folder)
+
+  for (db in 1:length(databases)){
+    print(db)
+    
+    metric <- list.files(ROI_folder, pattern = paste0("*.",databases[db],".*txt"))
+    
+    for (m in metric){
+      print(m)
+      
+      if (databases[db] == "qa"){
+        
+        roi_col <- substring(m, 19) %>% str_sub(end = -5) 
+      
+          tempdf<-
+            read.table(paste0(ROI_folder, "/", m), sep = "\t") %>% filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% select(V2) %>% `colnames<-`(paste0(databases[db],"_",roi_col)) 
+          
+           master_tractometryDF <- cbind(master_tractometryDF, tempdf)
+          
+} else {
+        roi_col <- substring(m, 19) %>% str_sub(end = -5) 
+      
+          tempdf<-
+            read.table(paste0(ROI_folder, "/", m), sep = "\t") %>% select(V2) %>% `colnames<-`(paste0(databases[db],"_",roi_col))
+          
+          master_tractometryDF <- cbind(master_tractometryDF, tempdf)
+    }
+  }
+  }
+}
+
+rows <- read.table(paste0(ROI_folder, "/", m), sep = "\t") %>% select(V1) %>% filter(!str_detect(V1, c("mean_md")))
+rows <- rbind(rows,subjects)
+
+master_tractometryDF <- cbind(master_tractometryDF,rows) 
+master_tractometryDF <- master_tractometryDF[ ,c(17,1:16)]
+
+```
+
+
+
+# QA {.tabset}
+
+```{r,  QA Values for,echo=FALSE, message=FALSE, results='hide'}
+# Lets compare set up our QA data frame 
+QAdf <- master_tractometryDF %>% select(V1,qa_Cingulum_L,qa_Cingulum_R,qa_Fornix_L,qa_Fornix_R) %>% filter(V1 %in% as.character(subjects$V1)) %>% mutate(sex = subInfo$sex)
+
+m_QA <- QAdf %>% filter(sex=="male") 
+
+f_QA <- QAdf %>% filter(sex=="female") 
+```
+
+## Left Cingulum 
+
+### Men <br>
+Checking the normality of the data. 
+```{r, male cingulum L Normality, echo=FALSE, message=FALSE, results='asis'}
+# male left cingulum failed normality 0.02
+male_cing_L_norm <- shapiro.test(m_QA$qa_Cingulum_L)
+male_cingL_pval <- male_cing_L_norm[["p.value"]]
+```
+Male left cingulum p value is =  `r male_cingL_pval`
+
+```{r, male cingulum R  Normality, echo=FALSE, message=FALSE}
+male_cing_R_norm <- shapiro.test(m_QA$qa_Cingulum_R)
+male_cingR_norm_pval <-male_cing_R_norm[["p.value"]]
+```
+Right Cingulum is = `r male_cingR_norm_pval`
+
+
+### Women
+
+```{r female L cingulum Normality, echo=FALSE, message=FALSE}
+#female left cingulum  # normal 0.8221
+female_cing_L_norm <- shapiro.test(f_QA$qa_Cingulum_L)
+print(paste0("Shapiro normality test p value","  = ", female_cing_L_norm[["p.value"]]))
+```
+
+```{r female R cingulum normality, echo=FALSE, message=FALSE}
+#female left cingulum  # normal 0.8221
+female_cing_R_norm <- shapiro.test(f_QA$qa_Cingulum_L)
+print(paste0("Shapiro normality test p value","  = ", female_cing_L_norm[["p.value"]]))
+```
+
+
+
+## Right Cingulum
+
+## Right Fornix
+
+## Left Fornix
+
+
+
+```{r Cingulum,echo=FALSE, message=FALSE, results='hide'}
+
+### LEFT CINGULUM #####
+m_QA_cing_L_summary <- summary(m_QA$qa_Cingulum_L)
+f_QA_cing_L_summary <- summary(f_QA$qa_Cingulum_L)
+#ttest 0.02
+ QA_Cing_L <- wilcox.test(m_QA$qa_Cingulum_L,f_QA$qa_Cingulum_L)
+ 
+#### Right Cingulum #### 
+ # 0.012
+ f_QA_cing_R_summary <- summary(f_QA$qa_Cingulum_R)
+ m_QA_cing_R_summary <- summary(m_QA$qa_Cingulum_R)
+ QA_Cing_R <- wilcox.test(m_QA$qa_Cingulum_R,f_QA$qa_Cingulum_R)
+ 
+#### Left Fornix #### 
+fem_fornix_L_norm <- shapiro.test(f_QA$qa_Fornix_L) # normal 0.1705
+male_fornix_L_norm <- shapiro.test(m_QA$qa_Fornix_L) # normal 0.2153
+
+f_QA_fornix_L_summary <- summary(f_QA$qa_Fornix_L) # 0.2422
+m_QA_fornix_L_summary <- summary(m_QA$qa_Fornix_L) #0.2207
+QA_fornix_L <- t.test(m_QA$qa_Fornix_L,f_QA$qa_Fornix_R) # 7.492e-06
+ 
+#### Right Fornix #### 
+fem_fornix_R_norm <- shapiro.test(f_QA$qa_Fornix_R) #0.2414
+male_fornix_R_norm <- shapiro.test(m_QA$qa_Fornix_R) 
+
+f_QA_fornix_R_summary <- summary(f_QA$qa_Fornix_R) # 0.2414
+m_QA_fornix_R_summary <- summary(m_QA$qa_Fornix_R) # 0.2843
+
+QA_fornix_R <- wilcox.test(m_QA$qa_Fornix_R,f_QA$qa_Fornix_R) # 0.0003516
+
+```
+
+```{r QA Cingulum L sex differences }
+
+  QA_L_Cing <- QAdf %>%
+    ggplot(aes(x=sex, y= qa_Cingulum_L, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " QA", title ="Left Cingulum" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  
+   # png(file = "")
+   # print(y)
+   # dev.off()
+
+QA_R_Cing <- QAdf %>%
+    ggplot(aes(x=sex, y= qa_Cingulum_R, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " QA", title ="Right Cingulum" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+```
+
+
