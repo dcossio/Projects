@@ -174,25 +174,26 @@ Est_QA_pregnancy_pos <- read.csv(paste0(estrogen_path,'QA/pregnancy/pos_stats_2.
 
 
 #GEtting my variables together for plots
-
-estr_QA_cols <- c("Subjects", as.character(Est_QA_all_pos[,1]))
+### Positive #####
+estr_QA_positive_cols <- c("Subjects", as.character(Est_QA_all_pos[,1]))
 
 #reading in my csv with the stats and adding in the subject info 
 Est_QA_all_pos_values <-
   read.csv(paste0(estrogen_path, 'QA/Allwks/pos_stats.csv'), header = FALSE) %>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-  `colnames<-`(estr_QA_cols) %>%
+  `colnames<-`(estr_QA_positive_cols) %>%
   mutate(estrogen = Est_subinfo$Estrogen) %>% 
   mutate(status = as.factor(Est_subinfo$`Endocrine Status`)) %>% 
   mutate(trimester = factor(Est_subinfo$trimester, levels= c('pre','first','second', 'third', 'post')))
 
 # Reorder for my sanity check 
 Est_QA_all_pos_values <- Est_QA_all_pos_values[,c(1,19,20,21,2:18)]
-QA_est_gathercols <- colnames(Est_QA_all_pos_values[5:21])
+QA_est_pos_gathercols <- colnames(Est_QA_all_pos_values[5:21])
 
 # for some reason things are being read as a a character and it needs to be a numerical value
 Est_QA_all_pos_values[5:21] <- apply(Est_QA_all_pos_values[5:21],2, as.numeric) 
+
 
 ## GAther it long for large compiled figure
 Est_QA_all_pos_values_long <- gather(Est_QA_all_pos_values, ROI, QA ,QA_est_gathercols, factor_key = TRUE) %>% select(!(Subjects))
@@ -259,7 +260,8 @@ sam_size <- Est_QA_all_pos_values %>% dplyr::group_by(status)%>%dplyr::summarize
 ```{r Looping through all QA pos Estrogen and making plots Specific variables }
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/QA/Allwks/"
 
-for (ROI in QA_est_gathercols) {
+# positive ROIS
+for (ROI in QA_est_pos_gathercols) {
   print(ROI)
   y <- Est_QA_all_pos_values %>%
     ggplot( aes(x=trimester, y=Est_QA_all_pos_values[[ROI]], group=trimester)) +
@@ -275,10 +277,14 @@ for (ROI in QA_est_gathercols) {
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
   
-   png(file = paste0(figpath,ROI,".png"))
+   png(file = paste0(figpath,ROI,"_pos.png"))
    print(y)
    dev.off()
 }
+
+# NEgative ROIS
+
+
     
 ```
 
@@ -339,6 +345,7 @@ knitr::kable(Est_MD_allwks_neg, row.names=F) %>%
 No significant findings 
 
 <br><br><br><br><br><br><br><br>
+
 ```{r, MD file loop}
 est_MD_figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/estrogen/MD/Allwks/"
 
@@ -464,29 +471,52 @@ prog_QA_all_neg <- read.csv(paste0(Prog_path,'QA/Allwks/neg_ALL_2.5.csv'), heade
 
 #GEtting my variables together for plots
 
-prog_QA_cols <- c("Subjects", as.character(prog_QA_all_pos[,1]))
+#### Positive ####
+prog_QA_pos_cols <- c("Subjects", as.character(prog_QA_all_pos[,1]))
 
 #reading in my csv with the stats and adding in the subject info 
 prog_QA_all_pos_values <-
   read.csv(paste0(Prog_path,'QA/Allwks/pos_all_2.5.csv'), header = FALSE) %>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-  `colnames<-`(prog_QA_cols) %>%
+  `colnames<-`(prog_QA_pos_cols) %>%
   mutate(estrogen = Prog_subinfo$Progesterone) %>% 
   mutate(status = as.factor(Prog_subinfo$`Endocrine Status`)) %>% 
   mutate(trimester = factor(Prog_subinfo$trimester, levels= c('pre','first','second', 'third', 'post')))
 
 # Reorder for my sanity check 
 prog_QA_all_pos_values <- prog_QA_all_pos_values[,c(1,20,21,22,2:19)]
-QA_prog_gathercols <- colnames(prog_QA_all_pos_values[5:22])
+QA_prog_pos_gathercols <- colnames(prog_QA_all_pos_values[5:22])
 
 # for some reason things are being read as a a character and it needs to be a numerical value
 prog_QA_all_pos_values[5:22] <- apply(prog_QA_all_pos_values[5:22],2, as.numeric) 
 
+# ## GAther it long for large compiled figure
+# prog_QA_all_pos_values_long <- gather(prog_QA_all_pos_values, ROI, QA ,prog_QA_pos_cols, factor_key = TRUE) %>% select(!(Subjects))
+
+
+#### Negative ####
+prog_QA_neg_cols <- c("Subjects", as.character(prog_QA_all_neg[,1]))
+
+#reading in my csv with the stats and adding in the subject info 
+prog_QA_neg_cols_values <-
+  read.csv(paste0(Prog_path,'QA/Allwks/neg_all_2.5.csv'), header = FALSE) %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(prog_QA_neg_cols) %>%
+  mutate(estrogen = Prog_subinfo$Progesterone) %>% 
+  mutate(status = as.factor(Prog_subinfo$`Endocrine Status`)) %>% 
+  mutate(trimester = factor(Prog_subinfo$trimester, levels= c('pre','first','second', 'third', 'post')))
+
+# Reorder for my sanity check 
+prog_QA_neg_cols_values <- prog_QA_neg_cols_values[,c(1,15,16,17,2:14)]
+QA_prog_neg_gathercols <- colnames(prog_QA_neg_cols_values[5:17])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+prog_QA_neg_cols_values[5:17] <- apply(prog_QA_neg_cols_values[5:17],2, as.numeric) 
+
 ## GAther it long for large compiled figure
-prog_QA_all_pos_values_long <- gather(prog_QA_all_pos_values, ROI, QA ,QA_prog_gathercols, factor_key = TRUE) %>% select(!(Subjects))
-
-
+# prog_QA_all_neg_values_long <- gather(prog_QA_all_neg_values, ROI, QA ,QA_prog_neg_gathercols, factor_key = TRUE) %>% select(!(Subjects))
 
 # Pregnancy only
 
@@ -535,8 +565,8 @@ knitr::kable(prog_QA_all_neg, row.names=F)%>%
 ```{r Looping through all QA progesterone and making plots Specific variables}
 prog_figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/QA/Allwks/"
 
-# positive
-for (ROI in QA_prog_gathercols) {
+# positive ####
+for (ROI in QA_prog_pos_gathercols) {
   print(ROI)
   y <- prog_QA_all_pos_values %>%
     ggplot( aes(x=trimester, y=prog_QA_all_pos_values[[ROI]], group=trimester)) +
@@ -552,11 +582,33 @@ for (ROI in QA_prog_gathercols) {
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
   
-   png(file = paste0(prog_figpath,ROI, "pos.png"))
+   png(file = paste0(prog_figpath,ROI, "_pos.png"))
    print(y)
    dev.off()
 }
     
+
+# Negative
+for (ROI in QA_prog_neg_gathercols) {
+  print(ROI)
+  x <- prog_QA_neg_cols_values %>%
+    ggplot( aes(x=trimester, y=prog_QA_neg_cols_values[[ROI]], group=trimester)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  
+   png(file = paste0(prog_figpath,ROI, "_neg.png"))
+   print(x)
+   dev.off()
+}
 ```
 
 #### Pregnancy only
@@ -580,6 +632,27 @@ No significant Findings
 prog_MD_all_pos <- read.csv(paste0(Prog_path,'MD/Allwks/MD_allwks_prog_pos_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
 prog_MD_all_neg <- read.csv(paste0(Prog_path,'MD/Allwks/MD_allwks_prog_neg_2.5.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+
+
+prog_MD_cols <- c("Subjects", as.character(prog_MD_all_pos[,1]))
+
+#reading in my csv with the stats and adding in the subject info 
+prog_MD_all_pos_values <-
+  read.csv(paste0(Prog_path,'MD/Allwks/MD_allwks_prog_pos_2.5.csv'), header = FALSE) %>%
+  filter(str_detect(V1, c("mean_md"))) %>%
+  `colnames<-`(prog_MD_cols) %>%
+  mutate(estrogen = Prog_subinfo$Progesterone) %>% 
+  mutate(status = as.factor(Prog_subinfo$`Endocrine Status`)) %>% 
+  mutate(trimester = factor(Prog_subinfo$trimester, levels= c('pre','first','second', 'third', 'post')))
+
+# Reorder for my sanity check 
+prog_MD_all_pos_values <- prog_MD_all_pos_values[,c(1,9,10,11,2:8)]
+prog_MD_cols <- colnames(prog_MD_all_pos_values[5:11])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+prog_MD_all_pos_values[5:11] <- apply(prog_MD_all_pos_values[5:11],2, as.numeric) 
+
+MD_prog_gathercols <- colnames(prog_MD_all_pos_values[5:11])
 
 ```
 #### All weeks 
@@ -623,10 +696,10 @@ knitr::kable(prog_MD_all_neg, row.names=F)%>%
 ```{r Looping through all MD progesterone and making plots Specific variables}
 MD_prog_figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/progesterone/MD/Allwks"
 
-for (ROI in QA_prog_gathercols) {
+for (ROI in MD_prog_gathercols) {
   print(ROI)
-  y <- prog_QA_all_pos_values %>%
-    ggplot( aes(x=trimester, y=prog_QA_all_pos_values[[ROI]], group=trimester)) +
+  y <- prog_MD_all_pos_values %>%
+    ggplot( aes(x=trimester, y=prog_MD_all_pos_values[[ROI]], group=trimester)) +
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
@@ -639,7 +712,7 @@ for (ROI in QA_prog_gathercols) {
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
   
-   png(file = paste0(prog_figpath,ROI,".png"))
+   png(file = paste0(MD_prog_figpath,ROI,"_pos.png"))
    print(y)
    dev.off()
 }
