@@ -10,6 +10,13 @@ output:
      code_folding: hide
 
 ---
+```{css, echo=FALSE}
+
+h1, h2 {
+  text-align: center;
+  font-weight: bold;
+}
+```
 
 ```{r adding libraries, echo=FALSE, message=FALSE, results='hide'}
 library(ggplot2)
@@ -106,9 +113,11 @@ master_tractometryDF <- master_tractometryDF[ ,c(17,1:16)]
 
 ```
 
+# <span style="color: green;"> QA </span>{.tabset}
 
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Summary </span>
 
-# QA {.tabset}
+<br><br><br><br><br><br><br>
 
 ```{r,  QA Values for,echo=FALSE, message=FALSE, results='hide'}
 # Lets compare set up our QA data frame 
@@ -119,82 +128,173 @@ m_QA <- QAdf %>% filter(sex=="male")
 f_QA <- QAdf %>% filter(sex=="female") 
 ```
 
-## Left Cingulum 
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Men </span>
 
-### Men <br>
-Checking the normality of the data. 
-```{r, male cingulum L Normality, echo=FALSE, message=FALSE, results='asis'}
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Distribution of data** </span>
+
+</center>
+
+```{r, male normality  Normality, echo=FALSE, message=FALSE, results='asis'}
 # male left cingulum failed normality 0.02
-male_cing_L_norm <- shapiro.test(m_QA$qa_Cingulum_L)
-male_cingL_pval <- male_cing_L_norm[["p.value"]]
-```
-Male left cingulum p value is =  `r male_cingL_pval`
 
-```{r, male cingulum R  Normality, echo=FALSE, message=FALSE}
+male_cing_L_norm <- shapiro.test(m_QA$qa_Cingulum_L) #
+
 male_cing_R_norm <- shapiro.test(m_QA$qa_Cingulum_R)
-male_cingR_norm_pval <-male_cing_R_norm[["p.value"]]
+
+male_fornix_L_norm <- shapiro.test(m_QA$qa_Fornix_L)
+
+male_fornix_R_norm <- shapiro.test(m_QA$qa_Fornix_R)
+  
+male_cing_norm_vals <-
+  cbind(male_cing_L_norm[["p.value"]],
+        male_cing_R_norm[["p.value"]],
+        male_fornix_L_norm[["p.value"]],
+        male_fornix_R_norm[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% `row.names<-`(c("Males"))
+
 ```
-Right Cingulum is = `r male_cingR_norm_pval`
 
+<span class="text-center" style="color: black; font-size:14px; font-family:Arial;">
 
-### Women
+The normality of the QA values was assessed using the shapiro-wilks test of normality. QA values from males was not normally        distributed in the area **left cingulum** (p = `r male_cing_norm_vals[1,1]`) but normally distributed in the **right cingulum** (p=`r male_cing_norm_vals[1,2]`), **Left fornix** (p=`r male_cing_norm_vals[1,3]`), and **Right Fornix** (p = `r male_cing_norm_vals[1,4]`).
 
-```{r female L cingulum Normality, echo=FALSE, message=FALSE}
+<br>
+
+**Table 1.p values from normality tests using shapiro-wilks.** </span>
+
+```{r male table of normality , echo=FALSE, message=FALSE}
+knitr::kable(male_cing_norm_vals)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "500px", height = "100px")
+```
+
+<br><br><br>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Descriptive stats** </span>
+<br>
+</center>
+
+```{r Descriptitve stats for males }
+
+m_QA_cing_L_summary <- summary(m_QA$qa_Cingulum_L)
+m_QA_cing_R_summary <- summary(m_QA$qa_Cingulum_R)
+
+m_QA_fornix_R_summary <- summary(m_QA$qa_Fornix_R) 
+m_QA_fornix_L_summary <- summary(m_QA$qa_Fornix_L) 
+
+QA_male_summary <- rbind(m_QA_cing_L_summary, m_QA_cing_R_summary,m_QA_fornix_L_summary,m_QA_fornix_R_summary) %>% `row.names<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+```
+
+```{r male descriptive stats, echo=FALSE, message=FALSE}
+knitr::kable(QA_male_summary)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "200px")
+```
+
+<br><br><br><br><br><br>
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial; text-align:center"> Women </span>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Distribution of data** </span>
+</center>
+
+<br>
+```{r female Normality, echo=FALSE, message=FALSE}
 #female left cingulum  # normal 0.8221
 female_cing_L_norm <- shapiro.test(f_QA$qa_Cingulum_L)
-print(paste0("Shapiro normality test p value","  = ", female_cing_L_norm[["p.value"]]))
-```
 
-```{r female R cingulum normality, echo=FALSE, message=FALSE}
 #female left cingulum  # normal 0.8221
-female_cing_R_norm <- shapiro.test(f_QA$qa_Cingulum_L)
-print(paste0("Shapiro normality test p value","  = ", female_cing_L_norm[["p.value"]]))
+female_cing_R_norm <- shapiro.test(f_QA$qa_Cingulum_R)
+
+female_fornix_L_norm <- shapiro.test(f_QA$qa_Fornix_L)
+
+female_fornix_R_norm <- shapiro.test(f_QA$qa_Fornix_R)
+
+female_norm_vals <-
+  cbind(female_cing_L_norm[["p.value"]],
+        female_cing_R_norm[["p.value"]],
+        female_fornix_L_norm[["p.value"]],
+        female_fornix_R_norm[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% `row.names<-`(c("Females"))
 ```
 
+<span class="text-center" style="color: black; font-size:14px; font-family:Arial;">
 
+The normality of the QA values was assessed using the  shapiro-wilks test of normality. QA values from females was normally distributed  in the **left cingulum** (p = `r female_norm_vals[1,1]`) and **right cingulum** (p=`r female_norm_vals[1,2]`), **Left Fornix** (p= `r female_norm_vals[1,3]`), **Right Fornix** (p= `r female_norm_vals[1,4]`)
 
-## Right Cingulum
+<br>
 
-## Right Fornix
+**Table 1. P values from normality tests using shapiro-wilks.** </span>
 
-## Left Fornix
+```{r female table of normality , echo=FALSE, message=FALSE}
+knitr::kable(female_norm_vals)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "500px", height = "100px")
+```
 
+<br><br><br>
 
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Descriptive stats** </span>
+</center>
 
-```{r Cingulum,echo=FALSE, message=FALSE, results='hide'}
+```{r Female Descriptive stats,echo=FALSE, message=FALSE, results='hide'}
 
-### LEFT CINGULUM #####
-m_QA_cing_L_summary <- summary(m_QA$qa_Cingulum_L)
 f_QA_cing_L_summary <- summary(f_QA$qa_Cingulum_L)
-#ttest 0.02
- QA_Cing_L <- wilcox.test(m_QA$qa_Cingulum_L,f_QA$qa_Cingulum_L)
- 
-#### Right Cingulum #### 
- # 0.012
- f_QA_cing_R_summary <- summary(f_QA$qa_Cingulum_R)
- m_QA_cing_R_summary <- summary(m_QA$qa_Cingulum_R)
- QA_Cing_R <- wilcox.test(m_QA$qa_Cingulum_R,f_QA$qa_Cingulum_R)
- 
-#### Left Fornix #### 
-fem_fornix_L_norm <- shapiro.test(f_QA$qa_Fornix_L) # normal 0.1705
-male_fornix_L_norm <- shapiro.test(m_QA$qa_Fornix_L) # normal 0.2153
+f_QA_cing_R_summary <- summary(f_QA$qa_Cingulum_R)
 
-f_QA_fornix_L_summary <- summary(f_QA$qa_Fornix_L) # 0.2422
-m_QA_fornix_L_summary <- summary(m_QA$qa_Fornix_L) #0.2207
-QA_fornix_L <- t.test(m_QA$qa_Fornix_L,f_QA$qa_Fornix_R) # 7.492e-06
- 
-#### Right Fornix #### 
-fem_fornix_R_norm <- shapiro.test(f_QA$qa_Fornix_R) #0.2414
-male_fornix_R_norm <- shapiro.test(m_QA$qa_Fornix_R) 
+f_QA_fornix_L_summary <- summary(f_QA$qa_Fornix_L)
+f_QA_fornix_R_summary <- summary(f_QA$qa_Fornix_R) 
 
-f_QA_fornix_R_summary <- summary(f_QA$qa_Fornix_R) # 0.2414
-m_QA_fornix_R_summary <- summary(m_QA$qa_Fornix_R) # 0.2843
+QA_female_summary <- rbind(f_QA_cing_L_summary, f_QA_cing_R_summary,f_QA_fornix_L_summary,f_QA_fornix_R_summary) %>% `row.names<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+```
 
-QA_fornix_R <- wilcox.test(m_QA$qa_Fornix_R,f_QA$qa_Fornix_R) # 0.0003516
+<br>
+
+```{r female descriptive stats, echo=FALSE, message=FALSE}
+knitr::kable(QA_female_summary)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "200px")
+```
+
+<br><br><br><br><br><br>
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial; text-align:center"> T Tests </span>
+
+<br>
+<center>
+<span style="color: black; font-size:18px; font-family:Arial; text-align:center"> **P values from t tests** </span>
+</center>
+
+```{r ttest,echo=FALSE, message=FALSE, results='hide'}
+QA_Cing_L <- wilcox.test(m_QA$qa_Cingulum_L,f_QA$qa_Cingulum_L)
+QA_Cing_R <- wilcox.test(m_QA$qa_Cingulum_R,f_QA$qa_Cingulum_R)
+QA_fornix_L <- t.test(m_QA$qa_Fornix_L,f_QA$qa_Fornix_R) 
+QA_fornix_R <- wilcox.test(m_QA$qa_Fornix_R,f_QA$qa_Fornix_R) 
+
+QA_pvalues <-
+  cbind(QA_Cing_L[["p.value"]],
+        QA_Cing_R[["p.value"]],
+        QA_fornix_L[["p.value"]],
+        QA_fornix_R[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
 
 ```
 
-```{r QA Cingulum L sex differences }
+```{r T tests, echo=FALSE, message=FALSE}
+knitr::kable(QA_pvalues, row.names = FALSE)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "100px")
+```
+
+<br><br><br><br><br><br>
+
+<center>
+<span style="color: black; font-size:18px; font-family:Arial; text-align:center"> **Figures** </span>
+</center>
+<br>
+
+```{r QA Cingulum L, dev='png', fig.show='hide'}
 
   QA_L_Cing <- QAdf %>%
     ggplot(aes(x=sex, y= qa_Cingulum_L, group=sex)) +
@@ -209,11 +309,18 @@ QA_fornix_R <- wilcox.test(m_QA$qa_Fornix_R,f_QA$qa_Fornix_R) # 0.0003516
             axis.line = element_line(colour = "black"),  
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-  
-   # png(file = "")
-   # print(y)
-   # dev.off()
 
+print(QA_L_Cing)
+```
+
+<center>
+![**Figure 1. QA Values for Left Cingulum**](`r knitr::fig_chunk('QA Cingulum L', 'png')`)
+</center>
+
+<br><br>
+
+```{r QA Cingulum R, dev='png', fig.show='hide'}
+   
 QA_R_Cing <- QAdf %>%
     ggplot(aes(x=sex, y= qa_Cingulum_R, group=sex)) +
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
@@ -227,6 +334,539 @@ QA_R_Cing <- QAdf %>%
             axis.line = element_line(colour = "black"),  
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(QA_R_Cing)
 ```
 
+<center>
+![**Figure 2. QA Values for Right Cingulum**](`r knitr::fig_chunk('QA Cingulum R', 'png')`)
+</center>
+
+<br><br>
+
+```{r QA Fornix L, dev='png', fig.show='hide'}
+   
+QA_L_fornix <- QAdf %>%
+    ggplot(aes(x=sex, y= qa_Fornix_L, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " QA", title ="Left Fornix" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(QA_L_fornix)
+```
+
+<center>
+![**Figure 2. QA Values for Right Cingulum**](`r knitr::fig_chunk('QA Fornix L', 'png')`)
+</center>
+
+<br><br>
+
+```{r QA Fornix R, dev='png', fig.show='hide'}
+   
+QA_R_fornix <- QAdf %>%
+    ggplot(aes(x=sex, y= qa_Fornix_R, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " QA", title ="Right Fornix" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(QA_R_fornix)
+```
+
+<center>
+
+![**Figure 4. QA Values for Right Fornix**](`r knitr::fig_chunk('QA Fornix R', 'png')`)
+
+</center>
+
+<br><br><br><br><br><br>
+
+# <span style="color: green;"> MD </span>{.tabset}
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Summary </span>
+
+<br><br><br><br><br><br>
+
+```{r,  MD Values for,echo=FALSE, message=FALSE, results='hide'}
+# Lets compare set up our QA data frame 
+MDdf <- master_tractometryDF %>% select(V1,md_Cingulum_L,md_Cingulum_R,md_Fornix_L,md_Fornix_R) %>% filter(V1 %in% as.character(subjects$V1)) %>% mutate(sex = subInfo$sex)
+
+m_MD <- MDdf %>% filter(sex=="male") 
+
+f_MD <- MDdf %>% filter(sex=="female") 
+```
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Men </span>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Distribution of data** </span>
+
+</center>
+```{r, md male normality  Normality, echo=FALSE, message=FALSE, results='asis'}
+# male left cingulum failed normality 0.02
+
+MD_male_cing_L_norm <- shapiro.test(m_MD$md_Cingulum_L) #normal
+
+MD_male_cing_R_norm <- shapiro.test(m_MD$md_Cingulum_R) #normal
+
+MD_male_fornix_L_norm <- shapiro.test(m_MD$md_Fornix_L) # not normal but very barely 
+
+MD_male_fornix_R_norm <- shapiro.test(m_MD$md_Fornix_R) #normal
+  
+MD_male_cing_norm_vals <-
+  cbind(MD_male_cing_L_norm[["p.value"]],
+        MD_male_cing_R_norm[["p.value"]],
+        MD_male_fornix_L_norm[["p.value"]],
+        MD_male_fornix_R_norm[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% `row.names<-`(c("Males"))
+
+```
+
+<span class="text-center" style="color: black; font-size:14px; font-family:Arial;">
+
+The normality of the MD values was assessed using the shapiro-wilks test of normality. MD values from males was normally distributed for **left cingulum** (p = `r MD_male_cing_norm_vals[1,1]`) but normally distributed in the **right cingulum** (p=`r MD_male_cing_norm_vals[1,2]`), **Left fornix** (p=`r MD_male_cing_norm_vals[1,3]`), and **Right Fornix** (p = `r MD_male_cing_norm_vals[1,4]`).
+
+<br>
+
+**Table 1.p values from normality tests using shapiro-wilks.** </span>
+
+```{r MD male table of normality , echo=FALSE, message=FALSE}
+knitr::kable(MD_male_cing_norm_vals)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "500px", height = "100px")
+```
+
+<br><br><br>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Descriptive stats** </span>
+<br>
+</center>
+
+```{r  MD Descriptitve stats for males }
+
+m_MD_cing_L_summary <- summary(m_MD$md_Cingulum_L)
+m_MD_cing_R_summary <- summary(m_MD$md_Cingulum_R)
+
+m_MD_fornix_R_summary <- summary(m_MD$md_Fornix_R) 
+m_MD_fornix_L_summary <- summary(m_MD$md_Fornix_L) 
+
+MD_male_summary <- rbind(m_MD_cing_L_summary, m_MD_cing_R_summary,m_MD_fornix_L_summary,m_MD_fornix_R_summary) %>% `row.names<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+```
+
+```{r MD male descriptive stats, echo=FALSE, message=FALSE}
+knitr::kable(MD_male_summary)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "200px")
+```
+
+<br><br><br><br><br><br>
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Women </span>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Distribution of data** </span>
+</center>
+
+<br>
+```{r  MD female Normality, echo=FALSE, message=FALSE}
+#female left cingulum  # normal 
+MD_female_cing_L_norm <- shapiro.test(f_MD$md_Cingulum_L)
+
+#female left cingulum  # normal 
+MD_female_cing_R_norm <- shapiro.test(f_MD$md_Cingulum_R)
+
+MD_female_fornix_L_norm <- shapiro.test(f_MD$md_Fornix_L)
+
+MD_female_fornix_R_norm <- shapiro.test(f_MD$md_Fornix_R)
+
+MD_female_norm_vals <-
+  cbind(MD_female_cing_L_norm[["p.value"]],
+        MD_female_cing_R_norm[["p.value"]],
+        MD_female_fornix_L_norm[["p.value"]],
+        MD_female_fornix_R_norm[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% `row.names<-`(c("Females"))
+```
+
+<span class="text-center" style="color: black; font-size:14px; font-family:Arial;">
+
+The normality of the MD values was assessed using the  shapiro-wilks test of normality. MD values from females was normally distributed  in the **left cingulum** (p = `r MD_female_norm_vals[1,1]`) and **right cingulum** (p=`r MD_female_norm_vals[1,2]`), **Left Fornix** (p= `r MD_female_norm_vals[1,3]`), **Right Fornix** (p= `r MD_female_norm_vals[1,4]`)
+
+<br>
+
+**Table 1.p values from normality tests using shapiro-wilks.** </span>
+
+```{r MD Female table of normality , echo=FALSE, message=FALSE}
+knitr::kable(MD_female_norm_vals)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "500px", height = "100px")
+```
+
+<br><br><br>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Descriptive stats** </span>
+<br>
+</center>
+
+```{r  MD Descriptitve stats for females }
+
+f_MD_cing_L_summary <- summary(f_MD$md_Cingulum_L)
+f_MD_cing_R_summary <- summary(f_MD$md_Cingulum_R)
+
+f_MD_fornix_R_summary <- summary(f_MD$md_Fornix_R) 
+f_MD_fornix_L_summary <- summary(f_MD$md_Fornix_L) 
+
+MD_female_summary <-
+  rbind(
+    f_MD_cing_L_summary,
+    f_MD_cing_R_summary,
+    f_MD_fornix_R_summary,
+    f_MD_fornix_L_summary
+  ) %>% `row.names<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+```
+
+```{r MD female descriptive stats, echo=FALSE, message=FALSE}
+knitr::kable(MD_female_summary)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "200px")
+```
+
+
+
+
+<br><br><br><br><br><br>
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  T Test </span>
+
+<center>
+<span style="color: black; font-size:18px; font-family:Arial; text-align:center"> **P values from t tests** </span>
+</center>
+
+```{r  MD ttest,echo=FALSE, message=FALSE, results='hide'}
+MD_Cing_L <- t.test(m_MD$md_Cingulum_L,f_MD$md_Cingulum_L)
+MD_Cing_R <- t.test(m_MD$md_Cingulum_R,f_MD$md_Cingulum_R)
+MD_fornix_L <- t.test(m_MD$md_Fornix_L,f_MD$md_Fornix_R) 
+MD_fornix_R <- t.test(m_MD$md_Fornix_R,f_MD$md_Fornix_R) 
+
+MD_pvalues <-
+  cbind(MD_Cing_L[["p.value"]],
+        MD_Cing_R[["p.value"]],
+        MD_fornix_L[["p.value"]],
+        MD_fornix_R[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+
+```
+
+```{r  MD T tests, echo=FALSE, message=FALSE}
+knitr::kable(MD_pvalues, row.names = FALSE)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "100px")
+```
+
+<br><br>
+<center>
+<span style="color: black; font-size:18px; font-family:Arial; text-align:center"> **Figures** </span>
+</center>
+<br>
+
+```{r MD Cingulum L, dev='png', fig.show='hide'}
+
+  MD_L_Cing <- MDdf %>%
+    ggplot(aes(x=sex, y= md_Cingulum_L, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " MD", title ="Left Cingulum" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(MD_L_Cing)
+```
+
+<center>
+![**Figure 1. MD Values for Left Cingulum**](`r knitr::fig_chunk('MD Cingulum L', 'png')`)
+</center>
+
+<br><br>
+
+
+```{r MD Cingulum R, dev='png', fig.show='hide'}
+
+  MD_R_Cing <- MDdf %>%
+    ggplot(aes(x=sex, y= md_Cingulum_R, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " MD", title ="Right Cingulum" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(MD_R_Cing)
+```
+
+<center>
+![**Figure 2. MD Values for Right Cingulum**](`r knitr::fig_chunk('MD Cingulum R', 'png')`)
+</center>
+
+<br><br>
+
+```{r MD Fornix L, dev='png', fig.show='hide'}
+
+  MD_L_Fornix <- MDdf %>%
+    ggplot(aes(x=sex, y= md_Fornix_L, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " MD", title ="Left Fornix" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(MD_L_Fornix)
+```
+
+<center>
+![**Figure 3. MD Values for Left Fornix **](`r knitr::fig_chunk('MD Fornix L', 'png')`)
+</center>
+
+<br><br>
+
+```{r MD Fornix R, dev='png', fig.show='hide'}
+
+  MD_R_Fornix <- MDdf %>%
+    ggplot(aes(x=sex, y= md_Fornix_R, group=sex)) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+      labs(x= "Sex", y= " MD", title ="Right Fornix" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16), 
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),  
+            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+print(MD_R_Fornix)
+```
+
+<center>
+![**Figure 4. MD Values for Right Fornix **](`r knitr::fig_chunk('MD Fornix R', 'png')`)
+</center>
+
+<br><br><br><br><br><br>
+
+# <span style="color: green;"> AD </span>{.tabset}
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Summary </span>
+
+<br><br><br><br><br><br>
+
+```{r,  AD Values for,echo=FALSE, message=FALSE, results='hide'}
+# Lets compare set up our MD data frame 
+ADdf <- master_tractometryDF %>% select(V1,ad_Cingulum_L,ad_Cingulum_R,ad_Fornix_L,ad_Fornix_R) %>% filter(V1 %in% as.character(subjects$V1)) %>% mutate(sex = subInfo$sex)
+
+m_AD <- ADdf %>% filter(sex=="male") 
+
+f_AD <- ADdf %>% filter(sex=="female") 
+```
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Men </span>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Distribution of data** </span>
+
+```{r, ad male normality  Normality, echo=FALSE, message=FALSE, results='asis'}
+
+AD_male_cing_L_norm <- shapiro.test(m_AD$ad_Cingulum_L) #normal
+
+AD_male_cing_R_norm <- shapiro.test(m_AD$ad_Cingulum_R) #normal
+
+AD_male_fornix_L_norm <- shapiro.test(m_AD$ad_Fornix_L) # not normal but very barely 
+
+AD_male_fornix_R_norm <- shapiro.test(m_AD$ad_Fornix_R) #normal
+  
+AD_male_cing_norm_vals <-
+  cbind(AD_male_cing_L_norm[["p.value"]],
+        AD_male_cing_R_norm[["p.value"]],
+        AD_male_fornix_L_norm[["p.value"]],
+        AD_male_fornix_R_norm[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% `row.names<-`(c("Males"))
+
+```
+
+<span style="color: black; font-size:14px; font-family:Arial;">
+
+The normality of the AD values was assessed using the shapiro-wilks test of normality. AD values from males was normally distributed for **left cingulum** (p = `r AD_male_cing_norm_vals[1,1]`), **right cingulum** (p=`r AD_male_cing_norm_vals[1,2]`), **Left fornix** (p=`r AD_male_cing_norm_vals[1,3]`), and **Right Fornix** (p = `r AD_male_cing_norm_vals[1,4]`).
+
+<br>
+
+**Table 1.p values from normality tests using shapiro-wilks.** </span>
+
+```{r AD male table of normality , echo=FALSE, message=FALSE}
+knitr::kable(AD_male_cing_norm_vals)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "500px", height = "100px")
+```
+
+<br><br><br>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Descriptive stats** </span>
+<br>
+</center>
+
+```{r  AD Descriptitve stats for males }
+
+m_AD_cing_L_summary <- summary(m_AD$ad_Cingulum_L)
+m_AD_cing_R_summary <- summary(m_AD$ad_Cingulum_R)
+
+m_AD_fornix_R_summary <- summary(m_AD$ad_Fornix_R) 
+m_AD_fornix_L_summary <- summary(m_AD$ad_Fornix_L) 
+
+AD_male_summary <- rbind(m_AD_cing_L_summary, m_AD_cing_R_summary,m_AD_fornix_L_summary,m_AD_fornix_R_summary) %>% `row.names<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+```
+
+```{r AD male descriptive stats, echo=FALSE, message=FALSE}
+knitr::kable(AD_male_summary)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "200px")
+```
+
+<br><br><br><br><br><br>
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Women </span>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Distribution of data** </span>
+
+```{r, ad female normality  Normality, echo=FALSE, message=FALSE, results='asis'}
+
+AD_female_cing_L_norm <- shapiro.test(f_AD$ad_Cingulum_L) #normal
+
+AD_female_cing_R_norm <- shapiro.test(f_AD$ad_Cingulum_R) #normal
+
+AD_female_fornix_L_norm <- shapiro.test(f_AD$ad_Fornix_L) # not normal but very barely 
+
+AD_female_fornix_R_norm <- shapiro.test(f_AD$ad_Fornix_R) #normal
+  
+AD_female_cing_norm_vals <-
+  cbind(AD_female_cing_L_norm[["p.value"]],
+        AD_female_cing_R_norm[["p.value"]],
+        AD_female_fornix_L_norm[["p.value"]],
+        AD_female_fornix_R_norm[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% `row.names<-`(c("Males"))
+
+```
+
+<span style="color: black; font-size:14px; font-family:Arial;">
+
+The normality of the AD values was assessed using the shapiro-wilks test of normality. AD values from females was normally distributed for **left cingulum** (p = `r AD_female_cing_norm_vals[1,1]`), **right cingulum** (p=`r AD_female_cing_norm_vals[1,2]`), **Left fornix** (p=`r AD_female_cing_norm_vals[1,3]`), and **Right Fornix** (p = `r AD_female_cing_norm_vals[1,4]`).
+
+<br>
+
+**Table 1.p values from normality tests using shapiro-wilks.** </span>
+
+```{r AD female table of normality , echo=FALSE, message=FALSE}
+knitr::kable(AD_female_cing_norm_vals)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "500px", height = "100px")
+```
+
+<br><br><br>
+
+<center>
+<span class="text-center" style="color: black; font-size:18px; font-family:Arial;"> **Descriptive stats** </span>
+<br>
+</center>
+
+```{r  AD Descriptitve stats for females }
+
+f_AD_cing_L_summary <- summary(f_AD$ad_Cingulum_L)
+f_AD_cing_R_summary <- summary(f_AD$ad_Cingulum_R)
+
+f_AD_fornix_R_summary <- summary(f_AD$ad_Fornix_R) 
+f_AD_fornix_L_summary <- summary(f_AD$ad_Fornix_L) 
+
+AD_female_summary <- rbind(f_AD_cing_L_summary, f_AD_cing_R_summary,f_AD_fornix_L_summary,f_AD_fornix_R_summary) %>% `row.names<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+```
+
+```{r AD female descriptive stats, echo=FALSE, message=FALSE}
+knitr::kable(AD_female_summary)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "200px")
+```
+
+<br><br><br><br><br><br>
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  T Test </span>
+
+<center>
+<span style="color: black; font-size:18px; font-family:Arial; text-align:center"> **P values from t tests** </span>
+</center>
+
+```{r  AD ttest,echo=FALSE, message=FALSE, results='hide'}
+
+AD_Cing_L <- t.test(m_AD$ad_Cingulum_L,f_AD$ad_Cingulum_L)
+AD_Cing_R <- t.test(m_AD$ad_Cingulum_R,f_AD$ad_Cingulum_R)
+AD_fornix_L <- t.test(m_AD$ad_Fornix_L,f_AD$ad_Fornix_R) 
+AD_fornix_R <- t.test(m_AD$ad_Fornix_R,f_AD$ad_Fornix_R) 
+
+AD_pvalues <-
+  cbind(AD_Cing_L[["p.value"]],
+        AD_Cing_R[["p.value"]],
+        AD_fornix_L[["p.value"]],
+        AD_fornix_R[["p.value"]]) %>% `colnames<-`(c("Left cingulum", "Right cingulum", "Left Fornix", "Right Fornix")) %>% as.data.frame()
+
+```
+
+```{r  AD T tests, echo=FALSE, message=FALSE}
+knitr::kable(AD_pvalues, row.names = FALSE)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "575px", height = "100px")
+```
+
+<br><br><br><br><br><br>
+
+# <span style="color: green;"> RD </span>{.tabset}
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Summary </span>
+
+```{r,  RD Values for,echo=FALSE, message=FALSE, results='hide'}
+# Lets compare set up our MD data frame 
+RDdf <- master_tractometryDF %>% select(V1,rd_Cingulum_L,rd_Cingulum_R,rd_Fornix_L,rd_Fornix_R) %>% filter(V1 %in% as.character(subjects$V1)) %>% mutate(sex = subInfo$sex)
+
+m_RD <- RDdf %>% filter(sex=="male") 
+
+f_RD <- RDdf %>% filter(sex=="female") 
+```
+
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Men </span>
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  Women </span>
+## <span style="color: darkblue; font-size:25px; font-family:Arial;">  T Test </span>
 
