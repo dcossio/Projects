@@ -1,7 +1,7 @@
 ---
 title: "SNAG_DSI Summary"
 author: "Daniela Cossio"
-date: "3/21/2023"
+date: "04/10/2023"
 output:
    html_document:
     toc: true
@@ -1476,8 +1476,8 @@ We would expect that lower QA values would correspond to higher PE scores. highe
   - AD displayed positive
   - RD displayed pos and negative correlations but mostly positive
   
+<br><br><br><br><br><br><br>
 
-- Men
 
 ### QA {.tabset}
 ```{r QA ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
@@ -2546,9 +2546,51 @@ knitr::kable(RD_alltrialsPE_peripost_neg, row.names=F) %>%
 <br><br><br><br><br><br>
 
 
+
 ## <span style="color: darkorange;"> Maze Path Efficiency (correct trials only)  </span>  {.tabset .tabset-dropdown}
 
 ### Summary 
+
+ALl subs  
+- QA was negatively correlated with PE in corpuss callosum   
+- MD was negatively correlated with PE in fornix  
+- AD was not significant  
+- RD was negatively correlated with PE  in fornix   
+
+men    
+- QA was had a majority of negative corrleations   
+- MD was positively and negatively  correlated with PE  
+- AD was positively correlated with PE   
+- RD was positively and negatively  correlated with PE  
+
+women
+- QA was negatively correlated with pe in the cingulum  
+- RD, AD, and MD were not significant  
+
+Pre  
+- QA was negatively correlated with pe in the cingulum  
+- MD was positively correlated with pe   
+- AD was negatively correlated   
+- RD had neg and positive cors  
+
+Peri  
+- QA was negatively correlated with pe in the cingulum  
+- MD was positively correlated with pe   
+- AD was positively correlated with pe   
+- RD was positively correlated with pe   
+
+Post  
+- QA was positively correlated with pe   
+- MD was negatively correlated with pe   
+- AD was negatively correlated with pe   
+- RD was negatively correlated with pe   
+
+Peri and Post  
+- QA was positively and negatively correlated with pe   
+- MD was positively correlated with pe   
+- AD was positively correlated with pe   
+- RD was negatively and positively correlated with pe   
+
 ### QA {.tabset}
 
 ```{r QA Correct trials only path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
@@ -2704,7 +2746,6 @@ QA_correcttrialsPE_peripost_neg <-
                 as.data.frame() 
 
 ```
-#### Summary 
 
 #### All Subjects
 <span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000	) </span> 
@@ -2874,6 +2915,7 @@ knitr::kable(QA_correcttrialsPE_peri_neg, row.names=F)%>%
 <!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with path effieciency of correct trials only]() -->
 
 <br><br><br><br><br><br>
+
 #### Post
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.126372) </span> 
 ```{r, echo=FALSE}
