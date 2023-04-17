@@ -484,90 +484,106 @@ No Significant Tracts
 
 #### Box plots
 ```{r Fixing up variables for displaying sex differences QA box plots}
-# # 
-# QA_acc_male_neg_cols <-  c("Subjects", as.character(QA_acc_male_neg[,1]))
-# 
-# 
-# # Lets do just male negative since most tracts are neg
-# #reading in my csv with the stats and adding in the subject info
-# QA_acc_male_neg_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE)%>%
-#   filter(str_detect(V1, c("mean_qa"))) %>%
-#   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-#   `colnames<-`(QA_acc_male_neg_cols) %>%
-#   mutate(sex = Acc_sub_info$sex) %>%
-#   mutate(age = Acc_sub_info$age_scan_years) %>%
-#   mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="male")
-# 
-# # Reorder for my sanity check
-# QA_acc_male_neg_values <- QA_acc_male_neg_values[,c(1,12:14,2:11)]
-# QA_acc_male_neg_gathercols <- colnames(QA_acc_male_neg_values[5:14])
-# 
-# #for some reason things are being read as a a character and it needs to be a numerical value
-# QA_acc_male_neg_values[5:14] <- apply(QA_acc_male_neg_values[5:14],2, as.numeric)
-# 
-# ## GAther it long for large compiled figure
-# QA_acc_male_neg_values_long <- gather(QA_acc_male_neg_values, ROI, QA ,QA_acc_male_neg_gathercols, factor_key = TRUE) %>% select(!(Subjects))
-# 
-# 
+#
+QA_acc_male_neg_cols <-  c("Subjects", as.character(QA_acc_male_neg[,1]))
+
+
+# Lets do just male negative since most tracts are neg
+#reading in my csv with the stats and adding in the subject info
+QA_acc_male_neg_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE)%>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(QA_acc_male_neg_cols) %>%
+  mutate(sex = Acc_sub_info$sex) %>%
+  mutate(age = Acc_sub_info$age_scan_years) %>%
+  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="male")
+
+# Reorder for my sanity check
+QA_acc_male_neg_values <- QA_acc_male_neg_values[,c(1,12:14,2:11)]
+QA_acc_male_neg_gathercols <- colnames(QA_acc_male_neg_values[5:14])
+
+#for some reason things are being read as a a character and it needs to be a numerical value
+QA_acc_male_neg_values[5:14] <- apply(QA_acc_male_neg_values[5:14],2, as.numeric)
+
+
 # # Lets do female positive
-# 
-# QA_acc_female_pos_cols <- c("Subjects", as.character(QA_acc_female_pos[,1]))
-# 
-# 
-# # Lets do just male negative since most tracts are neg
-# #reading in my csv with the stats and adding in the subject info
-# QA_acc_female_pos_values<-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_neg.csv'), header=FALSE) %>%
-#   filter(str_detect(V1, c("mean_qa"))) %>%
-#   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-#   `colnames<-`(QA_acc_female_pos_cols) %>%
-#   mutate(sex = Acc_sub_info$sex) %>%
-#   mutate(age = Acc_sub_info$age_scan_years) %>%
-#   mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="female")
-# 
-# # Reorder for my sanity check
-# QA_acc_female_pos_values <- QA_acc_female_pos_values[,c(1,19:21,2:18)]
-# QA_acc_female_pos_gathercols <- colnames(QA_acc_male_neg_cols[5:21])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
-# QA_acc_female_pos_values[5:21] <- apply(QA_acc_female_pos_values[5:21],2, as.numeric)
-# 
-# ## GAther it long for large compiled figure
-# QA_acc_female_pos_values_long <- gather(QA_acc_female_pos_values, ROI, QA ,QA_acc_female_pos_gathercols, factor_key = TRUE) %>% select(!(Subjects))
+QA_acc_female_pos_cols <- c("Subjects", as.character(QA_acc_female_pos[,1]))
+QA_acc_female_pos_values<-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_pos.csv'), header=FALSE) %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(QA_acc_female_pos_cols) %>%
+  mutate(sex = Acc_sub_info$sex) %>%
+  mutate(age = Acc_sub_info$age_scan_years) %>%
+  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="female")
+
+# Reorder for my sanity check
+QA_acc_female_pos_values <- QA_acc_female_pos_values[,c(1,19:21,2:18)]
+QA_acc_female_pos_gathercols <- colnames(QA_acc_female_pos_values[5:21])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+QA_acc_female_pos_values[5:21] <- apply(QA_acc_female_pos_values[5:21],2, as.numeric)
+
+# # Lets do female negative
+
+QA_acc_female_neg_cols <- c("Subjects", as.character(QA_acc_female_neg[,1]))
+QA_acc_female_neg_values<-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_neg.csv'), header=FALSE) %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+  `colnames<-`(QA_acc_female_neg_cols) %>%
+  mutate(sex = Acc_sub_info$sex) %>%
+  mutate(age = Acc_sub_info$age_scan_years) %>%
+  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="female")
+
+QA_acc_female_neg_values <- QA_acc_female_neg_values[,c(1,11:13,2:10)]
+QA_acc_female_neg_gathercols <- colnames(QA_acc_female_neg_values[5:13])
+
+# for some reason things are being read as a a character and it needs to be a numerical value
+QA_acc_female_neg_values[5:13] <- apply(QA_acc_female_neg_values[5:13],2, as.numeric)
+
+
+
+# Lets  get the difference between female pos and female neg
+qa_fem_diff <- setdiff(QA_acc_female_neg_gathercols , QA_acc_female_pos_gathercols)
+
+#now just female neg vs male neg
+qa_sex_diff <- setdiff(QA_acc_male_neg_gathercols,QA_acc_female_neg_gathercols) %>% cbind(. ,setdiff(QA_acc_female_neg_gathercols,QA_acc_male_neg_gathercols))
 
 ```
 
 ```{r actaully grabbing the figure QA box plots}
 
-# # I will be commenting out the loop since I just need one fig
-# 
-# figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/"
-# 
-# QA_acc_df <- QA_acc_female_pos_values %>% select("Subjects","sex", "Corpus_Callosum_Tapetum")
-# temp_QA_acc_df <- QA_acc_male_neg_values %>% select("Subjects","sex", "Corpus_Callosum_Tapetum")
-# QA_acc_df <- rbind(QA_acc_df, temp_QA_acc_df)
-# 
-# #for (ROI in gathercols) {
-#  # print(ROI)
-#   y <- QA_acc_df %>%
-#     ggplot( aes(x=sex, y= Corpus_Callosum_Tapetum, group=sex)) +
-#       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
-#       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-#        stat_boxplot(geom = "errorbar",
-#                width = 0.15) + 
-#       labs(x= "Sex", y= " QA", title ="Corpus Callosum Tapetum" ) +
-#       theme(axis.title.x = element_text(vjust=- 4, size = 16),
-#             axis.title.y = element_text(vjust=8, size = 16), 
-#             axis.text.x = element_text(size = 12),
-#             axis.text.y = element_text(size = 12),
-#             panel.background =element_blank(),
-#             axis.line = element_line(colour = "black"),  
-#             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
-#             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-#   
-#    png(file = paste0(figpath,"sex_diff_QA.png"))  #ROI,".png"))
-#    print(y)
-#    dev.off()
-# #}
+# I will be commenting out the loop since I just need one fig
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/"
+
+QA_df <- QA_acc_male_neg_values[, !names(QA_acc_male_neg_values) %in% qa_sex_diff]
+QA_df <- rbind(QA_df,QA_acc_female_neg_values[, !names(QA_acc_female_neg_values) %in% qa_sex_diff])
+
+
+
+for (ROI in colnames(QA_df[5:7])) {
+  print(ROI)
+  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#90A0C9")) +
+      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) +
+      labs(x= "Sex", y= " QA", title =paste0(ROI) ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+
+    png(file = paste0(figpath,ROI,"_sexdiff_QA.png"))  #,".png"))
+    print(y)
+    dev.off()
+}
 
 
 ```
@@ -877,22 +893,23 @@ sexdif_fornix_L_MD <- wilcox.test(MD_acc_male_pos_values$Fornix_L, MD_acc_female
 sexdif_fornix_R_MD <- wilcox.test(MD_acc_male_pos_values$Fornix_R, MD_acc_female_neg_values$Fornix_R) %>% broom::tidy() # not significant
 
  
+
+MD_sex_diff <- setdiff(MD_acc_female_neg_gathercols,MD_acc_male_pos_gathercols) %>% cbind(. ,setdiff(MD_acc_male_pos_gathercols,MD_acc_female_neg_gathercols))
 ```
 
 ```{r actaully grabbing the figure}
 
 
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/"
 
-MD_acc_df <- MD_acc_female_neg_values %>% select("Subjects","sex", "Fornix_L", "Fornix_R")
-temp_MD_acc_df <- MD_acc_male_pos_values %>% select("Subjects","sex", "Fornix_L", "Fornix_R")
-MD_acc_df <- rbind(MD_acc_df, temp_MD_acc_df)
+MD_acc_df <- MD_acc_male_pos_values[, !names(MD_acc_male_pos_values) %in% MD_sex_diff]
+MD_acc_df <- rbind(MD_acc_df,MD_acc_female_neg_values[, !names(MD_acc_female_neg_values) %in% MD_sex_diff])
 
-MD_gathercols <- colnames(MD_acc_df[3:4])
+
+MD_gathercols <- colnames(MD_acc_df[6:7])
 for (ROI in MD_gathercols) {
  # print(ROI)
-  y <- MD_acc_df %>%
-    ggplot( aes(x=sex, y=MD_acc_df[[ROI]], group=sex)) +
+  y <-ggplot(MD_acc_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
     geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
     geom_jitter(color="black",alpha=0.9,width = 0.25) +
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
@@ -908,7 +925,7 @@ for (ROI in MD_gathercols) {
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
 
-   png(file = paste0(figpath,ROI,"MD.png"))
+   png(file = paste0(figpath,ROI,"_MD.png"))
    print(y)
    dev.off()
 }

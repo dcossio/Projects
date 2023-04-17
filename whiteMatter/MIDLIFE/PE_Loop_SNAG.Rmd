@@ -53,6 +53,16 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
 working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv")
+
+for (row in 1:nrow(loop_subInfo)) {
+  if (loop_subInfo[row,2] == 0) {
+  loop_subInfo[row,2] <- "female"
+} else {
+     loop_subInfo[row,2] <- "male"
+}
+}
 ```
 
 ```{css, echo=FALSE}
@@ -323,6 +333,8 @@ knitr::kable(QA_peRad3_peripost_neg, row.names=F)%>%
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error rad3 in peri and post-menopausal women](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/peripost/loop_pe_rad3_m.t2.length25.pos_neg.jpg)
 
 <br><br><br><br>
+
+
 
 
 ### MD {.tabset}
@@ -1395,6 +1407,142 @@ knitr::kable(QA_peAvg_peripost_neg, row.names=F)%>%
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/peri_post/loop_pe_avg_m.t2.length25.pos_neg.jpg)
 <br><br><br><br><br><br>
 
+#### Box plots
+```{r QA positive cors men vs women,echo=FALSE, results='hide',message=FALSE}
+# Men positive and women negative LEts do fornix  ####
+
+ QA_peAvg_male_pos_cols <-  c("Subjects", as.character(QA_peAvg_male_pos[,1]))
+ QA_peAvg_male_pos_values <-read.delim(
+    paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+   `colnames<-`(QA_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male")
+# 
+ # Reorder for my sanity check 
+ QA_peAvg_male_pos_values <- QA_peAvg_male_pos_values[,c(1,12:14,2:11)]
+ QA_peAvg_male_pos_gathercols <- colnames(QA_peAvg_male_pos_values[5:11])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ QA_peAvg_male_pos_values[5:11] <- apply(QA_peAvg_male_pos_values[5:11],2, as.numeric) 
+ 
+ 
+ ## FEmale Positive #####
+  QA_peAvg_female_pos_cols <-  c("Subjects", as.character(QA_peAvg_female_pos[,1]))
+ QA_peAvg_female_pos_values <- read.delim(
+    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+   `colnames<-`(QA_peAvg_female_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female")
+# 
+ # Reorder for my sanity check 
+ QA_peAvg_female_pos_values <- QA_peAvg_female_pos_values[,c(1,4:6,2:3)]
+ QA_peAvg_female_pos_gathercols <- colnames(QA_peAvg_female_pos_values[5:6])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ QA_peAvg_female_pos_values[5:6] <- apply(QA_peAvg_female_pos_values[5:6],2, as.numeric) 
+ 
+ 
+ qa_sex_diff <- setdiff(QA_peAvg_male_pos_gathercols,QA_peAvg_female_pos_gathercols) %>% cbind(. ,setdiff(QA_peAvg_female_pos_gathercols,QA_peAvg_male_pos_gathercols))
+ 
+ 
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/"
+
+QA_df <- QA_peAvg_male_pos_values[, names(QA_peAvg_male_pos_values) %in% names(QA_peAvg_female_pos_values)]
+QA_df <- rbind(QA_df,QA_peAvg_female_pos_values[, !names(QA_peAvg_female_pos_values) %in% qa_sex_diff])
+
+
+
+for (ROI in colnames(QA_df[5:6])) {
+  print(ROI)
+  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) +
+      labs(x= "Sex", y= " QA", title =paste0(ROI) ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+
+    png(file = paste0(figpath,ROI,"_pos_QA.png"))  #,".png"))
+    print(y)
+    dev.off()
+}
+
+```
+```{r QA negative cors men vs women,echo=FALSE, results='hide',message=FALSE}
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/"
+
+ QA_peAvg_male_neg_cols <-  c("Subjects", as.character(QA_peAvg_male_neg[,1]))
+ QA_peAvg_male_neg_values <-read.delim(
+    paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+   `colnames<-`(QA_peAvg_male_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male")
+# 
+ # Reorder for my sanity check 
+ QA_peAvg_male_neg_values <- QA_peAvg_male_neg_values[,c(1,7:9,2:6)]
+ QA_peAvg_male_neg_gathercols <- colnames(QA_peAvg_male_neg_values[5:9])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ QA_peAvg_male_neg_values[5:9] <- apply(QA_peAvg_male_neg_values[5:9],2, as.numeric) 
+ 
+ 
+ ## FEmale Positive #####
+ QA_peAvg_female_neg_cols <-  c("Subjects", as.character(QA_peAvg_female_neg[,1]))
+ QA_peAvg_female_neg_values <-read.delim(
+    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+   `colnames<-`(QA_peAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female")
+# 
+ # Reorder for my sanity check 
+ QA_peAvg_female_neg_values <- QA_peAvg_female_neg_values[,c(1,10:12,2:9)]
+ QA_peAvg_female_neg_gathercols <- colnames(QA_peAvg_female_neg_values[5:12])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ QA_peAvg_female_neg_values[5:12] <- apply(QA_peAvg_female_neg_values[5:12],2, as.numeric) 
+
+QA_neg_df <- QA_peAvg_male_neg_values[, names(QA_peAvg_male_neg_values) %in% names(QA_peAvg_female_neg_values)] %>% rbind(QA_peAvg_female_neg_values[, names(QA_peAvg_female_neg_values) %in% names(QA_peAvg_male_neg_values)])
+
+
+  qa_neg <- ggplot(QA_neg_df, aes(x=sex, y=.data$Corpus_Callosum_Tapetum, group=sex)) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) +
+      labs(x= "Sex", y= " QA", title ="Corpus Callosum Tapetum" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+
+    png(file = paste0(figpath,"Corpus_Callosum_Tapetum_neg_QA.png"))  #,".png"))
+    print(qa_neg)
+    dev.off()
+
+
+```
+
+
 ### MD {.tabset}
 
 ```{r MD PE Average variables , echo=FALSE, results='hide',message=FALSE}
@@ -1671,6 +1819,71 @@ knitr::kable(MD_peAvg_peripost_neg, row.names=F)%>%
 ![Glass Brain displaying tracts that had MD positively and negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/peri_post/loop_pe_avg_m.t2.length25.pos_neg.jpg)
 
 <br><br><br><br><br><br>
+
+#### Box plots
+
+```{r MD  men vs women,echo=FALSE, results='hide',message=FALSE}
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/"
+
+ MD_peAvg_male_pos_cols <-  c("Subjects", as.character(MD_peAvg_male_pos[,1]))
+ MD_peAvg_male_pos_values <- read.delim(
+    paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_md"))) %>%
+   `colnames<-`(MD_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male")
+# 
+ # Reorder for my sanity check 
+ MD_peAvg_male_pos_values <- MD_peAvg_male_pos_values[,c(1,16:18,2:15)]
+ MD_peAvg_male_pos_gathercols <- colnames(MD_peAvg_male_pos_values[5:18])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ MD_peAvg_male_pos_values[5:18] <- apply(MD_peAvg_male_pos_values[5:18],2, as.numeric) 
+ 
+ 
+ ## FEmale Positive #####
+
+ MD_peAvg_female_neg_cols <-  c("Subjects", as.character(MD_peAvg_female_neg[,1]))
+  MD_peAvg_female_neg_values <-read.delim(
+    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_md"))) %>%
+   `colnames<-`(MD_peAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female")
+# 
+ # Reorder for my sanity check 
+ MD_peAvg_female_neg_values <- MD_peAvg_female_neg_values[,c(1,16:18,2:15)]
+ MD_peAvg_female_neg_gathercols <- colnames(MD_peAvg_female_neg_values[5:18])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ MD_peAvg_female_neg_values[5:18] <- apply(MD_peAvg_female_neg_values[5:18],2, as.numeric) 
+# 
+MD_df <- MD_peAvg_male_pos_values[, names(MD_peAvg_male_pos_values) %in% names(MD_peAvg_female_neg_values)] %>% rbind(MD_peAvg_female_neg_values[, names(MD_peAvg_female_neg_values) %in% names(MD_peAvg_male_pos_values)])
+
+for (ROI in colnames(MD_df[5:14])) {
+  print(ROI)
+  md_neg <- ggplot(MD_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) +
+      labs(x= "Sex", y= " MD", title =paste0(ROI) ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+
+    png(file = paste0(figpath,ROI,"_MD.png"))
+    print(md_neg)
+    dev.off()
+
+}
+```
 
 ### AD {.tabset}
 #### Summary 
