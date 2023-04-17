@@ -264,7 +264,7 @@ figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.e
 for (ROI in QA_est_pos_gathercols) {
   print(ROI)
   y <- Est_QA_all_pos_values %>%
-    ggplot( aes(x=trimester, y=Est_QA_all_pos_values[[ROI]], group=trimester)) +
+    ggplot( aes(x=trimester, y=Est_QA_all_pos_values[[ROI]], group=trimester)) + geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
@@ -276,10 +276,10 @@ for (ROI in QA_est_pos_gathercols) {
             axis.line = element_line(colour = "black"),  
             plot.margin = margin(1, 2, 1, 1.5, "cm"), 
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-  
-   png(file = paste0(figpath,ROI,"_pos.png"))
-   print(y)
-   dev.off()
+   # 
+   # png(file = paste0(figpath,ROI,"_pos.png"))
+   # print(y)
+   # dev.off()
 }
 
 # NEgative ROIS
