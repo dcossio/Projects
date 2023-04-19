@@ -53,6 +53,16 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
 working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv")
+
+for (row in 1:nrow(loop_subInfo)) {
+  if (loop_subInfo[row,2] == 0) {
+  loop_subInfo[row,2] <- "female"
+} else {
+     loop_subInfo[row,2] <- "male"
+}
+}
 ```
 
 ```{css, echo=FALSE}
@@ -1161,6 +1171,78 @@ knitr::kable(QA_deAvg_peripost_neg, row.names=F)%>%
 
 <br><br><br><br><br><br><br><br> 
 
+#### box plots
+
+```{r negative correlations, echo=FALSE, results='hide',message=FALSE }
+# Men neg and women negative LEts do fornix  ####
+
+ QA_deAvg_male_neg_cols <-  c("Subjects", as.character(QA_deAvg_male_neg[,1]))
+ QA_deAvg_male_neg_values <-read.delim(paste0(working_dir,'/loop/average/DE/QA/male/QA_loopAvgDE_male_neg.csv'), header=FALSE, sep="\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+   `colnames<-`(QA_deAvg_male_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex=="male")
+# 
+ # Reorder for my sanity check 
+ QA_deAvg_male_neg_values <- QA_deAvg_male_neg_values[,c(1,22:24,2:21)]
+ QA_deAvg_male_neg_gathercols <- colnames(QA_deAvg_male_neg_values[5:21])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ QA_deAvg_male_neg_values[5:21] <- apply(QA_deAvg_male_neg_values[5:21],2, as.numeric) 
+
+ 
+ #  women negative  ####
+ QA_deAvg_female_neg_cols <-  c("Subjects", as.character(QA_deAvg_female_neg[,1]))
+ QA_deAvg_female_neg_values <-read.delim(paste0(working_dir,'/loop/average/DE/QA/female/QA_loopAvgDE_fem_neg.csv'), header=FALSE, sep="\t") %>% 
+      remove_empty("cols") %>%
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
+   `colnames<-`(QA_deAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex=="female")
+# 
+ # Reorder for my sanity check 
+ QA_deAvg_female_neg_values <- QA_deAvg_female_neg_values[,c(1,16:18,2:15)]
+ QA_deAvg_female_neg_gathercols <- colnames(QA_deAvg_female_neg_values[5:18])
+# 
+# # for some reason things are being read as a a character and it needs to be a numerical value
+ QA_deAvg_female_neg_values[5:18] <- apply(QA_deAvg_female_neg_values[5:18],2, as.numeric) 
+ 
+ 
+### Actual fig #####
+ 
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/"
+
+QA_df <- QA_deAvg_male_neg_values[, names(QA_deAvg_male_neg_values) %in% names(QA_deAvg_female_neg_values)] 
+QA_df <- rbind(QA_df,QA_deAvg_female_neg_values[, names(QA_deAvg_female_neg_values) %in% names(QA_deAvg_male_neg_values)])
+
+
+for (ROI in colnames(QA_df[5:14])) {
+  print(ROI)
+  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) +
+      labs(x= "Sex", y= " QA", title =paste0(ROI) ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+
+    png(file = paste0(figpath,ROI,"_neg_QA.png"))  #,".png"))
+    print(y)
+    dev.off()
+}
+
+```
+
+
 ### MD {.tabset}
 ```{r MD Loop Degree degrees traveled variables , echo=FALSE, results='hide',message=FALSE}
 ### ALL SUBS ####
@@ -1400,6 +1482,10 @@ not significant
 <!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
 
 <br><br><br><br><br><br><br><br> 
+
+
+
+#### box plots
 
 
 

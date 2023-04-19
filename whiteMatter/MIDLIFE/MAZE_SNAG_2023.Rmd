@@ -564,7 +564,7 @@ QA_df <- rbind(QA_df,QA_acc_female_neg_values[, !names(QA_acc_female_neg_values)
 for (ROI in colnames(QA_df[5:7])) {
   print(ROI)
   y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
-      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#90A0C9")) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
       geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
        stat_boxplot(geom = "errorbar",
@@ -910,7 +910,7 @@ MD_gathercols <- colnames(MD_acc_df[6:7])
 for (ROI in MD_gathercols) {
  # print(ROI)
   y <-ggplot(MD_acc_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
-    geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#90A0C9")) +
+    geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
     geom_jitter(color="black",alpha=0.9,width = 0.25) +
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
        stat_boxplot(geom = "errorbar",
