@@ -9,6 +9,8 @@ output:
      toc_depth: 6
      theme: flatly
      code_folding: hide
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r adding libraries, echo=FALSE, message=FALSE, results='hide'}
@@ -30,21 +32,27 @@ library(kableExtra)
 # library(plotly)
 #library(factoextra)
 #library(lsr)
-# library(car)
+library(car)
 library(ggpubr)
 #library(entropy)
 #library(ds4psy)
 # library(pROC)
 #library(devtools)
 #library(BRRR)
-#library(stats)
+library(stats)
 #library(afex)
 library(knitr)
 library(janitor)
 # library(car)
 # library(ggiraph)
-# library(ggiraphExtra)
+library(ggiraphExtra)
 # library(moonBook)
+library(nationalparkcolors)
+
+
+npc_everglades <- park_palette("Everglades")
+npc_channel <- park_palette("ChannelIslands")
+npc_saguaro <- park_palette("Saguaro")
 
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
@@ -1542,6 +1550,10 @@ QA_neg_df <- QA_peAvg_male_neg_values[, names(QA_peAvg_male_neg_values) %in% nam
 
 ```
 
+```{r QA Correlations positive male and }
+
+```
+
 
 ### MD {.tabset}
 
@@ -1883,6 +1895,47 @@ for (ROI in colnames(MD_df[5:14])) {
     dev.off()
 
 }
+```
+
+```{r MD men vs correlations}
+
+MD_df<- MD_df %>% mutate(sex_bin = MD_df$sex)
+
+for (row in 1:nrow(MD_df)) {
+  if (MD_df[row,c("sex_bin")] == "female") {
+  MD_df[row,c("sex_bin")] <- 0
+} else {
+     MD_df[row,c("sex_bin")] <- 1
+}
+}
+
+model <- lm(loop_pe_avg_m ~ Fornix_L + sex, data = MD_df)
+
+summary(model)
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/"
+
+pdf(file = paste0(figpath,"corr_MD_FornixR.pdf"))  #ROI,".png"))
+  ggplot(data = MD_df, aes(x =Fornix_R, y = loop_pe_avg_m, color=factor(sex))) +
+     geom_point()+
+    stat_smooth(method="lm",se=FALSE)+
+    scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
+   labs(
+        x = "Fornix R",
+        y = "Position Error") +
+  theme(legend.position = "right",  
+         axis.title.x = element_text(vjust= -2, size = 14),
+         axis.title.y = element_text(vjust= 3, size = 14),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black")) +
+   xlim(min(MD_df$Fornix_R),max(MD_df$Fornix_R)) +
+     annotate("text", label = "FDR= 0.000443", x = 1.8 , y = 3, color="#E45A5A", size=4) +
+     annotate("text", label = "FDR= 0.058621", x = 1.8 , y = 2.8, color="#80792B", size=4) 
+ dev.off() 
+
+
 ```
 
 ### AD {.tabset}

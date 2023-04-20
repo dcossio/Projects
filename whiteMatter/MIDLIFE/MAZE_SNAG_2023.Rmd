@@ -8,6 +8,8 @@ output:
     toc_float: true
     toc_depth: 6
     theme: flatly
+editor_options: 
+  chunk_output_type: inline
 ---
 <!-- code_folding: "hide" -->
 
@@ -47,7 +49,7 @@ library(car)
 library(ggiraph)
 library(ggiraphExtra)
 library(moonBook)
-
+library(nationalparkcolors)
 
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
@@ -934,64 +936,36 @@ for (ROI in MD_gathercols) {
 
 ```{r Correlations}
 
-# ##### NEED TO CLEAN AND REDO THIS REGRESSION  
-# #MD_acc_corr_DF <- MD_acc_female_neg_values  %>% select("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R") %>% rbind(MD_acc_male_pos_values[,c("Subjects","sex","maze_accuracy_pct", "Fornix_L", "Fornix_R")]) %>%  mutate(whole_fornix = rs)
-# 
-#  MD_acc_corr_DF <- read.delim(paste0(working_dir,'maze/Accuracy/MD/allSubs/MD_all_pos_merged.csv'), header=FALSE, sep="\t") %>%
-#   remove_empty("cols") %>% 
-#   filter(str_detect(V1, c("mean_md"))) %>%
-#   `colnames<-`(c("subjects", "all_positive_tracts")) %>%
-#   cbind(Acc_sub_info[,c("sex", "age_scan_years", "repo_status","maze_accuracy_pct")]) 
-# 
-# MD_acc_corr_DF$all_positive_tracts <- as.numeric(MD_acc_corr_DF$all_positive_tracts)
-# MD_acc_corr_DF$age_scan_years <- as.numeric(MD_acc_corr_DF$age_scan_years)
-# 
-#   
-#   model <- lm(maze_accuracy_pct ~ all_positive_tracts + sex + age_scan_years, data = MD_acc_corr_DF)
-# 
-#   equation1=function(x){coef(model)[2]*x+coef(model)[1]}
-# equation2=function(x){coef(model)[2]*x+coef(model)[1]+coef(model)[3]}
-#   
-# 
-# ggplot(MD_acc_corr_DF,aes(y=maze_accuracy_pct,x=all_positive_tracts,color=sex))+geom_point()+ geom_line()
-#   
-#         stat_function(fun=equation1,geom="line")+
-#         stat_function(fun=equation2,geom="line",color=scales::hue_pal()(2)[2])
-# 
-# 
-#   avPlots(model)
-#   
-#   
-#   ggPredict(model)
-#   
-# 
-# 
-# png(file = paste0(figpath,"corr_MD_FornixL.png"))  #ROI,".png"))
-# 
-#   ggplot(data = MD_acc_corr_DF, aes(x = all_positive_tracts, y = maze_accuracy_pct)) +
-#   geom_point() + #aes(color = factor(sex))) +
-#   scale_color_manual(values = c("#CF92BF", "#90A0C9"),name="Gender")+
-#   geom_smooth(method = "lm", aes(color = factor(sex))) +
-#   labs(title = "Accuracy correlated with MD \n in the fornix in men and women",
-#        x = "Fornix R",
-#        y = "Proportion Correct")+
-#   theme(legend.position = "right", 
-#         axis.title.x = element_text(vjust=- 4, size = 16),
-#         axis.title.y = element_text(vjust=8, size = 16), 
-#         axis.text.x = element_text(size = 12),
-#         axis.text.y = element_text(size = 12),
-#         panel.background =element_blank(),
-#         axis.line = element_line(colour = "black"),  
-#         #plot.margin = margin(0.5, 1, ,1, "cm"),
-#         legend.key.size = unit(1, 'cm'),
-#         aspect.ratio = 20 / 30,
-#         plot.title = element_text(hjust = 0.5, vjust = 5, size = 16, face="bold"))  +
-#    stat_cor( aes(color= sex),method = "spearman")  +
-#   xlim(min(MD_acc_corr_DF$all_positive_tracts), max(MD_acc_corr_DF$all_positive_tracts)) +
-#     annotate("text", label = "FDR=", x = 1.68 , y = 0.75, color="#90A0C9", size=4) +
-#     annotate("text", label = "FDR=", x = 1.68 , y = 0.70, color="#CF92BF", size=4) 
-#   
-# dev.off() 
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/"
+
+
+model <- lm(maze_accuracy_pct ~ Fornix_L + sex, data = MD_acc_df)
+
+summary(model)
+
+
+pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"))  #ROI,".png"))
+  ggplot(data = MD_acc_df, aes(x =Fornix_L, y = maze_accuracy_pct, color=factor(sex))) +
+     geom_point()+
+    stat_smooth(method="lm",se=FALSE)+
+    scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
+   labs(
+        x = "Fornix L",
+        y = "Maze Accuracy") +
+  theme(legend.position = "right",  
+         axis.title.x = element_text(vjust= -2, size = 14),
+         axis.title.y = element_text(vjust= 3, size = 14),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black")) +
+   xlim(min(MD_acc_df$Fornix_L),max(MD_acc_df$Fornix_L)) +
+     annotate("text", label = "FDR= 0.061328 ", x = 1.8 , y = 1, color="#E45A5A", size=4) +
+     annotate("text", label = "FDR= 0.012068", x = 1.8 , y = 0.9, color="#80792B", size=4) 
+ dev.off() 
+
+
 
 
 ```
