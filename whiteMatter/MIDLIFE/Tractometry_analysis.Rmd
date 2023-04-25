@@ -52,6 +52,9 @@ library(janitor)
 # library(ggiraph)
 # library(ggiraphExtra)
 # library(moonBook)
+library(nationalparkcolors)
+library(ggprism)
+
 ```
 
 ```{r warning=FALSE, message=FALSE, echo = FALSE}
@@ -64,6 +67,11 @@ subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcoss
 subInfo$sex <- replace(subInfo$sex, subInfo$sex==0, "female")
 subInfo$sex <- replace(subInfo$sex, subInfo$sex==1, "male")
 
+npc_everglades <- park_palette("Everglades")
+npc_channel <- park_palette("ChannelIslands")
+npc_saguaro <- park_palette("Saguaro")
+
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/tractometry/"
 ```
 
 ```{r Reading in the results for all subjects in maze, echo=FALSE, message=FALSE, results='hide'}
@@ -298,7 +306,7 @@ knitr::kable(QA_pvalues, row.names = FALSE)%>%
 
   QA_L_Cing <- QAdf %>%
     ggplot(aes(x=sex, y= qa_Cingulum_L, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Sex", y= " QA", title ="Left Cingulum" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
@@ -322,8 +330,8 @@ print(QA_L_Cing)
 ```{r QA Cingulum R, dev='png', fig.show='hide'}
    
 QA_R_Cing <- QAdf %>%
-    ggplot(aes(x=sex, y= qa_Cingulum_R, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+    ggplot(aes(x=sex, y= qa_Cingulum_R)) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Sex", y= " QA", title ="Right Cingulum" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
@@ -345,22 +353,43 @@ print(QA_R_Cing)
 <br><br>
 
 ```{r QA Fornix L, dev='png', fig.show='hide'}
-   
-QA_L_fornix <- QAdf %>%
-    ggplot(aes(x=sex, y= qa_Fornix_L, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+
+df_p_val <- data.frame(
+  group1 = "female",
+  group2 = "male",
+  label = "*",
+  y.position = 0.32
+)
+
+
+pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)  
+
+QA_L_fornix <- QAdf %>% ggplot(aes(x=sex, y= qa_Fornix_L)) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-      labs(x= "Sex", y= " QA", title ="Left Fornix" ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16), 
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
+      labs(x= "Sex", y= " QA" ) +
+      theme(axis.title.x = element_blank(),
+            axis.title.y = element_blank(), 
+            axis.text.x = element_blank(),
+            axis.text.y = element_text(size = 25),
             panel.background =element_blank(),
             axis.line = element_line(colour = "black"),  
-            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-
+            plot.margin = margin(3, 2, 3, 2, "cm")) +
+  add_pvalue(df_p_val,
+                     xmin = "group1",
+                     xmax = "group2",
+                     label = "label",
+                     y.position = "y.position",# bracket
+                     bracket.size = 1,
+                    label.size = 10,
+                      tip.length = c(0.05,0.05 )) +
+  scale_y_continuous(n.breaks = 4)
+  
 print(QA_L_fornix)
+
+ dev.off() 
+
+
 ```
 
 <center>
@@ -372,8 +401,8 @@ print(QA_L_fornix)
 ```{r QA Fornix R, dev='png', fig.show='hide'}
    
 QA_R_fornix <- QAdf %>%
-    ggplot(aes(x=sex, y= qa_Fornix_R, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+    ggplot(aes(x=sex, y= qa_Fornix_R)) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Sex", y= " QA", title ="Right Fornix" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
@@ -586,7 +615,7 @@ knitr::kable(MD_pvalues, row.names = FALSE)%>%
 
   MD_L_Cing <- MDdf %>%
     ggplot(aes(x=sex, y= md_Cingulum_L, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Sex", y= " MD", title ="Left Cingulum" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
@@ -612,7 +641,7 @@ print(MD_L_Cing)
 
   MD_R_Cing <- MDdf %>%
     ggplot(aes(x=sex, y= md_Cingulum_R, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Sex", y= " MD", title ="Right Cingulum" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
@@ -635,21 +664,34 @@ print(MD_R_Cing)
 
 ```{r MD Fornix L, dev='png', fig.show='hide'}
 
+MD_p_val <- data.frame(
+  group1 = "female",
+  group2 = "male",
+  label = "*",
+  y.position = 1.4
+)
+
+
+pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"), width = 10, height=8) 
   MD_L_Fornix <- MDdf %>%
-    ggplot(aes(x=sex, y= md_Fornix_L, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+    ggplot(aes(x=sex, y= md_Fornix_L)) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-      labs(x= "Sex", y= " MD", title ="Left Fornix" ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16), 
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
+      labs(x= "Sex", y= " MD" ) +
+      theme(axis.title.x = element_blank(),
+            axis.title.y = element_blank(), 
+            axis.text.x = element_blank(),
+            axis.text.y = element_text(size = 25),
             panel.background =element_blank(),
             axis.line = element_line(colour = "black"),  
-            plot.margin = margin(1, 2, 1, 1.5, "cm"), 
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+            plot.margin = margin(3, 2, 3, 2, "cm")) +
+    ylim(min(MDdf$md_Fornix_L),1.5) #+
+  #scale_y_continuous(n.breaks = 4) 
 
 print(MD_L_Fornix)
+
+dev.off
+
 ```
 
 <center>
@@ -662,7 +704,7 @@ print(MD_L_Fornix)
 
   MD_R_Fornix <- MDdf %>%
     ggplot(aes(x=sex, y= md_Fornix_R, group=sex)) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_boxplot(width=0.5 ,fill= c("#E45A5A", "#80792B")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Sex", y= " MD", title ="Right Fornix" ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),

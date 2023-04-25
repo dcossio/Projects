@@ -1672,7 +1672,7 @@ knitr::kable(MD_peAvg_all_neg, row.names=F)%>%
 
 #### Men
 
-<span style="color: hotpink;"> Positive Correlations (FDR = 0.058621	)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.022854	)  </span>  
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1698,13 +1698,13 @@ No significant tracts
 <br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.997701)  </span>  
 
 no significant tracts
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000443	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019688	) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_female_neg, row.names=F)%>% 
@@ -1915,24 +1915,28 @@ summary(model)
 
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/"
 
-pdf(file = paste0(figpath,"corr_MD_FornixR.pdf"))  #ROI,".png"))
-  ggplot(data = MD_df, aes(x =Fornix_R, y = loop_pe_avg_m, color=factor(sex))) +
+pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"),width=10, height=8)  #ROI,".png"))
+  ggplot(data = MD_df, aes(x =Fornix_L, y = loop_pe_avg_m, color=factor(sex))) +
      geom_point()+
     stat_smooth(method="lm",se=FALSE)+
     scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
    labs(
-        x = "Fornix R",
+        x = "Fornix L",
         y = "Position Error") +
   theme(legend.position = "right",  
-         axis.title.x = element_text(vjust= -2, size = 14),
-         axis.title.y = element_text(vjust= 3, size = 14),
-         axis.text.x = element_text(size = 12),
-         axis.text.y = element_text(size = 12),
+         axis.title.x = element_blank(),
+         axis.title.y = element_blank(),
+         axis.text.x = element_text(size = 25),
+         axis.text.y = element_text(size = 25),
          panel.background =element_blank(),
-         axis.line = element_line(colour = "black")) +
-   xlim(min(MD_df$Fornix_R),max(MD_df$Fornix_R)) +
-     annotate("text", label = "FDR= 0.000443", x = 1.8 , y = 3, color="#E45A5A", size=4) +
-     annotate("text", label = "FDR= 0.058621", x = 1.8 , y = 2.8, color="#80792B", size=4) 
+         axis.line = element_line(colour = "black"),
+         legend.key.size = unit(2, 'cm'),
+         legend.title = element_text(size=18), #change legend title font size
+         legend.text = element_text(size=18),
+         plot.margin = margin(3, 2, 3, 2, "cm")) +
+    xlim(0.5,2)  +
+     annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) +
+     annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7) 
  dev.off() 
 
 

@@ -45,6 +45,11 @@ library(janitor)
 # library(ggiraph)
 # library(ggiraphExtra)
 # library(moonBook)
+library(nationalparkcolors)
+
+npc_everglades <- park_palette("Everglades")
+npc_channel <- park_palette("ChannelIslands")
+npc_saguaro <- park_palette("Saguaro")
 
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
@@ -54,7 +59,7 @@ working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@u
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv")
+loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv") %>% select(c("subject_id","sex", "age_scan_years","loop_de_rad3_degree","loop_de_avg_degree"))
 
 for (row in 1:nrow(loop_subInfo)) {
   if (loop_subInfo[row,2] == 0) {
@@ -1197,8 +1202,7 @@ knitr::kable(QA_deAvg_peripost_neg, row.names=F)%>%
       remove_empty("cols") %>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_deAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex=="female")
-# 
+   `colnames<-`(QA_deAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex== "female")
  # Reorder for my sanity check 
  QA_deAvg_female_neg_values <- QA_deAvg_female_neg_values[,c(1,16:18,2:15)]
  QA_deAvg_female_neg_gathercols <- colnames(QA_deAvg_female_neg_values[5:18])
@@ -1239,6 +1243,43 @@ for (ROI in colnames(QA_df[5:14])) {
     print(y)
     dev.off()
 }
+
+```
+
+```{r Correlations Fornix L}
+figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/"
+
+model <- lm(loop_de_avg_degree ~ Fornix_L + sex, data = QA_df)
+
+summary(model)
+
+pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)  #ROI,".png"))
+  ggplot(data = QA_df, aes(x =Fornix_L, y = loop_de_avg_degree, color=factor(sex))) +
+     geom_point()+
+    stat_smooth(method="lm",se=FALSE)+
+    #stat_cor(method = "spearman", label.x.npc = 0.05, label.y.npc = 0.2) +
+    scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex", labels=c("Female", "Male")) +
+   labs(
+        x = "Fornix L",
+        y = "Degrees Traveled Error") +
+  theme(legend.position = "right",  
+         axis.title.x = element_blank(),
+         axis.title.y = element_blank(),
+         axis.text.x = element_text(size = 25),
+         axis.text.y = element_text(size = 25),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         legend.key.size = unit(2, 'cm'),
+         legend.title = element_text(size=18), #change legend title font size
+         legend.text = element_text(size=18),
+         plot.margin = margin(1, 1, 1, 1, "cm")) +
+   xlim(.05, 0.4) +
+     annotate("text", label = "FDR= 0.003270", x = 0.108 , y = 253, color="#E45A5A", size=8) +
+     annotate("text", label = "FDR=0.032287 ", x = 0.108 , y = 240, color="#80792B", size=8) 
+  
+ dev.off() 
+
+
 
 ```
 

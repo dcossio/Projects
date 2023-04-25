@@ -945,7 +945,7 @@ model <- lm(maze_accuracy_pct ~ Fornix_L + sex, data = MD_acc_df)
 summary(model)
 
 
-pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"))  #ROI,".png"))
+pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"), width=10, height=8)  #ROI,".png"))
   ggplot(data = MD_acc_df, aes(x =Fornix_L, y = maze_accuracy_pct, color=factor(sex))) +
      geom_point()+
     stat_smooth(method="lm",se=FALSE)+
@@ -954,16 +954,21 @@ pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"))  #ROI,".png"))
         x = "Fornix L",
         y = "Maze Accuracy") +
   theme(legend.position = "right",  
-         axis.title.x = element_text(vjust= -2, size = 14),
-         axis.title.y = element_text(vjust= 3, size = 14),
-         axis.text.x = element_text(size = 12),
-         axis.text.y = element_text(size = 12),
+         axis.title.x = element_blank(),
+         axis.title.y = element_blank(),
+         axis.text.x = element_text(size = 25),
+         axis.text.y = element_text(size = 25),
          panel.background =element_blank(),
-         axis.line = element_line(colour = "black")) +
-   xlim(min(MD_acc_df$Fornix_L),max(MD_acc_df$Fornix_L)) +
-     annotate("text", label = "FDR= 0.061328 ", x = 1.8 , y = 1, color="#E45A5A", size=4) +
-     annotate("text", label = "FDR= 0.012068", x = 1.8 , y = 0.9, color="#80792B", size=4) 
- dev.off() 
+         axis.line = element_line(colour = "black"),
+         legend.key.size = unit(2, 'cm'),
+         legend.title = element_text(size=18), #change legend title font size
+         legend.text = element_text(size=18),
+         plot.margin = margin(3, 2, 3, 2, "cm")) +
+    xlim(0.5,2)     +
+    #scale_x_continuous(n.breaks = 3) +
+     annotate("text", label = "FDR= 0.061328 ", x = 1.75 , y = 1, color="#E45A5A", size=8) +
+     annotate("text", label = "FDR= 0.012068", x = 1.75 , y = 0.9, color="#80792B", size=8) 
+dev.off() 
 
 
 
