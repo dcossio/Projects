@@ -59,7 +59,7 @@ working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@u
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv") %>% select(c("subject_id","sex", "age_scan_years","loop_de_rad3_degree","loop_de_avg_degree"))
+loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv") %>% select(c("subject_id","sex", "age_scan_years","repo_status", "loop_de_rad1_degree","loop_de_rad2_degree", "loop_de_rad3_degree","loop_de_avg_degree"))
 
 for (row in 1:nrow(loop_subInfo)) {
   if (loop_subInfo[row,2] == 0) {
@@ -77,6 +77,160 @@ h1, h2 {
   font-weight: bold;
 }
 ```
+
+# Overview 
+This is the analysis of white matter dsi studio connectometry for Loop clousre position error <br>  
+
+
+# <span style="color: darkblue;">Methods </span> 
+
+**Participants** 
+
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 118  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
+  control check in DSI
+   * Several subjects removed because they did not have rad3 score  
+<br>
+
+**Subject numbers for Loop closure task**
+
+  * Rad 3  
+    * **All subjects**: 38
+    * **Men**:  14
+    * **Women**:  24
+    * **Stage**:
+      * **Pre**: 10
+      * **Peri**:  7
+      * **Post**:   7
+
+  * Average
+    * **All subjects**:  42
+    * **Men**: 17
+    * **Women**: 25
+    * **Stage**:
+      * **Pre**:  11
+      * **Peri**:  7 
+      * **Post**: 7  
+     
+**Scan parameters** 
+
+  * Locations from UCSB and UCI
+<br>
+
+**QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br>
+**DSI Studio**
+
+  * Version and tags used via singularity container: **chen-2022-07-31**
+  
+  * **Parameters** 
+    * T-threshold = 2.5
+    * Length = 25
+    * Permutation = 4,000
+    * pruning 4
+    * non normalized QA
+  
+**Connectronomy analysis methods write up **
+<br>
+
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired.The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
+
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
+<br>
+
+ The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
+
+<br><br><br>
+
+<!-- # ROIs {.tabset .tabset-dropdown} -->
+
+<!-- ## Corpus Callosum -->
+
+<!-- ## Cerebellum -->
+
+<!-- ## Fasciculus -->
+
+<!-- ## Cingulum  -->
+
+<!-- <br><br><br><br><br><br><br><br> -->
+
+<!-- # FDR Explained -->
+
+<!-- <br><br><br><br><br><br><br><br> -->
+
+# Behavior
+
+```{r calculating behavior stats}
+
+avg_DT_1m <- mean(loop_subInfo$loop_de_rad1_degree, na.rm = TRUE)
+avg_DT_2m <- mean(loop_subInfo$loop_de_rad2_degree, na.rm = TRUE)
+avg_DT_3m <- mean(loop_subInfo$loop_de_rad3_degree, na.rm = TRUE)
+avg_DT_averagem <- mean(loop_subInfo$loop_de_avg_degree, na.rm = TRUE)  
+
+
+# Sex differences
+male_DT <- loop_subInfo %>% filter(sex == "male") 
+avg_DT_3m_male <- mean(male_DT$loop_de_rad3_degree, na.rm = TRUE)
+avg_DT_averagem_male <- mean(male_DT$loop_de_avg_degree, na.rm = TRUE)
+  
+fem_DT <- loop_subInfo %>% filter(sex == "female")
+avg_DT_3m_female <-mean(fem_DT$loop_de_rad3_degree, na.rm = TRUE)
+avg_DT_averagem_female <- mean(fem_DT$loop_de_avg_degree, na.rm = TRUE)
+
+# average for our menopause  rad3
+avg_DT_3m_pre <- fem_DT %>% filter(repo_status == 1) %>%  na.omit() %>% summarise(mean(.$loop_de_rad3_degree))
+avg_DT_3m_peri <- fem_DT %>% filter(repo_status == 2) %>%  na.omit() %>% summarise(mean(.$loop_de_rad3_degree))
+avg_DT_3m_post <- fem_DT %>% filter(repo_status == 3) %>%  na.omit() %>% summarise(mean(.$loop_de_rad3_degree))
+
+# average for our menopause 
+avg_DT_avg_pre <- fem_DT %>% filter(repo_status == 1) %>%  na.omit() %>% summarise(mean(.$loop_de_avg_degree))
+avg_DT_avg_peri <- fem_DT %>% filter(repo_status == 2) %>%  na.omit() %>% summarise(mean(.$loop_de_avg_degree))
+avg_DT_avg_post <- fem_DT %>% filter(repo_status == 3) %>%  na.omit() %>% summarise(mean(.$loop_de_avg_degree))
+
+# lets do a normality test  on our variables
+#male
+
+norm_male_rad3 <- shapiro.test(male_DT$loop_de_rad3_degree) # Not Normal
+norm_male_avg <- shapiro.test(male_DT$loop_de_avg_degree) # Normal 
+
+#female
+norm_female_rad3 <- shapiro.test(fem_DT$loop_de_rad3_degree) # Normal
+norm_female_avg <- shapiro.test(fem_DT$loop_de_avg_degree) #Normal
+
+# sex differences between male and female rad3
+# since male is not normal we'll used a wilksonsns
+sexdiff_Rad3 <- wilcox.test(male_DT$loop_de_rad3_degree, fem_DT$loop_de_rad3_degree) #  significant sex diff
+
+sexdiff_Avg <- t.test(male_DT$loop_de_avg_degree, fem_DT$loop_de_avg_degree) #  signifncat difference
+
+
+```
+Degrees traveled is the total degrees traveled that the participant took to reach the start position. Participants who indicated the correct location completed a total of 360 degrees. Participants were tested on three different sizes of circles: Radius 1m, 2m, and 3m. For white matter analysis we used the data from radius 3 and an average of performance on all three circle sizes.  The average position error on the 1m circle is **`r avg_DT_1m`**. The average position error on the 2m circle is **`r avg_DT_2m`**. The average position error on the 3m circle is **`r avg_DT_3m`**. The  average position error across all sizes is **`r avg_DT_averagem`**.
+
+There are were significant differences in performance between men and women on the rad3 loop (t test, p= **`r sexdiff_Rad3[3]`**) and on the average of all circles ( p = **`r sexdiff_Avg[3]`**). The mean distance for degrees traveled in men on the rad3 circle was **`r avg_DT_3m_male`**, and in women it was **`r avg_DT_3m_female`**. Men undershot the target location while women overshot the location The mean for the average of all circles in men is **`r avg_DT_averagem_male`** and women is **`r avg_DT_averagem_female`**.
+
+The average for degrees traveled on rad3  
+pre = **`r avg_DT_3m_pre`**
+peri = **`r avg_DT_3m_peri`**
+post = **`r avg_DT_3m_post`**
+
+The average for degrees traveled on average of all circles  
+pre = **`r avg_DT_3m_pre`**
+peri = **`r avg_DT_3m_peri`**
+post = **`r avg_DT_3m_post`**
+
+<br><br><br><br>
+
 
 ## <span style="color: Indigo;"> Loop Degrees traveled  Rad3 </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
@@ -109,10 +263,6 @@ QA_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/QA/peripo
 
 QA_deRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
-#### Summary of Results
-For all subjects, Degree error was correlated with QA values with age and sex marked as covariates. Tracts with QA values were both positively and negatively correlated with DE performance. When analyzed by sex, Men displayed tracts that were significantly negatively correlated with DE, DSI found no tracts positively correlated with DE (FDR=1.00). DSI  studio found that tracts with QA in women displayed both positive and negative associations with DE performance. Women were further analyzed by menopause stage. Pre-menopause women displayed positive and negative relationships between tracts with QA and DE performance. DSI sutdio found that peri-menopause women displayed significant negative correlations between tracts with QA and DE and there were not significant positive correlations ( FDR= 0.7516098). Women in post menopause displayed no significant positive or negtive correlations (FDR= 1.000, 0.354664, respectively). When peri and post menopause women were grouped together, tracts with QA were positively and negatively correlated with DE performance
-
-<br><br><br><br><br><br> 
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.180868)  </span>
@@ -295,6 +445,12 @@ knitr::kable(QA_deRad3_peripost_neg, row.names=F)%>%
 <br>
 
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop degree error rad3](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/DE/QA/peripost/loop_de_rad3_degree.t2.length25.pos_neg.jpg)
+
+<br><br><br><br><br><br> 
+
+
+#### Summary of Results
+For all subjects, Degree error was correlated with QA values with age and sex marked as covariates. Tracts with QA values were both positively and negatively correlated with DE performance. When analyzed by sex, Men displayed tracts that were significantly negatively correlated with DE, DSI found no tracts positively correlated with DE (FDR=1.00). DSI  studio found that tracts with QA in women displayed both positive and negative associations with DE performance. Women were further analyzed by menopause stage. Pre-menopause women displayed positive and negative relationships between tracts with QA and DE performance. DSI sutdio found that peri-menopause women displayed significant negative correlations between tracts with QA and DE and there were not significant positive correlations ( FDR= 0.7516098). Women in post menopause displayed no significant positive or negtive correlations (FDR= 1.000, 0.354664, respectively). When peri and post menopause women were grouped together, tracts with QA were positively and negatively correlated with DE performance
 
 <br><br><br><br><br><br> 
 
@@ -992,7 +1148,7 @@ knitr::kable(QA_deAvg_all_neg, row.names=F)%>%
 <br><br><br><br><br><br><br><br> 
 
 #### Men
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =)  </span>  
 
 Not significant 
 
@@ -1022,7 +1178,7 @@ knitr::kable(QA_deAvg_male_neg, row.names=F)%>%
 <br><br><br><br><br><br><br><br> 
 
 #### Women
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =)  </span>  
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1055,7 +1211,7 @@ knitr::kable(QA_deAvg_female_neg, row.names=F)%>%
 <br><br><br><br><br><br><br><br> 
 
 #### pre
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =)  </span>  
 
 Not significant 
 

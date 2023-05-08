@@ -1,7 +1,7 @@
 ---
 title: "Loop position error"
 author: "Daniela Cossio"
-date: "4/13/2023"
+date: "5/8/2023"
 output:
    html_document: 
      toc: yes
@@ -62,7 +62,7 @@ working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@u
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv")
+loop_subInfo <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/loop_subinfo.csv") %>% select("subject_id", "sex", "age_scan_years", "repo_status","loop_pe_rad1_m","loop_pe_rad2_m","loop_pe_rad3_m","loop_pe_avg_m")
 
 for (row in 1:nrow(loop_subInfo)) {
   if (loop_subInfo[row,2] == 0) {
@@ -81,19 +81,135 @@ h1, h2 {
 }
 ```
 
+# Overview 
+This is the analysis of white matter dsi studio connectometry for Loop clousre position error <br>  
+
+
+# <span style="color: darkblue;">Methods </span> 
+
+**Participants** 
+
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 118  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
+  control check in DSI
+   * Several subjects removed because they did not have rad3 score  
+<br>
+
+**Subject numbers for Loop closure task**
+
+  * Rad 3  
+    * **All subjects**: 38
+    * **Men**:  14
+    * **Women**:  24
+    * **Stage**:
+      * **Pre**: 10
+      * **Peri**:  7
+      * **Post**:   7
+
+  * Average
+    * **All subjects**:  42
+    * **Men**: 17
+    * **Women**: 25
+    * **Stage**:
+      * **Pre**:  11
+      * **Peri**:  7 
+      * **Post**: 7  
+     
+**Scan parameters** 
+
+  * Locations from UCSB and UCI
+<br>
+
+**QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br>
+**DSI Studio**
+
+  * Version and tags used via singularity container: **chen-2022-07-31**
+  
+  * **Parameters** 
+    * T-threshold = 2.5
+    * Length = 25
+    * Permutation = 4,000
+    * pruning 4
+    * non normalized QA
+  
+**Connectronomy analysis methods write up **
+<br>
+
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired.The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
+
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
+<br>
+
+ The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
+
+<br><br><br>
+
+<!-- # ROIs {.tabset .tabset-dropdown} -->
+
+<!-- ## Corpus Callosum -->
+
+<!-- ## Cerebellum -->
+
+<!-- ## Fasciculus -->
+
+<!-- ## Cingulum  -->
+
+<!-- <br><br><br><br><br><br><br><br> -->
+
+<!-- # FDR Explained -->
+
+<!-- <br><br><br><br><br><br><br><br> -->
+
+# Behavior
+
+```{r calculating behavior stats}
+
+avg_PE_1m <- mean(loop_subInfo$loop_pe_rad1_m, na.rm = TRUE)
+avg_PE_2m <- mean(loop_subInfo$loop_pe_rad2_m, na.rm = TRUE)
+avg_PE_3m <- mean(loop_subInfo$loop_pe_rad3_m, na.rm = TRUE)
+avg_PE_averagem <- mean(loop_subInfo$loop_pe_avg_m, na.rm = TRUE)  
+
+
+# Sex differences
+male_PE <- loop_subInfo %>% filter(sex == "male") 
+fem_PE <- loop_subInfo %>% filter(sex == "female")
+
+# lets do a normality test  on our variables
+#male
+
+norm_male_rad3 <- shapiro.test(male_PE$loop_pe_rad3_m) # Normal
+norm_male_avg <- shapiro.test(male_PE$loop_pe_avg_m) # Normal 
+
+#female
+norm_female_rad3 <- shapiro.test(fem_PE$loop_pe_rad3_m) # Normal
+norm_female_avg <- shapiro.test(fem_PE$loop_pe_avg_m) #Normal
+
+# sex differences between male and female rad3
+
+sexdiff_Rad3 <- t.test(male_PE$loop_pe_rad3_m, fem_PE$loop_pe_rad3_m) # no significant sex diff
+
+sexdiff_Avg <- t.test(male_PE$loop_pe_avg_m, fem_PE$loop_pe_avg_m) # no signifncat difference
+```
+Position error is the straight line distance between the start location and the participants end location. Participants were tested on three different sizes of circles: Radius 1m, 2m, and 3m. For white matter analysis we used the data from radius 3 and an average of performance on all three circle sizes.  The average position error on the 1m circle is **`r avg_PE_1m`**. The average position error on the 2m circle is **`r avg_PE_2m`**. The average position error on the 3m circle is **`r avg_PE_3m`**. The  average position error across all sizes is **`r avg_PE_averagem`**.
+
+There are no significant differences in performance between men and women on the rad3 loop (t test, p= `r sexdiff_Rad3[3]`) or on the avergage of all circles ( p = `r sexdiff_Avg[3]`)
+
+<br><br><br><br>
+
+
 # Results
 ## <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
-
-### Overall Summary 
-
-Loop task is more dependent on egocentric regions which may be why we see that better performers are those that have better QA in regions not in parietal lobe. 
-
-Men's performance suggest that those with lower PE scores are relying on stronger connectivity in fornix regions and less in cerebellum and corpus callosum. 
-
-While women may be relying on regions such as corpus callosum, cingulum, fasciculus over fornix to perform better.
-
-### Behavior sex differences?
-
 
 ### QA {.tabset}
 ```{r Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
@@ -130,23 +246,6 @@ QA_peRad3_peripost_pos <- read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_p
 QA_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() 
 
 ```
-
-#### Summary of results
-- QA Tractography using all subjects and controlling for age and sex reveled positive and negative correlations.   
-
-- QA Tractography when looking at men only revealed tracts with positive correlations only. Higher QA scores were associated with higher PE scores. One way to think about this is that poor performers are showing stronger connectivity in regions that are not supporting path integration and this altered recruitment of regions may be associated with worse performance.   
-
-- QA Tractography when looking at women only revealed tracts with negative correlations and positive. Cerebellum was the only tract that was positively correlated with PE score. suggesting that recruitment of PE may be associated with lower path integration performance. NEgative correlations suggest that stronger integrity and connectivity of these regions correlated to lower PE scores and therefore better path integration performance.  
-
-- pre menopausal women displayed both positive and negative tracts suggesting that recruitment of certain regions are differentially associated with performance in path integration  
-
-- Peri menopausal women displayed negative correlations with tracts in the corpus callosum, cerebellum, and several fasciculus tracts.   
-
--  No significant correlations in post menopausal women  
-
-- Peri- post showed positive and negative tracts in several overlapping regions which may be due to low sample size.
-
-<br><br><br><br><br><br> 
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.077333)  </span>  
@@ -343,7 +442,22 @@ knitr::kable(QA_peRad3_peripost_neg, row.names=F)%>%
 <br><br><br><br>
 
 
+#### Summary of results
+- QA Tractography using all subjects and controlling for age and sex reveled positive and negative correlations.   
 
+- QA Tractography when looking at men only revealed tracts with positive correlations only. Higher QA scores were associated with higher PE scores. One way to think about this is that poor performers are showing stronger connectivity in regions that are not supporting path integration and this altered recruitment of regions may be associated with worse performance.   
+
+- QA Tractography when looking at women only revealed tracts with negative correlations and positive. Cerebellum was the only tract that was positively correlated with PE score. suggesting that recruitment of PE may be associated with lower path integration performance. NEgative correlations suggest that stronger integrity and connectivity of these regions correlated to lower PE scores and therefore better path integration performance.  
+
+- pre menopausal women displayed both positive and negative tracts suggesting that recruitment of certain regions are differentially associated with performance in path integration  
+
+- Peri menopausal women displayed negative correlations with tracts in the corpus callosum, cerebellum, and several fasciculus tracts.   
+
+-  No significant correlations in post menopausal women  
+
+- Peri- post showed positive and negative tracts in several overlapping regions which may be due to low sample size.
+
+<br><br><br><br>
 
 ### MD {.tabset}
 ```{r MD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
@@ -369,19 +483,6 @@ MD_peRad3_post_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/post/MD_post_ne
 MD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
 ```
-#### Summary of results
-
-- MD Tractography of all subjects, regressing age and sex, revealed tracts negatively correlated with PE score in the fornix and thalamic radiation. This suggests that subjects with lower PE score displayed increased diffusivity in these regions. Perhaps we see this because they scored so low due to having lower connectivity in these regions.
-
-- MD Tractography of men only, regressing age , revealed tracts positively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with lower PE score and therefore better performance. 
-
-- MD Tractography of women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score. 
-
--  MD Tractography of pre, peri, post adn combined peri post menopausal women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score.  
-
-
-<br><br><br><br><br><br> 
-
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
@@ -571,6 +672,19 @@ knitr::kable(MD_peRad3_peripost_neg, row.names=F)%>%
 
 <br><br><br><br>
 
+#### Summary of results
+
+- MD Tractography of all subjects, regressing age and sex, revealed tracts negatively correlated with PE score in the fornix and thalamic radiation. This suggests that subjects with lower PE score displayed increased diffusivity in these regions. Perhaps we see this because they scored so low due to having lower connectivity in these regions.
+
+- MD Tractography of men only, regressing age , revealed tracts positively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with lower PE score and therefore better performance. 
+
+- MD Tractography of women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score. 
+
+-  MD Tractography of pre, peri, post adn combined peri post menopausal women only, regressing age , revealed tracts negatively correlated with PE score. lower MD in fornix, and thalamic radiation was associated with higher PE score.  
+
+
+<br><br><br><br><br><br> 
+
 ### AD {.tabset}
 ```{r AD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
@@ -600,17 +714,6 @@ AD_peRad3_post_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/post/AD_post_ne
 AD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 ```
-#### Summary of results
-
-- AD tractography of all subs showed negative and positive correlations. The majority here were negative suggesting that lower AD is associated with increased PE score. 
-
--AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
-
--AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
-
-
-<br><br><br><br><br><br><br><br><br> 
-
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.010526) </span>
@@ -812,6 +915,17 @@ knitr::kable(AD_peRad3_peripost_neg, row.names=F)%>%
 
 <br><br><br><br>
 
+#### Summary of results
+
+- AD tractography of all subs showed negative and positive correlations. The majority here were negative suggesting that lower AD is associated with increased PE score. 
+
+-AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
+
+-AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
+
+
+<br><br><br><br><br><br><br><br><br> 
+
 ### RD {.tabset}
 ```{r RD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
@@ -836,22 +950,9 @@ RD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/peri/RD_peri_ne
 RD_peRad3_post_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/post/RD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # Peri + POST
-RD_peRad3_peripost_pos <- read.delim(paste0(working_dir,'/rad3/PE/RD/peripost/RD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 RD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
-#### Summary of results
-
-- RD tractography of all subs showed negative correlations. Suggesting that higher RD is associated with decreased PE score.  Better performers have increased RD in fornix, perhaps they are not using these regions to complete the task. part of the reson they may have done so poorly is because they attempted to rely on fornix and there's less connectivity there.
-
--AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
-
--AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
-
-
-Tracts with RD displayed negative correlations with PE. In men, this was opposite with men displaying positive correlations. Women, and those in the peri and post stages  displayed negative correlations. Those in the pre and peri+post group displayed positive and negative correlations.
-
-<br><br><br><br><br><br> 
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.625000) </span>
@@ -908,7 +1009,7 @@ No significant results
 <br><br><br><br>
 
 #### Women
-span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
 
 No significant results
 
@@ -1017,11 +1118,8 @@ knitr::kable(RD_peRad3_all_neg, row.names=F)%>%
 
 #### Peri + Post
 <span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>
-```{r, echo=FALSE}
-knitr::kable(RD_peRad3_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
-```
+
+Not significant
 
 <br><br> 
 
@@ -1049,6 +1147,31 @@ knitr::kable(RD_peRad3_peripost_neg, row.names=F)%>%
 
 
 <br><br><br><br>
+
+
+#### Summary of results
+
+- RD tractography of all subs showed negative correlations. Suggesting that higher RD is associated with decreased PE score.  Better performers have increased RD in fornix, perhaps they are not using these regions to complete the task. part of the reson they may have done so poorly is because they attempted to rely on fornix and there's less connectivity there.
+
+-AD tractography of men only showed positive and negative scores. only one region was negative and the rest of the ROIs were positive. Positive correlations suggest that lower AD is associated with lower PE score.  It may be that poor performers are recruiting these regions that are showing increased wide spread diffusivity or lower connectivity.
+
+-AD tractography of wmen only showed negative correlations. Negative correlations suggest that lower AD is associated with higher PE scores and worse performance.  It amy be that women who have better path integration show strong recruitment of these areas.
+
+
+Tracts with RD displayed negative correlations with PE. In men, this was opposite with men displaying positive correlations. Women, and those in the peri and post stages  displayed negative correlations. Those in the pre and peri+post group displayed positive and negative correlations.
+
+<br><br><br><br><br><br> 
+
+### Overall Summary 
+
+Loop task is more dependent on egocentric regions which may be why we see that better performers are those that have better QA in regions not in parietal lobe. 
+
+Men's performance suggest that those with lower PE scores are relying on stronger connectivity in fornix regions and less in cerebellum and corpus callosum. 
+
+While women may be relying on regions such as corpus callosum, cingulum, fasciculus over fornix to perform better.
+
+
+
 
 ## <span style="color: PaleVioletRed;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
@@ -1188,10 +1311,6 @@ QA_peAvg_peripost_neg <-
                     as.data.frame()
 
 ```
-
-#### Summary 
-
-<br><br><br><br><br><br>
 
 #### All subjects
 
@@ -1415,78 +1534,82 @@ knitr::kable(QA_peAvg_peripost_neg, row.names=F)%>%
 ![Glass Brain displaying tracts that had QA positively and negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/peri_post/loop_pe_avg_m.t2.length25.pos_neg.jpg)
 <br><br><br><br><br><br>
 
-#### Box plots
-```{r QA positive cors men vs women,echo=FALSE, results='hide',message=FALSE}
-# Men positive and women negative LEts do fornix  ####
+#### Summary 
 
- QA_peAvg_male_pos_cols <-  c("Subjects", as.character(QA_peAvg_male_pos[,1]))
- QA_peAvg_male_pos_values <-read.delim(
-    paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male")
-# 
- # Reorder for my sanity check 
- QA_peAvg_male_pos_values <- QA_peAvg_male_pos_values[,c(1,12:14,2:11)]
- QA_peAvg_male_pos_gathercols <- colnames(QA_peAvg_male_pos_values[5:11])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- QA_peAvg_male_pos_values[5:11] <- apply(QA_peAvg_male_pos_values[5:11],2, as.numeric) 
- 
- 
- ## FEmale Positive #####
-  QA_peAvg_female_pos_cols <-  c("Subjects", as.character(QA_peAvg_female_pos[,1]))
- QA_peAvg_female_pos_values <- read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_peAvg_female_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female")
-# 
- # Reorder for my sanity check 
- QA_peAvg_female_pos_values <- QA_peAvg_female_pos_values[,c(1,4:6,2:3)]
- QA_peAvg_female_pos_gathercols <- colnames(QA_peAvg_female_pos_values[5:6])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- QA_peAvg_female_pos_values[5:6] <- apply(QA_peAvg_female_pos_values[5:6],2, as.numeric) 
- 
- 
- qa_sex_diff <- setdiff(QA_peAvg_male_pos_gathercols,QA_peAvg_female_pos_gathercols) %>% cbind(. ,setdiff(QA_peAvg_female_pos_gathercols,QA_peAvg_male_pos_gathercols))
- 
- 
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/"
+<br><br><br><br><br><br>
 
-QA_df <- QA_peAvg_male_pos_values[, names(QA_peAvg_male_pos_values) %in% names(QA_peAvg_female_pos_values)]
-QA_df <- rbind(QA_df,QA_peAvg_female_pos_values[, !names(QA_peAvg_female_pos_values) %in% qa_sex_diff])
+<!-- #### Box plots -->
+<!-- ```{r QA positive cors men vs women,echo=FALSE, results='hide',message=FALSE} -->
+<!-- # Men positive and women negative LEts do fornix  #### -->
+
+<!--  QA_peAvg_male_pos_cols <-  c("Subjects", as.character(QA_peAvg_male_pos[,1])) -->
+<!--  QA_peAvg_male_pos_values <-read.delim( -->
+<!--     paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>%  -->
+<!--       remove_empty("cols") %>% -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% -->
+<!--    `colnames<-`(QA_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male") -->
+<!-- #  -->
+<!--  # Reorder for my sanity check  -->
+<!--  QA_peAvg_male_pos_values <- QA_peAvg_male_pos_values[,c(1,12:14,2:11)] -->
+<!--  QA_peAvg_male_pos_gathercols <- colnames(QA_peAvg_male_pos_values[5:11]) -->
+<!-- #  -->
+<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
+<!--  QA_peAvg_male_pos_values[5:11] <- apply(QA_peAvg_male_pos_values[5:11],2, as.numeric)  -->
 
 
-
-for (ROI in colnames(QA_df[5:6])) {
-  print(ROI)
-  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
-      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
-      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
-      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-       stat_boxplot(geom = "errorbar",
-               width = 0.15) +
-      labs(x= "Sex", y= " QA", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+<!--  ## FEmale Positive ##### -->
+<!--   QA_peAvg_female_pos_cols <-  c("Subjects", as.character(QA_peAvg_female_pos[,1])) -->
+<!--  QA_peAvg_female_pos_values <- read.delim( -->
+<!--     paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>%  -->
+<!--       remove_empty("cols") %>% -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% -->
+<!--    `colnames<-`(QA_peAvg_female_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female") -->
+<!-- #  -->
+<!--  # Reorder for my sanity check  -->
+<!--  QA_peAvg_female_pos_values <- QA_peAvg_female_pos_values[,c(1,4:6,2:3)] -->
+<!--  QA_peAvg_female_pos_gathercols <- colnames(QA_peAvg_female_pos_values[5:6]) -->
+<!-- #  -->
+<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
+<!--  QA_peAvg_female_pos_values[5:6] <- apply(QA_peAvg_female_pos_values[5:6],2, as.numeric)  -->
 
 
-    png(file = paste0(figpath,ROI,"_pos_QA.png"))  #,".png"))
-    print(y)
-    dev.off()
-}
+<!--  qa_sex_diff <- setdiff(QA_peAvg_male_pos_gathercols,QA_peAvg_female_pos_gathercols) %>% cbind(. ,setdiff(QA_peAvg_female_pos_gathercols,QA_peAvg_male_pos_gathercols)) -->
 
-```
+
+<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/" -->
+
+<!-- QA_df <- QA_peAvg_male_pos_values[, names(QA_peAvg_male_pos_values) %in% names(QA_peAvg_female_pos_values)] -->
+<!-- QA_df <- rbind(QA_df,QA_peAvg_female_pos_values[, !names(QA_peAvg_female_pos_values) %in% qa_sex_diff]) -->
+
+
+
+<!-- for (ROI in colnames(QA_df[5:6])) { -->
+<!--   print(ROI) -->
+<!--   y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) + -->
+<!--       geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) + -->
+<!--       geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) + -->
+<!--       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) + -->
+<!--        stat_boxplot(geom = "errorbar", -->
+<!--                width = 0.15) + -->
+<!--       labs(x= "Sex", y= " QA", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background =element_blank(), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+
+
+<!--     png(file = paste0(figpath,ROI,"_pos_QA.png"))  #,".png")) -->
+<!--     print(y) -->
+<!--     dev.off() -->
+<!-- } -->
+
+<!-- ``` -->
 ```{r QA negative cors men vs women,echo=FALSE, results='hide',message=FALSE}
 
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/"
@@ -1638,16 +1761,13 @@ MD_peAvg_peripost_neg <-
                 `[`(-c(1),) %>%
                     as.data.frame()
 ```
-#### Summary 
-
-<br><br><br><br><br><br>
 
 #### All subjects
-<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.997701)  </span>  
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000616	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019688	) </span>
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1681,7 +1801,7 @@ knitr::kable(MD_peAvg_male_pos, row.names=F)%>%
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 1.0000		) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.247381) </span>
 
 No significant tracts
 
@@ -1698,13 +1818,13 @@ No significant tracts
 <br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive Correlations (FDR = 0.997701)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.125000)  </span>  
 
 no significant tracts
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019688	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000576	) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_female_neg, row.names=F)%>% 
@@ -1730,7 +1850,7 @@ no significant tracts
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.044429	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.033976) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_pre_neg, row.names=F)%>% 
@@ -1757,7 +1877,7 @@ no significant tracts
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.017058	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016885) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_peri_neg, row.names=F)%>% 
@@ -1784,7 +1904,7 @@ no significant tracts
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.059079	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.081145) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_peri_neg, row.names=F)%>% 
@@ -1806,13 +1926,13 @@ knitr::kable(MD_peAvg_peri_neg, row.names=F)%>%
 
 #### PEri  Post
 
-<span style="color: hotpink;"> Positive Correlations (FDR = 1.0000)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.411765)  </span>  
 
 no significant tracts
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.059079	) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.050080) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(MD_peAvg_peripost_neg, row.names=F)%>% 
@@ -1832,119 +1952,121 @@ knitr::kable(MD_peAvg_peripost_neg, row.names=F)%>%
 
 <br><br><br><br><br><br>
 
-#### Box plots
+#### Summary 
 
-```{r MD  men vs women,echo=FALSE, results='hide',message=FALSE}
+<br><br><br><br><br><br>
 
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/"
+<!-- #### Box plots -->
 
- MD_peAvg_male_pos_cols <-  c("Subjects", as.character(MD_peAvg_male_pos[,1]))
- MD_peAvg_male_pos_values <- read.delim(
-    paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(MD_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male")
-# 
- # Reorder for my sanity check 
- MD_peAvg_male_pos_values <- MD_peAvg_male_pos_values[,c(1,16:18,2:15)]
- MD_peAvg_male_pos_gathercols <- colnames(MD_peAvg_male_pos_values[5:18])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- MD_peAvg_male_pos_values[5:18] <- apply(MD_peAvg_male_pos_values[5:18],2, as.numeric) 
- 
- 
- ## FEmale Positive #####
+<!-- ```{r MD  men vs women,echo=FALSE, results='hide',message=FALSE} -->
 
- MD_peAvg_female_neg_cols <-  c("Subjects", as.character(MD_peAvg_female_neg[,1]))
-  MD_peAvg_female_neg_values <-read.delim(
-    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(MD_peAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female")
-# 
- # Reorder for my sanity check 
- MD_peAvg_female_neg_values <- MD_peAvg_female_neg_values[,c(1,16:18,2:15)]
- MD_peAvg_female_neg_gathercols <- colnames(MD_peAvg_female_neg_values[5:18])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- MD_peAvg_female_neg_values[5:18] <- apply(MD_peAvg_female_neg_values[5:18],2, as.numeric) 
-# 
-MD_df <- MD_peAvg_male_pos_values[, names(MD_peAvg_male_pos_values) %in% names(MD_peAvg_female_neg_values)] %>% rbind(MD_peAvg_female_neg_values[, names(MD_peAvg_female_neg_values) %in% names(MD_peAvg_male_pos_values)])
+<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/" -->
 
-for (ROI in colnames(MD_df[5:14])) {
-  print(ROI)
-  md_neg <- ggplot(MD_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
-      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
-      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
-      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-       stat_boxplot(geom = "errorbar",
-               width = 0.15) +
-      labs(x= "Sex", y= " MD", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+<!--  MD_peAvg_male_pos_cols <-  c("Subjects", as.character(MD_peAvg_male_pos[,1])) -->
+<!--  MD_peAvg_male_pos_values <- read.delim( -->
+<!--     paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>%  -->
+<!--       remove_empty("cols") %>% -->
+<!--   filter(str_detect(V1, c("mean_md"))) %>% -->
+<!--    `colnames<-`(MD_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male") -->
+<!-- #  -->
+<!--  # Reorder for my sanity check  -->
+<!--  MD_peAvg_male_pos_values <- MD_peAvg_male_pos_values[,c(1,16:18,2:15)] -->
+<!--  MD_peAvg_male_pos_gathercols <- colnames(MD_peAvg_male_pos_values[5:18]) -->
+<!-- #  -->
+<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
+<!--  MD_peAvg_male_pos_values[5:18] <- apply(MD_peAvg_male_pos_values[5:18],2, as.numeric)  -->
 
 
-    png(file = paste0(figpath,ROI,"_MD.png"))
-    print(md_neg)
-    dev.off()
+<!--  ## FEmale Positive ##### -->
 
-}
-```
+<!--  MD_peAvg_female_neg_cols <-  c("Subjects", as.character(MD_peAvg_female_neg[,1])) -->
+<!--   MD_peAvg_female_neg_values <-read.delim( -->
+<!--     paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>%  -->
+<!--       remove_empty("cols") %>% -->
+<!--   filter(str_detect(V1, c("mean_md"))) %>% -->
+<!--    `colnames<-`(MD_peAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female") -->
+<!-- #  -->
+<!--  # Reorder for my sanity check  -->
+<!--  MD_peAvg_female_neg_values <- MD_peAvg_female_neg_values[,c(1,16:18,2:15)] -->
+<!--  MD_peAvg_female_neg_gathercols <- colnames(MD_peAvg_female_neg_values[5:18]) -->
+<!-- #  -->
+<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
+<!--  MD_peAvg_female_neg_values[5:18] <- apply(MD_peAvg_female_neg_values[5:18],2, as.numeric)  -->
+<!-- #  -->
+<!-- MD_df <- MD_peAvg_male_pos_values[, names(MD_peAvg_male_pos_values) %in% names(MD_peAvg_female_neg_values)] %>% rbind(MD_peAvg_female_neg_values[, names(MD_peAvg_female_neg_values) %in% names(MD_peAvg_male_pos_values)]) -->
 
-```{r MD men vs correlations}
-
-MD_df<- MD_df %>% mutate(sex_bin = MD_df$sex)
-
-for (row in 1:nrow(MD_df)) {
-  if (MD_df[row,c("sex_bin")] == "female") {
-  MD_df[row,c("sex_bin")] <- 0
-} else {
-     MD_df[row,c("sex_bin")] <- 1
-}
-}
-
-model <- lm(loop_pe_avg_m ~ Fornix_L + sex, data = MD_df)
-
-summary(model)
-
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/"
-
-pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"),width=10, height=8)  #ROI,".png"))
-  ggplot(data = MD_df, aes(x =Fornix_L, y = loop_pe_avg_m, color=factor(sex))) +
-     geom_point()+
-    stat_smooth(method="lm",se=FALSE)+
-    scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
-   labs(
-        x = "Fornix L",
-        y = "Position Error") +
-  theme(legend.position = "right",  
-         axis.title.x = element_blank(),
-         axis.title.y = element_blank(),
-         axis.text.x = element_text(size = 25),
-         axis.text.y = element_text(size = 25),
-         panel.background =element_blank(),
-         axis.line = element_line(colour = "black"),
-         legend.key.size = unit(2, 'cm'),
-         legend.title = element_text(size=18), #change legend title font size
-         legend.text = element_text(size=18),
-         plot.margin = margin(3, 2, 3, 2, "cm")) +
-    xlim(0.5,2)  +
-     annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) +
-     annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7) 
- dev.off() 
+<!-- for (ROI in colnames(MD_df[5:14])) { -->
+<!--   print(ROI) -->
+<!--   md_neg <- ggplot(MD_df, aes(x=sex, y=.data[[ROI]], group=sex)) + -->
+<!--       geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) + -->
+<!--       geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) + -->
+<!--       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) + -->
+<!--        stat_boxplot(geom = "errorbar", -->
+<!--                width = 0.15) + -->
+<!--       labs(x= "Sex", y= " MD", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background =element_blank(), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
 
 
-```
+<!--     png(file = paste0(figpath,ROI,"_MD.png")) -->
+<!--     print(md_neg) -->
+<!--     dev.off() -->
+
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r MD men vs correlations} -->
+
+<!-- MD_df<- MD_df %>% mutate(sex_bin = MD_df$sex) -->
+
+<!-- for (row in 1:nrow(MD_df)) { -->
+<!--   if (MD_df[row,c("sex_bin")] == "female") { -->
+<!--   MD_df[row,c("sex_bin")] <- 0 -->
+<!-- } else { -->
+<!--      MD_df[row,c("sex_bin")] <- 1 -->
+<!-- } -->
+<!-- } -->
+
+<!-- model <- lm(loop_pe_avg_m ~ Fornix_L + sex, data = MD_df) -->
+
+<!-- summary(model) -->
+
+<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/" -->
+
+<!-- pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"),width=10, height=8)  #ROI,".png")) -->
+<!--   ggplot(data = MD_df, aes(x =Fornix_L, y = loop_pe_avg_m, color=factor(sex))) + -->
+<!--      geom_point()+ -->
+<!--     stat_smooth(method="lm",se=FALSE)+ -->
+<!--     scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") + -->
+<!--    labs( -->
+<!--         x = "Fornix L", -->
+<!--         y = "Position Error") + -->
+<!--   theme(legend.position = "right",   -->
+<!--          axis.title.x = element_blank(), -->
+<!--          axis.title.y = element_blank(), -->
+<!--          axis.text.x = element_text(size = 25), -->
+<!--          axis.text.y = element_text(size = 25), -->
+<!--          panel.background =element_blank(), -->
+<!--          axis.line = element_line(colour = "black"), -->
+<!--          legend.key.size = unit(2, 'cm'), -->
+<!--          legend.title = element_text(size=18), #change legend title font size -->
+<!--          legend.text = element_text(size=18), -->
+<!--          plot.margin = margin(3, 2, 3, 2, "cm")) + -->
+<!--     xlim(0.5,2)  + -->
+<!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + -->
+<!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)  -->
+<!--  dev.off()  -->
+
+
+<!-- ``` -->
 
 ### AD {.tabset}
-#### Summary 
-<br><br><br><br><br><br>
 
 ```{r AD PE Average variables , echo=FALSE, results='hide',message=FALSE}
 
@@ -2013,9 +2135,9 @@ AD_peAvg_female_pos <-
       remove_empty("cols") %>%  
         filter(V1 %in% rows2grab) %>% 
           t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+            `colnames<-`(rows2grab)%>% 
+                as.data.frame() %>% 
+                  `[`(-c(1),) 
 
 
 ###PRE ####
@@ -2191,6 +2313,7 @@ knitr::kable(AD_peAvg_pre_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/AD/pre/loop_avg_PE_ad_pre_neg_cor.png)
 
 <br>
@@ -2214,6 +2337,7 @@ knitr::kable(AD_peAvg_peri_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/AD/peri/loop_avg_PE_ad_peri_neg_ax.png)
 
 <br>
@@ -2238,6 +2362,7 @@ knitr::kable(AD_peAvg_post_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/AD/post/loop_avg_PE_ad_post_neg_ax.png)
 
 <br>
@@ -2262,12 +2387,16 @@ knitr::kable(AD_peAvg_peripost_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/AD/peri_post/loop_avg_PE_ad_peri+post_neg_ax.png)
 
 <br>
 
 ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/AD/peri_post/loop_pe_avg_m.t2.length25.pos_neg.jpg)
 
+<br><br><br><br><br><br>
+
+#### Summary 
 <br><br><br><br><br><br>
 
 ### RD {.tabset}
@@ -2375,17 +2504,14 @@ RD_peAvg_peripost_neg <-
 
 
 ```
-#### Summary 
-
-<br><br><br><br><br><br>
 
 #### All subjects
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.909414)  </span>  
  Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.035990 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2404,7 +2530,7 @@ knitr::kable(RD_peAvg_all_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 #### Men
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 0.012641 )  </span>  
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_male_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2413,7 +2539,7 @@ knitr::kable(RD_peAvg_male_pos, row.names=F)%>%
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.062762 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_male_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2436,13 +2562,13 @@ knitr::kable(RD_peAvg_male_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 #### Women
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>
+<span style="color: hotpink;"> Positive Correlations (FDR =0.125000 )  </span>
 
  Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.001068 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2461,13 +2587,13 @@ knitr::kable(RD_peAvg_female_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 #### pre
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR = 1.000000 )  </span>  
 
  Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.039982 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2487,12 +2613,12 @@ knitr::kable(RD_peAvg_pre_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 #### peri
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =1.000000 )  </span>  
  Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.016583 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2513,13 +2639,13 @@ knitr::kable(RD_peAvg_peri_neg, row.names=F)%>%
 
 #### post
 
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =1.000000 )  </span>  
 
  Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.048898 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_post_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2539,13 +2665,13 @@ knitr::kable(RD_peAvg_post_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 #### PEri  Post
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.312843 )  </span>  
 
 Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.089524 ) </span>
 ```{r, echo=FALSE}
 knitr::kable(RD_peAvg_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -2565,3 +2691,7 @@ knitr::kable(RD_peAvg_peripost_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 <!---------------------------------------Loop Degree error--------------------------------  -->
+
+#### Summary 
+
+<br><br><br><br><br><br>
