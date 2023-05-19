@@ -1,0 +1,174 @@
+---
+title: "28andBpublication"
+output: html_document
+date: "2023-05-18"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
+---
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
+                      fig.align = "center")
+
+```
+
+```{r Global Vars, echo=FALSE, results='hide',message=FALSE}
+
+# working directory to data 
+estrogen_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/PublicationRerun/QA/Estrogen"
+
+Prog_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/PublicationRerun/QA/Progesterone"
+
+Gest_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/PublicationRerun/QA/gestweek"
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+
+# REading in subject info for each analysis 
+# Read in main df
+subinfo_DF <- read_csv('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/PublicationRerun/QA/Demographics.csv')
+#Estrogen 
+
+Est_subinfo <-subinfo_DF  %>% select("new scan name","Estrogen","Trimester") %>% na.omit()
+Gest_subinfo <- subinfo_DF %>% select("new scan name","GestWeek","Trimester") %>% na.omit()%>% filter(Trimester <4)
+Prog_subinfo <- subinfo_DF %>% select("new scan name","Progesterone","Trimester") %>% na.omit() 
+
+```
+
+# Overview
+
+This is the analysis of the relationship between white matter microstructure and hormones across 
+
+pregnancy in one single subject.
+
+
+##### **Participants**
+
+  * One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF
+  
+  to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
+  
+  
+  
+  * 18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.
+  
+    * **2019-07-12_ucsb** : No DWI 
+    
+    * **LC002_11_12_19**: No DWI
+    
+    * **LC002_2_7_20** : No DWI
+    
+
+##### **Scan parameters** 
+  * Locations from UCSB and UCI
+
+##### **Blood work**
+  * Subject was measured for various levels of hormones including estrogen, progesterone, LH, FSH
+
+##### **QSIprep** 
+  * Version used
+  
+##### **DSI Studio : Correlational connectometry **
+
+  * Version and tags used **chen-2022-07-31**
+  
+  * Parameters 
+    * Length = 25
+    * Permutation = 4000
+    * pruning 4
+    * non normalized QA
+    * T threshold: 2.5
+
+
+# Methods
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.
+
+
+
+##### Analyses {.tabset}
+###### Estrogen 
+* Total scans: 17
+* Total pregnancy scans = 10
+
+  
+###### Progesterone
+* Total scans: 15
+* Total pregnancy scans = 10
+
+###### Gestational
+* Total scans: 16
+* pre pregnancy and pregnancy only
+    
+# Results   
+<br><br>
+
+## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
+<br><br>
+
+### Summary 
+
+```{r QA estrogen  df cleaning ,echo=FALSE, results='hide',message=FALSE}
+
+# Lets read in one main df and clean from there
+Est_QA_allwks_pos_DF <-read.delim(paste0(estrogen_path, '/allscans/Est_qa_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols") 
+
+# ALl weeks 
+Est_QA_all_pos_stats <- Est_QA_allwks_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) 
+
+Est_QA_allwks_pos_ROIs <- Est_QA_allwks_pos_DF %>% 
+  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Est_QA_all_pos_stats[,1])))
+
+# Need to create a loop fix the subject IDs to match
+for (sub in 1:nrow((Est_QA_allwks_pos_ROIs))) { 
+ clean_subnum <- str_split(Est_QA_allwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
+ Est_QA_allwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum) 
+ }
+
+# now we cab grab the right subs
+Est_QA_allwks_pos_ROIs <- Est_QA_allwks_pos_ROIs %>% filter(Subjects %in% Est_subinfo$`new scan name`)
+
+# Lets do the pregnancy cleaning
+
+
+
+```
+
+```{rr QA estrogen  df cleaning ,echo=FALSE, results='hide',message=FALSE}
+
+
+```
+
