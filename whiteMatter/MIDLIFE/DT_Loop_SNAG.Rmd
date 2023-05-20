@@ -145,7 +145,7 @@ This is the analysis of white matter dsi studio connectometry for Loop clousre p
 
 A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired.The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
 
-Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Loop Degrees traveled. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
 <br>
 
  The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
@@ -215,7 +215,7 @@ sexdiff_Avg <- t.test(male_DT$loop_de_avg_degree, fem_DT$loop_de_avg_degree) #  
 
 
 ```
-Degrees traveled is the total degrees traveled that the participant took to reach the start position. Participants who indicated the correct location completed a total of 360 degrees. Participants were tested on three different sizes of circles: Radius 1m, 2m, and 3m. For white matter analysis we used the data from radius 3 and an average of performance on all three circle sizes.  The average position error on the 1m circle is **`r avg_DT_1m`**. The average position error on the 2m circle is **`r avg_DT_2m`**. The average position error on the 3m circle is **`r avg_DT_3m`**. The  average position error across all sizes is **`r avg_DT_averagem`**.
+Degrees traveled is the total degrees traveled that the participant took to reach the start position. Participants who indicated the correct location completed a total of 360 degrees. Participants were tested on three different sizes of circles: Radius 1m, 2m, and 3m. For white matter analysis we used the data from radius 3 and an average of performance on all three circle sizes.  The average Degrees traveled on the 1m circle is **`r avg_DT_1m`**. The average Degrees traveled on the 2m circle is **`r avg_DT_2m`**. The average Degrees traveled on the 3m circle is **`r avg_DT_3m`**. The  average position error across all sizes is **`r avg_DT_averagem`**.
 
 There are were significant differences in performance between men and women on the rad3 loop (t test, p= **`r sexdiff_Rad3[3]`**) and on the average of all circles ( p = **`r sexdiff_Avg[3]`**). The mean distance for degrees traveled in men on the rad3 circle was **`r avg_DT_3m_male`**, and in women it was **`r avg_DT_3m_female`**. Men undershot the target location while women overshot the location The mean for the average of all circles in men is **`r avg_DT_averagem_male`** and women is **`r avg_DT_averagem_female`**.
 
@@ -225,9 +225,9 @@ peri = **`r avg_DT_3m_peri`**
 post = **`r avg_DT_3m_post`**
 
 The average for degrees traveled on average of all circles  
-pre = **`r avg_DT_3m_pre`**
-peri = **`r avg_DT_3m_peri`**
-post = **`r avg_DT_3m_post`**
+pre = **`r avg_DT_avg_pre`**
+peri = **`r avg_DT_avg_peri`**
+post = **`r avg_DT_avg_pre`**
 
 <br><br><br><br>
 
@@ -482,11 +482,6 @@ MD_deRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/MD/post/MD_po
 MD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/MD/peripost/MD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 ```
-#### Summary of Results
-Tracts with MD were positively correlated with DE performance when all subjects were analyzed. In men, there were no significantly correlated tracts associated with DE performance. In women, tracts with MD were positively associated with DE performance. Pre-menopause women displayed MD tracts with significantly positively correlations to DE. Peri and Post -menopause women displayed significantly negative relationships between MD and DE performance when analyzed seperately. When analyzed together, tracts were positively correlated with DE.
-
-<br><br><br><br><br><br> 
-
 #### All Subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.029053)  </span>
 ```{r, echo=FALSE}
@@ -667,6 +662,11 @@ Not significant
 
 <br><br><br><br><br><br>
 
+#### Summary of Results
+Tracts with MD were positively correlated with DE performance when all subjects were analyzed. In men, there were no significantly correlated tracts associated with DE performance. In women, tracts with MD were positively associated with DE performance. Pre-menopause women displayed MD tracts with significantly positively correlations to DE. Peri and Post -menopause women displayed significantly negative relationships between MD and DE performance when analyzed seperately. When analyzed together, tracts were positively correlated with DE.
+
+<br><br><br><br><br><br> 
+
 ### AD {.tabset}
 ```{r AD Loop Degree error Radd3 variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
@@ -696,10 +696,6 @@ AD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/AD/peripo
 
 AD_deRad3_peripost_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t")  %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
-#### Summary of Results
-
-
-<br><br><br><br><br><br><br><br><br>  
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.019142) </span>
@@ -875,6 +871,11 @@ No Significant Findings
 
 <br><br><br><br><br><br>
 
+#### Summary of Results
+
+
+<br><br><br><br><br><br><br><br><br>  
+
 ### RD {.tabset}
 ```{r RD Loop Degree error RRDd3 variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
@@ -900,11 +901,6 @@ RD_deRad3_post_neg <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/post/RD_po
 # Peri + POST
 RD_deRad3_peripost_pos <- read.delim(paste0(working_dir,'/loop/rad3/DE/RD/peripost/RD_peri+post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 ```
-#### Summary
-
-
-<br><br><br><br><br><br> 
-
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.027027) </span>
 ```{r, echo=FALSE}
@@ -1080,6 +1076,11 @@ No Significant Findings
 <br><br><br><br><br><br>
 
 
+#### Summary
+
+
+<br><br><br><br><br><br> 
+
 ## <span style="color: Indigo;"> Loop Degrees traveled average </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
 ```{r QA Loop Degree degrees traveled variables , echo=FALSE, results='hide',message=FALSE}
@@ -1099,13 +1100,15 @@ QA_deAvg_female_pos <- read.delim(paste0(working_dir,'/loop/average/DE/QA/female
 QA_deAvg_female_neg <- read.delim(paste0(working_dir,'/loop/average/DE/QA/female/QA_loopAvgDE_fem_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # PRE ####
+QA_deAvg_pre_pos <- read.delim(paste0(working_dir,'/loop/average/DE/QA/pre/QA_loopAvgDE_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
 QA_deAvg_pre_neg <- read.delim(paste0(working_dir,'/loop/average/DE/QA/pre/QA_loopAvgDE_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 # PERI ####
 QA_deAvg_peri_neg <- read.delim(paste0(working_dir,'/loop/average/DE/QA/peri/QA_loopAvgDE_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
 #POST ####
-QA_deAvg_post_neg <- read.delim(paste0(working_dir,'/loop/average/DE/QA/post/QA_loopAvgDE_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+
 
 # Peri + POST ####
 QA_deAvg_peripost_neg <- read.delim(paste0(working_dir,'/loop/average/DE/QA/peri_post/QA_loopAvgDE_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
@@ -1115,7 +1118,7 @@ QA_deAvg_peripost_pos <- read.delim(paste0(working_dir,'/loop/average/DE/QA/peri
 ```
 
 #### All subjects
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.018519)  </span>  
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_all_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1124,7 +1127,7 @@ knitr::kable(QA_deAvg_all_pos, row.names=F)%>%
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.005468) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_all_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1135,26 +1138,26 @@ knitr::kable(QA_deAvg_all_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/allSubs/loop_de_avg_degree.t2.length25.pos_neg.jpg)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/allSubs/loop_avg_dt_QA_all_neg_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/allSubs/loop_avg_dt_QA_all_pos_sag.png)
 
 <br><br><br><br><br><br><br><br> 
 
 #### Men
-<span style="color: hotpink;"> Positive Correlations (FDR =)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =1.00000)  </span>  
 
 Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.032287) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_male_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1165,20 +1168,16 @@ knitr::kable(QA_deAvg_male_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/male/loop_avg_dt_QA_male_neg_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
-
-<!-- <br> -->
-
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/male/loop_de_avg_degree.t2.length25.neg_corr.jpg)
 
 <br><br><br><br><br><br><br><br> 
 
 #### Women
-<span style="color: hotpink;"> Positive Correlations (FDR =)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.013403)  </span>  
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_female_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1187,7 +1186,7 @@ knitr::kable(QA_deAvg_female_pos, row.names=F)%>%
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.003270) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_female_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1198,26 +1197,30 @@ knitr::kable(QA_deAvg_female_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA positively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/female/loop_avg_dt_QA_fem_pos_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/female/loop_avg_dt_QA_fem_neg_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+![Glass Brain displaying tracts that had QA positively and negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/female/loop_de_avg_degree.t2.length25.pos_neg.jpg)
 
 <br><br><br><br><br><br><br><br> 
 
 #### pre
-<span style="color: hotpink;"> Positive Correlations (FDR =)  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.005322)  </span>  
+```{r, echo=FALSE}
+ knitr::kable(QA_deAvg_pre_pos, row.names=F)%>%
+   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
+   scroll_box(width = "800px", height = "200px")
+```
 
-Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.015854) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_pre_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1228,26 +1231,26 @@ knitr::kable(QA_deAvg_pre_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA positively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/pre/loop_avg_dt_QA_pre_pos_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/pre/loop_avg_dt_QA_pre_neg_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+![Glass Brain displaying tracts that had QA positively and negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/pre/loop_de_avg_degree.t2.length25.pos_neg.jpg)
 
 <br><br><br><br><br><br><br><br> 
 
 #### peri
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =1.00000)  </span>  
 
 Not significant 
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.157632) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_peri_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1258,49 +1261,23 @@ knitr::kable(QA_deAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/peri/loop_avg_dt_QA_peri_neg_cor.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
-
-<!-- <br> -->
-
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+![Glass Brain displaying tracts that had QA positively and negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/peri/loop_de_avg_degree.t2.length25.neg_corr.jpg)
 <br><br><br><br><br><br><br><br> 
 
 #### post
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
 
 Not significant 
 
-<br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_deAvg_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
-```
-
-<br><br> 
-
-<span class="text-center" style="color: Magenta;"> Figures </span>
-
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
-
-<!-- <br> -->
-
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
-
-<!-- <br> -->
-
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
 #### Peri Post
-<span style="color: hotpink;"> Positive Correlations (FDR = ) </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.047016 ) </span>  
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_peripost_pos, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1309,7 +1286,7 @@ knitr::kable(QA_deAvg_peripost_pos, row.names=F)%>%
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.098580) </span>
 ```{r, echo=FALSE}
 knitr::kable(QA_deAvg_peripost_neg, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
@@ -1320,124 +1297,124 @@ knitr::kable(QA_deAvg_peripost_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA positively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/peri_post/QA_LoopAvgDE_peripost_pos.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+![Slice overlay image displaying ROIs with tracts that had QA negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/peri_post/QA_LoopAvgDE_peripost_neg.png)
 
-<!-- <br> -->
+<br>
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+![Glass Brain displaying tracts that had QA positively and negatively loop Degrees Traveled average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/peri_post/loop_de_avg_degree.t2.length25.pos_neg.jpg)
 
 <br><br><br><br><br><br><br><br> 
 
-#### box plots
+<!-- #### box plots -->
 
-```{r negative correlations, echo=FALSE, results='hide',message=FALSE }
-# Men neg and women negative LEts do fornix  ####
+<!-- ```{r negative correlations, echo=FALSE, results='hide',message=FALSE } -->
+<!-- # Men neg and women negative LEts do fornix  #### -->
 
- QA_deAvg_male_neg_cols <-  c("Subjects", as.character(QA_deAvg_male_neg[,1]))
- QA_deAvg_male_neg_values <-read.delim(paste0(working_dir,'/loop/average/DE/QA/male/QA_loopAvgDE_male_neg.csv'), header=FALSE, sep="\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_deAvg_male_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex=="male")
-# 
- # Reorder for my sanity check 
- QA_deAvg_male_neg_values <- QA_deAvg_male_neg_values[,c(1,22:24,2:21)]
- QA_deAvg_male_neg_gathercols <- colnames(QA_deAvg_male_neg_values[5:21])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- QA_deAvg_male_neg_values[5:21] <- apply(QA_deAvg_male_neg_values[5:21],2, as.numeric) 
-
- 
- #  women negative  ####
- QA_deAvg_female_neg_cols <-  c("Subjects", as.character(QA_deAvg_female_neg[,1]))
- QA_deAvg_female_neg_values <-read.delim(paste0(working_dir,'/loop/average/DE/QA/female/QA_loopAvgDE_fem_neg.csv'), header=FALSE, sep="\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_deAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex== "female")
- # Reorder for my sanity check 
- QA_deAvg_female_neg_values <- QA_deAvg_female_neg_values[,c(1,16:18,2:15)]
- QA_deAvg_female_neg_gathercols <- colnames(QA_deAvg_female_neg_values[5:18])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- QA_deAvg_female_neg_values[5:18] <- apply(QA_deAvg_female_neg_values[5:18],2, as.numeric) 
- 
- 
-### Actual fig #####
- 
-
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/"
-
-QA_df <- QA_deAvg_male_neg_values[, names(QA_deAvg_male_neg_values) %in% names(QA_deAvg_female_neg_values)] 
-QA_df <- rbind(QA_df,QA_deAvg_female_neg_values[, names(QA_deAvg_female_neg_values) %in% names(QA_deAvg_male_neg_values)])
+<!--  QA_deAvg_male_neg_cols <-  c("Subjects", as.character(QA_deAvg_male_neg[,1])) -->
+<!--  QA_deAvg_male_neg_values <-read.delim(paste0(working_dir,'/loop/average/DE/QA/male/QA_loopAvgDE_male_neg.csv'), header=FALSE, sep="\t") %>%  -->
+<!--       remove_empty("cols") %>% -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% -->
+<!--    `colnames<-`(QA_deAvg_male_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex=="male") -->
+<!-- #  -->
+<!--  # Reorder for my sanity check  -->
+<!--  QA_deAvg_male_neg_values <- QA_deAvg_male_neg_values[,c(1,22:24,2:21)] -->
+<!--  QA_deAvg_male_neg_gathercols <- colnames(QA_deAvg_male_neg_values[5:21]) -->
+<!-- #  -->
+<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
+<!--  QA_deAvg_male_neg_values[5:21] <- apply(QA_deAvg_male_neg_values[5:21],2, as.numeric)  -->
 
 
-for (ROI in colnames(QA_df[5:14])) {
-  print(ROI)
-  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
-      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
-      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
-      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-       stat_boxplot(geom = "errorbar",
-               width = 0.15) +
-      labs(x= "Sex", y= " QA", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+<!--  #  women negative  #### -->
+<!--  QA_deAvg_female_neg_cols <-  c("Subjects", as.character(QA_deAvg_female_neg[,1])) -->
+<!--  QA_deAvg_female_neg_values <-read.delim(paste0(working_dir,'/loop/average/DE/QA/female/QA_loopAvgDE_fem_neg.csv'), header=FALSE, sep="\t") %>%  -->
+<!--       remove_empty("cols") %>% -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% -->
+<!--    `colnames<-`(QA_deAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_de_avg_degree")]) %>% filter(sex== "female") -->
+<!--  # Reorder for my sanity check  -->
+<!--  QA_deAvg_female_neg_values <- QA_deAvg_female_neg_values[,c(1,16:18,2:15)] -->
+<!--  QA_deAvg_female_neg_gathercols <- colnames(QA_deAvg_female_neg_values[5:18]) -->
+<!-- #  -->
+<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
+<!--  QA_deAvg_female_neg_values[5:18] <- apply(QA_deAvg_female_neg_values[5:18],2, as.numeric)  -->
 
 
-    png(file = paste0(figpath,ROI,"_neg_QA.png"))  #,".png"))
-    print(y)
-    dev.off()
-}
-
-```
-
-```{r Correlations Fornix L}
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/"
-
-model <- lm(loop_de_avg_degree ~ Fornix_L + sex, data = QA_df)
-
-summary(model)
-
-pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)  #ROI,".png"))
-  ggplot(data = QA_df, aes(x =Fornix_L, y = loop_de_avg_degree, color=factor(sex))) +
-     geom_point()+
-    stat_smooth(method="lm",se=FALSE)+
-    #stat_cor(method = "spearman", label.x.npc = 0.05, label.y.npc = 0.2) +
-    scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex", labels=c("Female", "Male")) +
-   labs(
-        x = "Fornix L",
-        y = "Degrees Traveled Error") +
-  theme(legend.position = "right",  
-         axis.title.x = element_blank(),
-         axis.title.y = element_blank(),
-         axis.text.x = element_text(size = 25),
-         axis.text.y = element_text(size = 25),
-         panel.background =element_blank(),
-         axis.line = element_line(colour = "black"),
-         legend.key.size = unit(2, 'cm'),
-         legend.title = element_text(size=18), #change legend title font size
-         legend.text = element_text(size=18),
-         plot.margin = margin(1, 1, 1, 1, "cm")) +
-   xlim(.05, 0.4) +
-     annotate("text", label = "FDR= 0.003270", x = 0.108 , y = 253, color="#E45A5A", size=8) +
-     annotate("text", label = "FDR=0.032287 ", x = 0.108 , y = 240, color="#80792B", size=8) 
-  
- dev.off() 
+<!-- ### Actual fig ##### -->
 
 
+<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/" -->
 
-```
+<!-- QA_df <- QA_deAvg_male_neg_values[, names(QA_deAvg_male_neg_values) %in% names(QA_deAvg_female_neg_values)]  -->
+<!-- QA_df <- rbind(QA_df,QA_deAvg_female_neg_values[, names(QA_deAvg_female_neg_values) %in% names(QA_deAvg_male_neg_values)]) -->
+
+
+<!-- for (ROI in colnames(QA_df[5:14])) { -->
+<!--   print(ROI) -->
+<!--   y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) + -->
+<!--       geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) + -->
+<!--       geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) + -->
+<!--       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) + -->
+<!--        stat_boxplot(geom = "errorbar", -->
+<!--                width = 0.15) + -->
+<!--       labs(x= "Sex", y= " QA", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background =element_blank(), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+
+
+<!--     png(file = paste0(figpath,ROI,"_neg_QA.png"))  #,".png")) -->
+<!--     print(y) -->
+<!--     dev.off() -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r Correlations Fornix L} -->
+<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/DE/QA/" -->
+
+<!-- model <- lm(loop_de_avg_degree ~ Fornix_L + sex, data = QA_df) -->
+
+<!-- summary(model) -->
+
+<!-- pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)  #ROI,".png")) -->
+<!--   ggplot(data = QA_df, aes(x =Fornix_L, y = loop_de_avg_degree, color=factor(sex))) + -->
+<!--      geom_point()+ -->
+<!--     stat_smooth(method="lm",se=FALSE)+ -->
+<!--     #stat_cor(method = "spearman", label.x.npc = 0.05, label.y.npc = 0.2) + -->
+<!--     scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex", labels=c("Female", "Male")) + -->
+<!--    labs( -->
+<!--         x = "Fornix L", -->
+<!--         y = "Degrees Traveled Error") + -->
+<!--   theme(legend.position = "right",   -->
+<!--          axis.title.x = element_blank(), -->
+<!--          axis.title.y = element_blank(), -->
+<!--          axis.text.x = element_text(size = 25), -->
+<!--          axis.text.y = element_text(size = 25), -->
+<!--          panel.background =element_blank(), -->
+<!--          axis.line = element_line(colour = "black"), -->
+<!--          legend.key.size = unit(2, 'cm'), -->
+<!--          legend.title = element_text(size=18), #change legend title font size -->
+<!--          legend.text = element_text(size=18), -->
+<!--          plot.margin = margin(1, 1, 1, 1, "cm")) + -->
+<!--    xlim(.05, 0.4) + -->
+<!--      annotate("text", label = "FDR= 0.003270", x = 0.108 , y = 253, color="#E45A5A", size=8) + -->
+<!--      annotate("text", label = "FDR=0.032287 ", x = 0.108 , y = 240, color="#80792B", size=8)  -->
+
+<!--  dev.off()  -->
+
+
+
+<!-- ``` -->
 
 
 ### MD {.tabset}
@@ -1485,15 +1462,15 @@ Not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1518,15 +1495,15 @@ knitr::kable(MD_deAvg_male_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1548,15 +1525,15 @@ not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1578,15 +1555,15 @@ not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1607,15 +1584,15 @@ knitr::kable(MD_deAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1637,15 +1614,15 @@ not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1668,15 +1645,15 @@ not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1731,15 +1708,15 @@ Not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1764,15 +1741,15 @@ knitr::kable(AD_deAvg_male_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1797,15 +1774,15 @@ knitr::kable(AD_deAvg_female_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1828,15 +1805,15 @@ Not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1859,15 +1836,15 @@ knitr::kable(AD_deAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1890,15 +1867,15 @@ knitr::kable(AD_deAvg_post_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1920,15 +1897,15 @@ not Significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1975,15 +1952,15 @@ Not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -2006,15 +1983,15 @@ knitr::kable(RD_deAvg_male_pos, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -2036,15 +2013,15 @@ knitr::kable(RD_deAvg_female_pos, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2067,15 +2044,15 @@ knitr::kable(RD_deAvg_pre_pos, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2096,15 +2073,15 @@ knitr::kable(RD_deAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2127,15 +2104,15 @@ knitr::kable(RD_deAvg_post_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2158,14 +2135,14 @@ knitr::kable(RD_deAvg_peripost_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively loop Degrees Traveled average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively loop Degrees Traveled average]() -->
 
 <br><br><br><br><br><br><br><br>

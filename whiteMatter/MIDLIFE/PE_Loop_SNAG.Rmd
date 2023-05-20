@@ -148,7 +148,7 @@ This is the analysis of white matter dsi studio connectometry for Loop clousre p
 
 A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired.The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.</p>
 
-Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Maze Accuracy and Loop variables. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, MD, AD, and RD correlated with Loop Position Error. A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex, age_scan_years, and repo_status was removed using a multiple regression model. The total number of subjects varied on analysis (See Analyses and Final sample sizes above). A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain (39,49,29) .
 <br>
 
  The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
@@ -203,7 +203,7 @@ sexdiff_Avg <- t.test(male_PE$loop_pe_avg_m, fem_PE$loop_pe_avg_m) # no signifnc
 ```
 Position error is the straight line distance between the start location and the participants end location. Participants were tested on three different sizes of circles: Radius 1m, 2m, and 3m. For white matter analysis we used the data from radius 3 and an average of performance on all three circle sizes.  The average position error on the 1m circle is **`r avg_PE_1m`**. The average position error on the 2m circle is **`r avg_PE_2m`**. The average position error on the 3m circle is **`r avg_PE_3m`**. The  average position error across all sizes is **`r avg_PE_averagem`**.
 
-There are no significant differences in performance between men and women on the rad3 loop (t test, p= `r sexdiff_Rad3[3]`) or on the avergage of all circles ( p = `r sexdiff_Avg[3]`)
+There are no significant differences in performance between men and women on the rad3 loop (t test, **p= `r sexdiff_Rad3[3]`**) or on the avergage of all circles ( **p = `r sexdiff_Avg[3]`**)
 
 <br><br><br><br>
 
@@ -2521,6 +2521,7 @@ knitr::kable(RD_peAvg_all_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/RD/allSubs/loop_PE_avg_rd_all_neg_ax.png)
 
 <br>
@@ -2549,6 +2550,7 @@ knitr::kable(RD_peAvg_male_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/RD/male/loop_PE_avg_rd_male_pos_ax.png)
 
 <br>
@@ -2578,6 +2580,7 @@ knitr::kable(RD_peAvg_female_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
+
 ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/RD/female/loop_PE_avg_rd_fem_neg_ax.png)
 
 <br>
