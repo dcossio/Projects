@@ -146,7 +146,7 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
  The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.</p>
 
-<br><br><br><br><br><br>
+<br><br><br>
 
 <!-- # ROIs {.tabset .tabset-dropdown} -->
 
@@ -226,11 +226,11 @@ post = **`r avg_AE_3m_post`**
 
 
 The average for degrees traveled on average of all circles  
-pre = **`r avg_AE_3m_pre`**
+pre = **`r avg_AE_avg_pre`**
 
-peri = **`r avg_AE_3m_peri`**
+peri = **`r avg_AE_avg_peri`**
 
-post = **`r avg_AE_3m_post`**
+post = **`r avg_AE_avg_post`**
 
 <br><br><br><br>
 
@@ -1449,7 +1449,7 @@ Not significant
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/AE/MD/male/loop_avg_AE_md_male_pos_cor.png)
+![Slice overlay image displaying ROIs with tracts that had MD positively correlated with loop angular error  average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/AE/MD/male/loop_avg_AE_md_male_pos_cor.png)
 
 <br>
 
@@ -1630,12 +1630,12 @@ AD_aeAvg_peripost_neg <- read.delim(paste0(working_dir,'/loop/average/AE/AD/peri
 ```
 
 #### All subjects
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.414365)  </span>  
 
 Not significant 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.170648) </span>
 
 ```{r, echo=FALSE}
 knitr::kable(AD_aeAvg_all_neg, row.names=F)%>%
@@ -1647,20 +1647,16 @@ knitr::kable(AD_aeAvg_all_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/AE/AD/allSubs/loop_avg_AE_ad_all_neg_cor.png) -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
-
-<!-- <br> -->
-
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/AE/AD/allSubs/loop_ae_avg_degree.t2.length25.neg_corr_map.jpg) -->
 
 <br><br><br><br><br><br><br><br> 
 
 #### Men
-<span style="color: hotpink;"> Positive Correlations (FDR = )  </span>  
+<span style="color: hotpink;"> Positive Correlations (FDR =0.0033520)  </span>  
 ```{r, echo=FALSE}
 knitr::kable(AD_aeAvg_male_pos, row.names=F)%>%
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
@@ -1669,21 +1665,17 @@ knitr::kable(AD_aeAvg_male_pos, row.names=F)%>%
 
 <br><br> 
 
-<span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
+<span class="text-center" style="color: Teal;"> Negative Correlations (FDR =1.000000) </span>
 
 <br><br> 
 
-<span class="text-center" style="color: Magenta;"> Figures </span>
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
-
-<!-- <br> -->
-
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/AE/AD/male/loop_avg_AE_ad_male_pos_cor.png) -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/AE/AD/male/loop_ae_avg_degree.t2.length25.pos_corr.jpg) -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1709,15 +1701,15 @@ knitr::kable(AD_aeAvg_female_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1738,15 +1730,15 @@ knitr::kable(AD_aeAvg_pre_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1767,15 +1759,15 @@ knitr::kable(AD_aeAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1797,15 +1789,15 @@ knitr::kable(AD_aeAvg_post_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1828,15 +1820,15 @@ knitr::kable(AD_aeAvg_peripost_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1891,15 +1883,15 @@ knitr::kable(RD_aeAvg_all_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1921,15 +1913,15 @@ knitr::kable(RD_aeAvg_male_pos, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br> 
 
@@ -1951,15 +1943,15 @@ knitr::kable(RD_aeAvg_female_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -1982,15 +1974,15 @@ knitr::kable(RD_aeAvg_pre_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2012,15 +2004,15 @@ knitr::kable(RD_aeAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2042,15 +2034,15 @@ knitr::kable(RD_aeAvg_post_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 
@@ -2076,15 +2068,15 @@ knitr::kable(RD_aeAvg_peripost_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD positively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop position error average]() -->
+<!-- ![Slice overlay image displaying ROIs with tracts that had AD negatively correlated with loop angular error  average]() -->
 
 <!-- <br> -->
 
-<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop position error average]() -->
+<!-- ![Glass Brain displaying tracts that had AD positively and negatively correlated with loop angular error  average]() -->
 
 <br><br><br><br><br><br><br><br>
 

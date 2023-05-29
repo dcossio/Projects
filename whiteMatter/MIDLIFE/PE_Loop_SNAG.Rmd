@@ -1,7 +1,7 @@
 ---
 title: "Loop position error"
 author: "Daniela Cossio"
-date: "5/8/2023"
+date: "5/28/2023"
 output:
    html_document: 
      toc: yes
@@ -72,6 +72,104 @@ for (row in 1:nrow(loop_subInfo)) {
 }
 }
 ```
+
+```{r Functions, echo=FALSE, message=FALSE, results='hide'}
+
+VarStats <- function(Data) {
+  
+  # Purpose of this function is to clean the data and then have it output the table i want
+  
+  # Data is the dataframe we want to clean up 
+  
+  # Cleaning  up the dataframe into a new df 
+  df <- Data %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+  
+  
+  return(
+  knitr::kable(df, row.names=F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "200px"))
+  
+}
+
+
+
+
+
+PrepforPlotting <- function(Data,Metric,Sex,LoopVar) {
+  # Purpose of this function is to clean the data without me having to copy and paste everything later. 
+  
+  # Data = raw unclean dataframe we want to clean up 
+  # Metric will be either MD or QA
+  # sex is either male or female
+  # Loop Var is either loop_pe_rad3_m or loop_pe_avg_m
+  
+  # Let's read in our data frame 
+  
+  # grab  ROIcolumn names 
+  colNames <- Data  %>% remove_empty("cols") %>%
+  filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
+  
+  
+  # Let's grab our sub info 
+  if (LoopVar ==  "loop_pe_rad3_m"){
+    subinfo <- loop_subInfo  %>% select(c("sex", "age_scan_years", LoopVar)) %>% na.omit()
+  }
+  else{
+     subinfo <- loop_subInfo %>% select(c("sex", "age_scan_years", LoopVar))
+  }
+
+    
+  # Let's grab our values 
+  if (Metric == "MD"){
+    Values <- Data %>% remove_empty("cols") %>% 
+     filter(str_detect(V1, c("mean_md"))) %>%
+   `colnames<-`(c("Subjects",colNames)) 
+  }
+  else{
+    Values <- Data %>%
+     remove_empty("cols") %>%
+      filter(str_detect(V1, c("mean_qa"))) %>% 
+      filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% 
+  `colnames<-`(c("Subjects",colNames)) 
+  }
+  
+  # now let's put this together 
+  ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
+  Values[,2:length(Values)] <- ConvToNum
+  
+  cleanedDF <- cbind(subinfo,Values) %>% filter(sex== Sex)
+  
+  return (cleanedDF)
+}
+
+  
+SexDiffDF <- function(maleDF,femaleDF){
+
+  maleROIS <- colnames(maleDF)
+  femaleROIS <- colnames(femaleDF)
+  ROIS <- intersect(maleROIS,femaleROIS)
+  
+  main_df <- maleDF %>% select(ROIS)
+  tempdf <- femaleDF %>% select(ROIS) 
+  main_df <-rbind(main_df,tempdf)
+
+  return(main_df)
+  
+}
+
+
+
+
+```
+
+
 
 ```{css, echo=FALSE}
 h1, h2 {
@@ -212,56 +310,17 @@ There are no significant differences in performance between men and women on the
 ## <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 
 ### QA {.tabset}
-```{r Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
-# ALL SUBS
-QA_peRad3_all_neg <- read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-QA_peRad3_all_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-# MEN
-QA_peRad3_male_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-# WOMEN
-QA_peRad3_female_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),) %>% na.omit()
-
-QA_peRad3_female_neg <- read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-############## EVERYTHING BELOW USES DELIMS BECAUSE THE EXTRACTS CSVS HAVE A TITLE THAT MAKES IT UNREADABLE FROM CSV"
-# PRE
-QA_peRad3_pre_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/pre/QA_pre_pos.csv'),header=FALSE, sep="\t") %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-QA_peRad3_pre_neg <- read.delim(paste0(working_dir,'/rad3/PE/QA/pre/QA_pre_neg.csv'),header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-
-
-##### did not reextract repo stages ######
-# PERI
-QA_peRad3_peri_neg <- read.csv(paste0(working_dir,'/rad3/PE/QA/peri/QA_peri_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-#POST
-#No results
-
-# Peri + POST
-QA_peRad3_peripost_pos <- read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() 
-
-QA_peRad3_peripost_neg <- read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() 
-
-```
-
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.077333)  </span>  
-```{r, echo=FALSE}
-knitr::kable(QA_peRad3_all_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+```{r, QA_peRad3_all_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.001964) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peRad3_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,QA_peRad3_all_pos,  echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -282,10 +341,8 @@ knitr::kable(QA_peRad3_all_neg, row.names=F)%>%
 
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR= 0.074986) </span>
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(QA_peRad3_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peRad3_male_pos,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br>
@@ -308,19 +365,15 @@ Not significant
 
 #### Women
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.076923)  </span>
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(QA_peRad3_female_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+```{r, QA_peRad3_female_pos,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000559)</span>
-```{r, echo=FALSE}
-knitr::kable(QA_peRad3_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peRad3_female_neg,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -344,18 +397,14 @@ knitr::kable(QA_peRad3_female_neg, row.names=F)%>%
 
 #### pre
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.035113)  </span>
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(QA_peRad3_pre_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peRad3_pre_pos,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/pre/QA_pre_pos.csv'),header=FALSE, sep="\t") %>% VarStats()
 ```
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations  (FDR = 0.009547) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peRad3_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peRad3_pre_neg ,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/QA/pre/QA_pre_neg.csv'),header=FALSE, sep="\t") %>% VarStats()
 ```
 <br><br> 
 
@@ -382,10 +431,8 @@ No Significant Findings
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.097716)</span>
-```{r, echo=FALSE}
-knitr::kable(QA_peRad3_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,QA_peRad3_peri_neg, echo=FALSE}
+read.csv(paste0(working_dir,'/rad3/PE/QA/peri/QA_peri_neg.csv'), header=FALSE) %>% VarStats()
 ```
 <br><br> 
 
@@ -409,19 +456,15 @@ knitr::kable(QA_peRad3_peri_neg, row.names=F)%>%
 
 #### Peri + Post
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.058838) </span>
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(QA_peRad3_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peRad3_peripost_pos ,echo=FALSE}
+read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_pos.csv'), header=FALSE) %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.103819)</span>
-```{r, echo=FALSE}
-knitr::kable(QA_peRad3_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,QA_peRad3_peripost_neg, echo=FALSE}
+read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE) %>% VarStats()
 ```
 
 <br><br> 
@@ -459,31 +502,60 @@ knitr::kable(QA_peRad3_peripost_neg, row.names=F)%>%
 
 <br><br><br><br>
 
-### MD {.tabset}
-```{r MD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
-# ALL SUBS
-MD_peRad3_all_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/allSubs/MD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()  %>% na.omit()
+#### Plots 
 
-# MEN
-MD_peRad3_male_pos <- read.delim(paste0(working_dir,'/rad3/PE/MD/male/MD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+```{r, Comparing Male positive vs Female Neg QA tracts}
 
-# WOMEN
-MD_peRad3_female_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/female/MD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
 
-# PRE
-MD_peRad3_pre_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/pre/MD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+# prepping the data 
+fem_csv <- read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_pos.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "QA",Sex = "female",LoopVar = "loop_pe_rad3_m")
 
-# PERI
-MD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/peri/MD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+male_csv <- read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "QA",Sex = "male",LoopVar = "loop_pe_rad3_m") 
 
-#POST
-MD_peRad3_post_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/post/MD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+scatterdf <- SexDiffDF(male_csv,fem_csv)
 
-# Peri + POST
-MD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+# Let's get out figures
 
+figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/SCatterplots/"
+ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
+
+# positive ROIS
+for (ROI in ROIcols) {
+  print(ROI)
+  y <-
+    scatterdf %>% ggplot(aes(x = .data[[ROI]], y = loop_pe_rad3_m)) +
+    geom_point(aes(color = sex), size = 4) +
+    stat_smooth(aes(color = sex, group = sex), method = "lm") +
+    scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
+                       name = "Position Error Rad3") +
+    labs(x = paste(ROI),
+         y = "Position Error ") +
+    stat_cor(method = "spearman", aes(
+      color = sex,
+      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
+    )) +
+    theme(
+      legend.position = "right",
+      axis.text.x = element_text(size = 15),
+      axis.text.y = element_text(size = 15),
+      panel.background = element_blank(),
+      axis.line = element_line(colour = "black"),
+      #legend.key.size = unit(2, 'cm'),
+      legend.title = element_text(size = 10),
+      legend.text = element_text(size = 10))
+      #plot.margin = margin(3, 2, 3, 2, "cm")) +
+    xlim(min(scatterdf[ROI]), max(scatterdf[ROI])) 
+# <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
+# <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
+  
+   pdf(file = paste0(figpath,ROI,"QA_Rad3_PE.pdf"),width=10, height=8)
+   print(y)
+   dev.off()
+}  
+  
 ```
 
+### MD {.tabset}
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
 
@@ -492,10 +564,8 @@ No significant results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000616)</span>
-```{r, echo=FALSE}
-knitr::kable(MD_peRad3_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+```{r, MD_peRad3_all_neg,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/allSubs/MD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -513,10 +583,8 @@ knitr::kable(MD_peRad3_all_neg, row.names=F)%>%
 
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.058621) </span>
-```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_peRad3_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "175px")
+```{r,MD_peRad3_male_pos, layout="l-body-outset",echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/male/MD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -546,10 +614,8 @@ No Significant Results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000443)</span>
-```{r, echo=FALSE}
-knitr::kable(MD_peRad3_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, MD_peRad3_female_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/female/MD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -573,10 +639,8 @@ No Significant Results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.044429)</span>
-```{r, echo=FALSE}
-knitr::kable(MD_peRad3_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peRad3_pre_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/pre/MD_pre_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -599,10 +663,8 @@ No Significant Results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.017058)</span>
-```{r, echo=FALSE}
-knitr::kable(MD_peRad3_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, MD_peRad3_peri_neg,echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/peri/MD_peri_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -626,10 +688,8 @@ No Significant Results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.064410)</span>
-```{r, echo=FALSE}
-knitr::kable(MD_peRad3_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peRad3_post_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/post/MD_post_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -653,10 +713,8 @@ No Significant Results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.161324)</span>
-```{r, echo=FALSE}
-knitr::kable(MD_peRad3_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peRad3_peripost_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% VarStats()
 ```
 
 <br><br> 
@@ -684,6 +742,60 @@ knitr::kable(MD_peRad3_peripost_neg, row.names=F)%>%
 
 
 <br><br><br><br><br><br> 
+
+
+
+#### Plots 
+
+```{r, Comparing Male positive vs Female Neg QA tracts}
+
+# prepping the data 
+fem_csv <- read.delim(paste0(working_dir,'/rad3/PE/MD/female/MD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "MD",Sex = "female",LoopVar = "loop_pe_rad3_m")
+
+male_csv <- read.delim(paste0(working_dir,'/rad3/PE/MD/male/MD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "MD",Sex = "male",LoopVar = "loop_pe_rad3_m") 
+
+scatterdf <- SexDiffDF(male_csv,fem_csv)
+
+# Let's get out figures
+
+figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/SCatterplots/"
+ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
+
+# positive ROIS
+for (ROI in ROIcols) {
+  print(ROI)
+  y <-
+    scatterdf %>% ggplot(aes(x = .data[[ROI]], y = loop_pe_rad3_m)) +
+    geom_point(aes(color = sex), size = 4) +
+    stat_smooth(aes(color = sex, group = sex), method = "lm") +
+    scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
+                       name = "Position Error Rad3") +
+    labs(x = paste(ROI),
+         y = "Position Error ") +
+    stat_cor(method = "spearman", aes(
+      color = sex,
+      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
+    )) +
+    theme(
+      legend.position = "right",
+      axis.text.x = element_text(size = 15),
+      axis.text.y = element_text(size = 15),
+      panel.background = element_blank(),
+      axis.line = element_line(colour = "black"),
+      #legend.key.size = unit(2, 'cm'),
+      legend.title = element_text(size = 10),
+      legend.text = element_text(size = 10))
+      #plot.margin = margin(3, 2, 3, 2, "cm")) +
+    xlim(min(scatterdf[ROI]), max(scatterdf[ROI])) 
+# <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
+# <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
+  
+   pdf(file = paste0(figpath,ROI,"MD_Rad3_PE.pdf"),width=10, height=8)
+   print(y)
+   dev.off()
+}  
+  
+```
 
 ### AD {.tabset}
 ```{r AD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
@@ -1175,159 +1287,18 @@ While women may be relying on regions such as corpus callosum, cingulum, fascicu
 
 ## <span style="color: PaleVioletRed;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
-```{r QA PE Average variables , echo=FALSE, results='hide',message=FALSE}
-
-## all subs ####
-
-QA_peAvg_all_pos <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-QA_peAvg_all_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-
-### Males ####
-QA_peAvg_male_pos <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-QA_peAvg_male_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-
-### Females#####
-QA_peAvg_female_pos <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-QA_peAvg_female_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-
-
-###PRE ####
-QA_peAvg_pre_pos <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/pre/QA_looPAvgPE_pre_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-QA_peAvg_pre_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/pre/QA_looPAvgPE_pre_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-
-
-
-### PERI ####
-QA_peAvg_peri_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/peri/QA_LoopAvgPE_peri_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-### POST ####
-QA_peAvg_post_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/post/QA_loopAvgPE_post_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-
-### PERI and POST ####
-QA_peAvg_peripost_pos <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/peri_post/QA_loopAvgPE_peripost_pos.csv'),     header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-
-QA_peAvg_peripost_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/QA/peri_post/QA_loopAvgPE_peripost_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-
-```
-
 #### All subjects
-
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.000547)  </span>  
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_all_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_all_pos, echo=FALSE}
+read.delim(paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.015697) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_all_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+
 ```
 
 <br><br> 
@@ -1349,19 +1320,17 @@ knitr::kable(QA_peAvg_all_neg, row.names=F)%>%
 #### Men
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.154305)  </span>  
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,QA_peAvg_male_pos,  echo=FALSE}
+
+read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.036522) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,  QA_loopAvgPE_male_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+
 ```
 
 <br><br> 
@@ -1383,19 +1352,17 @@ knitr::kable(QA_peAvg_male_neg, row.names=F)%>%
 #### Women
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.008475)  </span>  
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_female_pos, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000699) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_female_neg ,echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -1416,19 +1383,18 @@ knitr::kable(QA_peAvg_female_neg, row.names=F)%>%
 #### pre
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.041934)  </span>  
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_pre_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_pre_pos, echo=FALSE}
+
+read.delim(
+    paste0(working_dir,'/average/PE/QA/pre/QA_looPAvgPE_pre_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.007904) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_pre_neg, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/QA/pre/QA_looPAvgPE_pre_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -1454,10 +1420,9 @@ knitr::kable(QA_peAvg_pre_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.020944) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_peri_neg, echo=FALSE}
+read.delim(paste0(working_dir,'/average/PE/QA/peri/QA_LoopAvgPE_peri_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+
 ```
 
 <br><br> 
@@ -1481,10 +1446,9 @@ knitr::kable(QA_peAvg_peri_neg, row.names=F)%>%
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.140042) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_post_neg, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/QA/post/QA_loopAvgPE_post_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -1504,19 +1468,17 @@ knitr::kable(QA_peAvg_post_neg, row.names=F)%>%
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.000776)  </span>  
 
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,QA_peAvg_peripost_pos, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/QA/peri_post/QA_loopAvgPE_peripost_pos.csv'),     header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000529) </span>
-```{r, echo=FALSE}
-knitr::kable(QA_peAvg_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, QA_peAvg_peripost_neg , echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/QA/peri_post/QA_loopAvgPE_peripost_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -1535,252 +1497,70 @@ knitr::kable(QA_peAvg_peripost_neg, row.names=F)%>%
 <br><br><br><br><br><br>
 
 #### Summary 
+####Plots
+```{r, Comparing QA Male Neg and Female Negative position error}
 
-<br><br><br><br><br><br>
+# prepping the data 
+fem_csv <- read.delim(
+    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% PrepforPlotting(Metric = "QA",Sex ="female",LoopVar = "loop_pe_avg_m")
 
-<!-- #### Box plots -->
-<!-- ```{r QA positive cors men vs women,echo=FALSE, results='hide',message=FALSE} -->
-<!-- # Men positive and women negative LEts do fornix  #### -->
+male_csv <- read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t")  %>% PrepforPlotting(Metric = "QA",Sex = "male",LoopVar = "loop_pe_avg_m") 
 
-<!--  QA_peAvg_male_pos_cols <-  c("Subjects", as.character(QA_peAvg_male_pos[,1])) -->
-<!--  QA_peAvg_male_pos_values <-read.delim( -->
-<!--     paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>%  -->
-<!--       remove_empty("cols") %>% -->
-<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
-<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% -->
-<!--    `colnames<-`(QA_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male") -->
-<!-- #  -->
-<!--  # Reorder for my sanity check  -->
-<!--  QA_peAvg_male_pos_values <- QA_peAvg_male_pos_values[,c(1,12:14,2:11)] -->
-<!--  QA_peAvg_male_pos_gathercols <- colnames(QA_peAvg_male_pos_values[5:11]) -->
-<!-- #  -->
-<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
-<!--  QA_peAvg_male_pos_values[5:11] <- apply(QA_peAvg_male_pos_values[5:11],2, as.numeric)  -->
+scatterdf <- SexDiffDF(male_csv,fem_csv)
 
+# Let's get out figures
 
-<!--  ## FEmale Positive ##### -->
-<!--   QA_peAvg_female_pos_cols <-  c("Subjects", as.character(QA_peAvg_female_pos[,1])) -->
-<!--  QA_peAvg_female_pos_values <- read.delim( -->
-<!--     paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>%  -->
-<!--       remove_empty("cols") %>% -->
-<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
-<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% -->
-<!--    `colnames<-`(QA_peAvg_female_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female") -->
-<!-- #  -->
-<!--  # Reorder for my sanity check  -->
-<!--  QA_peAvg_female_pos_values <- QA_peAvg_female_pos_values[,c(1,4:6,2:3)] -->
-<!--  QA_peAvg_female_pos_gathercols <- colnames(QA_peAvg_female_pos_values[5:6]) -->
-<!-- #  -->
-<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
-<!--  QA_peAvg_female_pos_values[5:6] <- apply(QA_peAvg_female_pos_values[5:6],2, as.numeric)  -->
+figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/scatterplots/"
+ROIcols <- colnames(scatterdf[5])
 
-
-<!--  qa_sex_diff <- setdiff(QA_peAvg_male_pos_gathercols,QA_peAvg_female_pos_gathercols) %>% cbind(. ,setdiff(QA_peAvg_female_pos_gathercols,QA_peAvg_male_pos_gathercols)) -->
-
-
-<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/" -->
-
-<!-- QA_df <- QA_peAvg_male_pos_values[, names(QA_peAvg_male_pos_values) %in% names(QA_peAvg_female_pos_values)] -->
-<!-- QA_df <- rbind(QA_df,QA_peAvg_female_pos_values[, !names(QA_peAvg_female_pos_values) %in% qa_sex_diff]) -->
-
-
-
-<!-- for (ROI in colnames(QA_df[5:6])) { -->
-<!--   print(ROI) -->
-<!--   y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) + -->
-<!--       geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) + -->
-<!--       geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) + -->
-<!--       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) + -->
-<!--        stat_boxplot(geom = "errorbar", -->
-<!--                width = 0.15) + -->
-<!--       labs(x= "Sex", y= " QA", title =paste0(ROI) ) + -->
-<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
-<!--             axis.title.y = element_text(vjust=8, size = 16), -->
-<!--             axis.text.x = element_text(size = 12), -->
-<!--             axis.text.y = element_text(size = 12), -->
-<!--             panel.background =element_blank(), -->
-<!--             axis.line = element_line(colour = "black"), -->
-<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
-<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
-
-
-<!--     png(file = paste0(figpath,ROI,"_pos_QA.png"))  #,".png")) -->
-<!--     print(y) -->
-<!--     dev.off() -->
-<!-- } -->
-
-<!-- ``` -->
-```{r QA negative cors men vs women,echo=FALSE, results='hide',message=FALSE}
-
-figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/"
-
- QA_peAvg_male_neg_cols <-  c("Subjects", as.character(QA_peAvg_male_neg[,1]))
- QA_peAvg_male_neg_values <-read.delim(
-    paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_peAvg_male_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male")
-# 
- # Reorder for my sanity check 
- QA_peAvg_male_neg_values <- QA_peAvg_male_neg_values[,c(1,7:9,2:6)]
- QA_peAvg_male_neg_gathercols <- colnames(QA_peAvg_male_neg_values[5:9])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- QA_peAvg_male_neg_values[5:9] <- apply(QA_peAvg_male_neg_values[5:9],2, as.numeric) 
- 
- 
- ## FEmale Positive #####
- QA_peAvg_female_neg_cols <-  c("Subjects", as.character(QA_peAvg_female_neg[,1]))
- QA_peAvg_female_neg_values <-read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-   `colnames<-`(QA_peAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female")
-# 
- # Reorder for my sanity check 
- QA_peAvg_female_neg_values <- QA_peAvg_female_neg_values[,c(1,10:12,2:9)]
- QA_peAvg_female_neg_gathercols <- colnames(QA_peAvg_female_neg_values[5:12])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- QA_peAvg_female_neg_values[5:12] <- apply(QA_peAvg_female_neg_values[5:12],2, as.numeric) 
-
-QA_neg_df <- QA_peAvg_male_neg_values[, names(QA_peAvg_male_neg_values) %in% names(QA_peAvg_female_neg_values)] %>% rbind(QA_peAvg_female_neg_values[, names(QA_peAvg_female_neg_values) %in% names(QA_peAvg_male_neg_values)])
-
-
-  qa_neg <- ggplot(QA_neg_df, aes(x=sex, y=.data$Corpus_Callosum_Tapetum, group=sex)) +
-      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
-      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
-      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-       stat_boxplot(geom = "errorbar",
-               width = 0.15) +
-      labs(x= "Sex", y= " QA", title ="Corpus Callosum Tapetum" ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-
-
-    png(file = paste0(figpath,"Corpus_Callosum_Tapetum_neg_QA.png"))  #,".png"))
-    print(qa_neg)
-    dev.off()
-
-
+# positive ROIS
+  y <-
+    scatterdf %>% ggplot(aes(x = Corpus_Callosum_Tapetum, y = loop_pe_avg_m)) +
+    geom_point(aes(color = sex), size = 4) +
+    stat_smooth(aes(color = sex, group = sex), method = "lm") +
+    scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
+                       name = "Position Error Average") +
+    labs(x = paste(ROIcols),
+         y = "Position Error ") +
+    stat_cor(method = "spearman", aes(
+      color = sex,
+      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
+    )) +
+    theme(
+      legend.position = "right",
+      axis.text.x = element_text(size = 15),
+      axis.text.y = element_text(size = 15),
+      panel.background = element_blank(),
+      axis.line = element_line(colour = "black"),
+      #legend.key.size = unit(2, 'cm'),
+      legend.title = element_text(size = 10),
+      legend.text = element_text(size = 10))
+      #plot.margin = margin(3, 2, 3, 2, "cm")) +
+    xlim(min(scatterdf$Corpus_Callosum_Tapetum), max(scatterdf$Corpus_Callosum_Tapetum)) 
+# <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
+# <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
+  
+   pdf(file = paste0(figpath,ROI,"QA_Avg_PE.pdf"),width=10, height=8)
+   print(y)
+   dev.off()
+  
 ```
-
-```{r QA Correlations positive male and }
-
-```
-
+<br><br><br><br>
 
 ### MD {.tabset}
-
-```{r MD PE Average variables , echo=FALSE, results='hide',message=FALSE}
-
-## all subs ####
-
-MD_peAvg_all_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/allSubs/avg_MD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-
-
-### Males ####
-MD_peAvg_male_pos <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-
-
-### Females#####
-MD_peAvg_female_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-
-###PRE ####
-MD_peAvg_pre_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/pre/avg_MD_pe_pre_neg.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-### PERI ####
-MD_peAvg_peri_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/peri/avg_MD_pe_peri_neg.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-
-
-### POST ####
-MD_peAvg_post_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/post/avg_MD_pe_post_neg.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-### PERI and POST ####
-MD_peAvg_peripost_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/MD/peri_post/avg_MD_pe_peri+post_neg.csv'), header = FALSE, sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>%
-          t() %>%
-            `colnames<-`(rows2grab) %>%
-                `[`(-c(1),) %>%
-                    as.data.frame()
-```
-
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.997701)  </span>  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019688	) </span>
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, MD_peAvg_all_neg,echo=FALSE}
+read.delim(paste0(working_dir,'/average/PE/MD/allSubs/avg_MD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Magenta;"> Figures </span>
-
-<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with loop position error average]() -->
-
-<!-- <br> -->
 
 ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with loop position error average](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/allSubs/loop_avg_PE_md_all_neg_ax.png)
 
@@ -1793,10 +1573,9 @@ knitr::kable(MD_peAvg_all_neg, row.names=F)%>%
 #### Men
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.022854	)  </span>  
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, MD_peAvg_male_pos,echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 
 <br><br> 
@@ -1826,10 +1605,9 @@ no significant tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000576	) </span>
 
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r, MD_peAvg_female_neg, echo=FALSE}
+ read.delim(
+    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 <br><br> 
 
@@ -1852,10 +1630,9 @@ no significant tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.033976) </span>
 
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peAvg_pre_neg, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/MD/pre/avg_MD_pe_pre_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 <br><br> 
 
@@ -1879,10 +1656,10 @@ no significant tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016885) </span>
 
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peAvg_peri_neg, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/MD/peri/avg_MD_pe_peri_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+
 ```
 <br><br> 
 
@@ -1906,10 +1683,9 @@ no significant tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.081145) </span>
 
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peAvg_post_neg, echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/MD/post/avg_MD_pe_post_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 <br><br> 
 
@@ -1934,10 +1710,9 @@ no significant tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.050080) </span>
 
-```{r, echo=FALSE}
-knitr::kable(MD_peAvg_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+```{r,MD_peAvg_peripost_neg , echo=FALSE}
+read.delim(
+    paste0(working_dir,'/average/PE/MD/peri_post/avg_MD_pe_peri+post_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
 ```
 <br><br> 
 
@@ -1954,117 +1729,66 @@ knitr::kable(MD_peAvg_peripost_neg, row.names=F)%>%
 
 #### Summary 
 
-<br><br><br><br><br><br>
+<br><br><br>
 
-<!-- #### Box plots -->
+#### Scatter Plots
 
-<!-- ```{r MD  men vs women,echo=FALSE, results='hide',message=FALSE} -->
+Men and women have the following tracts in common for MD
+- Fornix L
+- Fornix R
+- Thalamic Radiation Superior L
 
-<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/" -->
+For men there is a positive association and for women there is a negative association
+```{r, Comparing MD Average Male pos and Female Negative}
 
-<!--  MD_peAvg_male_pos_cols <-  c("Subjects", as.character(MD_peAvg_male_pos[,1])) -->
-<!--  MD_peAvg_male_pos_values <- read.delim( -->
-<!--     paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>%  -->
-<!--       remove_empty("cols") %>% -->
-<!--   filter(str_detect(V1, c("mean_md"))) %>% -->
-<!--    `colnames<-`(MD_peAvg_male_pos_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="male") -->
-<!-- #  -->
-<!--  # Reorder for my sanity check  -->
-<!--  MD_peAvg_male_pos_values <- MD_peAvg_male_pos_values[,c(1,16:18,2:15)] -->
-<!--  MD_peAvg_male_pos_gathercols <- colnames(MD_peAvg_male_pos_values[5:18]) -->
-<!-- #  -->
-<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
-<!--  MD_peAvg_male_pos_values[5:18] <- apply(MD_peAvg_male_pos_values[5:18],2, as.numeric)  -->
+# prepping the data 
+fem_csv <- read.delim(
+    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% PrepforPlotting(Metric = "MD",Sex ="female",LoopVar = "loop_pe_avg_m")
 
+male_csv <- read.delim(paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>% PrepforPlotting(Metric = "MD",Sex = "male",LoopVar = "loop_pe_avg_m") 
 
-<!--  ## FEmale Positive ##### -->
+scatterdf <- SexDiffDF(male_csv,fem_csv)
 
-<!--  MD_peAvg_female_neg_cols <-  c("Subjects", as.character(MD_peAvg_female_neg[,1])) -->
-<!--   MD_peAvg_female_neg_values <-read.delim( -->
-<!--     paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>%  -->
-<!--       remove_empty("cols") %>% -->
-<!--   filter(str_detect(V1, c("mean_md"))) %>% -->
-<!--    `colnames<-`(MD_peAvg_female_neg_cols) %>% cbind(loop_subInfo[,c("sex", "age_scan_years","loop_pe_avg_m")]) %>% filter(sex=="female") -->
-<!-- #  -->
-<!--  # Reorder for my sanity check  -->
-<!--  MD_peAvg_female_neg_values <- MD_peAvg_female_neg_values[,c(1,16:18,2:15)] -->
-<!--  MD_peAvg_female_neg_gathercols <- colnames(MD_peAvg_female_neg_values[5:18]) -->
-<!-- #  -->
-<!-- # # for some reason things are being read as a a character and it needs to be a numerical value -->
-<!--  MD_peAvg_female_neg_values[5:18] <- apply(MD_peAvg_female_neg_values[5:18],2, as.numeric)  -->
-<!-- #  -->
-<!-- MD_df <- MD_peAvg_male_pos_values[, names(MD_peAvg_male_pos_values) %in% names(MD_peAvg_female_neg_values)] %>% rbind(MD_peAvg_female_neg_values[, names(MD_peAvg_female_neg_values) %in% names(MD_peAvg_male_pos_values)]) -->
+# Let's get out figures
 
-<!-- for (ROI in colnames(MD_df[5:14])) { -->
-<!--   print(ROI) -->
-<!--   md_neg <- ggplot(MD_df, aes(x=sex, y=.data[[ROI]], group=sex)) + -->
-<!--       geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) + -->
-<!--       geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) + -->
-<!--       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) + -->
-<!--        stat_boxplot(geom = "errorbar", -->
-<!--                width = 0.15) + -->
-<!--       labs(x= "Sex", y= " MD", title =paste0(ROI) ) + -->
-<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
-<!--             axis.title.y = element_text(vjust=8, size = 16), -->
-<!--             axis.text.x = element_text(size = 12), -->
-<!--             axis.text.y = element_text(size = 12), -->
-<!--             panel.background =element_blank(), -->
-<!--             axis.line = element_line(colour = "black"), -->
-<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
-<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/scatterplots/"
+ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
 
+# positive ROIS
+  for (ROI in ROIcols) {
+  print(ROI)
+  y <-
+    scatterdf %>% ggplot(aes(x = .data[[ROI]], y = loop_pe_avg_m)) +
+    geom_point(aes(color = sex), size = 4) +
+    stat_smooth(aes(color = sex, group = sex), method = "lm") +
+    scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
+                       name = "Position Error Average") +
+    labs(x = paste(ROI),
+         y = "Position Error ") +
+    stat_cor(method = "spearman", aes(
+      color = sex,
+      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
+    )) +
+    theme(
+      legend.position = "right",
+      axis.text.x = element_text(size = 15),
+      axis.text.y = element_text(size = 15),
+      panel.background = element_blank(),
+      axis.line = element_line(colour = "black"),
+      #legend.key.size = unit(2, 'cm'),
+      legend.title = element_text(size = 10),
+      legend.text = element_text(size = 10))
+      #plot.margin = margin(3, 2, 3, 2, "cm")) +
+    xlim(min(scatterdf[ROI]), max(scatterdf[ROI])) 
+# <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
+# <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
+  
+   pdf(file = paste0(figpath,ROI,"MD_Average_PE.pdf"),width=10, height=8)
+   print(y)
+   dev.off()
+}  
+```
 
-<!--     png(file = paste0(figpath,ROI,"_MD.png")) -->
-<!--     print(md_neg) -->
-<!--     dev.off() -->
-
-<!-- } -->
-<!-- ``` -->
-
-<!-- ```{r MD men vs correlations} -->
-
-<!-- MD_df<- MD_df %>% mutate(sex_bin = MD_df$sex) -->
-
-<!-- for (row in 1:nrow(MD_df)) { -->
-<!--   if (MD_df[row,c("sex_bin")] == "female") { -->
-<!--   MD_df[row,c("sex_bin")] <- 0 -->
-<!-- } else { -->
-<!--      MD_df[row,c("sex_bin")] <- 1 -->
-<!-- } -->
-<!-- } -->
-
-<!-- model <- lm(loop_pe_avg_m ~ Fornix_L + sex, data = MD_df) -->
-
-<!-- summary(model) -->
-
-<!-- figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/" -->
-
-<!-- pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"),width=10, height=8)  #ROI,".png")) -->
-<!--   ggplot(data = MD_df, aes(x =Fornix_L, y = loop_pe_avg_m, color=factor(sex))) + -->
-<!--      geom_point()+ -->
-<!--     stat_smooth(method="lm",se=FALSE)+ -->
-<!--     scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") + -->
-<!--    labs( -->
-<!--         x = "Fornix L", -->
-<!--         y = "Position Error") + -->
-<!--   theme(legend.position = "right",   -->
-<!--          axis.title.x = element_blank(), -->
-<!--          axis.title.y = element_blank(), -->
-<!--          axis.text.x = element_text(size = 25), -->
-<!--          axis.text.y = element_text(size = 25), -->
-<!--          panel.background =element_blank(), -->
-<!--          axis.line = element_line(colour = "black"), -->
-<!--          legend.key.size = unit(2, 'cm'), -->
-<!--          legend.title = element_text(size=18), #change legend title font size -->
-<!--          legend.text = element_text(size=18), -->
-<!--          plot.margin = margin(3, 2, 3, 2, "cm")) + -->
-<!--     xlim(0.5,2)  + -->
-<!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + -->
-<!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)  -->
-<!--  dev.off()  -->
-
-
-<!-- ``` -->
 
 ### AD {.tabset}
 
