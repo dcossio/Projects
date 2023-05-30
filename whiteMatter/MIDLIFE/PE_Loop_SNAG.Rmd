@@ -58,7 +58,8 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
 
 
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop"
+Rad3_work_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/"
+Avg_work_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
@@ -308,19 +309,30 @@ There are no significant differences in performance between men and women on the
 
 # Results
 ## <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
+```{r,reading all QA rad3 CSVs, echo=FALSE}
+Rad3_QA_all_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_pos.csv'), header=FALSE, sep="\t")
+Rad3_QA_all_neg <-read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_neg.csv'), header=FALSE, sep="\t")
+
+Rad3_QA_male_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t")
+
+Rad3_QA_female_pos <-
+
+
+
+```  
 
 ### QA {.tabset}
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.077333)  </span>  
 ```{r, QA_peRad3_all_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+ %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.001964) </span>
 ```{r,QA_peRad3_all_pos,  echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
+ %>% VarStats()
 ```
 
 <br><br> 
@@ -342,7 +354,7 @@ read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_pos.csv'), he
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR= 0.074986) </span>
 ```{r, QA_peRad3_male_pos,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
+ %>% VarStats()
 ```
 
 <br><br>
