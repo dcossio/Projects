@@ -597,68 +597,80 @@ for (ROI in ROIcols) {
 # Tractography working dir
 tract_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography"
 
-AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester"))
+AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27")))
 
 AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
 
 AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 
-ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
-subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
-
-QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
-MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
-
-for(sub in 1:length(subfiles)){
-  
-   print(paste("running subject",sub))
-  
-  md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
-  md_df[,1] <- subfiles[sub]    
-  
-  qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
-  qa_df[,1] <- subfiles[sub]    
-  
-  for ( roi in 1:nrow(ROIS)){
-    
-  print(paste("running ",ROIS[roi,1]))
-  
-    # Check if CSV exists 
-    CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv")
-    
-    if (file.exists(CSV_path) == TRUE){
-      
-      print("File Exists lets read it in")
-      ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md"))
-      qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2)
-      md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2)
-    }
-    else{
-      print("File does not exist. Add NA instead")
-      
-      qa_df[,roi+1] <- NA
-      md_df[,roi+1] <- NA
-      
-    }
-    
-  }
-  
-  QA_master_DF[sub,] <- qa_df[1,]
-  MD_master_DF[sub,] <- md_df[1,]
-}
-
-colnames(QA_master_DF) <- c("subjects",ROIS$V1)
-colnames(MD_master_DF) <- c("subjects",ROIS$V1)
+ ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
+ 
+ # Below is the combining and merging code. I exported as cvs so i wont re run it again
+# subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE) 
+# 
+# QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+# MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+# 
+# for(sub in 1:length(subfiles)){
+#   
+#    print(paste("running subject",subfiles[sub]))
+#   
+#   md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
+#   md_df[,1] <- subfiles[sub]    
+#   
+#   qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
+#   qa_df[,1] <- subfiles[sub]    
+#   
+#   for ( roi in 1:nrow(ROIS)){
+#     
+#   print(paste("running ",ROIS[roi,1]))
+#   
+#     # Check if CSV exists 
+#     CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv")
+#     
+#     if (file.exists(CSV_path) == TRUE){
+#       
+#       print("File Exists lets read it in")
+#       ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md"))
+#       qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2)
+#       md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2)
+#     }
+#     else{
+#       print("File does not exist. Add NA instead")
+#       
+#       qa_df[,roi+1] <- NA
+#       md_df[,roi+1] <- NA
+#       
+#     }
+#     
+#   }
+#   
+#   QA_master_DF[sub,] <- qa_df[1,]
+#   MD_master_DF[sub,] <- md_df[1,]
+# }
+# 
+# colnames(QA_master_DF) <- c("subjects",ROIS$V1)
+# colnames(MD_master_DF) <- c("subjects",ROIS$V1)
+# 
+# QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
+# 
+# MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
+# 
+# write.csv(QA_master_DF, paste0(tract_workdir,"/QA_master_DF.csv"), row.names=FALSE)
+# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
 
 ```
 
 ```{r QA }
 
+QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-026", "sub-027")))
+MD_master_DF<- read.csv(paste0(tract_workdir,"/QA_master_DF.csv"))%>% filter(!(subjects %in% c("sub-026", "sub-027")))
+
 QA_scans <- QA_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
 
 for (ROI in 2:nrow(ROIS)) {
   print(ROI)
-  roiname <- str_split_1(ROIS[ROI,1], '_') %>% paste(collapse=' ')
+  roiname <- stringr::str_split_1(ROIS[ROI,1], '_') %>% paste(collapse=' ')
   y <- ROIS[ROI,1]
   
   QAplot <- QA_scans %>%
