@@ -58,8 +58,9 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
 
 
-Rad3_work_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/"
-Avg_work_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average"
+Rad3_work_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/"
+
+Avg_work_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
@@ -310,29 +311,39 @@ There are no significant differences in performance between men and women on the
 # Results
 ## <span style="color: PaleVioletRed;"> Loop Position Error Rad3 </span>  {.tabset .tabset-dropdown}
 ```{r,reading all QA rad3 CSVs, echo=FALSE}
-Rad3_QA_all_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_pos.csv'), header=FALSE, sep="\t")
-Rad3_QA_all_neg <-read.delim(paste0(working_dir,'/rad3/PE/QA/allSubs/QA_loopRad3_all_neg.csv'), header=FALSE, sep="\t")
 
-Rad3_QA_male_pos <- read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t")
+Rad3_QA_all_pos <- read.delim(paste0(Rad3_work_dir,'QA/allSubs/QA_loopRad3_all_pos.csv'), header=FALSE, sep="\t")
 
-Rad3_QA_female_pos <-
+Rad3_QA_all_neg <-read.delim(paste0(Rad3_work_dir,'QA/allSubs/QA_loopRad3_all_neg.csv'), header=FALSE, sep="\t")
 
+Rad3_QA_male_pos <- read.delim(paste0(Rad3_work_dir,'QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t")
 
+Rad3_QA_female_pos <-read.delim(paste0(Rad3_work_dir,'QA/female/QA_loopRad3_female_pos.csv'), header=FALSE, sep="\t")
+
+Rad3_QA_female_neg <- read.delim(paste0(Rad3_work_dir,'QA/female/QA_loopRad3_female_neg.csv'), header=FALSE, sep="\t") 
+
+Rad3_QA_pre_pos <- read.delim(paste0(Rad3_work_dir,'QA/pre/QA_pre_pos.csv'),header=FALSE, sep="\t") 
+Rad3_QA_pre_neg<- read.delim(paste0(Rad3_work_dir,'QA/pre/QA_pre_neg.csv'),header=FALSE, sep="\t") 
+
+Rad3_QA_peri_neg<-read.csv(paste0(Rad3_work_dir,'QA/peri/QA_peri_neg.csv'), header=FALSE)
+
+Rad3_QA_peripost_pos <-read.csv(paste0(Rad3_work_dir,'QA/peripost/QA_peri+post_pos.csv'), header=FALSE)
+Rad3_QA_peripost_neg <- read.csv(paste0(Rad3_work_dir,'QA/peripost/QA_peri+post_neg.csv'), header=FALSE)
 
 ```  
 
 ### QA {.tabset}
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.077333)  </span>  
-```{r, QA_peRad3_all_neg, echo=FALSE}
- %>% VarStats()
+```{r, echo=FALSE}
+ Rad3_QA_all_pos%>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.001964) </span>
-```{r,QA_peRad3_all_pos,  echo=FALSE}
- %>% VarStats()
+```{r, echo=FALSE}
+Rad3_QA_all_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -354,7 +365,7 @@ Rad3_QA_female_pos <-
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR= 0.074986) </span>
 ```{r, QA_peRad3_male_pos,echo=FALSE}
- %>% VarStats()
+ Rad3_QA_male_pos%>% VarStats()
 ```
 
 <br><br>
@@ -377,15 +388,15 @@ Not significant
 
 #### Women
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.076923)  </span>
-```{r, QA_peRad3_female_pos,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
+```{r,echo=FALSE}
+Rad3_QA_female_pos %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000559)</span>
 ```{r, QA_peRad3_female_neg,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+Rad3_QA_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -410,13 +421,13 @@ read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_neg.csv'), 
 #### pre
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.035113)  </span>
 ```{r, QA_peRad3_pre_pos,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/pre/QA_pre_pos.csv'),header=FALSE, sep="\t") %>% VarStats()
+Rad3_QA_pre_pos %>% VarStats()
 ```
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations  (FDR = 0.009547) </span>
 ```{r, QA_peRad3_pre_neg ,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/QA/pre/QA_pre_neg.csv'),header=FALSE, sep="\t") %>% VarStats()
+Rad3_QA_pre_neg %>% VarStats()
 ```
 <br><br> 
 
@@ -444,7 +455,7 @@ No Significant Findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.097716)</span>
 ```{r,QA_peRad3_peri_neg, echo=FALSE}
-read.csv(paste0(working_dir,'/rad3/PE/QA/peri/QA_peri_neg.csv'), header=FALSE) %>% VarStats()
+ Rad3_QA_peri_neg %>% VarStats()
 ```
 <br><br> 
 
@@ -469,14 +480,14 @@ read.csv(paste0(working_dir,'/rad3/PE/QA/peri/QA_peri_neg.csv'), header=FALSE) %
 #### Peri + Post
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.058838) </span>
 ```{r, QA_peRad3_peripost_pos ,echo=FALSE}
-read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_pos.csv'), header=FALSE) %>% VarStats()
+ Rad3_QA_peripost_pos %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.103819)</span>
 ```{r,QA_peRad3_peripost_neg, echo=FALSE}
-read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_neg.csv'), header=FALSE) %>% VarStats()
+ Rad3_QA_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -516,47 +527,60 @@ read.csv(paste0(working_dir,'/rad3/PE/QA/peripost/QA_peri+post_neg.csv'), header
 
 #### Plots 
 
-```{r, Comparing Male positive vs Female Neg QA tracts}
-
+```{r, Comparing Male positive vs Female Neg All QA tracts}
 
 # prepping the data 
-fem_csv <- read.delim(paste0(working_dir,'/rad3/PE/QA/female/QA_loopRad3_female_pos.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "QA",Sex = "female",LoopVar = "loop_pe_rad3_m")
+fem_csv <- Rad3_QA_female_neg %>% PrepforPlotting(Metric = "QA",Sex = "female",LoopVar = "loop_pe_rad3_m")
 
-male_csv <- read.delim(paste0(working_dir,'/rad3/PE/QA/male/QA_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "QA",Sex = "male",LoopVar = "loop_pe_rad3_m") 
+male_csv <- Rad3_QA_male_pos %>% PrepforPlotting(Metric = "QA",Sex = "male",LoopVar = "loop_pe_rad3_m") 
 
 scatterdf <- SexDiffDF(male_csv,fem_csv)
 
 # Let's get out figures
 
-figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/QA/SCatterplots/"
+figpath <-paste0(Rad3_work_dir,"QA/SCatterplots/")
+
 ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
 
 # positive ROIS
 for (ROI in ROIcols) {
   print(ROI)
+  
+  roiname <- str_split_1(ROI, '_') %>% paste(collapse=' ')
   y <-
     scatterdf %>% ggplot(aes(x = .data[[ROI]], y = loop_pe_rad3_m)) +
     geom_point(aes(color = sex), size = 4) +
     stat_smooth(aes(color = sex, group = sex), method = "lm") +
     scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
-                       name = "Position Error Rad3") +
-    labs(x = paste(ROI),
-         y = "Position Error ") +
-    stat_cor(method = "spearman", aes(
+                       name = "sex") +
+    labs(x = "QA",
+         y = "Position Error ",
+         title = roiname) +
+    stat_cor(method = "spearman", label.y.npc='top', 
+      label.x.npc = 'center', aes(
       color = sex,
-      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
-    )) +
+      label = paste(..r.label.., ..p.label.., sep = "~`,`~")
+     )) +
     theme(
-      legend.position = "right",
-      axis.text.x = element_text(size = 15),
-      axis.text.y = element_text(size = 15),
+       strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      axis.title.x = element_text(size = 16),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 16),
+      plot.title = element_text(hjust = 0.5,size=16),
       panel.background = element_blank(),
       axis.line = element_line(colour = "black"),
-      #legend.key.size = unit(2, 'cm'),
-      legend.title = element_text(size = 10),
-      legend.text = element_text(size = 10))
-      #plot.margin = margin(3, 2, 3, 2, "cm")) +
-    xlim(min(scatterdf[ROI]), max(scatterdf[ROI])) 
+    ) +
+    xlim(min(scatterdf[ROI]), max(scatterdf[ROI]))
 # <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
 # <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
   
@@ -568,6 +592,24 @@ for (ROI in ROIcols) {
 ```
 
 ### MD {.tabset}
+```{r,reading all MD rad3 CSVs, echo=FALSE}
+
+Rad3_MD_all_neg <- read.delim(paste0(Rad3_work_dir,'MD/allSubs/MD_loopRad3_all_neg.csv'), header=FALSE, sep="\t")
+
+Rad3_MD_male_pos <- read.delim(paste0(Rad3_work_dir,'MD/male/MD_loopRad3_male_pos.csv'), header=FALSE, sep="\t")
+
+Rad3_MD_female_neg <-read.delim(paste0(Rad3_work_dir,'MD/female/MD_loopRad3_female_neg.csv'), header=FALSE, sep="\t")
+
+Rad3_MD_pre_neg<- read.delim(paste0(Rad3_work_dir,'MD/pre/MD_pre_neg.csv'),header=FALSE, sep="\t")
+
+Rad3_MD_peri_neg<-read.csv(paste0(Rad3_work_dir,'MD/peri/MD_peri_neg.csv'), header=FALSE)
+
+Rad3_MD_post_neg<-read.delim(paste0(Rad3_work_dir,'MD/post/MD_post_neg.csv'), header=FALSE, sep="\t")
+
+Rad3_MD_peripost_neg <- read.csv(paste0(Rad3_work_dir,'MD/peripost/MD_peri+post_neg.csv'), header=FALSE)
+
+```  
+
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 1.000000) </span>
 
@@ -576,8 +618,8 @@ No significant results
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000616)</span>
-```{r, MD_peRad3_all_neg,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/allSubs/MD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+```{r,echo=FALSE}
+Rad3_MD_all_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -595,8 +637,8 @@ read.delim(paste0(working_dir,'/rad3/PE/MD/allSubs/MD_loopRad3_all_neg.csv'), he
 
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.058621) </span>
-```{r,MD_peRad3_male_pos, layout="l-body-outset",echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/male/MD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% VarStats()
+```{r, layout="l-body-outset",echo=FALSE}
+Rad3_MD_male_pos %>% VarStats()
 ```
 
 <br><br> 
@@ -627,7 +669,7 @@ No Significant Results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000443)</span>
 ```{r, MD_peRad3_female_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/female/MD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+Rad3_MD_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -652,7 +694,7 @@ No Significant Results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.044429)</span>
 ```{r,MD_peRad3_pre_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/pre/MD_pre_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+Rad3_MD_pre_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -676,7 +718,7 @@ No Significant Results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.017058)</span>
 ```{r, MD_peRad3_peri_neg,echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/peri/MD_peri_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+Rad3_MD_peri_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -701,7 +743,7 @@ No Significant Results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.064410)</span>
 ```{r,MD_peRad3_post_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/post/MD_post_neg.csv'), header=FALSE, sep="\t") %>% VarStats()
+ Rad3_MD_post_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -726,7 +768,7 @@ No Significant Results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.161324)</span>
 ```{r,MD_peRad3_peripost_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% VarStats()
+Rad3_MD_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -758,47 +800,60 @@ read.delim(paste0(working_dir,'/rad3/PE/MD/peripost/MD_peri+post_neg.csv'), head
 
 
 #### Plots 
-
-```{r, Comparing Male positive vs Female Neg QA tracts}
+```{r, Comparing Male positive vs Female Neg MD tracts}
 
 # prepping the data 
-fem_csv <- read.delim(paste0(working_dir,'/rad3/PE/MD/female/MD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "MD",Sex = "female",LoopVar = "loop_pe_rad3_m")
+fem_csv <- Rad3_MD_female_neg %>% PrepforPlotting(Metric = "MD",Sex = "female",LoopVar = "loop_pe_rad3_m")
 
-male_csv <- read.delim(paste0(working_dir,'/rad3/PE/MD/male/MD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>% PrepforPlotting(Metric = "MD",Sex = "male",LoopVar = "loop_pe_rad3_m") 
+male_csv <- Rad3_MD_male_pos %>% PrepforPlotting(Metric = "MD",Sex = "male",LoopVar = "loop_pe_rad3_m") 
 
 scatterdf <- SexDiffDF(male_csv,fem_csv)
 
 # Let's get out figures
 
-figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/rad3/PE/MD/SCatterplots/"
+figpath <-paste0(Rad3_work_dir,"MD/scatterplots/")
+
 ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
 
 # positive ROIS
 for (ROI in ROIcols) {
   print(ROI)
+  
+  roiname <- str_split_1(ROI, '_') %>% paste(collapse=' ')
   y <-
     scatterdf %>% ggplot(aes(x = .data[[ROI]], y = loop_pe_rad3_m)) +
     geom_point(aes(color = sex), size = 4) +
     stat_smooth(aes(color = sex, group = sex), method = "lm") +
     scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
-                       name = "Position Error Rad3") +
-    labs(x = paste(ROI),
-         y = "Position Error ") +
-    stat_cor(method = "spearman", aes(
+                       name = "sex") +
+    labs(x = "MD",
+         y = "Position Error ",
+         title = roiname) +
+    stat_cor(method = "spearman", label.y.npc='top', 
+      label.x.npc = 'center', aes(
       color = sex,
-      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
-    )) +
+      label = paste(..r.label.., ..p.label.., sep = "~`,`~")
+     )) +
     theme(
-      legend.position = "right",
-      axis.text.x = element_text(size = 15),
-      axis.text.y = element_text(size = 15),
+       strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      axis.title.x = element_text(size = 16),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 16),
+      plot.title = element_text(hjust = 0.5,size=16),
       panel.background = element_blank(),
       axis.line = element_line(colour = "black"),
-      #legend.key.size = unit(2, 'cm'),
-      legend.title = element_text(size = 10),
-      legend.text = element_text(size = 10))
-      #plot.margin = margin(3, 2, 3, 2, "cm")) +
-    xlim(min(scatterdf[ROI]), max(scatterdf[ROI])) 
+    ) +
+    xlim(min(scatterdf[ROI]), max(scatterdf[ROI]))
 # <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
 # <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
   
@@ -812,47 +867,45 @@ for (ROI in ROIcols) {
 ### AD {.tabset}
 ```{r AD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
 # ALL SUBS
-AD_peRad3_all_pos <- read.delim(paste0(working_dir,'/rad3/PE/AD/allSubs/AD_loopRad3_all_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+Rad3_AD_all_pos <- read.delim(paste0(Rad3_work_dir,'AD/allSubs/AD_loopRad3_all_pos.csv'), header=FALSE, sep="\t") 
 
-AD_peRad3_all_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/allSubs/AD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_AD_all_neg <- read.delim(paste0(Rad3_work_dir,'AD/allSubs/AD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") 
+  
 
 # MEN
-AD_peRad3_male_pos <- read.delim(paste0(working_dir,'/rad3/PE/AD/male/AD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-AD_peRad3_male_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/male/AD_loopRad3_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
+Rad3_AD_male_pos <- read.delim(paste0(Rad3_work_dir,'AD/male/AD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") 
+  
+Rad3_AD_male_neg <- read.delim(paste0(Rad3_work_dir,'AD/male/AD_loopRad3_male_neg.csv'), header=FALSE, sep="\t")
 # WOMEN
 
-AD_peRad3_female_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/female/AD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_AD_female_neg <- read.delim(paste0(Rad3_work_dir,'AD/female/AD_loopRad3_female_neg.csv'), header=FALSE, sep="\t")
+  
 
 # PRE
-AD_peRad3_pre_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/pre/AD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_AD_pre_neg <-read.delim(paste0(Rad3_work_dir,'AD/pre/AD_pre_neg.csv'), header=FALSE, sep="\t")
 
 # PERI
-AD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/peri/AD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_AD_peri_neg <- read.delim(paste0(Rad3_work_dir,'AD/peri/AD_peri_neg.csv'), header=FALSE, sep="\t")
+
 
 #POST
-AD_peRad3_post_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/post/AD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_AD_post_neg <- read.delim(paste0(Rad3_work_dir,'AD/post/AD_post_neg.csv'), header=FALSE, sep="\t")
 
 # Peri + POST
-AD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/rad3/PE/AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_AD_peripost_neg <-  read.delim(paste0(Rad3_work_dir,'AD/peripost/AD_peri+post_neg.csv'), header=FALSE, sep="\t") 
 
 ```
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.010526) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_all_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+Rad3_AD_all_pos %>% VarStats()
 ```
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000260)</span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_all_neg %>% VarStats()
 ```
 <br><br> 
 
@@ -874,17 +927,13 @@ knitr::kable(AD_peRad3_all_neg, row.names=F)%>%
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.064215)  </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_male_pos  %>%  VarStats()
 ```
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.111111) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+Rad3_AD_male_neg %>%  VarStats()
 ```
 <br><br> 
 
@@ -913,9 +962,7 @@ No significant Results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000332)</span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -940,9 +987,8 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.047725) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_pre_neg %>% VarStats()
+
 ```
 
 <br><br> 
@@ -967,9 +1013,7 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.008203) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_peri_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -994,9 +1038,7 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.059079) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_post_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1021,9 +1063,7 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.063222)</span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peRad3_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_AD_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1510,49 +1550,62 @@ read.delim(
 
 #### Summary 
 ####Plots
+
 ```{r, Comparing QA Male Neg and Female Negative position error}
 
 # prepping the data 
 fem_csv <- read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% PrepforPlotting(Metric = "QA",Sex ="female",LoopVar = "loop_pe_avg_m")
+    paste0(Avg_work_dir,'QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% PrepforPlotting(Metric = "QA",Sex ="female",LoopVar = "loop_pe_avg_m")
 
-male_csv <- read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t")  %>% PrepforPlotting(Metric = "QA",Sex = "male",LoopVar = "loop_pe_avg_m") 
+male_csv <- read.delim(paste0(Avg_work_dir,'QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t")  %>% PrepforPlotting(Metric = "QA",Sex = "male",LoopVar = "loop_pe_avg_m") 
 
 scatterdf <- SexDiffDF(male_csv,fem_csv)
 
 # Let's get out figures
 
-figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/QA/scatterplots/"
+figpath <-paste0(Avg_work_dir,"QA/scatterplots/")
 ROIcols <- colnames(scatterdf[5])
 
-# positive ROIS
+
+    roiname <- str_split_1(ROIcols, '_') %>% paste(collapse=' ')
   y <-
     scatterdf %>% ggplot(aes(x = Corpus_Callosum_Tapetum, y = loop_pe_avg_m)) +
     geom_point(aes(color = sex), size = 4) +
     stat_smooth(aes(color = sex, group = sex), method = "lm") +
     scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
-                       name = "Position Error Average") +
-    labs(x = paste(ROIcols),
-         y = "Position Error ") +
-    stat_cor(method = "spearman", aes(
+                       name = "sex") +
+    labs(x = "QA",
+         y = "Position Error ",
+         title = roiname) +
+    stat_cor(method = "spearman", label.y.npc='top', 
+       aes(
       color = sex,
-      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
-    )) +
+      label = paste(..r.label.., ..p.label.., sep = "~`,`~")
+     )) +
     theme(
-      legend.position = "right",
-      axis.text.x = element_text(size = 15),
-      axis.text.y = element_text(size = 15),
+       strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      axis.title.x = element_text(size = 16),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 16),
+      plot.title = element_text(hjust = 0.5,size=16),
       panel.background = element_blank(),
       axis.line = element_line(colour = "black"),
-      #legend.key.size = unit(2, 'cm'),
-      legend.title = element_text(size = 10),
-      legend.text = element_text(size = 10))
-      #plot.margin = margin(3, 2, 3, 2, "cm")) +
-    xlim(min(scatterdf$Corpus_Callosum_Tapetum), max(scatterdf$Corpus_Callosum_Tapetum)) 
+    ) +
+    xlim(min(scatterdf$Corpus_Callosum_Tapetum), max(scatterdf$Corpus_Callosum_Tapetum))
 # <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
 # <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
   
-   pdf(file = paste0(figpath,ROI,"QA_Avg_PE.pdf"),width=10, height=8)
+   pdf(file = paste0(figpath,ROIcols,"_MD_Avg_PE.pdf"),width=10, height=8)
    print(y)
    dev.off()
   
@@ -1755,50 +1808,64 @@ For men there is a positive association and for women there is a negative associ
 
 # prepping the data 
 fem_csv <- read.delim(
-    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% PrepforPlotting(Metric = "MD",Sex ="female",LoopVar = "loop_pe_avg_m")
+    paste0(Avg_work_dir,'/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% PrepforPlotting(Metric = "MD",Sex ="female",LoopVar = "loop_pe_avg_m")
 
-male_csv <- read.delim(paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>% PrepforPlotting(Metric = "MD",Sex = "male",LoopVar = "loop_pe_avg_m") 
+male_csv <- read.delim(paste0(Avg_work_dir,'MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")  %>% PrepforPlotting(Metric = "MD",Sex = "male",LoopVar = "loop_pe_avg_m") 
 
 scatterdf <- SexDiffDF(male_csv,fem_csv)
 
 # Let's get out figures
 
-figpath <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/loop/average/PE/MD/scatterplots/"
+figpath <-paste0(Avg_work_dir,"MD/scatterplots/")
 ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
 
 # positive ROIS
   for (ROI in ROIcols) {
   print(ROI)
+  roiname <- str_split_1(ROI, '_') %>% paste(collapse=' ')
+  
   y <-
-    scatterdf %>% ggplot(aes(x = .data[[ROI]], y = loop_pe_avg_m)) +
+    scatterdf %>% ggplot(aes(x = Corpus_Callosum_Tapetum, y = loop_pe_avg_m)) +
     geom_point(aes(color = sex), size = 4) +
     stat_smooth(aes(color = sex, group = sex), method = "lm") +
     scale_color_manual(values = c(npc_saguaro[2], npc_saguaro[4]),
-                       name = "Position Error Average") +
-    labs(x = paste(ROI),
-         y = "Position Error ") +
-    stat_cor(method = "spearman", aes(
+                       name = "sex") +
+    labs(x = "QA",
+         y = "Position Error ",
+         title = roiname) +
+    stat_cor(method = "spearman", label.y.npc='top', 
+       aes(
       color = sex,
-      label = paste(..r.label..,..rr.label.., ..p.label.., sep = "~`,`~")
-    )) +
+      label = paste(..r.label.., ..p.label.., sep = "~`,`~")
+     )) +
     theme(
-      legend.position = "right",
-      axis.text.x = element_text(size = 15),
-      axis.text.y = element_text(size = 15),
+       strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      axis.title.x = element_text(size = 16),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 16),
+      plot.title = element_text(hjust = 0.5,size=16),
       panel.background = element_blank(),
       axis.line = element_line(colour = "black"),
-      #legend.key.size = unit(2, 'cm'),
-      legend.title = element_text(size = 10),
-      legend.text = element_text(size = 10))
-      #plot.margin = margin(3, 2, 3, 2, "cm")) +
-    xlim(min(scatterdf[ROI]), max(scatterdf[ROI])) 
+    ) +
+    xlim(min(scatterdf[ROI]), max(scatterdf[ROI]))
 # <!--      annotate("text", label = "FDR= 0.000576", x = 1.8 , y = 3, color="#E45A5A", size=7) + 
 # <!--      annotate("text", label = "FDR= 0.022854", x = 1.8 , y = 2.8, color="#80792B", size=7)
   
-   pdf(file = paste0(figpath,ROI,"MD_Average_PE.pdf"),width=10, height=8)
+   pdf(file = paste0(figpath,ROI,"_MD_Average_PE.pdf"),width=10, height=8)
    print(y)
    dev.off()
-}  
+  }  
+
 ```
 
 

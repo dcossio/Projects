@@ -56,32 +56,37 @@ Gest_path <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
+grp_colors <- c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")
 
 # REading in subject info for each analysis 
 # Read in main df
 subinfo_DF <- read_csv('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/PublicationRerun/QA/Demographics.csv')
 
 # changing all trimester to labels 
-for (row in 1:nrow(subinfo_DF)){
-  if(subinfo_DF$Trimester[row] == 0){
-    subinfo_DF$Trimester[row] <- c("Pre")
+
+ChangeTrimesterLabels <- function(dataframe){
+  for (row in 1:nrow(dataframe)) {
+    if (dataframe$Trimester[row] == 0) {
+      dataframe$Trimester[row] <- c("Pre")
+    }
+    if (dataframe$Trimester[row] == 1) {
+      dataframe$Trimester[row] <- c("1st")
+    }
+    if (dataframe$Trimester[row] == 2) {
+      dataframe$Trimester[row] <- c("2nd")
+    }
+    if (dataframe$Trimester[row] == 3) {
+      dataframe$Trimester[row] <- c("3rd")
+    }
+    if (dataframe$Trimester[row] == 4) {
+      dataframe$Trimester[row] <- c("Post")
+    }
   }
-  if(subinfo_DF$Trimester[row] == 1){
-    subinfo_DF$Trimester[row] <- c("1st")
-  }
-  if(subinfo_DF$Trimester[row] == 2){
-    subinfo_DF$Trimester[row] <- c("2nd")
-  }
-  if(subinfo_DF$Trimester[row] == 3){
-    subinfo_DF$Trimester[row] <- c("3rd")
-  }
-  if(subinfo_DF$Trimester[row] == 4){
-    subinfo_DF$Trimester[row] <- c("Post")
-  }
+  return(dataframe)
 }
 
 
-
+subinfo_DF <- ChangeTrimesterLabels(subinfo_DF)
 ```
 
 # Overview
@@ -537,7 +542,7 @@ for (ROI in ROIcols) {
   print(ROI)
   y <- Gest_QA_pos_ROIs %>%
     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390")) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
@@ -585,3 +590,152 @@ for (ROI in ROIcols) {
    dev.off()
 }
 ```
+## <span style="color: pink;"> TRactogrpahy output for figures </span>  {.tabset.tabset-dropdown}
+
+```{r Data Cleaning for output, echo=FALSE}
+
+# Tractography working dir
+tract_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography"
+
+AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester"))
+
+AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
+
+AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
+
+ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
+subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
+
+QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+
+for(sub in 1:length(subfiles)){
+  
+   print(paste("running subject",sub))
+  
+  md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
+  md_df[,1] <- subfiles[sub]    
+  
+  qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
+  qa_df[,1] <- subfiles[sub]    
+  
+  for ( roi in 1:nrow(ROIS)){
+    
+  print(paste("running ",ROIS[roi,1]))
+  
+    # Check if CSV exists 
+    CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv")
+    
+    if (file.exists(CSV_path) == TRUE){
+      
+      print("File Exists lets read it in")
+      ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md"))
+      qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2)
+      md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2)
+    }
+    else{
+      print("File does not exist. Add NA instead")
+      
+      qa_df[,roi+1] <- NA
+      md_df[,roi+1] <- NA
+      
+    }
+    
+  }
+  
+  QA_master_DF[sub,] <- qa_df[1,]
+  MD_master_DF[sub,] <- md_df[1,]
+}
+
+colnames(QA_master_DF) <- c("subjects",ROIS$V1)
+colnames(MD_master_DF) <- c("subjects",ROIS$V1)
+
+```
+
+```{r QA }
+
+QA_scans <- QA_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
+
+for (ROI in 2:nrow(ROIS)) {
+  print(ROI)
+  roiname <- str_split_1(ROIS[ROI,1], '_') %>% paste(collapse=' ')
+  y <- ROIS[ROI,1]
+  
+  QAplot <- QA_scans %>%
+    ggplot(aes(x = trimester, y = QA_scans[, ROI], group = trimester)) +  
+    #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
+    geom_boxplot(width = 0.5 , fill = grp_colors) +
+    #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+    labs(x = "Trimester", y = "QA", title = roiname) +
+    theme(
+      strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      )
+    ) + xlab("Trimester") + ylab("QA") +
+    theme(
+      axis.title.x = element_text(size = 16),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 16),
+      plot.title = element_text(hjust = 0.5,size=16)
+    ) + theme(legend.position = "none")
+   #
+   pdf(file = paste0(tract_workdir,"/boxplots/QA/",y,"_QA.pdf"),width=10, height=8)
+   print(QAplot)
+   dev.off()
+}
+
+```
+
+```{r MD, echo=FALSE}
+
+MD_scans <- MD_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
+
+for (ROI in 2:nrow(ROIS)) {
+  print(ROI)
+  roiname <- str_split_1(ROIS[ROI,1], '_') %>% paste(collapse=' ')
+  y <- ROIS[ROI,1]
+  
+  MDplot <- MD_scans %>%
+    ggplot(aes(x = trimester, y = MD_scans[, ROI], group = trimester)) +  
+    #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
+    geom_boxplot(width = 0.5 , fill = grp_colors) +
+    #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+    labs(x = "Trimester", y = "MD", title = roiname) +
+    theme(
+      strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      )
+    ) + xlab("Trimester") + ylab("QA") +
+    theme(
+      axis.title.x = element_text(size = 16),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 16),
+      plot.title = element_text(hjust = 0.5,size=16)
+    ) + theme(legend.position = "none")
+   #
+   pdf(file = paste0(tract_workdir,"/boxplots/MD/",y,"_MD.pdf"),width=10, height=8)
+   print(MDplot)
+   dev.off()
+}
+
+```
+
+
+
+
