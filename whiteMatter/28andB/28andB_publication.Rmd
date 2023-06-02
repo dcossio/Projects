@@ -1,7 +1,6 @@
 ---
 title: "28andBpublication"
-output: html_document
-date: "2023-05-18"
+date: "2023-06-02"
 output:
    html_document:
     toc: true
@@ -14,6 +13,7 @@ output:
 library(ggplot2)
 #(plyr)
 library(tidyverse)
+library(gridExtra)
 # library(dplyr)
 # library(tidyr)
 library(stringr)
@@ -89,11 +89,49 @@ ChangeTrimesterLabels <- function(dataframe){
 subinfo_DF <- ChangeTrimesterLabels(subinfo_DF)
 ```
 
+```{r Functions}
+
+TableOutput <- function(var1,metric){
+  # have shiny output 
+  table <- knitr::kable(var1, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "400px") 
+  #print 
+  pdf_name <- deparse(substitute(var1)) %>% paste0("_",metric,".pdf") 
+  pdf(pdf_name, width=15, height=12)
+  grid.table(var1,rows = NULL)
+  dev.off()
+  return(table)
+}
+
+
+PlotFunc <- function(data,ROI){
+    ggplot(data=data, aes(x=trimester, y=ROI, group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
+      scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
+      labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+}
+```
+
+```{css, echo=FALSE}
+h1, h2 {
+  text-align: center;
+  font-weight: bold;
+}
+```
+
 # Overview
 
-This is the analysis of the relationship between white matter microstructure and hormones across 
-
-pregnancy in one single subject.
+This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
 
 
 ##### **Participants**
@@ -104,14 +142,7 @@ pregnancy in one single subject.
   
   
   
-  * 18 scans were preprocessed successfully. 7 scans removed due to issues with the DWI.
-  
-    * **2019-07-12_ucsb** : No DWI 
-    
-    * **LC002_11_12_19**: No DWI
-    
-    * **LC002_2_7_20** : No DWI
-    
+  * 23 scans were preprocessed successfully. 2 scans removed due to issues with the DWI.
 
 ##### **Scan parameters** 
   * Locations from UCSB and UCI
@@ -152,14 +183,27 @@ A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampl
 ###### Gestational
 * Total scans: 16
 * pre pregnancy and pregnancy only
-    
+
+###### Tractometry
+* Total scans: 21
+
+  
+<br><br>
 # Results   
-<br><br>
 
-## <span style="color: pink;"> Estrogen </span>  {.tabset .tabset-dropdown}
-<br><br>
+Estrogen, progesterone, and gestational week were positively correlated with QA in white matter
 
-### ALl weeks
+For all figures please see the google folder below.
+https://drive.google.com/drive/folders/1-V_XaS87D_WtO-IjLsjRZdveZ0iu1Hzr?usp=sharing
+
+
+<br><br><br><br>
+
+# <span style="color: pink;"> Estrogen </span> {.tabset .tabset-dropdown}
+
+## QA {.tabset}
+### All weeks
+
 ```{r QA estrogen data cleaning cleaning ,echo=FALSE, results='hide',message=FALSE}
 
 Est_subinfo <-subinfo_DF %>% select("new scan name","Estrogen","Trimester") %>% na.omit()
@@ -192,9 +236,9 @@ Est_QA_allwks_pos_ROIs <- Est_QA_allwks_pos_ROIs %>% filter(Subjects %in% Est_su
 
 ```
 
-```{r QA all weeks Figures ,echo=FALSE, results='hide',message=FALSE}
+```{r QA all weeks Figures exporting ,echo=FALSE, results='hide',message=FALSE}
 
-figpath <- paste0(estrogen_path, '/allscans/')
+figpath <- paste0(estrogen_path, '/allscans/boxplots/')
 ROIcols <- c(Est_summarystats$`Tract Name`)
 
 
@@ -204,25 +248,33 @@ for (ROI in ROIcols) {
   y <- Est_QA_allwks_pos_ROIs %>%
     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
-      scale_y_binned(n.breaks=15, nice.breaks = TRUE) +
+      scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
             axis.title.y = element_text(vjust=8, size = 16),
             axis.text.x = element_text(size = 12),
             axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
             axis.line = element_line(colour = "black"),
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
    #
-   png(file = paste0(figpath,ROI,"_Est_QA_Pos.png"))
+   png(file = paste0(figpath,ROI,"_Est_QA_all_Pos.png"))
    print(y)
    dev.off()
 }
 
 ```
 
+<span class="text-center" style="color: pink;"> Figures and Tables </span>
+```{r}
 
+TableOutput(Est_summarystats,"QA")
+
+```
+
+<br><br><br><br>
 
 ### pregnancy only
 ```{r QA preg data clean estroge ,echo=FALSE, results='hide',message=FALSE}
@@ -257,7 +309,7 @@ Est_QA_pregwks_pos_ROIs <- Est_QA_pregwks_pos_ROIs %>% filter(Subjects %in% Est_
 
 ```{r QA pregnancy weeks Figures ,echo=FALSE, results='hide',message=FALSE}
 
-figpath <- paste0(estrogen_path, '/pregnancy_only/')
+figpath <- paste0(estrogen_path, '/pregnancy_only/boxplots/')
 ROIcols <- c(Est_preg_summarystats$`Tract Name`)
 
 
@@ -272,7 +324,8 @@ for (ROI in ROIcols) {
             axis.title.y = element_text(vjust=8, size = 16),
             axis.text.x = element_text(size = 12),
             axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
             axis.line = element_line(colour = "black"),
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
@@ -284,10 +337,18 @@ for (ROI in ROIcols) {
 
 ```
 
+```{r preg stats}
+TableOutput(Est_preg_summarystats,"QA")
+```
 
-## <span style="color: pink;"> Progesterone </span>  {.tabset .tabset-dropdown}
-### ALl weeks
-```{r QA Progesterone data cleaning cleaning ,echo=FALSE, results='hide',message=FALSE}
+
+<br><br><br><br>
+
+# <span style="color: pink;"> Progesterone </span>  {.tabset .tabset-dropdown}
+
+## QA {.tabset}
+### All weeks
+```{r, QA Progesterone data cleaning cleaning ,echo=FALSE, results='hide',message=FALSE}
 
 Prog_subinfo <-subinfo_DF %>% select("new scan name","Progesterone","Trimester") %>% na.omit()
 
@@ -325,9 +386,9 @@ if (is.numeric(Prog_QA_allwks_pos_ROIs[,c(TestVars)])){
   
 ```
 
-```{r Progesterone QA all weeks Figures ,echo=FALSE, results='hide',message=FALSE}
+```{r, Progesterone QA all weeks Figures ,echo=FALSE, results='hide',message=FALSE}
 
-figpath <- paste0(Prog_path, '/allscans/')
+figpath <- paste0(Prog_path, '/allscans/boxplots/')
 ROIcols <- c(Prog_summarystats$`Tract Name`)
 
 
@@ -338,11 +399,12 @@ for (ROI in ROIcols) {
       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
       scale_y_binned(n.breaks=15, nice.breaks = TRUE) +
       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+    theme(axis.title.x = element_text(vjust=- 4, size = 16),
             axis.title.y = element_text(vjust=8, size = 16),
             axis.text.x = element_text(size = 12),
             axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
             axis.line = element_line(colour = "black"),
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
@@ -354,80 +416,70 @@ for (ROI in ROIcols) {
 
 ```
 
-```{r Individual Progesterone QA all weeks Correlations ,echo=FALSE, results='hide',message=FALSE}
+```{r, Individual Progesterone QA all weeks Correlations ,echo=FALSE, results='hide',message=FALSE}
 
-figpath <- paste0(Prog_path, '/allscans/')
-ROIcols <- c(Prog_summarystats$`Tract Name`)
-stages <-  unique(Prog_subinfo$Trimester)
-
- for (stage in stages) {
-   print(stage)
-   df <- Prog_QA_allwks_pos_ROIs %>% filter(trimester == stage)
-   
-   if(stage == "Pre"){
-    color_val <- c("#CF92BF")
-  }
-  if(stage == "1st"){
-    color_val <- c("#D1E7E6")
-  }
-  if(stage == "2nd"){
-    color_val <- c("#A8D2C6")
-  }
-  if(stage == "3rd"){
-    color_val <- c("#6AA390")
-  }
-  if(stage == "Post"){
-    color_val <- c("#90A0C9")
-  }
-   
-   for (ROI in ROIcols) {
-     #pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)
-     z <-
-       ggplot(data = df, aes(
-         x = .data[[ROI]],
-         y = progesterone,
-         color = factor(trimester)
-       )) +
-       geom_point() +
-       stat_smooth(method = "lm", se = FALSE) +
-       scale_color_manual(
-         values = color_val,
-         name = "Trimester"
-       ) +
-       labs(x = paste(ROI,"_",stage),
-            y = "progesterone") +
-       theme(
-         legend.position = "right",
-         panel.background = element_blank(),
-         axis.line = element_line(colour = "black")
-       ) 
-       # xlim(0.5, 2)     +
-       # #scale_x_continuous(n.breaks = 3) +
-       # annotate(
-       #   "text",
-       #   label = "FDR= 0.061328 ",
-       #   x = 1.75 ,
-       #   y = 1,
-       #   color = "#E45A5A",
-       #   size = 8
-       # ) +
-       # annotate(
-       #   "text",
-       #   label = "FDR= 0.012068",
-       #   x = 1.75 ,
-       #   y = 0.9,
-       #   color = "#80792B",
-       #   size = 8
-       # )
-
-     png(file = paste0(figpath,'Correlations/',ROI,"_",stage,"_Prog_QA_allwks_Pos.png"))
-     print(z)
-     dev.off()
-   }
- }
+# figpath <- paste0(Prog_path, '/allscans/Correlations/')
+# ROIcols <- c(Prog_summarystats$`Tract Name`)
+# stages <-  unique(Prog_subinfo$Trimester)
+# 
+#  for (stage in stages) {
+#    print(stage)
+#    df <- Prog_QA_allwks_pos_ROIs %>% filter(trimester == stage)
+#    
+#    if(stage == "Pre"){
+#     color_val <- c("#CF92BF")
+#   }
+#   if(stage == "1st"){
+#     color_val <- c("#D1E7E6")
+#   }
+#   if(stage == "2nd"){
+#     color_val <- c("#A8D2C6")
+#   }
+#   if(stage == "3rd"){
+#     color_val <- c("#6AA390")
+#   }
+#   if(stage == "Post"){
+#     color_val <- c("#90A0C9")
+#   }
+#    
+#    for (ROI in ROIcols) {
+#      #pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)
+#      z <-
+#        ggplot(data = df, aes(
+#          x = .data[[ROI]],
+#          y = progesterone,
+#          color = factor(trimester)
+#        )) +
+#        geom_point() +
+#        stat_smooth(method = "lm", se = FALSE) +
+#        scale_color_manual(
+#          values = color_val,
+#          name = "Trimester"
+#        ) +
+#        labs(x = paste(ROI,"_",stage),
+#             y = "progesterone") +
+#        theme(
+#          legend.position = "right",
+#          panel.background = element_blank(),
+#          axis.line = element_line(colour = "black")
+#        ) 
+#       
+# 
+#      png(file = paste0(figpath,ROI,"_",stage,"_Prog_QA_allwks_Pos.png"))
+#      print(z)
+#      dev.off()
+#    }
+#  }
 ```
 
-```{r QA Progesterone pregnancy wks ,echo=FALSE, results='hide',message=FALSE}
+```{r, progresterone allweeks stats}
+TableOutput(Prog_summarystats,"QA")
+```
+
+<br><br><br><br>
+
+### pregnancy only
+```{r, QA Progesterone pregnancy wks ,echo=FALSE, results='hide',message=FALSE}
 
 Prog_preg_subinfo <-Prog_subinfo %>% filter(Trimester %in% pregWks)
 
@@ -467,7 +519,7 @@ if (is.numeric(Prog_QA_preg_pos_ROIs[,c(TestVars)])){
 
 ```{r Progesterone QA pregnancy weeks Figures}
 
-figpath <- paste0(Prog_path, '/pregnancy_only/')
+figpath <- paste0(Prog_path, '/pregnancy_only/boxplots/')
 ROIcols <- c(Prog_preg_summarystats$`Tract Name`)
 
 
@@ -482,7 +534,8 @@ for (ROI in ROIcols) {
             axis.title.y = element_text(vjust=8, size = 16),
             axis.text.x = element_text(size = 12),
             axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
             axis.line = element_line(colour = "black"),
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
@@ -493,9 +546,16 @@ for (ROI in ROIcols) {
 }
 ```
 
-## <span style="color: pink;"> Gestational Week </span>  {.tabset .tabset-dropdown}
+```{r, progresterone pregnancy stats,echo=FALSE, results='hide',message=FALSE}
+TableOutput(Prog_preg_summarystats,"QA")
+```
 
-```{r QA Gestational ,echo=FALSE, results='hide',message=FALSE}
+
+<br><br><br><br>
+
+# <span style="color: pink;"> Gestational Week </span>  {.tabset .tabset-dropdown}
+
+```{r QA Gestational preganancy only ,echo=FALSE, results='hide',message=FALSE}
 
 Gest_subinfo <-subinfo_DF %>% select("new scan name","GestWeek","Trimester") %>% na.omit() %>% filter(GestWeek < 40)
 
@@ -518,7 +578,7 @@ for (sub in 1:nrow((Gest_QA_pos_ROIs))) {
 }
 
 # now we cab grab the right subs
-Gest_QA_pos_ROIs <- Gest_QA_pos_ROIs %>% filter(Subjects %in% Gest_subinfo$`new scan name`) %>%  mutate(trimester = factor(Gest_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(Gestational = Gest_subinfo$GestWeek)
+Gest_QA_pos_ROIs <- Gest_QA_pos_ROIs %>% filter(Subjects %in% Gest_subinfo$`new scan name`) %>%  mutate(trimester = factor(Gest_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd'))) %>% mutate(Gestational = Gest_subinfo$GestWeek)
 
  # change to numeric 
  Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])] <- as.numeric(unlist(Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])])) 
@@ -533,7 +593,7 @@ if (is.numeric(Gest_QA_pos_ROIs[,c(TestVars)])){
   
 ```
 
-```{r Gestational week QAbox plots Figures}
+```{r Gestational week QAbox plots Figures,echo=FALSE, results='hide',message=FALSE}
 
 ROIcols <- c(Gest_summarystats$`Tract Name`)
 
@@ -542,14 +602,15 @@ for (ROI in ROIcols) {
   print(ROI)
   y <- Gest_QA_pos_ROIs %>%
     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390")) +
       scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
             axis.title.y = element_text(vjust=8, size = 16),
             axis.text.x = element_text(size = 12),
             axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
             axis.line = element_line(colour = "black"),
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
@@ -560,42 +621,48 @@ for (ROI in ROIcols) {
 }
 ```
 
-```{r Gestational week QA correlations Figures}
-
-ROIcols <- c(Gest_summarystats$`Tract Name`)
-
-  
-for (ROI in ROIcols) {
-  
-     z <- Gest_QA_pos_ROIs %>% ggplot( aes(x = .data[[ROI]], y = Gestational)) +
-       geom_point(aes(color = trimester), size=5) +
-       stat_smooth(method = "lm", color= "#6AA390") +
-       scale_color_manual(
-         values = c("#CF92BF", "#D1E7E6", "#A8D2C6", "#90A0C9"),
-         name = "Gestational Week"
-       ) +
-       labs(x = paste(ROI,"_",stage),
-            y = "Gestational Week") +
-       theme(
-         legend.position = "right",
-         panel.background = element_blank(),
-         axis.line = element_line(colour = "black")
-       ) +
-       stat_cor(method = "spearman", aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")))+
-       xlim(0.5, 40)  +   
-       scale_x_continuous(n.breaks = 3) 
-       
-   png(file = paste0(Gest_path,"/scatterplots/",ROI,"_Gestwks_Pos_QA.png"))
-   print(z)
-   dev.off()
-}
+```{r Gestational week QA correlations Figures,echo=FALSE, results='hide',message=FALSE}
+# 
+# ROIcols <- c(Gest_summarystats$`Tract Name`)
+# 
+#   
+# for (ROI in ROIcols) {
+#   
+#      z <- Gest_QA_pos_ROIs %>% ggplot( aes(x = .data[[ROI]], y = Gestational)) +
+#        geom_point(aes(color = trimester), size=5) +
+#        stat_smooth(method = "lm", color= "#6AA390") +
+#        scale_color_manual(
+#          values = c("#CF92BF", "#D1E7E6", "#A8D2C6", "#90A0C9"),
+#          name = "Gestational Week"
+#        ) +
+#        labs(x = paste0(ROI,"_"),
+#             y = "Gestational Week") +
+#        theme(
+#          legend.position = "right",
+#          panel.background = element_blank(),
+#          axis.line = element_line(colour = "black")
+#        ) +
+#        stat_cor(method = "spearman", aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")))+
+#        xlim(0.5, 40)  +   
+#        scale_x_continuous(n.breaks = 3) 
+#        
+#    png(file = paste0(Gest_path,"/scatterplots/",ROI,"_Gestwks_Pos_QA.png"))
+#    print(z)
+#    dev.off()
+# }
 ```
-## <span style="color: pink;"> TRactogrpahy output for figures </span>  {.tabset.tabset-dropdown}
 
-```{r Data Cleaning for output, echo=FALSE}
+```{r, gestational  stats}
+TableOutput(Gest_summarystats,"QA")
+```
+<br><br><br><br>
 
-# Tractography working dir
-tract_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography"
+# <span style="color: pink;"> ROI Tractography output for figures </span>  {.tabset.tabset-dropdown}
+
+```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE}
+
+#Tractography working dir
+tract_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/ROITractography"
 
 AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27")))
 
@@ -603,8 +670,8 @@ AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
 
 AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 
- ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
- 
+ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
+
  # Below is the combining and merging code. I exported as cvs so i wont re run it again
 # subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE) 
 # 
@@ -660,8 +727,26 @@ AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 # write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
 
 ```
+<br>
 
-```{r QA }
+<span class="text-center" style="color: black;"> QA </span>
+```{r QA output}
+QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-026", "sub-027")))
+
+TableOutput(QA_master_DF,"QA")
+```
+
+<br><br>
+
+<span class="text-center" style="color: pink;"> MD </span>
+```{r MD output}
+MD_master_DF<- read.csv(paste0(tract_workdir,"/QA_master_DF.csv"))%>% filter(!(subjects %in% c("sub-026", "sub-027")))
+
+TableOutput(MD_master_DF,"MD")
+
+```
+
+```{r QA,echo=FALSE, echo=FALSE, results='hide',message=FALSE}
 
 QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-026", "sub-027")))
 MD_master_DF<- read.csv(paste0(tract_workdir,"/QA_master_DF.csv"))%>% filter(!(subjects %in% c("sub-026", "sub-027")))
@@ -677,7 +762,7 @@ for (ROI in 2:nrow(ROIS)) {
     ggplot(aes(x = trimester, y = QA_scans[, ROI], group = trimester)) +  
     #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
     geom_boxplot(width = 0.5 , fill = grp_colors) +
-    #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+    scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
     labs(x = "Trimester", y = "QA", title = roiname) +
     theme(
       strip.text.x = element_text(
@@ -691,13 +776,15 @@ for (ROI in 2:nrow(ROIS)) {
         face = "bold.italic"
       )
     ) + xlab("Trimester") + ylab("QA") +
-    theme(
-      axis.title.x = element_text(size = 16),
-      axis.text.x = element_text(size = 12),
-      axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 16),
-      plot.title = element_text(hjust = 0.5,size=16)
-    ) + theme(legend.position = "none")
+     theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray90'),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))+ theme(legend.position = "none")
    #
    pdf(file = paste0(tract_workdir,"/boxplots/QA/",y,"_QA.pdf"),width=10, height=8)
    print(QAplot)
@@ -706,7 +793,7 @@ for (ROI in 2:nrow(ROIS)) {
 
 ```
 
-```{r MD, echo=FALSE}
+```{r MD, echo=FALSE,echo=FALSE, results='hide',message=FALSE}
 
 MD_scans <- MD_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
 
@@ -749,5 +836,86 @@ for (ROI in 2:nrow(ROIS)) {
 ```
 
 
+<!-- ## <span style="color: pink;"> Tractometry </span>  -->
 
+<!-- ```{r Data cleaning  tractometry, echo=FALSE, results='hide',message=FALSE} -->
 
+<!-- # Tractography working dir -->
+<!-- tract_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography" -->
+
+<!-- AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27"))) -->
+
+<!-- AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d") -->
+
+<!-- AllScanInfo <- ChangeTrimesterLabels(AllScanInfo) -->
+
+<!--  ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R") -->
+<!-- ``` -->
+
+```{r, echo=FALSE, results='hide',message=FALSE} 
+#  # Below is the combining and merging code. I exported as cvs so i wont re run it again
+# 
+# main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography"
+# 
+# AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27")))
+# 
+# AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
+# 
+# AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
+# 
+#  ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
+#  
+# subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
+# 
+# QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+# MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+# 
+# for(sub in 1:length(subfiles)){
+# 
+#    print(paste("running subject",subfiles[sub]))
+# 
+#   md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
+#   md_df[,1] <- subfiles[sub]
+# 
+#   qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
+#   qa_df[,1] <- subfiles[sub]
+# 
+#   for ( roi in 1:nrow(ROIS)){
+# 
+#   print(paste("running ",ROIS[roi,1]))
+# 
+#     # Check if CSV exists
+#     CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv")
+# 
+#     if (file.exists(CSV_path) == TRUE){
+# 
+#       print("File Exists lets read it in")
+#       ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md"))
+#       qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2)
+#       md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2)
+#     }
+#     else{
+#       print("File does not exist. Add NA instead")
+# 
+#       qa_df[,roi+1] <- NA
+#       md_df[,roi+1] <- NA
+# 
+#     }
+# 
+#   }
+# 
+#   QA_master_DF[sub,] <- qa_df[1,]
+#   MD_master_DF[sub,] <- md_df[1,]
+# }
+# 
+# colnames(QA_master_DF) <- c("subjects",ROIS$V1)
+# colnames(MD_master_DF) <- c("subjects",ROIS$V1)
+# 
+# QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
+# 
+# MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
+# 
+# write.csv(QA_master_DF, paste0(tract_workdir,"/QA_master_DF.csv"), row.names=FALSE)
+# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
+
+```
