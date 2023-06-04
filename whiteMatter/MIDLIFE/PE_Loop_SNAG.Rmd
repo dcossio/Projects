@@ -1,7 +1,7 @@
 ---
 title: "Loop position error"
 author: "Daniela Cossio"
-date: "5/28/2023"
+date: "06/03/2023"
 output:
    html_document: 
      toc: yes
@@ -602,11 +602,11 @@ Rad3_MD_female_neg <-read.delim(paste0(Rad3_work_dir,'MD/female/MD_loopRad3_fema
 
 Rad3_MD_pre_neg<- read.delim(paste0(Rad3_work_dir,'MD/pre/MD_pre_neg.csv'),header=FALSE, sep="\t")
 
-Rad3_MD_peri_neg<-read.csv(paste0(Rad3_work_dir,'MD/peri/MD_peri_neg.csv'), header=FALSE)
+Rad3_MD_peri_neg<-read.delim(paste0(Rad3_work_dir,'MD/peri/MD_peri_neg.csv'), header=FALSE,sep="\t")
 
 Rad3_MD_post_neg<-read.delim(paste0(Rad3_work_dir,'MD/post/MD_post_neg.csv'), header=FALSE, sep="\t")
 
-Rad3_MD_peripost_neg <- read.csv(paste0(Rad3_work_dir,'MD/peripost/MD_peri+post_neg.csv'), header=FALSE)
+Rad3_MD_peripost_neg <- read.delim(paste0(Rad3_work_dir,'MD/peripost/MD_peri+post_neg.csv'), header=FALSE,sep="\t")
 
 ```  
 
@@ -1092,30 +1092,28 @@ Rad3_AD_peripost_neg %>% VarStats()
 
 ### RD {.tabset}
 ```{r RD Loop position errord3  variables , echo=FALSE, results='hide',message=FALSE}
-# ALL SUBS
 
-RD_peRad3_all_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/allSubs/RD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+# ALL SUBS
+Rad3_RD_all_neg <- read.delim(paste0(Rad3_work_dir,'RD/allSubs/RD_loopRad3_all_neg.csv'), header=FALSE, sep="\t") 
 
 # MEN
-RD_peRad3_male_pos <- read.delim(paste0(working_dir,'/rad3/PE/RD/male/RD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_RD_male_pos <- read.delim(paste0(Rad3_work_dir,'RD/male/RD_loopRad3_male_pos.csv'), header=FALSE, sep="\t") 
 
 # WOMEN
-RD_peRad3_female_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/female/RD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_RD_female_neg <- read.delim(paste0(Rad3_work_dir,'RD/female/RD_loopRad3_female_neg.csv'), header=FALSE, sep="\t") 
 
 # PRE
-RD_peRad3_pre_pos <- read.delim(paste0(working_dir,'/rad3/PE/RD/pre/RD_pre_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
 
-RD_peRad3_pre_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/pre/RD_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_RD_pre_neg <- read.delim(paste0(Rad3_work_dir,'RD/pre/RD_pre_neg.csv'), header=FALSE, sep="\t") 
 
 # PERI
-RD_peRad3_peri_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/peri/RD_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_RD_peri_neg <- read.delim(paste0(Rad3_work_dir,'RD/peri/RD_peri_neg.csv'), header=FALSE, sep="\t") 
 
 #POST
-RD_peRad3_post_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/post/RD_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_RD_post_neg <- read.delim(paste0(Rad3_work_dir,'RD/post/RD_post_neg.csv'), header=FALSE, sep="\t")
 
 # Peri + POST
-
-RD_peRad3_peripost_neg <- read.delim(paste0(working_dir,'/rad3/PE/RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+Rad3_RD_peripost_neg <- read.delim(paste0(Rad3_work_dir,'RD/peripost/RD_peri+post_neg.csv'), header=FALSE, sep="\t") 
 ```
 
 #### All subjects
@@ -1127,9 +1125,7 @@ No significant correlations
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000639)</span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_all_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1148,9 +1144,7 @@ knitr::kable(RD_peRad3_all_neg, row.names=F)%>%
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.057317) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_male_pos %>% VarStats()
 ```
 
 <br><br> 
@@ -1181,9 +1175,7 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.002117)</span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1207,9 +1199,7 @@ No significant correlations
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.033719)</span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_pre_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1234,9 +1224,7 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016568)</span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_peri_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1261,9 +1249,7 @@ No significant results
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = .065219))</span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_post_neg %>% VarStats()
 ```
 
 <br><br>
@@ -1289,9 +1275,7 @@ Not significant
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.157199)</span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peRad3_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Rad3_RD_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1339,17 +1323,51 @@ While women may be relying on regions such as corpus callosum, cingulum, fascicu
 
 ## <span style="color: PaleVioletRed;"> Loop Position Error Average </span>  {.tabset .tabset-dropdown}
 ### QA {.tabset}
+
+```{r reading all csvs in, echo=FALSE, message=FALSE, results='hide'}
+
+Avg_QA_all_pos <-read.delim(paste0(Avg_work_dir,'QA/allSubs/QA_loopAvgPE_allsubs_pos.csv'), header = FALSE, sep = "\t") 
+
+Avg_QA_all_neg <- read.delim(paste0(Avg_work_dir,'QA/allSubs/QA_loopAvgPE_allsubs_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_QA_male_pos <- read.delim(paste0(Avg_work_dir,'QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t")
+
+Avg_QA_male_neg <- read.delim(paste0(Avg_work_dir,'QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_QA_female_pos <- read.delim(
+    paste0(Avg_work_dir,'QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") 
+
+Avg_QA_female_neg <- read.delim(
+    paste0(Avg_work_dir,'QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") 
+
+
+Avg_QA_pre_pos <-read.delim(
+    paste0(Avg_work_dir,'QA/pre/QA_looPAvgPE_pre_pos.csv'), header = FALSE, sep = "\t") 
+Avg_QA_pre_neg <- read.delim(
+    paste0(Avg_work_dir,'QA/pre/QA_looPAvgPE_pre_neg.csv'), header = FALSE, sep = "\t") 
+
+Avg_QA_peri_neg <- read.delim(paste0(Avg_work_dir,'QA/peri/QA_LoopAvgPE_peri_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_QA_post_neg <-read.delim(
+    paste0(Avg_work_dir,'QA/post/QA_loopAvgPE_post_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_QA_peripost_pos <- read.delim(
+    paste0(Avg_work_dir,'QA/peri_post/QA_loopAvgPE_peripost_pos.csv'),header = FALSE, sep = "\t")
+Avg_QA_peripost_neg <-read.delim(
+    paste0(Avg_work_dir,'QA/peri_post/QA_loopAvgPE_peripost_neg.csv'), header = FALSE, sep = "\t")
+```
+
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.000547)  </span>  
-```{r, QA_peAvg_all_pos, echo=FALSE}
-read.delim(paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
+```{r, QA_peAvg_all_pos, echo=FALSE, message=FALSE, results='hide'}
+Avg_QA_all_pos %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.015697) </span>
 ```{r, QA_peAvg_all_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_all_neg  %>% VarStats()
 
 ```
 
@@ -1374,14 +1392,14 @@ read.delim(paste0(working_dir,'/average/PE/QA/allSubs/QA_loopAvgPE_allsubs_neg.c
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.154305)  </span>  
 ```{r,QA_peAvg_male_pos,  echo=FALSE}
 
-read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_male_pos %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.036522) </span>
 ```{r,  QA_loopAvgPE_male_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+ Avg_QA_male_neg %>% VarStats()
 
 ```
 
@@ -1405,16 +1423,14 @@ read.delim(paste0(working_dir,'/average/PE/QA/male/QA_loopAvgPE_male_neg.csv'), 
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.008475)  </span>  
 ```{r, QA_peAvg_female_pos, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_fem_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_female_pos %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000699) </span>
 ```{r, QA_peAvg_female_neg ,echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/QA/female/QA_loopAvgPE_neg_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1437,16 +1453,14 @@ read.delim(
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.041934)  </span>  
 ```{r, QA_peAvg_pre_pos, echo=FALSE}
 
-read.delim(
-    paste0(working_dir,'/average/PE/QA/pre/QA_looPAvgPE_pre_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_pre_pos %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.007904) </span>
 ```{r, QA_peAvg_pre_neg, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/QA/pre/QA_looPAvgPE_pre_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_pre_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1473,7 +1487,7 @@ read.delim(
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.020944) </span>
 ```{r, QA_peAvg_peri_neg, echo=FALSE}
-read.delim(paste0(working_dir,'/average/PE/QA/peri/QA_LoopAvgPE_peri_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_peri_neg  %>% VarStats()
 
 ```
 
@@ -1499,8 +1513,7 @@ read.delim(paste0(working_dir,'/average/PE/QA/peri/QA_LoopAvgPE_peri_neg.csv'), 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.140042) </span>
 ```{r, QA_peAvg_post_neg, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/QA/post/QA_loopAvgPE_post_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_post_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1521,16 +1534,14 @@ read.delim(
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.000776)  </span>  
 
 ```{r,QA_peAvg_peripost_pos, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/QA/peri_post/QA_loopAvgPE_peripost_pos.csv'),     header = FALSE, sep = "\t") %>% VarStats()
+ Avg_QA_peripost_pos%>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000529) </span>
 ```{r, QA_peAvg_peripost_neg , echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/QA/peri_post/QA_loopAvgPE_peripost_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_QA_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1613,6 +1624,30 @@ ROIcols <- colnames(scatterdf[5])
 <br><br><br><br>
 
 ### MD {.tabset}
+
+```{r,echo=FALSE, message=FALSE, results='hide'}
+
+Avg_MD_all_neg <- read.delim(paste0(Avg_work_dir,'MD/allSubs/avg_MD_pe_all_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_MD_male_pos <- read.delim(
+    paste0(Avg_work_dir,'MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t")
+
+Avg_MD_female_neg <- read.delim(
+    paste0(Avg_work_dir,'MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_MD_pre_neg <- read.delim(
+    paste0(Avg_work_dir,'MD/pre/avg_MD_pe_pre_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_MD_peri_neg <- read.delim(
+    paste0(Avg_work_dir,'MD/peri/avg_MD_pe_peri_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_MD_post_neg <- read.delim(
+    paste0(Avg_work_dir,'MD/post/avg_MD_pe_post_neg.csv'), header = FALSE, sep = "\t")
+
+Avg_MD_peripost_neg <-read.delim(
+    paste0(Avg_work_dir,'MD/peri_post/avg_MD_pe_peri+post_neg.csv'), header = FALSE, sep = "\t") 
+```
+
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.997701)  </span>  
 
@@ -1620,7 +1655,7 @@ ROIcols <- colnames(scatterdf[5])
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019688	) </span>
 ```{r, MD_peAvg_all_neg,echo=FALSE}
-read.delim(paste0(working_dir,'/average/PE/MD/allSubs/avg_MD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_MD_all_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -1639,8 +1674,7 @@ read.delim(paste0(working_dir,'/average/PE/MD/allSubs/avg_MD_pe_all_neg.csv'), h
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.022854	)  </span>  
 ```{r, MD_peAvg_male_pos,echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/MD/male/avg_MD_pe_male_pos.csv'), header = FALSE, sep = "\t") %>% VarStats()
+ Avg_MD_male_pos %>% VarStats()
 ```
 
 <br><br> 
@@ -1671,8 +1705,7 @@ no significant tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000576	) </span>
 
 ```{r, MD_peAvg_female_neg, echo=FALSE}
- read.delim(
-    paste0(working_dir,'/average/PE/MD/female/avg_MD_pe_fem_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_MD_female_neg  %>% VarStats()
 ```
 <br><br> 
 
@@ -1696,8 +1729,7 @@ no significant tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.033976) </span>
 
 ```{r,MD_peAvg_pre_neg, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/MD/pre/avg_MD_pe_pre_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_MD_pre_neg %>% VarStats()
 ```
 <br><br> 
 
@@ -1722,8 +1754,7 @@ no significant tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016885) </span>
 
 ```{r,MD_peAvg_peri_neg, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/MD/peri/avg_MD_pe_peri_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_MD_peri_neg %>% VarStats()
 
 ```
 <br><br> 
@@ -1749,8 +1780,7 @@ no significant tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.081145) </span>
 
 ```{r,MD_peAvg_post_neg, echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/MD/post/avg_MD_pe_post_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_MD_post_neg %>% VarStats()
 ```
 <br><br> 
 
@@ -1776,8 +1806,7 @@ no significant tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.050080) </span>
 
 ```{r,MD_peAvg_peripost_neg , echo=FALSE}
-read.delim(
-    paste0(working_dir,'/average/PE/MD/peri_post/avg_MD_pe_peri+post_neg.csv'), header = FALSE, sep = "\t") %>% VarStats()
+Avg_MD_peripost_neg %>% VarStats()
 ```
 <br><br> 
 
@@ -1874,127 +1903,57 @@ ROIcols <- colnames(scatterdf[,5:length(scatterdf)])
 ```{r AD PE Average variables , echo=FALSE, results='hide',message=FALSE}
 
 ## all subs ####
-
-AD_peAvg_all_neg <-
+Avg_AD_all_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/allSubs/avg_AD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
+    paste0(Avg_work_dir,'AD/allSubs/avg_AD_pe_all_neg.csv'), header = FALSE, sep = "\t") 
 
-AD_peAvg_all_pos <-
+Avg_AD_all_pos <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/allSubs/avg_AD_pe_all_pos.csv' ),header = FALSE,sep = "\t") %>% 
-    remove_empty("cols")  %>% 
-      filter(V1 %in% rows2grab) %>%
-        t() %>% 
-          `colnames<-`(rows2grab) %>% 
-              as.data.frame() %>% 
-                `[`(-c(1),) 
-
+    paste0(Avg_work_dir,'AD/allSubs/avg_AD_pe_all_pos.csv' ),header = FALSE,sep = "\t") 
 
 ### Males ####
-AD_peAvg_male_neg <-
+Avg_AD_male_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/male/avg_AD_pe_male_neg.csv'),
-    header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'AD/male/avg_AD_pe_male_neg.csv'),header = FALSE, sep = "\t") 
 
-AD_peAvg_male_pos <-
+Avg_AD_male_pos <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/male/avg_AD_pe_male_pos.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'AD/male/avg_AD_pe_male_pos.csv'),header = FALSE,sep = "\t")
+
 ### Females#####
 
-AD_peAvg_female_neg <-
+Avg_AD_female_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/female/avg_AD_pe_fem_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'AD/female/avg_AD_pe_fem_neg.csv'),header = FALSE,sep = "\t") 
 
-AD_peAvg_female_pos <-
+Avg_AD_female_pos <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/female/avg_AD_pe_fem_pos.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab)%>% 
-                as.data.frame() %>% 
-                  `[`(-c(1),) 
+    paste0(Avg_work_dir,'AD/female/avg_AD_pe_fem_pos.csv'),header = FALSE,sep = "\t") 
 
 
 ###PRE ####
 
-AD_peAvg_pre_neg <-
+Avg_AD_pre_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/pre/avg_AD_pe_pre_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'AD/pre/avg_AD_pe_pre_neg.csv'),header = FALSE,sep = "\t") 
 
 
 ### PERI ####
-AD_peAvg_peri_neg <-
+Avg_AD_peri_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/peri/avg_AD_pe_peri_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'AD/peri/avg_AD_pe_peri_neg.csv'),header = FALSE,sep = "\t") 
 
 ### POST ####
 
-AD_peAvg_post_neg <-
+Avg_AD_post_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/post/avg_AD_pe_post_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'AD/post/avg_AD_pe_post_neg.csv'),header = FALSE,sep = "\t") 
 
 ### PERI and POST ####
 
-AD_peAvg_peripost_neg <-
+Avg_AD_peripost_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/AD/peri_post/avg_AD_pe_peri+post_neg.csv' ),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
-
+    paste0(Avg_work_dir,'AD/peri_post/avg_AD_pe_peri+post_neg.csv' ),header = FALSE,sep = "\t") 
 
 ```
 
@@ -2002,18 +1961,14 @@ AD_peAvg_peripost_neg <-
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.122995)  </span>  
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_all_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_all_neg %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.016199) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_all_pos %>% VarStats()
 ```
 
 <br><br> 
@@ -2038,18 +1993,14 @@ knitr::kable(AD_peAvg_all_neg, row.names=F)%>%
 
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.022862)  </span>  
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_male_pos %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.019520) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_male_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2072,18 +2023,14 @@ knitr::kable(AD_peAvg_male_neg, row.names=F)%>%
 #### Women
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.037037)  </span>  
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_female_pos %>% VarStats()
 ```  
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.000098) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2104,13 +2051,12 @@ knitr::kable(AD_peAvg_female_neg, row.names=F)%>%
 
 #### pre
 <span style="color: hotpink;"> Positive Correlations (FDR = 1.000000)  </span>  
+
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.026400) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_pre_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2132,9 +2078,7 @@ knitr::kable(AD_peAvg_pre_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.006482) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_peri_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2157,9 +2101,7 @@ knitr::kable(AD_peAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.031666) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_post_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2182,9 +2124,7 @@ knitr::kable(AD_peAvg_post_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.075829) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_peAvg_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_AD_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2207,103 +2147,47 @@ knitr::kable(AD_peAvg_peripost_neg, row.names=F)%>%
 
 ## all subs ####
 
-RD_peAvg_all_neg <-
-  read.delim(
-    paste0(working_dir,'/average/PE/RD/allSubs/avg_RD_pe_all_neg.csv'), header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
+Avg_RD_all_neg <-
+  read.delim(paste0(Avg_work_dir,'RD/allSubs/avg_RD_pe_all_neg.csv'), header = FALSE, sep = "\t") 
 
 ### Males ####
-RD_peAvg_male_pos <-
+Avg_RD_male_pos <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/male/avg_RD_pe_male_pos.csv'),
-    header = FALSE, sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/male/avg_RD_pe_male_pos.csv'),header = FALSE, sep = "\t") 
 
-RD_peAvg_male_neg <-
+Avg_RD_male_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/male/avg_RD_pe_male_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/male/avg_RD_pe_male_neg.csv'),header = FALSE,sep = "\t") 
 ### Females#####
 
-RD_peAvg_female_neg <-
+Avg_RD_female_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/female/avg_RD_pe_fem_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/female/avg_RD_pe_fem_neg.csv'),header = FALSE,sep = "\t") 
 
 
 ###PRE ####
 
-RD_peAvg_pre_neg <-
+Avg_RD_pre_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/pre/avg_RD_pe_pre_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/pre/avg_RD_pe_pre_neg.csv'),header = FALSE,sep = "\t") 
 
 
 ### PERI ####
-RD_peAvg_peri_neg <-
+Avg_RD_peri_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/peri/avg_RD_pe_peri_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/peri/avg_RD_pe_peri_neg.csv'), header = FALSE,sep = "\t") 
 
 ### POST ####
 
-RD_peAvg_post_neg <-
+Avg_RD_post_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/post/avg_RD_pe_post_neg.csv'),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/post/avg_RD_pe_post_neg.csv'),header = FALSE,sep = "\t") 
 
 ### PERI and POST ####
 
-RD_peAvg_peripost_neg <-
+Avg_RD_peripost_neg <-
   read.delim(
-    paste0(working_dir,'/average/PE/RD/peri_post/avg_RD_pe_peri+post_neg.csv' ),
-    header = FALSE,sep = "\t") %>% 
-      remove_empty("cols") %>%  
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1),) %>% 
-                as.data.frame()
+    paste0(Avg_work_dir,'RD/peri_post/avg_RD_pe_peri+post_neg.csv' ),header = FALSE,sep = "\t") 
 
 
 ```
@@ -2316,9 +2200,7 @@ RD_peAvg_peripost_neg <-
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.035990 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_all_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2336,18 +2218,14 @@ knitr::kable(RD_peAvg_all_neg, row.names=F)%>%
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR = 0.012641 )  </span>  
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_male_pos %>% VarStats()
 ```
 
 <br><br> 
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.062762 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_male_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2375,9 +2253,7 @@ knitr::kable(RD_peAvg_male_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.001068 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_female_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2401,9 +2277,7 @@ knitr::kable(RD_peAvg_female_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = 0.039982 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_pre_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2426,9 +2300,7 @@ knitr::kable(RD_peAvg_pre_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.016583 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_peri_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2453,9 +2325,7 @@ knitr::kable(RD_peAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.048898 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_post_neg %>% VarStats()
 ```
 
 <br><br> 
@@ -2479,9 +2349,7 @@ Not significant
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR =0.089524 ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_peAvg_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+Avg_RD_peripost_neg %>% VarStats()
 ```
 
 <br><br> 
