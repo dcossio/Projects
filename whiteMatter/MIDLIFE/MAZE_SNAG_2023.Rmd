@@ -50,24 +50,18 @@ library(ggiraph)
 library(ggiraphExtra)
 library(moonBook)
 library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
 
-knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
-                      fig.align = "center")
+# REad in my Functions
+rmarkdown::render("/Users/danielacossio/Desktop/UsefulScripts/Functions.Rmd")
 
-
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/"
+Acc_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-Acc_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv")
 
-for (row in 1:nrow(Acc_sub_info)) {
-  if (Acc_sub_info[row,2] == 0) {
-  Acc_sub_info[row,2] <- "female"
-} else {
-     Acc_sub_info[row,2] <- "male"
-}
-}
+Acc_sub_info <- CleanSubInfo('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv')
 
 ```
 
@@ -79,6 +73,21 @@ h1, h2 {
 }
 ```
 
+```{r}
+
+TableOutput <- function(df){
+  # have shiny output 
+  table <- knitr::kable(df, row.names=F)%>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "400px") 
+  #print 
+  # pdf_name <- deparse(substitute(df)) %>% paste0("_",metric,".pdf") 
+  # pdf(pdf_name, width=15, height=12)
+  # grid.table(var1,rows = NULL)
+  # dev.off()
+  return(table)
+}
+```
 
 
 # Overview 
@@ -218,56 +227,44 @@ There were both Positive Correlations and negative correlations between QA and m
 <br><br><br><br><br>
 
 ```{r GRabbing all variables ,echo=FALSE, results='hide',message=FALSE}
-# All subjects
-QA_acc_all_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/allSubs/QA_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
 
-QA_acc_all_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/allSubs/QA_all_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+# All subjects
+QA_acc_all_pos <- CleanCSVs(Acc_working_dir,'QA/allSubs/QA_all_pos.csv')
+QA_acc_all_neg <- CleanCSVs(Acc_working_dir,'QA/allSubs/QA_all_neg.csv')
 
 # MEN
-QA_acc_male_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_male_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+QA_acc_male_pos <- CleanCSVs(Acc_working_dir,'QA/male/QA_male_pos.csv')
+QA_acc_male_neg <- CleanCSVs(Acc_working_dir,'QA/male/QA_male_neg.csv')
 
 # Women 
-QA_acc_female_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_female_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
+QA_acc_female_pos <- CleanCSVs(Acc_working_dir,'QA/female/QA_female_pos.csv')
+QA_acc_female_neg <- CleanCSVs(Acc_working_dir,'QA/female/QA_female_neg.csv')
 # PRE
-QA_acc_pre_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/pre/QA_pre_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
-QA_acc_pre_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/pre/QA_pre_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
+QA_acc_pre_pos <- CleanCSVs(Acc_working_dir,'QA/pre/QA_pre_pos.csv')
+QA_acc_pre_neg <- CleanCSVs(Acc_working_dir,'QA/pre/QA_pre_neg.csv')
 ## Peri
-QA_acc_peri_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/peri/QA_peri_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+QA_acc_peri_pos <- CleanCSVs(Acc_working_dir,'QA/peri/QA_peri_pos.csv')
 
 # POST
-QA_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+QA_acc_post_pos <- CleanCSVs(Acc_working_dir,'QA/post/QA_post_pos.csv')
 
-QA_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/QA/post/QA_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
+QA_acc_post_neg <- CleanCSVs(Acc_working_dir,'QA/post/QA_post_neg.csv')
 ## Peri post 
-QA_acc_peripost_pos <- read.delim(paste0(working_dir,'/maze/Accuracy/QA/peripost/QA_acc_peri_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-
+QA_acc_peripost_pos <- CleanCSVs(Acc_working_dir,'/QA/peripost/QA_acc_peri_post_pos.csv')
 
 ```
 
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.043228) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(QA_acc_all_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_all_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.122807)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_all_neg)
 ```
 
 <br><br>
@@ -292,18 +289,14 @@ knitr::kable(QA_acc_all_neg, row.names=F)%>%
 #### Men
 <span style="color: hotpink;"> Positive Correlations  (FDR = 0.018519) </span> 
 ```{r QA Males pos, echo=FALSE}
-knitr::kable(QA_acc_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_male_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations  (FDR = 0.001161)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_male_neg)
 ```
 
 <br><br>
@@ -326,18 +319,14 @@ knitr::kable(QA_acc_male_neg, row.names=F)%>%
 #### Women
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000263) </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_female_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_female_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.002809)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_female_neg)
 ```
 
 <br><br>
@@ -359,18 +348,14 @@ knitr::kable(QA_acc_female_neg, row.names=F)%>%
 #### pre
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.044369)  </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_pre_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_pre_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.011788)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_pre_neg)
 ```
 
 <br><br>
@@ -393,9 +378,7 @@ knitr::kable(QA_acc_pre_neg, row.names=F)%>%
 #### peri 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000231)  </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_peri_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_peri_pos)
 ```
 
 <br><br>
@@ -420,18 +403,14 @@ No Significant Findings
 #### post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000418)  </span> 
 ```{r post positve, echo=FALSE}
-knitr::kable(QA_acc_post_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_post_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.015152)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_acc_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_post_neg)
 ```
 
 <br><br>
@@ -456,9 +435,7 @@ knitr::kable(QA_acc_post_neg, row.names=F)%>%
 #### Peri Post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000358)  </span> 
 ```{r peri post positve, echo=FALSE}
-knitr::kable(QA_acc_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_acc_peripost_pos)
 ```
 
 <br><br>
@@ -486,69 +463,14 @@ No Significant Tracts
 
 #### Box plots
 ```{r Fixing up variables for displaying sex differences QA box plots}
-#
-QA_acc_male_neg_cols <-  c("Subjects", as.character(QA_acc_male_neg[,1]))
 
+QA_acc_male_neg_values <- BoxplotCleaning(Acc_working_dir,'QA/male/QA_male_neg.csv',ROIs = QA_acc_male_neg[,1],Sex = "male",metric = "mean_qa")
 
-# Lets do just male negative since most tracts are neg
-#reading in my csv with the stats and adding in the subject info
-QA_acc_male_neg_values <-read.csv(paste0(working_dir,'maze/Accuracy/QA/male/QA_male_neg.csv'), header=FALSE)%>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-  `colnames<-`(QA_acc_male_neg_cols) %>%
-  mutate(sex = Acc_sub_info$sex) %>%
-  mutate(age = Acc_sub_info$age_scan_years) %>%
-  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="male")
+QA_acc_female_pos_values <- BoxplotCleaning(Acc_working_dir,'QA/female/QA_female_pos.csv',ROIs = QA_acc_female_pos[,1],Sex = "female",metric = "mean_qa")
 
-# Reorder for my sanity check
-QA_acc_male_neg_values <- QA_acc_male_neg_values[,c(1,12:14,2:11)]
-QA_acc_male_neg_gathercols <- colnames(QA_acc_male_neg_values[5:14])
-
-#for some reason things are being read as a a character and it needs to be a numerical value
-QA_acc_male_neg_values[5:14] <- apply(QA_acc_male_neg_values[5:14],2, as.numeric)
-
-
-# # Lets do female positive
-QA_acc_female_pos_cols <- c("Subjects", as.character(QA_acc_female_pos[,1]))
-QA_acc_female_pos_values<-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_pos.csv'), header=FALSE) %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-  `colnames<-`(QA_acc_female_pos_cols) %>%
-  mutate(sex = Acc_sub_info$sex) %>%
-  mutate(age = Acc_sub_info$age_scan_years) %>%
-  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="female")
-
-# Reorder for my sanity check
-QA_acc_female_pos_values <- QA_acc_female_pos_values[,c(1,19:21,2:18)]
-QA_acc_female_pos_gathercols <- colnames(QA_acc_female_pos_values[5:21])
-
-# for some reason things are being read as a a character and it needs to be a numerical value
-QA_acc_female_pos_values[5:21] <- apply(QA_acc_female_pos_values[5:21],2, as.numeric)
-
-# # Lets do female negative
-
-QA_acc_female_neg_cols <- c("Subjects", as.character(QA_acc_female_neg[,1]))
-QA_acc_female_neg_values<-read.csv(paste0(working_dir,'maze/Accuracy/QA/female/QA_female_neg.csv'), header=FALSE) %>%
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>%
-  `colnames<-`(QA_acc_female_neg_cols) %>%
-  mutate(sex = Acc_sub_info$sex) %>%
-  mutate(age = Acc_sub_info$age_scan_years) %>%
-  mutate(repo_status = Acc_sub_info$repo_status) %>% filter(sex=="female")
-
-QA_acc_female_neg_values <- QA_acc_female_neg_values[,c(1,11:13,2:10)]
-QA_acc_female_neg_gathercols <- colnames(QA_acc_female_neg_values[5:13])
-
-# for some reason things are being read as a a character and it needs to be a numerical value
-QA_acc_female_neg_values[5:13] <- apply(QA_acc_female_neg_values[5:13],2, as.numeric)
-
-
-
-# Lets  get the difference between female pos and female neg
-qa_fem_diff <- setdiff(QA_acc_female_neg_gathercols , QA_acc_female_pos_gathercols)
-
-#now just female neg vs male neg
-qa_sex_diff <- setdiff(QA_acc_male_neg_gathercols,QA_acc_female_neg_gathercols) %>% cbind(. ,setdiff(QA_acc_female_neg_gathercols,QA_acc_male_neg_gathercols))
+QA_acc_female_neg_values<-BoxplotCleaning(Acc_working_dir,'QA/female/QA_female_neg.csv',ROIs = QA_acc_female_neg[,1],Sex = "female",metric = "mean_qa")
+                                          
+QA_df <- GetSameROIs(QA_acc_female_pos_values,QA_acc_male_neg_values)
 
 ```
 
@@ -558,12 +480,8 @@ qa_sex_diff <- setdiff(QA_acc_male_neg_gathercols,QA_acc_female_neg_gathercols) 
 
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/"
 
-QA_df <- QA_acc_male_neg_values[, !names(QA_acc_male_neg_values) %in% qa_sex_diff]
-QA_df <- rbind(QA_df,QA_acc_female_neg_values[, !names(QA_acc_female_neg_values) %in% qa_sex_diff])
 
-
-
-for (ROI in colnames(QA_df[5:7])) {
+for (ROI in colnames(QA_df[2:5])) {
   print(ROI)
   y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
       geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
@@ -582,9 +500,9 @@ for (ROI in colnames(QA_df[5:7])) {
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
 
 
-    png(file = paste0(figpath,ROI,"_sexdiff_QA.png"))  #,".png"))
+    #png(file = paste0(figpath,ROI,"_sexdiff_QA.png"))  #,".png"))
     print(y)
-    dev.off()
+    #dev.off()
 }
 
 
