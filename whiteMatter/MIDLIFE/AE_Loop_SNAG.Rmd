@@ -1,7 +1,7 @@
 ---
 title: "SNAG Loop DSI results"
 author: "Daniela Cossio"
-date: "4/6/2023"
+date: "06/04/2023"
 output:
    html_document: 
      toc: yes
@@ -2045,9 +2045,7 @@ Not significant
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_all_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_all_neg %>% VarStats()
 ```
 
 <br><br>
@@ -2069,9 +2067,7 @@ knitr::kable(RD_aeAvg_all_neg, row.names=F)%>%
 #### Men
 <span style="color: hotpink;"> Positive Correlations (FDR = )  </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_male_pos, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_male_pos %>% VarStats()
 ```
 
 <br><br>
@@ -2104,9 +2100,7 @@ knitr::kable(RD_aeAvg_male_pos, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_female_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_female_neg %>% VarStats()
 ```
 
 
@@ -2134,9 +2128,7 @@ knitr::kable(RD_aeAvg_female_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_pre_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_pre_neg%>% VarStats()
 ```
 
 
@@ -2165,9 +2157,7 @@ knitr::kable(RD_aeAvg_pre_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_peri_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_peri_neg%>% VarStats()
 ```
 
 
@@ -2195,11 +2185,8 @@ knitr::kable(RD_aeAvg_peri_neg, row.names=F)%>%
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_post_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_post_neg %>% VarStats()
 ```
-
 
 <br><br>
 
@@ -2220,18 +2207,14 @@ knitr::kable(RD_aeAvg_post_neg, row.names=F)%>%
 #### Peri and Post
 <span style="color: hotpink;"> Positive Correlations (FDR = )  </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_peripost_pos, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_peripost_pos %>% VarStats()
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR = ) </span>
 ```{r, echo=FALSE}
-knitr::kable(RD_aeAvg_peripost_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+RD_aeAvg_peripost_neg %>% VarStats()
 ```
 
 
@@ -2259,9 +2242,3 @@ knitr::kable(RD_aeAvg_peripost_neg, row.names=F)%>%
 
 
 
-
-
-
-
-
-<br><br><br><br><br><br><br><br><br><br>

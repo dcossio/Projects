@@ -1,7 +1,7 @@
 ---
 title: "SNAG_DSI Summary"
 author: "Daniela Cossio"
-date: "04/10/2023"
+date: "06/04/2023"
 output:
    html_document:
     toc: true
@@ -58,6 +58,8 @@ rmarkdown::render("/Users/danielacossio/Desktop/UsefulScripts/Functions.Rmd")
 
 Acc_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
 
+PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
+
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
 
@@ -73,18 +75,21 @@ h1, h2 {
 }
 ```
 
-```{r}
+```{r,echo=FALSE, results='hide',message=FALSE}
 
 TableOutput <- function(df){
-  # have shiny output 
+ 
   table <- knitr::kable(df, row.names=F)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "400px") 
+  scroll_box(width = "800px", height = "300px") 
   #print 
-  # pdf_name <- deparse(substitute(df)) %>% paste0("_",metric,".pdf") 
-  # pdf(pdf_name, width=15, height=12)
-  # grid.table(var1,rows = NULL)
-  # dev.off()
+  
+  
+  pdf_name <- deparse(substitute(df)) %>% paste0(".pdf")
+  pdf(pdf_name, width=15, height=12)
+  grid.table(df,rows = NULL)
+  dev.off()
+  
   return(table)
 }
 ```
@@ -489,7 +494,7 @@ for (ROI in colnames(QA_df[2:5])) {
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
        stat_boxplot(geom = "errorbar",
                width = 0.15) +
-      labs(x= "Sex", y= " QA", title =paste0(ROI) ) +
+      labs(x= "Sex", y= " QA", title =paste0(ROI)) +
       theme(axis.title.x = element_text(vjust=- 4, size = 16),
             axis.title.y = element_text(vjust=8, size = 16),
             axis.text.x = element_text(size = 12),
@@ -500,7 +505,7 @@ for (ROI in colnames(QA_df[2:5])) {
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
 
 
-    #png(file = paste0(figpath,ROI,"_sexdiff_QA.png"))  #,".png"))
+    #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
     print(y)
     #dev.off()
 }
@@ -522,35 +527,34 @@ DSI was run on all subjects, with sex and age listed as covariates. There were P
 
 ```{r MD ALL Variables ,echo=FALSE, results='hide',message="FALSE"}
 # all subjects
-MD_acc_all_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/allSubs/MD_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+MD_acc_all_pos <- CleanCSVs(Acc_working_dir,'MD/allSubs/MD_all_pos.csv')
 
 #MEN
-MD_acc_male_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/male/MD_male_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+MD_acc_male_pos <-CleanCSVs(Acc_working_dir,'MD/male/MD_male_pos.csv')
 
-MD_acc_male_neg <- read.delim(paste0(working_dir,'maze/Accuracy/MD/male/MD_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_acc_male_neg <-CleanCSVs(Acc_working_dir,'MD/male/MD_male_neg.csv')
  
 # FEMALE
-MD_acc_female_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/female/MD_female_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+MD_acc_female_pos <-CleanCSVs(Acc_working_dir,'MD/female/MD_female_pos.csv')
 
-MD_acc_female_neg <- read.delim(paste0(working_dir,'maze/Accuracy/MD/female/MD_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_acc_female_neg <-CleanCSVs(Acc_working_dir,'MD/female/MD_female_neg.csv')
   
 
 # PRE
-MD_acc_pre_neg <- read.csv(paste0(working_dir,'maze/Accuracy/MD/pre/MD_pre_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+MD_acc_pre_neg <- CleanCSVs(Acc_working_dir,'MD/pre/MD_pre_neg.csv')
 
 #PERI
-MD_acc_peri_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/peri/MD_peri_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+MD_acc_peri_pos <-CleanCSVs(Acc_working_dir,'MD/peri/MD_peri_pos.csv')
 
 #POST
-MD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+MD_acc_post_pos <-CleanCSVs(Acc_working_dir,'MD/post/MD_post_pos.csv')
 
-MD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/MD/post/MD_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+MD_acc_post_neg <-CleanCSVs(Acc_working_dir,'MD/post/MD_post_neg.csv')
 
 #Peri POST
 
-MD_acc_peripost_pos <- read.delim(paste0(working_dir,'/maze/Accuracy/MD/peripost/MD_acc_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
-
-MD_acc_peripost_neg <- read.delim(paste0(working_dir,'/maze/Accuracy/MD/peripost/MD_acc_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+MD_acc_peripost_pos <-CleanCSVs(Acc_working_dir,'/MD/peripost/MD_acc_peripost_pos.csv')
+MD_acc_peripost_neg <- CleanCSVs(Acc_working_dir,'/MD/peripost/MD_acc_peripost_neg.csv')
 
 ```
 
@@ -558,9 +562,7 @@ MD_acc_peripost_neg <- read.delim(paste0(working_dir,'/maze/Accuracy/MD/peripost
 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.124661) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_all_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_all_pos)
 ```
 
 <br><br>
@@ -585,20 +587,15 @@ No significant findings
 #### Men
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.012068) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_male_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.075269) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_male_neg) 
 
-#![Slice overlay image displaying ROIs with tracts that had MD negatively correlated with Maze learning accuracy in men ](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/QA/post/QA_post_acc_neg_cor.png)
 ```
 
 <br><br>
@@ -617,15 +614,11 @@ knitr::kable(MD_acc_male_neg, row.names=F)%>%
 #### Women
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.071429) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_female_pos) 
 ```
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.061328)</span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_female_neg)
 ```
 
 
@@ -651,9 +644,7 @@ No significant findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.002473)</span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_pre_neg)
 ```
 
 <br><br>
@@ -672,9 +663,7 @@ knitr::kable(MD_acc_pre_neg, row.names=F)%>%
 #### peri 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000106)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_peri_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_peri_pos)
 ```
 
 <br><br>
@@ -700,18 +689,14 @@ No significant findings
 #### post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000322) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_post_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_post_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.015187	) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_post_neg)
 ```
 
 <br><br>
@@ -731,18 +716,14 @@ knitr::kable(MD_acc_post_neg, row.names=F)%>%
 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000383) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(MD_acc_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_peripost_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.005714) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_acc_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_acc_peripost_neg)
 ```
 
 <br><br>
@@ -765,71 +746,22 @@ knitr::kable(MD_acc_peripost_neg, row.names=F)%>%
 #### Box plots
 ```{r Fixing up variables for displaying sex differences}
 
-# Men positive and women negative LEts do fornix 
+MD_acc_male_pos_values <-BoxplotCleaning(wd=Acc_working_dir,csvpath = 'MD/male/MD_male_pos.csv',ROIs = MD_acc_male_pos[,1],Sex = "male",metric = "mean_md")
 
- MD_acc_male_pos_cols <-  c("Subjects", as.character(MD_acc_male_pos[,1]))
-# 
-# # Lets do just male negative since most tracts are neg
-# #reading in my csv with the stats and adding in the subject info 
- MD_acc_male_pos_values <-read.csv(paste0(working_dir,'maze/Accuracy/MD/male/MD_male_pos.csv'), header=FALSE)%>%
-  filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(MD_acc_male_pos_cols) %>% cbind(Acc_sub_info[,c("sex", "age_scan_years", "repo_status","maze_accuracy_pct")]) %>% filter(sex=="male")
-# 
- # Reorder for my sanity check 
- MD_acc_male_pos_values <- MD_acc_male_pos_values[,c(1,8:11,2:7)]
- MD_acc_male_pos_gathercols <- colnames(MD_acc_male_pos_values[5:11])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- MD_acc_male_pos_values[5:11] <- apply(MD_acc_male_pos_values[5:11],2, as.numeric) 
+MD_acc_female_neg_values <- BoxplotCleaning(Acc_working_dir,'MD/female/MD_female_neg.csv',MD_acc_female_neg[,1] ,"female",metric = "mean_md")
 
-#  Lets do female positive
-# 
- MD_acc_female_neg_cols <- c("Subjects", as.character(MD_acc_female_neg[,1]))
-# 
-#   
-# # Lets do just male negative since most tracts are neg
-# #reading in my csv with the stats and adding in the subject info 
- MD_acc_female_neg_values <-read.delim(paste0(working_dir,'maze/Accuracy/MD/female/MD_female_neg.csv'), header=FALSE, sep="\t") %>%
-   remove_empty("cols") %>% 
-   filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(MD_acc_female_neg_cols) %>%
-   cbind(Acc_sub_info[,c("sex", "age_scan_years", "repo_status","maze_accuracy_pct")]) %>%  filter(sex=="female") 
-# 
-# # Reorder for my sanity check 
- MD_acc_female_neg_values <- MD_acc_female_neg_values[,c(1,8:11,2:7)]
- MD_acc_female_neg_gathercols <- colnames(MD_acc_female_neg_values[5:11])
-# 
-# # for some reason things are being read as a a character and it needs to be a numerical value
- MD_acc_female_neg_values[5:11] <- apply(MD_acc_female_neg_values[5:11],2, as.numeric) 
-# 
+MD_df <- GetSameROIs(MD_acc_female_neg_values,MD_acc_male_pos_values)
 
- #normality check 
- fem_MD_neg_norm <- shapiro.test(MD_acc_female_neg_values$Fornix_R) # not normal
- male_MD_pos_norm <- shapiro.test(MD_acc_male_pos_values$Fornix_R) # not normal
-
- 
-sexdif_fornix_L_MD <- wilcox.test(MD_acc_male_pos_values$Fornix_L, MD_acc_female_neg_values$Fornix_L) %>% broom::tidy() # significant 
-
-sexdif_fornix_R_MD <- wilcox.test(MD_acc_male_pos_values$Fornix_R, MD_acc_female_neg_values$Fornix_R) %>% broom::tidy() # not significant
-
- 
-
-MD_sex_diff <- setdiff(MD_acc_female_neg_gathercols,MD_acc_male_pos_gathercols) %>% cbind(. ,setdiff(MD_acc_male_pos_gathercols,MD_acc_female_neg_gathercols))
 ```
 
 ```{r actaully grabbing the figure}
 
-
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/"
 
-MD_acc_df <- MD_acc_male_pos_values[, !names(MD_acc_male_pos_values) %in% MD_sex_diff]
-MD_acc_df <- rbind(MD_acc_df,MD_acc_female_neg_values[, !names(MD_acc_female_neg_values) %in% MD_sex_diff])
 
-
-MD_gathercols <- colnames(MD_acc_df[6:7])
-for (ROI in MD_gathercols) {
- # print(ROI)
-  y <-ggplot(MD_acc_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
+for (ROI in colnames(MD_df[2:3])) {
+ print(ROI)
+  y <-ggplot(MD_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
     geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6")) +
     geom_jitter(color="black",alpha=0.9,width = 0.25) +
       #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
@@ -845,9 +777,9 @@ for (ROI in MD_gathercols) {
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
 
-   png(file = paste0(figpath,ROI,"_MD.png"))
+   #png(file = CleanCSVsfigpath,ROI,"_MD.png"))
    print(y)
-   dev.off()
+   #dev.off()
 }
 
 ```
@@ -858,13 +790,10 @@ for (ROI in MD_gathercols) {
 figpath <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/MD/"
 
 
-model <- lm(maze_accuracy_pct ~ Fornix_L + sex, data = MD_acc_df)
+MD_df <- MD_df  %>% mutate(maze_accuracy_pct=Acc_sub_info$maze_accuracy_pct)
 
-summary(model)
-
-
-pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"), width=10, height=8)  #ROI,".png"))
-  ggplot(data = MD_acc_df, aes(x =Fornix_L, y = maze_accuracy_pct, color=factor(sex))) +
+#pdf(file = CleanCSVsfigpath,"corr_MD_FornixL.pdf"), width=10, height=8)  #ROI,".png"))
+  ggplot(data = MD_df, aes(x =Fornix_L, y = maze_accuracy_pct, color=factor(sex))) +
      geom_point()+
     stat_smooth(method="lm",se=FALSE)+
     scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
@@ -886,7 +815,7 @@ pdf(file = paste0(figpath,"corr_MD_FornixL.pdf"), width=10, height=8)  #ROI,".pn
     #scale_x_continuous(n.breaks = 3) +
      annotate("text", label = "FDR= 0.061328 ", x = 1.75 , y = 1, color="#E45A5A", size=8) +
      annotate("text", label = "FDR= 0.012068", x = 1.75 , y = 0.9, color="#80792B", size=8) 
-dev.off() 
+#dev.off() 
 
 
 
@@ -898,36 +827,31 @@ dev.off()
 ### AD {.tabset}
 ```{r AD all vars,echo=FALSE, results='hide',message="FALSE"}
 # ALL subjects
-AD_all_acc_pos <- read.delim(paste0(working_dir,'maze/Accuracy/AD/allSubs/AD_all__acc_pos.csv'),header=FALSE, sep="\t") %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame() %>% na.omit()
+AD_all_acc_pos <- CleanCSVs(Acc_working_dir,'AD/allSubs/AD_all__acc_pos.csv')
 
-AD_all_acc_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/allSubs/AD_all__acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame()
-AD_all_acc_neg <- AD_all_acc_neg[-c(1),]
+AD_all_acc_neg <- CleanCSVs(Acc_working_dir,'AD/allSubs/AD_all__acc_neg.csv')
 
 # MEN'
-AD_acc_male_pos <- read.csv(paste0(working_dir,'maze/Accuracy/AD/male/AD_male_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
+AD_acc_male_pos <- CleanCSVs(Acc_working_dir,'AD/male/AD_male_acc_pos.csv')
 
-AD_acc_male_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/male/AD_male_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
-
+AD_acc_male_neg <- CleanCSVs(Acc_working_dir,'AD/male/AD_male_acc_neg.csv')
 # WOMEN
-AD_acc_female_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/female/AD_fem_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
-
+AD_acc_female_neg <- CleanCSVs(Acc_working_dir,'AD/female/AD_fem_acc_neg.csv')
 # PRE
-AD_acc_pre_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/pre/AD_pre_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
-
+AD_acc_pre_neg <- CleanCSVs(Acc_working_dir,'AD/pre/AD_pre_acc_neg.csv')
 # Peri
-AD_acc_peri_pos <- read.csv(paste0(working_dir,'maze/Accuracy/AD/peri/AD_peri_all_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+AD_acc_peri_pos <- CleanCSVs(Acc_working_dir,'AD/peri/AD_peri_all_pos.csv')
 
-AD_acc_peri_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/peri/AD_peri_all_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+AD_acc_peri_neg <- CleanCSVs(Acc_working_dir,'AD/peri/AD_peri_all_neg.csv')
 
 # POST
-AD_acc_post_pos <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+AD_acc_post_pos <- CleanCSVs(Acc_working_dir,'AD/post/ad_post_acc_pos.csv')
 
-AD_acc_post_neg <- read.csv(paste0(working_dir,'maze/Accuracy/AD/post/ad_post_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
-
+AD_acc_post_neg <- CleanCSVs(Acc_working_dir,'AD/post/ad_post_acc_neg.csv')
 # Peri POST
-AD_acc_periost_pos <- read.delim(paste0(working_dir,'/maze/Accuracy/MD/peripost/MD_acc_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),) %>% na.omit()
+AD_acc_periost_pos <-CleanCSVs(Acc_working_dir,'/MD/peripost/MD_acc_peripost_pos.csv')
 
-AD_acc_peripost_neg <- read.delim(paste0(working_dir,'/maze/Accuracy/MD/peripost/MD_acc_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),) %>% na.omit()
+AD_acc_peripost_neg <- CleanCSVs(Acc_working_dir,'/MD/peripost/MD_acc_peripost_neg.csv')
 
 ```
 #### Summary of results 
@@ -936,18 +860,14 @@ Only fornix was negatively associated with performance when all subejcts were an
 #### All subjects
 <span style="color: hotpink;"> Positive Correlations Corrs  (FDR= 0.031496) </span> 
 ```{r AD_all_acc_pos, layout="l-body-outset",echo=FALSE}
-knitr::kable(AD_all_acc_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_all_acc_pos) 
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Corrs ( FDR = 0.150000)</span> 
 ```{r AD_all_acc_neg, layout="l-body-outset",echo=FALSE}
-knitr::kable(AD_all_acc_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_all_acc_neg)
 ```
 <br><br>
 
@@ -970,18 +890,14 @@ knitr::kable(AD_all_acc_neg, row.names=F)%>%
 #### Men
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.005460) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(AD_acc_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_male_pos) 
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR = 0.004202 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_male_neg)
 ```
 
 <br><br>
@@ -1010,9 +926,7 @@ No significant findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR=0.006928 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_female_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_female_neg)
 ```
 
 <br><br>
@@ -1037,9 +951,7 @@ No significant findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR = 0.000197 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_pre_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_pre_neg)
 ```
 
 <br><br>
@@ -1060,18 +972,14 @@ knitr::kable(AD_acc_pre_neg, row.names=F) %>%
 #### peri 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000282 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_peri_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_peri_pos) 
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR=0.016393 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_peri_neg)
 ```
 
 <br><br>
@@ -1094,18 +1002,14 @@ knitr::kable(AD_acc_peri_neg, row.names=F)%>%
 #### post
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000941 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_post_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_post_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.001445 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_post_neg)
 ```
 
 <br><br>
@@ -1130,18 +1034,14 @@ knitr::kable(AD_acc_post_neg, row.names=F)%>%
 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000903) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_periost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_periost_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.006579	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_acc_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_acc_post_neg)
 ```
 
 <br><br>
@@ -1164,29 +1064,27 @@ knitr::kable(AD_acc_post_neg, row.names=F)%>%
 ### RD {.tabset}
 ```{r RD all subjects, echo=FALSE, results='hide',message="FALSE"}
 
-RD_acc_all_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/allSubs/RD_all_acc_pos.csv'), header=FALSE) %>% filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_all_pos <- CleanCSVs(Acc_working_dir,'/RD/allSubs/RD_all_acc_pos.csv')
 
 #MEN
-RD_acc_male_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/male/RD_male_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()
-
+RD_acc_male_pos <- CleanCSVs(Acc_working_dir,'/RD/male/RD_male_acc_pos.csv')
 #women
-RD_acc_female_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/female/RD_fem_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
-
+RD_acc_female_neg <- CleanCSVs(Acc_working_dir,'/RD/female/RD_fem_acc_neg.csv')
 #PRE
-RD_acc_pre_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/pre/RD_pre_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_pre_neg <- CleanCSVs(Acc_working_dir,'/RD/pre/RD_pre_acc_neg.csv')
 
 # PERI
-RD_acc_peri_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peri/RD_peri_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_peri_pos <- CleanCSVs(Acc_working_dir,'/RD/peri/RD_peri_acc_pos.csv')
 
 # POST
-RD_acc_post_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/post/RD_post_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_post_neg <- CleanCSVs(Acc_working_dir,'/RD/post/RD_post_acc_neg.csv')
 
-RD_acc_post_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/post/RD_post_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_post_pos <- CleanCSVs(Acc_working_dir,'/RD/post/RD_post_acc_pos.csv')
 
 # PEri Post
-RD_acc_peripost_neg <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/RD_peripost_acc_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_peripost_neg <- CleanCSVs(Acc_working_dir,'/RD/peripost/RD_peripost_acc_neg.csv')
 
-RD_acc_peripost_pos <- read.csv(paste0(working_dir,'/maze/Accuracy/RD/peripost/RD_peripost_acc_pos.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% as.data.frame() %>% `[`(-c(1),)
+RD_acc_peripost_pos <- CleanCSVs(Acc_working_dir,'/RD/peripost/RD_peripost_acc_pos.csv')
 ```
 
 #### Summary of results 
@@ -1198,9 +1096,7 @@ All subjects analyzed, tracts in the fornix were positively associated with acc.
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.146417 ) </span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_acc_all_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_all_pos) 
 ```
 
 <br><br>
@@ -1225,9 +1121,7 @@ No significant findings
 #### Men
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.019254)  </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_male_pos)
 ```
 
 <br><br>
@@ -1258,9 +1152,7 @@ No Significant Findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.074362)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_female_neg)
 ```
 
 <br><br>
@@ -1285,9 +1177,7 @@ No Significant Findings
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.010636) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_pre_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_pre_neg) 
 ```
 
 <br><br>
@@ -1306,9 +1196,7 @@ knitr::kable(RD_acc_pre_neg, row.names=F) %>%
 #### peri 
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000248) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peri_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_peri_pos)
 ```
 
 <br><br>
@@ -1333,18 +1221,14 @@ No Significant Findings
 #### post
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000777) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_post_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_post_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs (FDR = 0.040343)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_post_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_post_neg) 
 ```
 
 <br><br>
@@ -1365,18 +1249,14 @@ knitr::kable(RD_acc_post_neg, row.names=F) %>%
 #### peri post combination
 <span style="color: hotpink;"> Positive Correlations Corrs (FDR = 0.000994) </span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_peripost_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations Corrs  (FDR = 0.009259)</span> 
 ```{r, layout="l-body-outset",echo=FALSE}
-knitr::kable(RD_acc_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_acc_peripost_neg)
 ```
 
 <br><br>
@@ -1445,94 +1325,84 @@ We would expect that lower QA values would correspond to higher PE scores. highe
 
 
 ### QA {.tabset}
-```{r QA ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
+```{r QA ALL trials path eff, echo=FALSE, results='hide',message="FALSE"}
 
-QA_alltrialsPE_all_pos <- read.delim(paste0(working_dir,'maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_all_pos <- CleanCSVs(PE_working_dir,'All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos.csv')
 
-QA_alltrialsPE_all_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_all_neg <- CleanCSVs(PE_working_dir,'All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_neg.csv')
 
 #MEN
-QA_alltrialsPE_male_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/male/QA_alltrialspatheff_male_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_male_pos <- CleanCSVs(PE_working_dir,'All_trials/QA/male/QA_alltrialspatheff_male_pos.csv')
 
-QA_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/male/QA_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-
+QA_alltrialsPE_male_neg <- CleanCSVs(PE_working_dir,'All_trials/QA/male/QA_alltrialspatheff_male_neg.csv')
 #women
 
-QA_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/female/QA_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_female_pos <- CleanCSVs(PE_working_dir,'All_trials/QA/female/QA_alltrialspatheff_female_pos.csv')
 
-QA_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/female/QA_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_female_neg <- CleanCSVs(PE_working_dir,'All_trials/QA/female/QA_alltrialspatheff_female_neg.csv')
 
 #PRE
-QA_alltrialsPE_pre_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_pos.csv'),header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_pre_pos <- CleanCSVs(PE_working_dir,'All_trials/QA/pre/QA_alltrialspatheff_pre_pos.csv')
 
-QA_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/pre/QA_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_pre_neg <- CleanCSVs(PE_working_dir,'All_trials/QA/pre/QA_alltrialspatheff_pre_neg.csv')
 
 #  PERI
- QA_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri/QA_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-
+ QA_alltrialsPE_peri_neg <- CleanCSVs(PE_working_dir,'All_trials/QA/peri/QA_alltrialspatheff_peri_neg.csv')
 # POST
-QA_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_post_pos <- CleanCSVs(PE_working_dir,'All_trials/QA/post/QA_alltrialspatheff_post_pos.csv')
 
-QA_alltrialsPE_post_neg <- read.csv(paste0(working_dir,'/maze/Path_eff/All_trials/QA/post/QA_alltrialspatheff_post_neg.csv'), header=FALSE) %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-
+QA_alltrialsPE_post_neg <-CleanCSVs(PE_working_dir,'All_trials/QA/post/QA_alltrialspatheff_post_neg.csv')
 
 
 # PEri Post
-QA_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri_post/QA_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_peripost_neg <- CleanCSVs(PE_working_dir,'All_trials/QA/peri_post/QA_alltrialspatheff_peripost_neg.csv')
 
-QA_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/QA/peri_post/QA_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+QA_alltrialsPE_peripost_pos <- CleanCSVs(PE_working_dir,'All_trials/QA/peri_post/QA_alltrialspatheff_peripost_pos.csv')
+
 ```
 
 #### All Subjects 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.003279) </span> 
 ```{r,echo=FALSE}
-knitr::kable(QA_alltrialsPE_all_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+TableOutput(QA_alltrialsPE_all_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.001618)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_all_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_all_neg) 
 ```
 <br><br>
 
-<span class="text-center" style="color: Magenta;"> Figures </span>
+<!-- <span class="text-center" style="color: Magenta;"> Figures </span> -->
 
-<br>
+<!-- <br> -->
 
-![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos_cor.png)
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA positively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_pos_cor.png) -->
 
-<br>
+<!-- <br> -->
 
-![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_neg_cor.png)
+<!-- ![Slice overlay image displaying ROIs with tracts that had QA negatively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/QA_alltrialspatheff_allsubs_neg_cor.png) -->
 
-<br>
+<!-- <br> -->
 
-![Glass Brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/AllTrials_path_effi.t2.length25.pos_neg.jpg)
+<!-- ![Glass Brain displaying tracts that had QA positively and negatively correlated with Maze Path Eff](/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/All_trials/QA/allSubs/AllTrials_path_effi.t2.length25.pos_neg.jpg) -->
 
-<br><br><br><br><br><br>
+<!-- <br><br><br><br><br><br> -->
 
 #### Men
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.005510) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(QA_alltrialsPE_male_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_male_pos) 
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.007274)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_male_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_male_neg) 
 ```
 <br><br>
 
@@ -1556,18 +1426,14 @@ knitr::kable(QA_alltrialsPE_male_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.007246) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(QA_alltrialsPE_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+TableOutput(QA_alltrialsPE_female_pos) 
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000369)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_female_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_female_neg) 
 ```
 <br><br>
 
@@ -1591,18 +1457,14 @@ knitr::kable(QA_alltrialsPE_female_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001502) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(QA_alltrialsPE_pre_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_pre_pos) 
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001490)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_pre_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_pre_neg) 
 ```
 <br><br>
 
@@ -1631,9 +1493,7 @@ No Significant Correlations
 
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000374)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_peri_neg, row.names=F) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_peri_neg)
 ```
 <br><br>
 
@@ -1653,9 +1513,7 @@ knitr::kable(QA_alltrialsPE_peri_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001024) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(QA_alltrialsPE_post_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_post_pos) 
 ```
 
 <br><br>
@@ -1663,9 +1521,7 @@ knitr::kable(QA_alltrialsPE_post_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001339)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_post_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_post_neg) 
 ```
 
 <br><br>
@@ -1691,9 +1547,7 @@ knitr::kable(QA_alltrialsPE_post_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.006944) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(QA_alltrialsPE_peripost_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+TableOutput(QA_alltrialsPE_peripost_pos) 
 ```
 
 <br><br>
@@ -1701,9 +1555,7 @@ knitr::kable(QA_alltrialsPE_peripost_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000330)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_peripost_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_alltrialsPE_peripost_neg) 
 ```
 
 <br><br>
@@ -1727,36 +1579,36 @@ knitr::kable(QA_alltrialsPE_peripost_neg, row.names=F) %>%
 ### MD {.tabset}
 ```{r MD ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
 
-MD_alltrialsPE_all_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/allSubs/MD_alltrialspatheff_allsubs_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_all_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/allSubs/MD_alltrialspatheff_allsubs_neg.csv')
 
 #MEN
-MD_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/male/MD_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_male_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/male/MD_alltrialspatheff_male_neg.csv')
 
 #women
 
-MD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_female_pos <- CleanCSVs(PE_working_dir,'All_trials/MD/female/MD_alltrialspatheff_female_pos.csv')
 
-MD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/female/MD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_female_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/female/MD_alltrialspatheff_female_neg.csv')
 
 #PRE
 
-MD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/pre/MD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_pre_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/pre/MD_alltrialspatheff_pre_neg.csv')
 
 # # PERI
-MD_alltrialsPE_peri_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_peri_pos <- CleanCSVs(PE_working_dir,'All_trials/MD/peri/MD_alltrialspatheff_peri_pos.csv')
 
-MD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peri/MD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_peri_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/peri/MD_alltrialspatheff_peri_neg.csv')
 
 # POST
-MD_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/post/MD_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_post_pos <- CleanCSVs(PE_working_dir,'All_trials/MD/post/MD_alltrialspatheff_post_pos.csv')
 
-MD_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/post/MD_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_post_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/post/MD_alltrialspatheff_post_neg.csv')
 
 
 # PEri Post
-MD_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peripost/MD_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_peripost_neg <- CleanCSVs(PE_working_dir,'All_trials/MD/peripost/MD_alltrialspatheff_peripost_neg.csv')
 
-MD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/MD/peripost/MD_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+MD_alltrialsPE_peripost_pos <- CleanCSVs(PE_working_dir,'All_trials/MD/peripost/MD_alltrialspatheff_peripost_pos.csv')
 ```
 
 #### All Subjects 
@@ -1769,9 +1621,7 @@ No Significant Correlations
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.000364)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_all_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_all_neg) 
 ```
 
 <br><br>
@@ -1798,9 +1648,7 @@ No Significant Correlations
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001337)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_male_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_male_neg) 
 ```
 
 <br><br>
@@ -1821,9 +1669,7 @@ knitr::kable(MD_alltrialsPE_male_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.046512) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(MD_alltrialsPE_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "100px")
+TableOutput(MD_alltrialsPE_female_pos)
 ```
 
 <br><br>
@@ -1831,9 +1677,7 @@ knitr::kable(MD_alltrialsPE_female_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.00032)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_female_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_female_neg) 
 ```
 
 <br><br>
@@ -1864,9 +1708,7 @@ No Significant Corrleations
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.021415)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_pre_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_pre_neg)
 ```
 
 <br><br>
@@ -1887,9 +1729,7 @@ knitr::kable(MD_alltrialsPE_pre_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.002496) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(MD_alltrialsPE_peri_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_peri_pos) 
 ```
 
 <br><br>
@@ -1897,9 +1737,7 @@ knitr::kable(MD_alltrialsPE_peri_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.002323)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_peri_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_peri_neg) 
 ```
 
 <br><br>
@@ -1924,9 +1762,7 @@ knitr::kable(MD_alltrialsPE_peri_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.002926) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(MD_alltrialsPE_post_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_post_pos) 
 ```
 
 <br><br>
@@ -1934,9 +1770,7 @@ knitr::kable(MD_alltrialsPE_post_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.002119)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_post_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_post_neg) 
 ```
 
 <br><br>
@@ -1961,9 +1795,7 @@ knitr::kable(MD_alltrialsPE_post_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.024953) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(MD_alltrialsPE_peripost_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_peripost_pos) 
 ```
 
 <br><br>
@@ -1971,9 +1803,7 @@ knitr::kable(MD_alltrialsPE_peripost_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.163978)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_alltrialsPE_peripost_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_alltrialsPE_peripost_pos) 
 ```
 
 <br><br>
@@ -2003,31 +1833,31 @@ knitr::kable(MD_alltrialsPE_peripost_pos, row.names=F) %>%
 ```{r AD ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
 
 #MEN
-AD_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/male/AD_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_male_neg <- CleanCSVs(PE_working_dir,'All_trials/AD/male/AD_alltrialspatheff_male_neg.csv')
 
 #women
-AD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/female/AD_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_female_pos <- CleanCSVs(PE_working_dir,'All_trials/AD/female/AD_alltrialspatheff_female_pos.csv')
 
-AD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/female/AD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_female_neg <- CleanCSVs(PE_working_dir,'All_trials/AD/female/AD_alltrialspatheff_female_neg.csv')
 
 #PRE
 
-AD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/pre/AD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_pre_neg <- CleanCSVs(PE_working_dir,'All_trials/AD/pre/AD_alltrialspatheff_pre_neg.csv')
 
 # # PERI
-AD_alltrialsPE_peri_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/peri/AD_alltrialspatheff_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_peri_pos <- CleanCSVs(PE_working_dir,'All_trials/AD/peri/AD_alltrialspatheff_peri_pos.csv')
 
-AD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/peri/AD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_peri_neg <- CleanCSVs(PE_working_dir,'All_trials/AD/peri/AD_alltrialspatheff_peri_neg.csv')
 
 # POST
-AD_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/post/AD_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_post_pos <- CleanCSVs(PE_working_dir,'All_trials/AD/post/AD_alltrialspatheff_post_pos.csv')
 
-AD_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/post/AD_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_post_neg <- CleanCSVs(PE_working_dir,'All_trials/AD/post/AD_alltrialspatheff_post_neg.csv')
 
 
 # PEri Post
 
-AD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/AD/peri_post/AD_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+AD_alltrialsPE_peripost_pos <- CleanCSVs(PE_working_dir,'All_trials/AD/peri_post/AD_alltrialspatheff_peripost_pos.csv')
 ```
 #### All Subjects
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.055556) </span>
@@ -2053,9 +1883,7 @@ No Significant Findings
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.183673)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(QA_alltrialsPE_peripost_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_male_neg) 
 ```
 
 <br><br>
@@ -2076,9 +1904,7 @@ knitr::kable(QA_alltrialsPE_peripost_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.008333) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(AD_alltrialsPE_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_female_pos) 
 ```
 
 <br><br>
@@ -2086,9 +1912,7 @@ knitr::kable(AD_alltrialsPE_female_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.003215)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_alltrialsPE_female_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_female_neg) 
 ```
 
 <br><br>
@@ -2119,9 +1943,7 @@ No significant tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.016484)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_alltrialsPE_pre_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_pre_neg) 
 ```
 
 <br><br>
@@ -2142,9 +1964,7 @@ knitr::kable(AD_alltrialsPE_pre_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000991) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(AD_alltrialsPE_peri_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_peri_pos) 
 ```
 
 <br><br>
@@ -2152,9 +1972,7 @@ knitr::kable(AD_alltrialsPE_peri_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.001513)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_alltrialsPE_peri_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_peri_neg) 
 ```
 
 <br><br>
@@ -2178,9 +1996,7 @@ knitr::kable(AD_alltrialsPE_peri_neg, row.names=F) %>%
 #### Post 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001510) </span>
 ```{r, echo=FALSE}
-knitr::kable(AD_alltrialsPE_post_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_post_pos) 
 ```
 
 <br><br>
@@ -2188,9 +2004,7 @@ knitr::kable(AD_alltrialsPE_post_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.019694)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_alltrialsPE_post_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_post_neg) 
 ```
 
 <br><br>
@@ -2215,9 +2029,7 @@ knitr::kable(AD_alltrialsPE_post_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.003250) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(AD_alltrialsPE_peripost_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_alltrialsPE_peripost_pos) 
 ```
 
 <br><br>
@@ -2244,36 +2056,34 @@ No Significant Correlations
 ### RD {.tabset}
 ```{r RD ALL trials path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
 
-RD_alltrialsPE_all_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/allSubs/RD_alltrialspatheff_all_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-
+RD_alltrialsPE_all_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/allSubs/RD_alltrialspatheff_all_neg.csv')
 #MEN
-RD_alltrialsPE_male_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/male/RD_alltrialspatheff_male_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_male_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/male/RD_alltrialspatheff_male_neg.csv')
 
 #women
-RD_alltrialsPE_female_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/female/RD_alltrialspatheff_female_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_female_pos <- CleanCSVs(PE_working_dir,'All_trials/RD/female/RD_alltrialspatheff_female_pos.csv')
 
-RD_alltrialsPE_female_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/female/RD_alltrialspatheff_female_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
-
+RD_alltrialsPE_female_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/female/RD_alltrialspatheff_female_neg.csv')
 #PRE
 
-RD_alltrialsPE_pre_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/pre/RD_alltrialspatheff_pre_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_pre_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/pre/RD_alltrialspatheff_pre_neg.csv')
 
 # # PERI
-RD_alltrialsPE_peri_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri/RD_alltrialspatheff_peri_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_peri_pos <- CleanCSVs(PE_working_dir,'All_trials/RD/peri/RD_alltrialspatheff_peri_pos.csv')
 
-RD_alltrialsPE_peri_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri/RD_alltrialspatheff_peri_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_peri_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/peri/RD_alltrialspatheff_peri_neg.csv')
 
 # POST
-RD_alltrialsPE_post_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/post/RD_alltrialspatheff_post_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_post_pos <- CleanCSVs(PE_working_dir,'All_trials/RD/post/RD_alltrialspatheff_post_pos.csv')
 
-RD_alltrialsPE_post_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/post/RD_alltrialspatheff_post_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_post_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/post/RD_alltrialspatheff_post_neg.csv')
 
 
 # PEri Post
 
-RD_alltrialsPE_peripost_pos <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri_post/RD_alltrialspatheff_peripost_pos.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_peripost_pos <- CleanCSVs(PE_working_dir,'All_trials/RD/peri_post/RD_alltrialspatheff_peripost_pos.csv')
 
-RD_alltrialsPE_peripost_neg <- read.delim(paste0(working_dir,'/maze/Path_eff/All_trials/RD/peri_post/RD_alltrialspatheff_peripost_neg.csv'), header=FALSE, sep="\t") %>%  filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab) %>% `[`(-c(1),) %>% as.data.frame()%>% na.omit()
+RD_alltrialsPE_peripost_neg <- CleanCSVs(PE_working_dir,'All_trials/RD/peri_post/RD_alltrialspatheff_peripost_neg.csv')
 ```
 
 #### All Subjects
@@ -2286,9 +2096,7 @@ No Significant Correlations
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=  0.013981)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_all_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_all_neg)
 ```
 
 <br><br>
@@ -2314,9 +2122,7 @@ No Significant Correlations
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.005025)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_male_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_male_neg) 
 ```
 
 <br><br>
@@ -2337,9 +2143,7 @@ knitr::kable(RD_alltrialsPE_male_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.007353) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(RD_alltrialsPE_female_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_female_pos) 
 ```
 
 <br><br>
@@ -2347,9 +2151,7 @@ knitr::kable(RD_alltrialsPE_female_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR=0.000514)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_female_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_female_neg) 
 ```
 
 <br><br>
@@ -2380,9 +2182,7 @@ No Significant correlations
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.021390)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_pre_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_pre_neg)
 ```
 
 <br><br>
@@ -2403,9 +2203,7 @@ knitr::kable(RD_alltrialsPE_pre_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001243) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(RD_alltrialsPE_peri_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_peri_pos) 
 ```
 
 <br><br>
@@ -2413,9 +2211,7 @@ knitr::kable(RD_alltrialsPE_peri_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.001323)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_peri_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_peri_neg) 
 ```
 
 <br><br>
@@ -2440,9 +2236,7 @@ knitr::kable(RD_alltrialsPE_peri_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.007082) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(RD_alltrialsPE_post_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_post_pos) 
 ```
 
 <br><br>
@@ -2450,9 +2244,7 @@ knitr::kable(RD_alltrialsPE_post_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.006757)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_post_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_post_neg) 
 ```
 
 <br><br>
@@ -2477,9 +2269,7 @@ knitr::kable(RD_alltrialsPE_post_neg, row.names=F) %>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.006927) </span>
 
 ```{r,echo=FALSE}
-knitr::kable(RD_alltrialsPE_peripost_pos, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_peripost_pos) 
 ```
 
 <br><br>
@@ -2487,9 +2277,7 @@ knitr::kable(RD_alltrialsPE_peripost_pos, row.names=F) %>%
 <span class="text-center" style="color: Teal;"> Negative Correlations (FDR= 0.188596)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(RD_alltrialsPE_peripost_neg, row.names=F) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_alltrialsPE_peripost_neg)
 ```
 
 <br><br>
@@ -2562,153 +2350,43 @@ Peri and Post
 
 #### All subjects ####
 QA_correcttrialsPE_all_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/all_subs/QA_correcttrialspatheff_all_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
-                
+  CleanCSVs(PE_working_dir,'correct_trials/QA/all_subs/QA_correcttrialspatheff_all_neg.csv')
 
 #### Males #####
 QA_correcttrialsPE_male_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/male/QA_correcttrialspatheff_male_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-               as.data.frame() %>%
-                `[`(-c(1), ) 
+  CleanCSVs(PE_working_dir,'correct_trials/QA/male/QA_correcttrialspatheff_male_pos.csv')
 
 
 QA_correcttrialsPE_male_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/male/QA_correcttrialspatheff_male_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>% 
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame() 
+  CleanCSVs(PE_working_dir,'correct_trials/QA/male/QA_correcttrialspatheff_male_neg.csv')
                 
 
 #### Females #####
 
-QA_correcttrialsPE_female_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/pre/QA_correcttrialspatheff_pre_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                as.data.frame() %>% 
-                  `[`(-c(1), ) 
-
+QA_correcttrialsPE_female_neg <- CleanCSVs( PE_working_dir,'correct_trials/QA/pre/QA_correcttrialspatheff_pre_pos.csv')
 #### Pre #####
 
 QA_correcttrialsPE_pre_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/pre/QA_correcttrialspatheff_pre_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                as.data.frame() %>% 
-                  `[`(-c(1), )  
-               
 
-QA_correcttrialsPE_pre_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/pre/QA_correcttrialspatheff_pre_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame() 
-                 
+    CleanCSVs(PE_working_dir,'correct_trials/QA/pre/QA_correcttrialspatheff_pre_pos.csv')
+
+QA_correcttrialsPE_pre_neg <- CleanCSVs( PE_working_dir,'correct_trials/QA/pre/QA_correcttrialspatheff_pre_neg.csv')
 
 
 #### Peri ####
 
-QA_correcttrialsPE_peri_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri/QA_correcttrialspatheff_peri_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame() 
+QA_correcttrialsPE_peri_pos <-CleanCSVs(PE_working_dir,'correct_trials/QA/peri/QA_correcttrialspatheff_peri_pos.csv')
 
-QA_correcttrialsPE_peri_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri/QA_correcttrialspatheff_peri_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                as.data.frame()%>% 
-                  `[`(-c(1), )  
+QA_correcttrialsPE_peri_neg <-CleanCSVs(PE_working_dir,'correct_trials/QA/peri/QA_correcttrialspatheff_peri_neg.csv')
 #### post ####
 
-QA_correcttrialsPE_post_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/post/QA_correcttrialspatheff_post_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame() 
-
+QA_correcttrialsPE_post_pos <-CleanCSVs(PE_working_dir,'correct_trials/QA/post/QA_correcttrialspatheff_post_pos.csv')
 
 #### Peri and post ####
 
-QA_correcttrialsPE_peripost_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri_post/QA_correcttrialspatheff_peripost_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame() 
+QA_correcttrialsPE_peripost_pos <-CleanCSVs(PE_working_dir,'correct_trials/QA/peri_post/QA_correcttrialspatheff_peripost_pos.csv')
 
-QA_correcttrialsPE_peripost_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/QA/peri_post/QA_correcttrialspatheff_peripost_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%  
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame() 
+QA_correcttrialsPE_peripost_neg <-CleanCSVs(PE_working_dir,'correct_trials/QA/peri_post/QA_correcttrialspatheff_peripost_neg.csv')
 
 ```
 
@@ -2721,9 +2399,7 @@ No Significant Tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.000274)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_all_neg)
 ```
 
 <!-- <br><br> -->
@@ -2747,18 +2423,14 @@ knitr::kable(QA_correcttrialsPE_all_neg, row.names=F)%>%
 #### Men 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.025) </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_male_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.000228	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_male_neg)
 ```
 
 <!-- <br><br> -->
@@ -2788,9 +2460,7 @@ No Significant Tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.015221	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_female_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_female_neg)
 ```
 
 <!-- <br><br> -->
@@ -2814,18 +2484,14 @@ knitr::kable(QA_correcttrialsPE_female_neg, row.names=F)%>%
 #### Pre
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.011765 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_pre_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_pre_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.000224 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_pre_neg)
 ```
 
 <!-- <br><br> -->
@@ -2849,18 +2515,14 @@ knitr::kable(QA_correcttrialsPE_pre_neg, row.names=F)%>%
 #### Peri
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001271) </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_peri_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_peri_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.025 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_peri_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_peri_neg)
 ```
 
 <!-- <br><br> -->
@@ -2884,9 +2546,7 @@ knitr::kable(QA_correcttrialsPE_peri_neg, row.names=F)%>%
 #### Post
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.126372) </span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_post_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_post_pos)
 ```
 
 <br><br>
@@ -2917,18 +2577,14 @@ No Significant Tracts
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.027368	) </span> 
 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_peripost_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.003425	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(QA_correcttrialsPE_peripost_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(QA_correcttrialsPE_peripost_neg)
 ```
 
 <!-- <br><br> -->
@@ -2954,97 +2610,24 @@ knitr::kable(QA_correcttrialsPE_peripost_neg, row.names=F)%>%
 ```{r MD Correct trials only path eff  subjects, echo=FALSE, results='hide',message="FALSE"}
 
 #### All subjects ####
-MD_correcttrialsPE_all_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/all_subs/MD_correcttrialspatheff_all_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+MD_correcttrialsPE_all_neg <-CleanCSVs( PE_working_dir,'correct_trials/MD/all_subs/MD_correcttrialspatheff_all_neg.csv')
 
 #### Males ####
-MD_correcttrialsPE_male_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/male/MD_correcttrialspatheff_male_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+MD_correcttrialsPE_male_neg <- CleanCSVs( PE_working_dir,'correct_trials/MD/male/MD_correcttrialspatheff_male_pos.csv')
 
-MD_correcttrialsPE_male_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/male/MD_correcttrialspatheff_male_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
-
+MD_correcttrialsPE_male_pos <-CleanCSVs( PE_working_dir,'correct_trials/MD/male/MD_correcttrialspatheff_male_neg.csv')
 #### Females ####
 
 #### pre ####
-MD_correcttrialsPE_pre_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/pre/MD_correcttrialspatheff_pre_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+MD_correcttrialsPE_pre_neg <-CleanCSVs( PE_working_dir,'correct_trials/MD/pre/MD_correcttrialspatheff_pre_neg.csv')
 
 #### peri ####
 
-MD_correcttrialsPE_peri_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/peri/MD_correcttrialspatheff_peri_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
-
+MD_correcttrialsPE_peri_pos <-CleanCSVs( PE_working_dir,'correct_trials/MD/peri/MD_correcttrialspatheff_peri_pos.csv')
 #### post ####
-MD_correcttrialsPE_post_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/post/MD_correcttrialspatheff_post_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
-
+MD_correcttrialsPE_post_neg <-CleanCSVs( PE_working_dir,'correct_trials/MD/post/MD_correcttrialspatheff_post_neg.csv')
 #### Peri Post ####
-MD_correcttrialsPE_peripost_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/MD/peri_post/MD_correcttrialspatheff_peripost_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+MD_correcttrialsPE_peripost_pos <-CleanCSVs( PE_working_dir,'correct_trials/MD/peri_post/MD_correcttrialspatheff_peripost_pos.csv')
 ```
 
 #### Summary 
@@ -3060,9 +2643,7 @@ No Significicant Tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.047977	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_all_neg)
 ```
 
 <!-- <br><br> -->
@@ -3086,18 +2667,14 @@ knitr::kable(MD_correcttrialsPE_all_neg, row.names=F)%>%
 #### Men 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.033322 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_male_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.061897	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_male_neg)
 ```
 
 <!-- <br><br> -->
@@ -3150,9 +2727,7 @@ No significant tracts
 #### Pre
 <span style="color: hotpink;"> Positive Correlations ( FDR= 1.00000	) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_pre_neg)
 ```
 
 <br><br>
@@ -3182,9 +2757,7 @@ no significant tracts
 #### Peri
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001254 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_peri_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_peri_pos)
 ```
 
 <br><br>
@@ -3221,9 +2794,7 @@ No Significant Tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.157511	)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_post_neg)
 ```
 
 <!-- <br><br> -->
@@ -3248,9 +2819,7 @@ knitr::kable(MD_correcttrialsPE_post_neg, row.names=F)%>%
 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.06383	) </span> 
 ```{r, echo=FALSE}
-knitr::kable(MD_correcttrialsPE_peripost_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(MD_correcttrialsPE_peripost_pos)
 ```
 
 
@@ -3281,78 +2850,18 @@ No Significant Tracts
 ```{r AD Correct trials only path eff, echo=FALSE, results='hide',message="FALSE"}
 
 #### Males ####
-AD_correcttrialsPE_male_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/male/AD_correcttrialspatheff_male_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+AD_correcttrialsPE_male_pos <-CleanCSVs( PE_working_dir,'correct_trials/AD/male/AD_correcttrialspatheff_male_pos.csv')
 
-AD_correcttrialsPE_male_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/male/AD_correcttrialspatheff_male_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+AD_correcttrialsPE_male_neg <- CleanCSVs( PE_working_dir,'correct_trials/AD/male/AD_correcttrialspatheff_male_neg.csv')
 #### pre ####
-AD_correcttrialsPE_pre_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/pre/AD_correcttrialspatheff_pre_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+AD_correcttrialsPE_pre_neg <-CleanCSVs( PE_working_dir,'correct_trials/AD/pre/AD_correcttrialspatheff_pre_neg.csv')
 
 #### Peri ####
-AD_correcttrialsPE_peri_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/peri/AD_correcttrialspatheff_peri_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+AD_correcttrialsPE_peri_pos <-CleanCSVs( PE_working_dir,'correct_trials/AD/peri/AD_correcttrialspatheff_peri_pos.csv')
 #### Post ####
-AD_correcttrialsPE_post_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/post/AD_correcttrialspatheff_post_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+AD_correcttrialsPE_post_neg <-CleanCSVs( PE_working_dir,'correct_trials/AD/post/AD_correcttrialspatheff_post_neg.csv')
 #### Peri and Post ####
-AD_correcttrialsPE_post_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/AD/peri_post/AD_correcttrialsPATHEFF_peripost_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+AD_correcttrialsPE_post_pos <-CleanCSVs( PE_working_dir,'correct_trials/AD/peri_post/AD_correcttrialsPATHEFF_peripost_pos.csv')
 
 ```
 
@@ -3373,9 +2882,7 @@ No Significant Tracts
 #### Men 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.001011 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_correcttrialsPE_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_correcttrialsPE_male_pos)
 ```
 
 <br><br>
@@ -3383,7 +2890,7 @@ knitr::kable(AD_correcttrialsPE_male_pos, row.names=F)%>%
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.043478	)</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_correcttrialsPE_male_neg, row.names=F)%>% 
+TableOutput(AD_correcttrialsPE_male_neg)%>% 
   kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
   scroll_box(width = "800px", height = "200px")
 ```
@@ -3432,9 +2939,7 @@ No Significant Tracts
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.056391 )</span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_correcttrialsPE_pre_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_correcttrialsPE_pre_neg)
 ```
 
 
@@ -3460,9 +2965,7 @@ knitr::kable(AD_correcttrialsPE_pre_neg, row.names=F)%>%
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.054795 ) </span> 
 
 ```{r, echo=FALSE}
-knitr::kable(AD_correcttrialsPE_peri_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_correcttrialsPE_peri_pos)
 ```
 
 
@@ -3499,9 +3002,7 @@ No Significant Tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.011824	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_correcttrialsPE_post_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_correcttrialsPE_post_neg)
 ```
 
 
@@ -3527,9 +3028,7 @@ knitr::kable(AD_correcttrialsPE_post_neg, row.names=F)%>%
 #### Peri and post
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.004762	) </span> 
 ```{r, echo=FALSE}
-knitr::kable(AD_correcttrialsPE_post_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(AD_correcttrialsPE_post_pos)
 ```
 
 <br><br>
@@ -3559,117 +3058,27 @@ No Significant Tracts
 ### RD {.tabset}
 ```{r RD Correct trials only path eff, echo=FALSE, results='hide',message="FALSE"}
 #### ALl subs ####
-RD_correcttrialsPE_all_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/all_subs/RD_correcttrialspatheff_all_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_all_neg <-CleanCSVs( PE_working_dir,'correct_trials/RD/all_subs/RD_correcttrialspatheff_all_neg.csv')
 #### male ####
-RD_correcttrialsPE_male_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/male/RD_correcttrialspatheff_male_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_male_pos <-CleanCSVs( PE_working_dir,'correct_trials/RD/male/RD_correcttrialspatheff_male_pos.csv')
 
-RD_correcttrialsPE_male_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/male/RD_correcttrialspatheff_male_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_male_neg <-CleanCSVs( PE_working_dir,'correct_trials/RD/male/RD_correcttrialspatheff_male_neg.csv')
 
 #### female ####
 
 #### pre ####
-RD_correcttrialsPE_pre_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/pre/RD_correcttrialspatheff_pre_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                as.data.frame() %>% 
-                  `[`(-c(1), ) 
+RD_correcttrialsPE_pre_pos <-CleanCSVs( PE_working_dir,'correct_trials/RD/pre/RD_correcttrialspatheff_pre_pos.csv')
 
-RD_correcttrialsPE_pre_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/pre/RD_correcttrialspatheff_pre_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_pre_neg <-CleanCSVs( PE_working_dir,'correct_trials/RD/pre/RD_correcttrialspatheff_pre_neg.csv')
 #### peri ####
-RD_correcttrialsPE_peri_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/peri/RD_correcttrialspatheff_peri_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_peri_pos <-CleanCSVs( PE_working_dir,'correct_trials/RD/peri/RD_correcttrialspatheff_peri_pos.csv')
 #### post ####
-RD_correcttrialsPE_post_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/post/RD_correcttrialspatheff_post_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_post_neg <-CleanCSVs( PE_working_dir,'correct_trials/RD/post/RD_correcttrialspatheff_post_neg.csv')
 
 #### peri and post ####
-RD_correcttrialsPE_peripost_pos <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/peri_post/RD_correcttrialpatheff_peripost_pos.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_peripost_pos <-CleanCSVs( PE_working_dir,'correct_trials/RD/peri_post/RD_correcttrialpatheff_peripost_pos.csv')
 
-RD_correcttrialsPE_peripost_neg <-
-  read.delim(
-    paste0(working_dir,'/maze/Path_eff/correct_trials/RD/peri_post/RD_correcttrialpatheff_peripost_neg.csv'),
-    header = FALSE,
-    sep = "\t") %>%
-      remove_empty("cols") %>%
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-              `[`(-c(1), ) %>% 
-                as.data.frame()
+RD_correcttrialsPE_peripost_neg <-CleanCSVs( PE_working_dir,'correct_trials/RD/peri_post/RD_correcttrialpatheff_peripost_neg.csv')
 ```
 
 #### Summary 
@@ -3682,9 +3091,7 @@ No Significant Tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.042296 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_all_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_all_neg)
 ```
 
 
@@ -3708,18 +3115,14 @@ knitr::kable(RD_correcttrialsPE_all_neg, row.names=F)%>%
 #### Men 
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.066096 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_male_pos, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_male_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.199156	)</span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_male_neg, row.names=F)%>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_male_neg)
 ```
 
 
@@ -3758,18 +3161,14 @@ knitr::kable(RD_correcttrialsPE_male_neg, row.names=F)%>%
 #### Pre
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.03535 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_pre_pos, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_pre_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.06983 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_pre_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_pre_neg)
 ```
 
 
@@ -3794,9 +3193,7 @@ knitr::kable(RD_correcttrialsPE_pre_neg, row.names=F)%>%
 #### Peri
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.000515 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_peri_pos, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_peri_pos)
 ```
 
 <br><br>
@@ -3833,9 +3230,7 @@ No Significant Tracts
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.156608	 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_post_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_post_neg)
 ```
 
 
@@ -3860,18 +3255,14 @@ knitr::kable(RD_correcttrialsPE_post_neg, row.names=F)%>%
 #### Peri and post
 <span style="color: hotpink;"> Positive Correlations ( FDR= 0.13468	 ) </span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_peripost_pos, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_peripost_pos)
 ```
 
 <br><br>
 
 <span class="text-center" style="color: Teal;"> Negative Correlations ( FDR= 0.110588	 )</span> 
 ```{r, echo=FALSE}
-knitr::kable(RD_correcttrialsPE_peripost_neg, row.names=F)%>%
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "800px", height = "200px")
+TableOutput(RD_correcttrialsPE_peripost_neg)
 ```
 
 
