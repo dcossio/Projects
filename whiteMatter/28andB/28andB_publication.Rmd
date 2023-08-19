@@ -64,29 +64,8 @@ subinfo_DF <- read_csv('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dc
 
 # changing all trimester to labels 
 
-ChangeTrimesterLabels <- function(dataframe){
-  for (row in 1:nrow(dataframe)) {
-    if (dataframe$Trimester[row] == 0) {
-      dataframe$Trimester[row] <- c("Pre")
-    }
-    if (dataframe$Trimester[row] == 1) {
-      dataframe$Trimester[row] <- c("1st")
-    }
-    if (dataframe$Trimester[row] == 2) {
-      dataframe$Trimester[row] <- c("2nd")
-    }
-    if (dataframe$Trimester[row] == 3) {
-      dataframe$Trimester[row] <- c("3rd")
-    }
-    if (dataframe$Trimester[row] == 4) {
-      dataframe$Trimester[row] <- c("Post")
-    }
-  }
-  return(dataframe)
-}
 
 
-subinfo_DF <- ChangeTrimesterLabels(subinfo_DF)
 ```
 
 ```{r Functions}
@@ -120,6 +99,28 @@ PlotFunc <- function(data,ROI){
             plot.margin = margin(1, 2, 1, 1.5, "cm"),
             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
 }
+
+ChangeTrimesterLabels <- function(dataframe){
+  for (row in 1:nrow(dataframe)) {
+    if (dataframe$Trimester[row] == 0) {
+      dataframe$Trimester[row] <- c("Pre")
+    }
+    if (dataframe$Trimester[row] == 1) {
+      dataframe$Trimester[row] <- c("1st")
+    }
+    if (dataframe$Trimester[row] == 2) {
+      dataframe$Trimester[row] <- c("2nd")
+    }
+    if (dataframe$Trimester[row] == 3) {
+      dataframe$Trimester[row] <- c("3rd")
+    }
+    if (dataframe$Trimester[row] == 4) {
+      dataframe$Trimester[row] <- c("Post")
+    }
+  }
+  return(dataframe)
+}
+
 ```
 
 ```{css, echo=FALSE}
@@ -657,74 +658,71 @@ TableOutput(Gest_summarystats,"QA")
 ```
 <br><br><br><br>
 
-# <span style="color: pink;"> ROI Tractography output for figures </span>  {.tabset.tabset-dropdown}
+# <span style="color: pink;"> Tractometry    </span>  {.tabset.tabset-dropdown}
 
 ```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE}
 
 #Tractography working dir
-tract_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/ROITractography"
-
-AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27")))
+Main_workdir <-"/Users/danielacossio/Downloads/Global_QA/"
+tract_workdir <-"/Users/danielacossio/Downloads/Global_QA/tractometry/"
+AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
 
 AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
 
 AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 
-ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
-
- # Below is the combining and merging code. I exported as cvs so i wont re run it again
-# subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE) 
 # 
-# QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
-# MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
+# 
+#  # Below is the combining and merging code. I exported as cvs so i wont re run it again
+# subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
+# ROIS_cols <- length(list.dirs(paste0(tract_workdir,subfiles[1])))
+# master_DF <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = length(subfiles)))
 # 
 # for(sub in 1:length(subfiles)){
-#   
+# 
 #    print(paste("running subject",subfiles[sub]))
-#   
-#   md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
-#   md_df[,1] <- subfiles[sub]    
-#   
-#   qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
-#   qa_df[,1] <- subfiles[sub]    
-#   
-#   for ( roi in 1:nrow(ROIS)){
+# 
+#   temp_df <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = 1))
+#   temp_df[,1] <- subfiles[sub]
+#   ROIS <- list.dirs(paste0(tract_workdir,subfiles[sub]),full.names = TRUE, recursive = FALSE)
+# 
+#   for(roi in 1:length(ROIS)){
+# 
+#   print(paste("running ",ROIS[roi]))
+#   text_file <- list.files(path = ROIS[roi], pattern = "*.txt")
+#     # Check if CSV exists
 #     
-#   print(paste("running ",ROIS[roi,1]))
-#   
-#     # Check if CSV exists 
-#     CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv")
-#     
-#     if (file.exists(CSV_path) == TRUE){
-#       
-#       print("File Exists lets read it in")
-#       ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md"))
-#       qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2)
-#       md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2)
-#     }
-#     else{
-#       print("File does not exist. Add NA instead")
-#       
-#       qa_df[,roi+1] <- NA
-#       md_df[,roi+1] <- NA
-#       
-#     }
-#     
+#     if (length(text_file) == 0){
+#         print("no ouput. skipping ROI")
+#         temp_df[,roi+1] <- NA
+#         next
+#       }
+# 
+#       # Checking that the text file is not empty.
+#       if (file.size(paste0(ROIS[roi],"/",text_file)) > 0 ){
+#         print("File Exists lets read it in")
+#         ROI_txt <- read.delim(paste0(ROIS[roi],"/",text_file), header=FALSE) %>% filter(V1 %in% c("qa"))
+#         temp_df[,roi+1] <- ROI_txt %>% pull(V2)
+#         }
+#       else{
+#         print("File does not exist. Add NA instead")
+#         temp_df[,roi+1] <- NA #KEEP but CHANGE
+#         }
 #   }
-#   
-#   QA_master_DF[sub,] <- qa_df[1,]
-#   MD_master_DF[sub,] <- md_df[1,]
+# 
+#   master_DF[sub,] <- temp_df[1,]
+# 
 # }
-# 
-# colnames(QA_master_DF) <- c("subjects",ROIS$V1)
-# colnames(MD_master_DF) <- c("subjects",ROIS$V1)
-# 
-# QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
-# 
-# MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
-# 
-# write.csv(QA_master_DF, paste0(tract_workdir,"/QA_master_DF.csv"), row.names=FALSE)
-# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
+# # 
+# # colnames(QA_master_DF) <- c("subjects",ROIS$V1)
+# # colnames(MD_master_DF) <- c("subjects",ROIS$V1)
+# # 
+# # QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
+# # 
+# # MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
+# # 
+# write.csv(master_DF, paste0(tract_workdir,"QA_master_DF.csv"), row.names=FALSE)
+# # write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
 
 ```
 <br>
@@ -914,5 +912,239 @@ for (ROI in 2:nrow(ROIS)) {
 # 
 # write.csv(QA_master_DF, paste0(tract_workdir,"/QA_master_DF.csv"), row.names=FALSE)
 # write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
+
+```
+
+
+# <span style="color: pink;"> ISO component </span> 
+
+```{r}
+
+ISO_scans <-read.csv("/Users/danielacossio/Downloads/temp_demo.csv") %>%  ChangeTrimesterLabels()
+
+MeanISO <- read.delim("/Users/danielacossio/Downloads/meanIso.csv", sep ="\t", header = FALSE) %>%  filter(str_detect(V1, c("mean_iso"))) %>% select(-c(3))
+
+MergedISODF <- MeanISO %>%  mutate(Trimester = factor(ISO_scans$Trimester)) %>% na.omit()
+
+
+  ISOplot <- MergedISODF %>% ggplot(aes(x=Trimester, y=V2, group=Trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
+      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#A8D2C6", "#6AA390","#90A0C9")) +
+      #scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
+      labs(x= "Trimester", y= " ISO" ) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background = element_rect(fill = 'white', color='gray'),
+            panel.grid.major=element_line(colour='gray96'),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+    #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319)
+#    pdf(file = paste0(tract_workdir,"/boxplots/QA/",y,"_QA.pdf"),width=10, height=8)
+    print(ISOplot)
+    #dev.off()
+
+```
+
+
+# Whole Brain TRactography
+```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE}
+
+# #Tractography working dir
+# tract_workdir <-"/Users/danielacossio/Downloads/Global_QA"
+# 
+# 
+# 
+# 
+#  # Below is the combining and merging code. I exported as cvs so i wont re run it again
+# subfiles <- list.files(path = tract_workdir, full.names = FALSE,recursive = FALSE, pattern ='.txt')
+# 
+# # 
+# 
+# master_DF <- as.data.frame(matrix(ncol = 4, nrow = length(subfiles)))
+#  
+# for(sub in 1:length(subfiles)){
+# 
+#    print(paste("running subject",subfiles[sub]))
+# 
+#   df <- as.data.frame(matrix(ncol = 3, nrow = 1))
+#   df[,1] <- subfiles[sub]
+#   
+#   text <- read.delim(paste0(tract_workdir,"/",subfiles[sub]), header=FALSE)
+#   
+#   df[,2] <- text %>% filter(V1 %in% "qa") %>% select(V2)  #qa
+#   df[,3] <- text %>% filter(V1 %in% "md") %>% select(V2) 
+#   df[,4] <- text %>% filter(V1 %in% "iso") %>% select(V2) 
+# 
+# 
+#   master_DF[sub,] <- df[1,]
+#   
+# }
+# 
+# colnames(master_DF) <- c("subjects","qa","md","iso")
+# 
+# write.csv(master_DF, paste0(tract_workdir,"/global_master_DF.csv"), row.names=FALSE)
+# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
+
+```
+
+```{r Data plot for output,echo=FALSE, results='hide',message=FALSE}
+AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Global_QA/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
+
+AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
+
+AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
+
+MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Global_QA/QA_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)
+
+MergedWholebrain$gestWK <- as.numeric(MergedWholebrain$gestWK)
+# 
+# jpeg(file=paste0(tract_workdir,"/",y,"_globaliso.jpg"), width=449, height=319)
+# 
+# MergedWholebrain %>% ggplot(aes(x=Trimester, y=iso, fill=Trimester)) +
+#     geom_boxplot() +
+#     theme_bw() + scale_fill_manual(values = grp_colors)+
+#     theme(
+#       strip.text.x = element_text(
+#         size = 12,
+#         color = "black",
+#         face = "bold.italic"
+#       ),
+#       strip.text.y = element_text(
+#         size = 12,
+#         color = "black",
+#         face = "bold.italic"
+#       )
+#     ) +
+#      theme(axis.title.x = element_blank(),
+#             axis.text.x = element_text(),
+#             axis.text.y = element_text(),
+#             axis.title.y = element_blank())+ theme(legend.position = "none")
+# 
+#     dev.off()
+
+```
+
+```{r, GAM analysis ISO}
+
+# you'll need: 
+library(mgcv)
+
+##### GAM models
+# linear fit
+mod_lm = gam(iso ~ gestWK, data = MergedWholebrain)
+summary(mod_lm)
+
+# GAM fit
+mod_gam1 = gam(iso ~ s(MergedWholebrain$gestWK, bs = "cr"), data =MergedWholebrain)
+summary(mod_gam1)
+
+# assess model differences
+anova(mod_lm, mod_gam1, test = "Chisq")
+
+#plotting, basic & w/ ggplot
+plot(mod_gam1)
+
+ggplot(data = MergedWholebrain, mapping = aes(x = gestWK, y = iso)) + geom_point(color = "#CF92BF") + geom_smooth(method = "gam", color ="#CF92BF" )+ geom_vline(xintercept=c(40),linetype="dotted") +
+labs(x= "gestational week", y= " Isotropic Diffusion" )  + geom_label(label="birth", 
+    x=42,
+    y=1.00, # Rectangle size around label
+    label.size = NA,
+    color = "black") + geom_label(label="deviance explained = 74.7%", 
+    x=70,
+    y=.98, # Rectangle size around label
+    label.size = NA,
+    color = "black")+ 
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background = element_blank(),
+            panel.grid.major=element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+```
+
+```{r, GAM analysis QA}
+
+# you'll need: 
+library(mgcv)
+
+##### GAM models
+# linear fit
+qa_mod_lm = gam(qa ~ gestWK, data = MergedWholebrain)
+summary(qa_mod_lm)
+
+# GAM fit
+qa_mod_gam1 = gam(qa ~ s(MergedWholebrain$gestWK, bs = "cr"), data =MergedWholebrain)
+summary(qa_mod_gam1)
+
+# assess model differences
+anova(qa_mod_lm, qa_mod_gam1, test = "Chisq")
+
+#plotting, basic & w/ ggplot
+plot(qa_mod_gam1)
+
+ggplot(data = MergedWholebrain, mapping = aes(x = gestWK, y = qa)) + geom_point(color = "#CF92BF") + geom_smooth(method = "gam", color ="#CF92BF" )+ geom_vline(xintercept=c(40),linetype="dotted") +
+labs(x= "gestational week", y= " QA" )  + geom_label(label="birth", 
+    x=42,
+    y=0.46, # Rectangle size around label
+    label.size = NA,
+    color = "black") + geom_label(label="deviance explained = 69.9%", 
+    x=70,
+    y=0.44, # Rectangle size around label
+    label.size = NA,
+    color = "black")+ 
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background = element_blank(),
+            panel.grid.major=element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+```
+
+
+```{r, ICC on sessions 26 and 26}
+
+library(irr)
+# Read in CSV with ROI mean QA information
+
+ICC <- read_csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv") 
+
+# Need to create a loop fix the subject IDs to match
+for (sub in 1:nrow((ICC))) { 
+ clean_subnum <- str_split(ICC$subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
+ ICC$subjects[sub] <-  sub("^0+", "", clean_subnum) 
+}
+
+# Need to transpose and clean up data
+ICC <- ICC %>% filter(subjects %in% c("26","27")) 
+ICC <- as.data.frame(t(ICC[,-1]))
+colnames(ICC) <- c("26", "27")
+
+ICC_output <- icc(ICC, model = "twoway",
+    type = "agreement", unit = "single")
+p <- format(ICC_output[["p.value"]], scientific=FALSE)
+
+```
+
+```{r, ICC on sessions 26 and 26 using the global QA}
+
+library(irr)
+# Read in ICC analysis 
+
+ICC <- read.delim("/Users/danielacossio/Downloads/Global_QA/sub-101_ses-DIFFERENCE.qa.db.fib.gz.tt.gz.stat.txt", header = FALSE) %>%  filter(str_detect(V1, c("mean_qa"))) %>%
+  filter(!str_detect(V1, c("mean_qa_post_norm"))) 
+
+ICC <- as.data.frame(t(ICC[,-1])) %>% `colnames<-`(c("26","27"))
+
+ICC_output <- icc(ICC, model = "twoway",
+    type = "agreement", unit = "single")
+p <- format(ICC_output[["p.value"]], scientific=FALSE)
 
 ```
