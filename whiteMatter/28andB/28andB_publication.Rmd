@@ -996,34 +996,60 @@ AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
 
 AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 
-MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Global_QA/QA_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)
+
 
 MergedWholebrain$gestWK <- as.numeric(MergedWholebrain$gestWK)
-# 
-# jpeg(file=paste0(tract_workdir,"/",y,"_globaliso.jpg"), width=449, height=319)
-# 
-# MergedWholebrain %>% ggplot(aes(x=Trimester, y=iso, fill=Trimester)) +
-#     geom_boxplot() +
-#     theme_bw() + scale_fill_manual(values = grp_colors)+
-#     theme(
-#       strip.text.x = element_text(
-#         size = 12,
-#         color = "black",
-#         face = "bold.italic"
-#       ),
-#       strip.text.y = element_text(
-#         size = 12,
-#         color = "black",
-#         face = "bold.italic"
-#       )
-#     ) +
-#      theme(axis.title.x = element_blank(),
-#             axis.text.x = element_text(),
-#             axis.text.y = element_text(),
-#             axis.title.y = element_blank())+ theme(legend.position = "none")
-# 
-#     dev.off()
 
+UCIOnly <- MergedWholebrain[6:21,]
+#
+jpeg(file=paste0(tract_workdir,"/",y,"_globaliso.jpg"), width=449, height=319)
+
+UCIOnly %>% ggplot(aes(x=Trimester, y=qa, fill=Trimester)) +
+    geom_boxplot() +
+    theme_bw() + scale_fill_manual(values = grp_colors)+
+    theme(
+      strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      )
+    ) +
+     theme(axis.title.x = element_blank(),
+            axis.text.x = element_text(),
+            axis.text.y = element_text(),
+            axis.title.y = element_blank())+ theme(legend.position = "none")
+
+    dev.off()
+    
+    
+# SCatter plot
+
+    UCI_gest %>% ggplot(aes(x=gestWK, y=qa)) +
+    geom_point(aes(color = grp_colors[3])) + geom_smooth(method=lm)+
+    stat_cor(aes(color = grp_colors[3]),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) +theme_bw() +
+    theme(
+      strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      )
+    ) +
+     theme(axis.title.x = element_blank(),
+            axis.text.x = element_text(),
+            axis.text.y = element_text(),
+            axis.title.y = element_blank())+ theme(legend.position = "none")
+
+    
 ```
 
 ```{r, GAM analysis ISO}
@@ -1072,7 +1098,28 @@ labs(x= "gestational week", y= " Isotropic Diffusion" )  + geom_label(label="bir
 # you'll need: 
 library(mgcv)
 
-##### GAM models
+# Sub info 
+AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Global_QA/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
+
+AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
+
+AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
+
+AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week)
+# addgest week to scan 26 
+AllScanInfo$gest_week[21] <- 162
+
+
+#ROIS DF
+QA_df <- read.csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv") %>% filter(!(subjects == "sub-007")) %>% select(c("subjects","Arcuate_Fasciculus_L", "Corpus_Callosum", "Cortico_Striatal_Pathway_L","Cortico_Striatal_Pathway_R","Cortico_Spinal_Tract_L","Cortico_Spinal_Tract_R","Inferior_Fronto_Occipital_Fasciculus_L","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L", "Inferior_Longitudinal_Fasciculus_R"))
+
+
+#Whole brain DF
+MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Global_QA/Global_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)
+
+
+
+##### Whole BRain ####
 # linear fit
 qa_mod_lm = gam(qa ~ gestWK, data = MergedWholebrain)
 summary(qa_mod_lm)
@@ -1087,25 +1134,380 @@ anova(qa_mod_lm, qa_mod_gam1, test = "Chisq")
 #plotting, basic & w/ ggplot
 plot(qa_mod_gam1)
 
-ggplot(data = MergedWholebrain, mapping = aes(x = gestWK, y = qa)) + geom_point(color = "#CF92BF") + geom_smooth(method = "gam", color ="#CF92BF" )+ geom_vline(xintercept=c(40),linetype="dotted") +
-labs(x= "gestational week", y= " QA" )  + geom_label(label="birth", 
-    x=42,
-    y=0.46, # Rectangle size around label
-    label.size = NA,
-    color = "black") + geom_label(label="deviance explained = 69.9%", 
-    x=70,
-    y=0.44, # Rectangle size around label
-    label.size = NA,
-    color = "black")+ 
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_blank(),
-            panel.grid.major=element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/WholeBrain_GAM.pdf",
+    width = 10,
+    height = 5)
+ggplot(data = MergedWholebrain,
+       mapping = aes(x = gestWK, y = qa)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size =1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+
+
+
+QA_df <- QA_df %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week) 
+
+QA_df$gestWK <- as.numeric(QA_df$gestWK)
+
+### GAM for AF #####
+AF_mod_gam1 = gam(Arcuate_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(AF_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/AF_GAM.pdf",
+    width = 10,
+    height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Arcuate_Fasciculus_L)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size =1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+### GAM for CC #####
+
+CC_mod_gam1 = gam(Corpus_Callosum ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(CC_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/CC_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Corpus_Callosum)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+
+### GAM for C striatal  L and R #####
+CSP_mod_gam1 = gam(Cortico_Striatal_Pathway_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(CSP_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Striatal_Pathway_L_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Cortico_Striatal_Pathway_L)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+CSP_R_mod_gam1 = gam(Cortico_Striatal_Pathway_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(CSP_R_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Striatal_Pathway_R_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Cortico_Striatal_Pathway_R)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+
+## Cortico spinal  ####
+Cortico_spinal_mod_gam1 = gam(Cortico_Spinal_Tract_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(Cortico_spinal_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Spinal_Tract_L_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Cortico_Spinal_Tract_L)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+
+Cortico_spinal_R_mod_gam1 = gam(Cortico_Spinal_Tract_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(Cortico_spinal_R_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Spinal_Tract_R_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Cortico_Spinal_Tract_R)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+
+
+
+## IFOF ####
+
+IFOF_L_mod_gam1 = gam(Inferior_Fronto_Occipital_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(IFOF_L_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Fronto_Occipital_Fasciculus_L_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Inferior_Fronto_Occipital_Fasciculus_L)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+IFOF_R_mod_gam1 = gam(Inferior_Fronto_Occipital_Fasciculus_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(IFOF_R_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Fronto_Occipital_Fasciculus_R_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Inferior_Fronto_Occipital_Fasciculus_R)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+#ILF ####
+
+ILF_L_mod_gam1 = gam(Inferior_Longitudinal_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(ILF_L_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Longitudinal_Fasciculus_L_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Inferior_Longitudinal_Fasciculus_L)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
+
+
+ILF_R_mod_gam1 = gam(Inferior_Longitudinal_Fasciculus_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
+summary(ILF_R_mod_gam1)
+
+pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Longitudinal_Fasciculus_R_GAM.pdf",width = 10, height = 5)
+ggplot(data = QA_df,
+       mapping = aes(x = gestWK, y = Inferior_Longitudinal_Fasciculus_R)) + 
+  geom_point(color = "#CF92BF") + 
+  geom_smooth(method = "gam", color ="#CF92BF") + 
+  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
+  labs(x = "gestational week", y = " QA")  + 
+  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
+  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
+  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+
+dev.off()
 ```
 
 
@@ -1148,3 +1550,10 @@ ICC_output <- icc(ICC, model = "twoway",
 p <- format(ICC_output[["p.value"]], scientific=FALSE)
 
 ```
+
+```{r GAM Plots using specific ROIS}
+# REading in df ####
+
+
+```
+
