@@ -1,0 +1,158 @@
+---
+title: "MIDLIFE TBSS"
+author: "Daniela Cossio"
+date: "09/14/2023"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{css, echo=FALSE}
+h1, h2 {
+  text-align: center;
+```
+
+# Overview 
+This is the analysis of white matter using FSLs TBSS
+
+<br>
+
+# <span style="color: darkblue;">Methods </span> 
+
+**Participants** 
+
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 118  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
+  control check in DSI
+
+<br>
+
+  **Scan parameters** 
+
+  * Locations from UCSB and UCI
+<br>
+
+**QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br>
+
+**Preprocessing for FSL** 
+
+The data needs to be reconstructed and prepared for FSL.
+
+  * Run FSL dti fit in order to extract our statistics. It fits a tensor model at each voxel.
+    * You need the following inputs 
+      * DWI scan images
+      * BRain mask image
+      * Output name 
+      * Bvec files
+      * B value files
+      
+  * We need to reorient the images to be in the same format as FSL atlases. 
+    * We run FSL reorient on each image 
+
+<br>
+**FSL TBSS**
+
+  * **Step 1:** tbss _1_preproc *nii.gz
+    * this prepares the data for full preprocessing 
+    
+    <br>
+  * **Step 2:** tbss_2_reg
+    * This runs a nonlinear registration and creates transforms of all the images in order to put them into a standard space 
+    
+    <br>
+  * **Step 3:** tbss_3_postreg
+    * Applies all of the transofrms created in the previous step
+    
+    <br>
+  * **Intermediate Step:** Quality check
+    * Open all images in FSL and visually inspect that they line up with the mean FA 
+    
+    <br>
+  * **Step 4:** tbss_4_prestats
+    * Creates a threshold for each of the masks in order to extract stats 
+    
+    <br>
+  * **Custom scripts** 
+    * here we use custoim fsl maths and meants scripts in order to extract our values for the JHU atlas
+    
+<br><br>
+
+# Results 
+
+```{r Load Libraries, echo=FALSE, results='hide',message=FALSE }
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+
+```
+
+```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
+
+# Lets read in our subject information
+top_workdir <-"/Users/danielacossio/Desktop/MIDLIFE_TBSS/"
+sub_info_master <- read.csv(paste0(top_workdir,"subject_info.csv"))
+
+master_FA <- read.csv(paste0(top_workdir,"JHU-skeletonized-FA.csv"))
+
+master_MD <- read.csv(paste0(top_workdir,"JHU-skeletonized-MD.csv"))
+
+master_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv"))
+
+master_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv"))
+
+ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% select(2)
+
+```
+
+## <span style="color: darkorange;"> FA </span>  {.tabset .tabset-dropdown}  
+
+## <span style="color: darkorange;"> MD </span>  {.tabset .tabset-dropdown}  
