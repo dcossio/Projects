@@ -132,27 +132,129 @@ library(moonBook)
 library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
+library(ppcor)
+
+```
+
+```{r, Functions for analyses, echo=FALSE, results='hide',message=FALSE}
+
+CheckDistribution <- function(dataframe,threshold){
+  normality_check<- data.frame(matrix(ncol = 2, nrow = 0))
+
+  for (roi in c(ROIs$V2)){
+    
+    df <- data.frame(matrix(ncol = 2, nrow = 1))
+    
+    normcheck <- shapiro.test(dataframe[[roi]])
+    
+    if (normcheck[["p.value"]] < threshold) {
+
+      df$X1 <- roi
+      df$X2 <- normcheck[["p.value"]]
+      # 
+      normality_check <- rbind(normality_check,df)
+    }
+  }
+  
+  colnames(normality_check) <- c("ROI","p.value")
+  return(normality_check)
+}
+
+
+# Craeting tables for html
+TableOutput <- function(df){
+  knitr::kable(df, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "600px", height = "300px") 
+}
+
+
+
+RunningPcorTest <- function(dataframe, task, covariates){
+  
+
+  # Here we need a clean dataframe that contains only on wm metric (FA,AD,RD, MD) and it needs to be combined with the subject info data that we need. here i need maze accuracy, sex, and age. Also, need to remove any rows with NW
+  finalDF <-   data.frame(matrix(ncol = 7, nrow = 0))
+  
+  for (roi in c(ROIs$V2)){
+    
+    df <- data.frame(matrix(ncol = 6, nrow = 1))
+    
+    pcortestresults <-pcor.test(dataframe[[roi]],dataframe[[task]], dataframe[, c(covariates)])
+    
+    if (pcortestresults$p.value < 0.05) {
+
+      df$X1 <- roi
+      df[,2:7] <- pcortestresults
+      # 
+      finalDF <- rbind(finalDF,df)
+    }
+  }
+  colnames(finalDF) <- c("ROI", colnames(pcortestresults))
+  return(finalDF)
+}
 
 ```
 
 ```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
 
 # Lets read in our subject information
-top_workdir <-"/Users/danielacossio/Desktop/MIDLIFE_TBSS/"
+top_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
+
+ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% dplyr::select(V2)
+
 sub_info_master <- read.csv(paste0(top_workdir,"subject_info.csv"))
 
-master_FA <- read.csv(paste0(top_workdir,"JHU-skeletonized-FA.csv"))
+master_FA <- read.csv(paste0(top_workdir,"JHU-skeletonized-FA.csv"), header=FALSE) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2)) 
 
-master_MD <- read.csv(paste0(top_workdir,"JHU-skeletonized-MD.csv"))
+master_MD <- read.csv(paste0(top_workdir,"JHU-skeletonized-MD.csv"))  %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
-master_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv"))
+master_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
-master_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv"))
+master_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
-ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% select(2)
+
 
 ```
 
-## <span style="color: darkorange;"> FA </span>  {.tabset .tabset-dropdown}  
+## <span style="color: darkorange;"> FA </span>  {.tabset .tabset-dropdown} 
+
+### Maze Accuracy {.tabset}
+```{r, setting up a df to combine FA with maze accuracy, echo=FALSE,results='hide', message=FALSE }
+
+temp_subinfo <- sub_info_master %>% dplyr::select(subject_id,age_group,age_scan_years,maze_accuracy_pct,maze_moves,maze_path_efficiency,sex.1,repo_status,FNAME)
+
+FA_maze <-cbind(temp_subinfo,master_FA) %>% filter(!is.na(maze_accuracy_pct))
+
+```
+
+
+#### Checking normality
+```{r, normality check FA,echo=FALSE, message=FALSE}
+#Normality Check
+x <- CheckDistribution(FA_maze,0.05)
+TableOutput(x)
+```
+
+#### partial correlations
+
+Running semi correlations using ppcor sex and age are covariates
+```{r FA_maze acc PPCOR, echo=FALSE, message=FALSE}
+
+FA_maze_results <-  RunningPcorTest(dataframe = FA_maze,task = "maze_accuracy_pct",covariates = c("age_scan_years","sex.1"))
+
+TableOutput(FA_maze_results)
+```
+
+<!-- Multiple linear regression -->
+<!-- ```{r} -->
+<!-- fit <- lm(maze_accuracy_pct ~ Middle_cerebellar_peduncle * age_scan_years + sex.1, data = FA_maze) -->
+
+<!-- summary(fit) -->
+<!-- ``` -->
+
+
+
+ 
 
 ## <span style="color: darkorange;"> MD </span>  {.tabset .tabset-dropdown}  
