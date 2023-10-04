@@ -133,6 +133,7 @@ library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
 library(ppcor)
+library(mediation)
 
 ```
 
@@ -199,7 +200,7 @@ RunningPcorTest <- function(dataframe, task, covariates){
 ```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
 
 # Lets read in our subject information
-top_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
+top_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
 
 ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% dplyr::select(V2)
 
@@ -217,6 +218,15 @@ master_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_
 
 ```
 
+### Overall approach 
+First thing to do is see whether sex and age are dependent of 
+IV: FA
+DV: behavior performance
+covariate: sex
+
+1. check whether sex and IV are independent
+
+
 ## <span style="color: darkorange;"> FA </span>  {.tabset .tabset-dropdown} 
 
 ### Maze Accuracy {.tabset}
@@ -227,6 +237,17 @@ temp_subinfo <- sub_info_master %>% dplyr::select(subject_id,age_group,age_scan_
 FA_maze <-cbind(temp_subinfo,master_FA) %>% filter(!is.na(maze_accuracy_pct))
 
 ```
+
+### Checking independency 
+
+```{r, echo=FALSE,results='hide', message=FALSE}
+
+model <- aov(maze_accuracy_pct ~ sex.1, data = FA_maze)
+summary(model)
+
+
+```
+
 
 
 #### Checking normality
@@ -256,5 +277,56 @@ TableOutput(FA_maze_results)
 
 
  
+
+
+#### Mediation analysis
+We want to know whether sex mediates the relationship between FA and Maze Accuracy in midlife adults. in this case X= ACC, Y = FA and M = sex. Looks like Sex does not mediate the effect of FA on ACC in middle cerebellar peduncle. 
+
+1. Let's run a linear model using FA and Acc.  
+```{r, echo=FALSE,results='hide', message=FALSE}
+
+# Effect on accuracy
+mod1 <- lm(FA_maze$Middle_cerebellar_peduncle ~ FA_maze$maze_accuracy_pct)
+summary(mod1)
+
+# effect on sex 
+mod2 <- lm(FA_maze$sex.1 ~ FA_maze$maze_accuracy_pct)
+summary(mod2)
+
+mod3 <- lm(FA_maze$Middle_cerebellar_peduncle ~ FA_maze$maze_accuracy_pct + FA_maze$sex.1)
+summary(mod3)
+
+# sex does not mediate this effect 
+med_results <- mediate(mod2, mod3, treat='FA_maze$maze_accuracy_pct', mediator='FA_maze$sex.1')
+summary(med_results)
+```
+
+### DSP  {.tabset}
+
+```{r, setting up a df to combine FA with DSP SI, echo=FALSE,results='hide', message=FALSE }
+
+temp_subinfo <- sub_info_master %>% dplyr::select(subject_id,age_group,age_scan_years,dsp_si_true_pct,sex.1,repo_status,FNAME)
+
+FA_DSP <-cbind(temp_subinfo,master_FA) %>% filter(!is.na(dsp_si_true_pct))
+
+```
+#### partial correlations
+Running semi correlations using ppcor sex and age are covariates
+```{r FA_DSP PPCOR, echo=FALSE, message=FALSE}
+
+FA_DSP_results <-  RunningPcorTest(dataframe = FA_DSP,task = "dsp_si_true_pct",covariates = c("age_scan_years","sex.1"))
+
+TableOutput(FA_DSP_results)
+```
+
+```{r, echo=FALSE,results='hide', message=FALSE}
+
+ fit <- lm(sex.1 ~ `Fornix_(cres)_/_Stria_terminalis_(can_not_be_resolved_with_current_resolution)_R`, data = FA_DSP)
+summary(fit)
+```
+
+
+
+
 
 ## <span style="color: darkorange;"> MD </span>  {.tabset .tabset-dropdown}  
