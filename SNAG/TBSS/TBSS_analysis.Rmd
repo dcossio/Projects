@@ -200,7 +200,8 @@ RunningPcorTest <- function(dataframe, task, covariates){
 ```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
 
 # Lets read in our subject information
-top_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
+top_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
+  # laptop path "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
 
 ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% dplyr::select(V2)
 
@@ -219,15 +220,54 @@ master_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_
 ```
 
 ### Overall approach 
-First thing to do is see whether sex and age are dependent of 
-IV: FA
-DV: behavior performance
-covariate: sex
-
-1. check whether sex and IV are independent
 
 
-## <span style="color: darkorange;"> FA </span>  {.tabset .tabset-dropdown} 
+## <span style="color: darkorange;"> FA </span>  {.tabset} 
+
+First, Let me plot and check all of our FA data 
+
+### histograms for ROIs
+```{r, echo=FALSE, message=FALSE,fig.show="hold", out.width="50%"}
+
+FA_df <- cbind(sub_info_master, master_FA)
+
+# Let's plot a visualization of all of our ROIs
+rois <- colnames(master_FA)
+
+
+for (roi in rois){
+  hist(FA_df[roi])
+}
+
+
+```
+
+### histograms for ROIs split by sex
+
+```{r, echo=FALSE, message=FALSE,fig.show="hold", out.width="50%"}
+
+# Let's plot a visualization of all of our ROIs
+rois <- colnames(master_FA)
+for (roi in rois){
+  print(ggplot(FA_df, aes(x=.data[[roi]], fill =sex, color=sex)) +
+  geom_histogram())
+}
+
+
+```
+
+### Scatter plots against age for ROIs
+```{r, echo=FALSE, message=FALSE,fig.show="hold", out.width="50%"}
+
+# Let's plot a visualization of all of our ROIs
+rois <- colnames(master_FA)
+
+for (roi in rois){
+  print(ggplot(FA_df, aes(x= age_scan_years, y= .data[[roi]])) + geom_point() + geom_smooth(method=lm))
+}
+
+```
+
 
 ### Maze Accuracy {.tabset}
 ```{r, setting up a df to combine FA with maze accuracy, echo=FALSE,results='hide', message=FALSE }
@@ -237,6 +277,46 @@ temp_subinfo <- sub_info_master %>% dplyr::select(subject_id,age_group,age_scan_
 FA_maze <-cbind(temp_subinfo,master_FA) %>% filter(!is.na(maze_accuracy_pct))
 
 ```
+
+Let's look at the distribution for maze accuracy behavior. Data appears to be not normally distributed.
+```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
+
+# All
+ggplot(FA_maze, aes(x= maze_accuracy_pct)) +
+  geom_histogram()
+
+
+#By sex
+ggplot(FA_maze, aes(x= maze_accuracy_pct, fill =sex, color=sex)) +
+  geom_histogram()
+
+
+```
+
+Let's just double check that by running a normality test.  
+```{r,echo=FALSE, results='hide', message=FALSE}
+#Normality Check
+maze_norm <- shapiro.test(FA_maze$maze_accuracy_pct)
+maze_norm[["p.value"]]
+```
+
+The data is not normally distributed with p = `r maze_norm[["p.value"]]`.
+
+<br>
+
+Before getting started, lets change the the accuracy to a log 
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+
+FA_maze[FA_maze$maze_accuracy_pct == 0.00000000,] <- 0.00000001
+
+
+L_acc <- log(FA_maze$maze_accuracy_pct/(1-FA_maze$maze_accuracy_pct))
+
+
+```
+
+
 
 ### Checking independency 
 
