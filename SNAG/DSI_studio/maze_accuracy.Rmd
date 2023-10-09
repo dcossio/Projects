@@ -1,0 +1,171 @@
+---
+title: "Maze_accuracy"
+author: "Daniela Cossio"
+date: "10/9/2023"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
+editor_options: 
+  chunk_output_type: inline
+---
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+```
+
+```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/maze_acc/"
+
+# PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+
+
+sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
+```
+
+```{r functions, echo=FALSE, results='hide',message=FALSE}
+
+ReadingCSVFunc <- function(pathname){
+  
+  read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
+  
+}
+
+CleanInput <- function(DF){
+  
+
+  DF <- DF %>% 
+      remove_empty("cols") %>% 
+        filter(V1 %in% rows2grab) %>% 
+          t() %>% 
+            `colnames<-`(rows2grab) %>% 
+                `[`(-c(1),) %>% 
+                    as.data.frame()
+  return(DF)
+}
+
+
+Extract_raw_values <- function(DF,Metric) {
+  # Purpose of this function is to clean the data without me having to copy and paste everything later. 
+  
+  # Data = raw unclean dataframe we want to clean up 
+  # Metric will be either MD or QA
+  # sex is either male or female
+ 
+  
+  # Let's read in our data frame 
+  
+  # grab  ROIcolumn names 
+  colNames <- DF  %>% remove_empty("cols") %>%
+  filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
+  
+  
+  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct")) 
+ 
+  # Let's grab our values 
+  if (Metric == "MD"){
+    Values <- DF %>% remove_empty("cols") %>% 
+     filter(str_detect(V1, c("mean_md"))) %>%
+   `colnames<-`(c("Subjects",colNames)) 
+  }
+  else{
+    Values <- DF %>%
+     remove_empty("cols") %>%
+      filter(str_detect(V1, c("mean_qa"))) %>% 
+  `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
+
+  }
+  
+  # now let's put this together 
+  ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
+  Values[,2:length(Values)] <- ConvToNum
+  
+  cleanedDF <- cbind(subinfo,Values) %>% na.omit() %>% select(-c("Subjects"))
+  
+  return (cleanedDF)
+}
+
+
+TableOutput <- function(df){
+  knitr::kable(df, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "600px", height = "300px") 
+}
+
+```
+
+
+## <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}  
+
+### Summary 
+
+Broadly, QA is positively asscoaited with maze accuracy in braod coritoc psinal regions and striatal
+
+### QA {.tabset}
+
+All subjects: Positively associated with maze accuracy FDR=0.00381
+```{r, echo=FALSE,message=FALSE}
+
+all_QA <- CleanInput(ReadingCSVFunc("QA/all/QA_positive_mazeacc_all_fname.csv"))
+
+TableOutput(all_QA)
+```
+
+<br>
+
+females: Positively FDR= 0.000571
+```{r,echo=FALSE,message=FALSE}
+females_QA <- CleanInput(ReadingCSVFunc("QA/females/female.mazelearningacc.pos.csv"))
+
+TableOutput(females_QA)
+```
+
+<br>
+
+Males: Positively FDR= 0.000042
+```{r,echo=FALSE,message=FALSE}
+males_QA <- CleanInput(ReadingCSVFunc("/QA/males/male.mazelearning.acc.pos.csv"))
+
+TableOutput(males_QA)
+```
+
+
+### MD {.tabset}
