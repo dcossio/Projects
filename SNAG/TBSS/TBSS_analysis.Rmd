@@ -17,85 +17,7 @@ h1, h2 {
   text-align: center;
 ```
 
-# Overview 
-This is the analysis of white matter using FSLs TBSS
-
-<br>
-
-# <span style="color: darkblue;">Methods </span> 
-
-**Participants** 
-
-  * Total number of scans = 120 (males and females)  
-  
-  * Total scans used in analysis= 118  
-  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
-  control check in DSI
-
-<br>
-
-  **Scan parameters** 
-
-  * Locations from UCSB and UCI
-<br>
-
-**QSIprep** 
-
-  * Version used: 0.16.0RC3
-
-  * The following parameters were used
-    * dwi_denoise_window **5** 
-    * hmc_model **3dSHORE** 
-    * hmc-transform **Rigid** 
-    * shoreline_iters **2**
-<br>
-
-**Preprocessing for FSL** 
-
-The data needs to be reconstructed and prepared for FSL.
-
-  * Run FSL dti fit in order to extract our statistics. It fits a tensor model at each voxel.
-    * You need the following inputs 
-      * DWI scan images
-      * BRain mask image
-      * Output name 
-      * Bvec files
-      * B value files
-      
-  * We need to reorient the images to be in the same format as FSL atlases. 
-    * We run FSL reorient on each image 
-
-<br>
-**FSL TBSS**
-
-  * **Step 1:** tbss _1_preproc *nii.gz
-    * this prepares the data for full preprocessing 
-    
-    <br>
-  * **Step 2:** tbss_2_reg
-    * This runs a nonlinear registration and creates transforms of all the images in order to put them into a standard space 
-    
-    <br>
-  * **Step 3:** tbss_3_postreg
-    * Applies all of the transofrms created in the previous step
-    
-    <br>
-  * **Intermediate Step:** Quality check
-    * Open all images in FSL and visually inspect that they line up with the mean FA 
-    
-    <br>
-  * **Step 4:** tbss_4_prestats
-    * Creates a threshold for each of the masks in order to extract stats 
-    
-    <br>
-  * **Custom scripts** 
-    * here we use custoim fsl maths and meants scripts in order to extract our values for the JHU atlas
-    
-<br><br>
-
-# Results 
-
-```{r Load Libraries, echo=FALSE, results='hide',message=FALSE }
+``` {r, libraries, echo=FALSE, results='hide',message=FALSE}
 library(ggplot2)
 #(plyr)
 library(tidyverse)
@@ -137,7 +59,7 @@ library(mediation)
 
 ```
 
-```{r, Functions for analyses, echo=FALSE, results='hide',message=FALSE}
+``` {r, Functions for analyses, echo=FALSE, results='hide',message=FALSE}
 
 CheckDistribution <- function(dataframe,threshold){
   
@@ -236,9 +158,86 @@ GetAprioriDF <- function(dataframe){
 }
 
 
-
-
 ```
+
+# Overview 
+This is the analysis of white matter using FSLs TBSS
+
+<br>
+
+# <span style="color: darkblue;">Methods </span> 
+
+**Participants** 
+
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 118  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
+  control check in DSI
+
+<br>
+
+  **Scan parameters** 
+
+  * Locations from UCSB and UCI
+<br>
+
+**QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br>
+
+**Preprocessing for FSL** 
+
+The data needs to be reconstructed and prepared for FSL.
+
+  * Run FSL dti fit in order to extract our statistics. It fits a tensor model at each voxel.
+    * You need the following inputs 
+      * DWI scan images
+      * BRain mask image
+      * Output name 
+      * Bvec files
+      * B value files
+      
+  * We need to reorient the images to be in the same format as FSL atlases. 
+    * We run FSL reorient on each image 
+
+<br>
+**FSL TBSS**
+
+  * **Step 1:** tbss _1_preproc *nii.gz
+    * this prepares the data for full preprocessing 
+    
+    <br>
+  * **Step 2:** tbss_2_reg
+    * This runs a nonlinear registration and creates transforms of all the images in order to put them into a standard space 
+    
+    <br>
+  * **Step 3:** tbss_3_postreg
+    * Applies all of the transofrms created in the previous step
+    
+    <br>
+  * **Intermediate Step:** Quality check
+    * Open all images in FSL and visually inspect that they line up with the mean FA 
+    
+    <br>
+  * **Step 4:** tbss_4_prestats
+    * Creates a threshold for each of the masks in order to extract stats 
+    
+    <br>
+  * **Custom scripts** 
+    * here we use custoim fsl maths and meants scripts in order to extract our values for the JHU atlas
+    
+<br><br>
+
+# Results 
+
 
 ```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
 
@@ -250,15 +249,13 @@ ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% dpl
 
 sub_info_master <- read.csv(paste0(top_workdir,"subject_info.csv"))
 
-master_FA <- read.csv(paste0(top_workdir,"JHU-skeletonized-FA.csv"), header=FALSE) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2)) 
+raw_FA <- read.csv(paste0(top_workdir,"JHU-skeletonized-FA.csv"), header=FALSE) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2)) 
 
-master_MD <- read.csv(paste0(top_workdir,"JHU-skeletonized-MD.csv"))  %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
+raw_MD <- read.csv(paste0(top_workdir,"JHU-skeletonized-MD.csv"))  %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
-master_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
+raw_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
-master_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
-
-
+raw_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
 ```
 
@@ -269,7 +266,7 @@ First, I will run analysis using our aprior rois
   
 Here, I will run a partial correlation and control for sex and age. Then I will run a multiple linear regression using sex and age as covariates. Then If there is a sex effect, I will run a sex stratisfied analysis using a partial correlation and controlling for age. 
 
-## <span style="color: darkorange;"> Behavior Distributions </span>  {.tabset} 
+## <span style="color: darkorange;"> Behavior Distributions </span>  {.tabset .tabset-pills} 
 
 ### Maze Accuracy 
 
@@ -352,14 +349,14 @@ ggplot(sub_info_master, aes(x= loop_ae_rad3_degree, fill =sex, color=sex)) +
 
 
 
-## <span style="color: darkorange;"> FA </span>  {.tabset} 
+## <span style="color: darkorange;"> FA </span>  {.tabset } 
 
-### Apriori
+### Apriori { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
 First, let's start with our apriori regions: Fornix body fornix (L and R), Cingulum bundle (cingulate gyrus and hippocampus ) L and R. 
 
 ```{r, echo=FALSE,results='hide', message=FALSE }
 #  Creating our data frame  by taking apriori rois and also renaming them for a clean name and binding them with or subject information
-apriori_FA <- GetAprioriDF(master_FA) %>% cbind(sub_info_master, .)
+apriori_FA <- GetAprioriDF(raw_FA) %>% cbind(sub_info_master, .)
 ```
 
 #### Maze Accuracy
@@ -407,7 +404,69 @@ summary(model7)
 
 Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior.
 
-##### Sex Stratified partial correlations
+
+
+
+
+
+
+#### Dual Solution Paradigm 
+#### Apriori
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+FA_DSP_results <- AprioriPcorTest(dataframe = apriori_FA, task ="dsp_si_true_pct",covariates = c("sex.1","age_scan_years"))
+TableOutput(FA_DSP_results)
+
+```
+
+
+### Whole Brain
+
+##### Partial Correlations
+```{r, echo=FALSE,results='hide', message=FALSE }
+# 
+mazeFA <- sub_info_master %>% dplyr::select("subject_id","sex.1", "age_scan_years", "maze_accuracy_pct") %>% cbind(., raw_FA) %>% na.omit()
+
+covs <- c("sex.1", "age_scan_years")
+mazeFA_results <- RunningPcorTest(mazeFA,"maze_accuracy_pct", covs)
+```
+
+##### Multiple Linear Regressions
+```{r, echo=FALSE, message=FALSE }
+# 
+finalDF <- vector(mode='list', length=nrow(ROIs))
+  
+  for (roi in 1:nrow(ROIs)){
+    
+    
+    finalDF[[roi]] <- summary(lm(maze_accuracy_pct ~ mazeFA[[ROIs[roi,]]] + sex.1 + age_scan_years, data = mazeFA))
+    
+    names(finalDF)[roi] <- ROIs[roi,]
+  }
+
+ROIs2Check <- c()
+index <- 0
+for (roi in names(finalDF)){
+  
+  
+  modelsummary <- as.data.frame(finalDF[[roi]][["coefficients"]]) 
+  modelsummary <- filter(modelsummary, !(rownames(modelsummary) == "(Intercept)"))
+  
+  y <- sum(modelsummary$`Pr(>|t|)` < 0.05)
+  if (y > 0){
+    ROIs2Check[length(ROIs2Check)+ 1] <- roi
+  }
+}
+
+TableOutput(as.data.frame(ROIs2Check))
+
+```
+
+The following ROIs are ones that show some level of significance.
+
+- Middle cerebellar showed a significant relationship between FA and maze accuracy but no impact of sex or age. 
+
+
 
 
 
