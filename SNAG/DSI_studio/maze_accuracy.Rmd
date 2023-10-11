@@ -124,10 +124,16 @@ Extract_raw_values <- function(DF,Metric) {
 }
 
 
-TableOutput <- function(df){
-  knitr::kable(df, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "600px", height = "300px") 
+TableOutput <- function(df, style, width, height, caption){
+  
+  if (style == "classic"){
+      knitr::kable(df, row.names=F, caption = caption) %>% kable_classic(full_width = F, html_font = "Cambria")
+    
+  } else {
+      knitr::kable(df, row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = paste0(width,"px"), height = paste0(height,"px")) 
+    
+  }
+
 }
 
 ```
@@ -137,34 +143,39 @@ TableOutput <- function(df){
 
 ### Summary 
 
-Broadly, QA is positively asscoaited with maze accuracy in braod coritoc psinal regions and striatal
+Broadly, QA is positively associated with maze accuracy
 
-### QA {.tabset}
+### QA {.tabset .tabset-pills}
 
-All subjects: Positively associated with maze accuracy FDR=0.00381
+#### All subjects 
+
+In this analysis we have included all subjects while controlling for age, and sex. The results suggest that 
+
+We decided to control for general memory changes by using performance on the FNAME task as a covariate. Here we see that QA is positively associated with  maze performance in midlife adults (Table 1; FDR=0.00381). 
 ```{r, echo=FALSE,message=FALSE}
+all_QA <- CleanInput(ReadingCSVFunc("QA/fname_covariate/QA_positive_mazeacc_all_fname.csv"))
 
-all_QA <- CleanInput(ReadingCSVFunc("QA/all/QA_positive_mazeacc_all_fname.csv"))
-
-TableOutput(all_QA)
+TableOutput(all_QA, "classic", 500, 200," Table 1.Tracts with QA positively associatated with maze accuracy")
 ```
 
 <br>
 
-females: Positively FDR= 0.000571
+#### females
+Positively FDR= 0.000571
 ```{r,echo=FALSE,message=FALSE}
-females_QA <- CleanInput(ReadingCSVFunc("QA/females/female.mazelearningacc.pos.csv"))
+females_QA <- CleanInput(ReadingCSVFunc("QA/fname_covariate/female.mazelearningacc.pos.csv"))
 
-TableOutput(females_QA)
+TableOutput(females_QA, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in female midlife adults")
 ```
 
 <br>
 
-Males: Positively FDR= 0.000042
+#### Males 
+Positively FDR= 0.000042
 ```{r,echo=FALSE,message=FALSE}
-males_QA <- CleanInput(ReadingCSVFunc("/QA/males/male.mazelearning.acc.pos.csv"))
+males_QA <- CleanInput(ReadingCSVFunc("QA/fname_covariate/male.mazelearning.acc.pos.csv"))
 
-TableOutput(males_QA)
+TableOutput(males_QA, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in male midlife adults")
 ```
 
 

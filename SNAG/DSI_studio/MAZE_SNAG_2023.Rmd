@@ -54,7 +54,7 @@ library(gridExtra)
 library(markdown)
 
 # REad in my Functions
-rmarkdown::render("/Users/danielacossio/Desktop/UsefulScripts/Functions.Rmd")
+rmarkdown::render("/Users/danielacossio/Documents/Chrastil_Lab/Scripts/UsefulScripts/Functions.Rmd")
 
 Acc_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
 
