@@ -8,8 +8,6 @@ output:
     toc_float: true
     toc_depth: 6
     theme: flatly
-editor_options: 
-  chunk_output_type: inline
 ---
 
 ```{css, echo=FALSE}
@@ -87,10 +85,16 @@ CheckDistribution <- function(dataframe,threshold){
 
 
 # Craeting tables for html
-TableOutput <- function(df){
-  knitr::kable(df, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "600px", height = "300px") 
+TableOutput <- function(df, style, width, height){
+  
+  if (style == "classic"){
+      knitr::kable(df, row.names=F) %>% kable_classic(full_width = F, html_font = "Cambria")
+    
+  } else {
+      knitr::kable(df, row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = paste0(width,"px"), height = paste0(height,"px")) 
+    
+  }
+
 }
 
 
@@ -236,9 +240,17 @@ The data needs to be reconstructed and prepared for FSL.
     
 <br><br>
 
+## Overall approach 
+First, I will run analysis using our aprior rois 
+  - Fornix 
+  - Cingulum bundle (L and R) 
+  
+Here, I will run a partial correlation and control for sex and age. Then I will run a multiple linear regression using sex and age as covariates. Then If there is a sex effect, I will run a sex stratisfied analysis using a partial correlation and controlling for age. 
+
+<br><br>
+
+
 # Results 
-
-
 ```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
 
 # Lets read in our subject information
@@ -258,13 +270,6 @@ raw_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv")) %>% remove_emp
 raw_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
 ```
-
-### Overall approach 
-First, I will run analysis using our aprior rois 
-  - Fornix 
-  - Cingulum bundle (L and R) 
-  
-Here, I will run a partial correlation and control for sex and age. Then I will run a multiple linear regression using sex and age as covariates. Then If there is a sex effect, I will run a sex stratisfied analysis using a partial correlation and controlling for age. 
 
 ## <span style="color: darkorange;"> Behavior Distributions </span>  {.tabset .tabset-pills} 
 
@@ -294,6 +299,7 @@ maze_norm[["p.value"]]
 
 The data is not normally distributed with p = `r maze_norm[["p.value"]]`.
 
+<br><br>
 
 ### DSP
 ```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
@@ -317,37 +323,87 @@ DSP_norm <- shapiro.test(sub_info_master$dsp_si_true_pct)
 DSP_norm[["p.value"]]
 ```
 
-### Loop
+<br><br>
 
+### Loop {.tabset .tabset-pills} 
 #### AE
 Average
 ```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
 
 # All
 ggplot(sub_info_master, aes(x= loop_ae_avg_degree)) +
-  geom_histogram()
+  geom_histogram(bins=10)
 
 #By sex
 ggplot(sub_info_master, aes(x= loop_ae_avg_degree, fill =sex, color=sex)) +
-  geom_histogram()
+  geom_histogram(bins=10)
 ```
 
 Rad3
 ```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
 
 # All
-ggplot(sub_info_master, aes(x= loop_ae_rad3_degree)) +
-  geom_histogram()
+ggplot(sub_info_master, aes(x=loop_ae_rad3_degree )) +
+  geom_histogram(bins=10)
 
 #By sex
 ggplot(sub_info_master, aes(x= loop_ae_rad3_degree, fill =sex, color=sex)) +
-  geom_histogram()
+  geom_histogram(bins=10)
 ```
 
 #### DE
+Average
+```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
+
+# All
+ggplot(sub_info_master, aes(x= loop_de_avg_degree)) +
+  geom_histogram(bins=10)
+
+#By sex
+ggplot(sub_info_master, aes(x= loop_de_avg_degree, fill =sex, color=sex)) +
+  geom_histogram(bins=10)
+```
+
+Rad3
+```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
+
+# All
+ggplot(sub_info_master, aes(x= loop_de_rad3_degree)) +
+  geom_histogram(bins=10)
+
+#By sex
+ggplot(sub_info_master, aes(x= loop_de_rad3_degree, fill =sex, color=sex)) +
+  geom_histogram(bins=10)
+```
+
 #### PE
+Average
+```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
+
+# All
+ggplot(sub_info_master, aes(x= loop_pe_avg_m)) +
+  geom_histogram(bins=10)
+
+#By sex
+ggplot(sub_info_master, aes(x= loop_pe_avg_m, fill =sex, color=sex)) +
+  geom_histogram(bins=10)
+```
+
+Rad3
+```{r, echo=FALSE,results='hide', message=FALSE, out.width="50%"}
+
+# All
+ggplot(sub_info_master, aes(x= loop_pe_rad3_m)) +
+  geom_histogram(bins=10)
+
+#By sex
+ggplot(sub_info_master, aes(x= loop_pe_rad3_m, fill =sex, color=sex)) +
+  geom_histogram(bins=10)
+```
 
 
+
+<br><br>
 
 ## <span style="color: darkorange;"> FA </span>  {.tabset } 
 
@@ -357,71 +413,132 @@ First, let's start with our apriori regions: Fornix body fornix (L and R), Cingu
 ```{r, echo=FALSE,results='hide', message=FALSE }
 #  Creating our data frame  by taking apriori rois and also renaming them for a clean name and binding them with or subject information
 apriori_FA <- GetAprioriDF(raw_FA) %>% cbind(sub_info_master, .)
+
+male_apriori_FA <- GetAprioriDF(raw_FA) %>% cbind(sub_info_master, .) %>% filter(sex == "Male")
+
+female_apriori_FA <- GetAprioriDF(raw_FA) %>% cbind(sub_info_master, .) %>% filter(sex == "Female")
+
 ```
 
 #### Maze Accuracy
 
-##### Partial Correlations
+<p style="text-align:center" > <strong>Partial Correlations</strong> </p>
 
-Here we want to know whether ROIs correlate to our different behavioral variables when we control for age and sex. So we will run partial correlations.
-```{r, echo=FALSE,results='hide', message=FALSE }
+Here we want to know whether ROIs correlate to our different behavioral variables when we control for age and sex. So we will run partial correlations.When controlling for age and sex, our ROIS are not significantly correlated
+<br>
+
+```{r, echo=FALSE, message=FALSE }
 FA_maze_results <- AprioriPcorTest(dataframe = apriori_FA, task ="maze_accuracy_pct",covariates = c("sex.1","age_scan_years"))
-TableOutput(FA_maze_results)
+TableOutput(FA_maze_results,"none",500,300)
 
 ```
 
-Nothing significantly correlated for maze accuracy. 
+<br>
 
-##### Multiple Linear Regression
+<p style="text-align:center" > <strong>Multiple Linear Regression</strong> </p> 
+<p style="text-align:left " > formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior.</p>
+
 ```{r, echo=FALSE,results='hide', message=FALSE }
-# Fornix
-model1 <- lm(maze_accuracy_pct ~ fornix_body + sex.1 + age_scan_years, data = apriori_FA)
-summary(model1)
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
 
-model2 <- lm(maze_accuracy_pct ~ fornix_R + sex.1 + age_scan_years, data = apriori_FA)
-summary(model2)
+maze_FA_models<- vector(mode='list', length=length(apriori_rois))
 
-model3 <- lm(maze_accuracy_pct ~ fornix_L + sex.1 + age_scan_years, data = apriori_FA)
-summary(model3)
-
-
-model4 <- lm(maze_accuracy_pct ~ `Cingulum_(cingulate_gyrus)_R` + sex.1 + age_scan_years, data = apriori_FA)
-summary(model4)
-
-
-model5 <- lm(maze_accuracy_pct ~ `Cingulum_(cingulate_gyrus)_L` + sex.1 + age_scan_years, data = apriori_FA)
-summary(model5)
-
-model6 <- lm(maze_accuracy_pct ~ `Cingulum_(hippocampus)_R` + sex.1 + age_scan_years, data = apriori_FA)
-summary(model6)
-
-model7 <- lm(maze_accuracy_pct ~ `Cingulum_(hippocampus)_L` + sex.1 + age_scan_years, data = apriori_FA)
-summary(model7)
-
-
+for (roi in 1:length(apriori_rois)){
+    
+    
+    maze_FA_models[[roi]] <- broom::tidy(lm(maze_accuracy_pct ~ apriori_FA[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_FA))
+    
+    names(maze_FA_models)[roi] <- apriori_rois[roi]
+    
+    maze_FA_models[[roi]]["term"][2,] <- apriori_rois[roi]
+    maze_FA_models[[roi]]["term"][3,] <- "sex"
+    maze_FA_models[[roi]]["term"][4,] <- "age"
+}
 
 ```
 
-Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior.
+##### ROIS {.tabset .tabset-dropdown}
+###### Fornix 
+Fornix Body
+`r TableOutput(maze_FA_models[["fornix_body"]], "classic", 500,150) `
+<br>
 
+Fornix R
+`r TableOutput(maze_FA_models[["fornix_R"]], "classic", 500,150) `
+<br>
 
+Fornix L
+`r TableOutput(maze_FA_models[["fornix_L"]], "classic", 500,150) `
+<br>
 
+###### Cingulum 
 
+Cingulum_(cingulate_gyrus)_R
+`r TableOutput(maze_FA_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
+<br>
 
+Cingulum_(cingulate_gyrus)_L
+`r TableOutput(maze_FA_models[["Cingulum_(cingulate_gyrus)_L"]], "classic", 500,150) `
+<br>
 
+Cingulum_(hippocampus)_R
+`r TableOutput(maze_FA_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
+
+Cingulum_(hippocampus)_L
+`r TableOutput(maze_FA_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
 
 #### Dual Solution Paradigm 
-#### Apriori
 
+##### Partial Correlations
+When controlling for age and sex, fornix body appears to be significantly correlated with maze accuracy 
 ```{r, echo=FALSE,results='hide', message=FALSE }
 FA_DSP_results <- AprioriPcorTest(dataframe = apriori_FA, task ="dsp_si_true_pct",covariates = c("sex.1","age_scan_years"))
-TableOutput(FA_DSP_results)
+TableOutput(FA_DSP_results, "classic")
 
+```
+
+
+##### Multiple Linear Regressions
+
+Mostly effects of age with some effects of sex. Fornix body appears to have an effect of sex.
+```{r, echo=FALSE,results='hide', message=FALSE }
+
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
+
+DSP_FA_models<- vector(mode='list', length=length(apriori_rois))
+
+for (roi in 1:length(apriori_rois)){
+    
+    
+    DSP_FA_models[[roi]] <- summary(lm(maze_accuracy_pct ~ apriori_FA[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_FA))
+    
+    names(DSP_FA_models)[roi] <- apriori_rois[roi]
+}
+
+
+
+```
+
+
+
+##### Sex stratified partial correlations
+
+For males, the fornix body and right cingulum hippocampus were significantly correlated 
+```{r, echo=FALSE,results='hide', message=FALSE }
+FA_DSP_male_results <- AprioriPcorTest(dataframe = male_apriori_FA, task ="dsp_si_true_pct",covariates = c("age_scan_years"))
+TableOutput(FA_DSP_male_results, "none", 400, 200)
+```
+
+For women, nothing was significantyl correlated 
+```{r, echo=FALSE,results='hide', message=FALSE }
+FA_DSP_female_results <- AprioriPcorTest(dataframe = female_apriori_FA, task ="dsp_si_true_pct",covariates = c("age_scan_years"))
+TableOutput(FA_DSP_female_results, "none", 400, 200)
 ```
 
 
 ### Whole Brain
-
 ##### Partial Correlations
 ```{r, echo=FALSE,results='hide', message=FALSE }
 # 
@@ -458,7 +575,7 @@ for (roi in names(finalDF)){
   }
 }
 
-TableOutput(as.data.frame(ROIs2Check))
+TableOutput(as.data.frame(ROIs2Check),"none", 500, 200)
 
 ```
 
