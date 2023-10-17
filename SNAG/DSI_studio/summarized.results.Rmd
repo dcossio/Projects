@@ -1,7 +1,7 @@
 ---
-title: "Maze_accuracy"
+title: "All Results"
 author: "Daniela Cossio"
-date: "10/9/2023"
+date: "10/17/2023"
 output:
    html_document:
     toc: true
@@ -72,7 +72,7 @@ library(markdown)
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/maze_acc/"
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
 
 # PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
 
@@ -237,7 +237,7 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 ### Summary 
 
-Broadly, QA is positively associated with maze accuracy
+Broadly, QA is positively associated with maze accuracy. Better QA in tracts (associated with motor, cingulum) is associated with better maze accuracy score. This relationship is similar in men and women. Interestingly, in a previous run, men showed more negative correlations but in this run there are only positive association  when controlling for FNAME performance.
 
 ### QA {.tabset .tabset-pills}
 
@@ -251,9 +251,9 @@ In this analysis we have included all subjects while controlling for age, and se
 We decided to control for general memory changes by using performance on the FNAME task as a covariate. Here we see that QA is positively associated with  maze performance in midlife adults (Table 1; FDR=0.00381). 
 
 ```{r, echo=FALSE,message=FALSE}
-all_QA <- CleanInput(ReadingCSVFunc("QA/fname_covariate/QA_positive_mazeacc_all_fname.csv"))
+all_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/QA_positive_mazeacc_all_fname.csv"))
 
-TableOutput(all_QA, "classic", 500, 200," Table 1.Tracts with QA positively associatated with maze accuracy")
+TableOutput(all_QA, "classic", 500, 200," Table 1.Tracts with QA positively associated with maze accuracy")
 ```
 
 <br>
@@ -262,7 +262,7 @@ TableOutput(all_QA, "classic", 500, 200," Table 1.Tracts with QA positively asso
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.043228)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-all_QA1 <- CleanInput(ReadingCSVFunc("QA/noFNAME/QA_all_pos.csv"))
+all_QA1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_all_pos.csv"))
 
 TableOutput(all_QA1, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in midlife adults")
 ```
@@ -270,7 +270,7 @@ TableOutput(all_QA1, "classic", 500, 200, " Table 2.Tracts with QA positively as
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.122807)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-all_QA_neg1 <- CleanInput(ReadingCSVFunc("QA/noFNAME/QA_all_neg.csv"))
+all_QA_neg1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_all_neg.csv"))
 
 TableOutput(all_QA_neg1, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with maze accuracy in midlife adults")
 ```
@@ -283,7 +283,7 @@ TableOutput(all_QA_neg1, "classic", 500, 200, " Table 2.Tracts with QA negativel
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= 0.000571</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-females_QA <- CleanInput(ReadingCSVFunc("/QA/noFNAME/QA_female_pos.csv"))
+females_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/female.mazelearningacc.pos.csv"))
 
 TableOutput(females_QA, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in female midlife adults")
 ```
@@ -295,7 +295,7 @@ TableOutput(females_QA, "classic", 500, 200, " Table 2.Tracts with QA positively
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= 0.000263</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-females_Q1 <- CleanInput(ReadingCSVFunc("QA/noFNAME/QA_female_pos.csv"))
+females_Q1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_female_pos.csv"))
 
 TableOutput(females_Q1, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in female midlife adults")
 ```
@@ -304,7 +304,7 @@ TableOutput(females_Q1, "classic", 500, 200, " Table 2.Tracts with QA positively
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow">Negatively FDR= 0.002809</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-females_QA2 <- CleanInput(ReadingCSVFunc("QA/noFNAME/QA_female-neg.csv"))
+females_QA2 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_female-neg.csv"))
 
 TableOutput(females_QA2, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with maze accuracy in female midlife adults")
 ```
@@ -317,27 +317,27 @@ TableOutput(females_QA2, "classic", 500, 200, " Table 2.Tracts with QA negativel
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR= 0.000042</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-males_QA <- CleanInput(ReadingCSVFunc("QA/fname_covariate/male.mazelearning.acc.pos.csv"))
+males_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/male.mazelearning.acc.pos.csv"))
 
 TableOutput(males_QA, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in male midlife adults")
 ```
 <br><br><br><br>
 
 <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
-<br><br>
+<br>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positive (FDR = 0.018519)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-males_QA1 <- CleanInput(ReadingCSVFunc("QA/noFNAME/QA_male_pos.csv"))
+males_QA1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_male_pos.csv"))
 
 TableOutput(males_QA1, "classic", 500, 200," Table 1.Tracts with QA positively associatated with maze accuracy")
 ```
 
-<br><br><br><br>
+<br><br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.001161)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-males_QA2 <- CleanInput(ReadingCSVFunc("QA/noFNAME/QA_male_neg.csv"))
+males_QA2 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_male_neg.csv"))
 
 TableOutput(males_QA2, "classic", 500, 200," Table 1.Tracts with QA negatively associatated with maze accuracy")
 ```
@@ -350,16 +350,66 @@ TableOutput(males_QA2, "classic", 500, 200," Table 1.Tracts with QA negatively a
 ### MD {.tabset}
 
 
-## <span style="color: darkorange;"> **Position Error** </span>  {.tabset .tabset-pills} 
-### QA {.tabset .tabset-pills}
-#### All subject
-#### Females
-#### Males
+## <span style="color: darkorange;"> **Position Error** </span>  {.tabset .tabset-dropdown} 
 
-### MD {.tabset .tabset-pills}
-#### All subject
-#### Females
-#### Males
+### Rad3 {.tabset .tabset-pills}
+#### Summary
+Increased QA in many tracts outside of the limbic area are associated with a lower position error.
+
+#### QA {.tabset .tabset-pills}
+##### All subject
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000407)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+loopPE_QA_all<- CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.average.neg.csv"))
+
+TableOutput(loopPE_QA_all, "classic", 500, 200," Table 1.Tracts with QA positively associated with loop PE")
+```
+
+<br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000547)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+loopPE_QA_all1 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopAvgPE_allsubs_pos.csv"))
+
+TableOutput(loopPE_QA_all1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.015697)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+loopPE_QA_all2 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopAvgPE_allsubs_neg.csv"))
+
+TableOutput(loopPE_QA_all2, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with loop PE")
+```
+
+<br><br><br>
+
+##### Females
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+
+##### Males
+
+#### MD {.tabset .tabset-pills}
+##### All subject
+##### Females
+##### Males
+### Average {.tabset .tabset-pills}
+#### QA {.tabset .tabset-pills}
+##### All subject
+##### Females
+##### Males
+
+#### MD{.tabset .tabset-pills}
+##### All subject
+##### Females
+##### Males
 
 ## <span style="color: darkorange;"> DEgrees Traveled </span>  {.tabset .tabset-pills} 
 ### QA {.tabset .tabset-pills}
