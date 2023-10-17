@@ -421,11 +421,12 @@ ggplot(sub_info_master, aes(x= loop_pe_rad3_m, fill =sex, color=sex)) +
 
 <br><br>
 
-## <span style="color: darkorange;"> FA </span>  {.tabset } 
+## <span style="color: darkorange;"> FA </span>  {.tabset .tabset-dropdown} 
 
-### Apriori { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
+### Apriori 
 
 First, let's start with our apriori regions: Fornix body fornix (L and R), Cingulum bundle (cingulate gyrus and hippocampus ) L and R. 
+<br>
 
 ```{r, echo=FALSE,results='hide', message=FALSE }
 #  Creating our data frame  by taking apriori rois and also renaming them for a clean name and binding them with or subject information
@@ -437,11 +438,10 @@ female_apriori_FA <- GetAprioriDF(raw_FA) %>% cbind(sub_info_master, .) %>% filt
 
 ```
 
-#### Maze Accuracy
+#### <span style="font-size: 28px; text-decoration:underline"> **Maze Accuracy** </span> { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
 
-<p style="text-align:center; font-family: times; font-size: 20px" > <strong>Partial Correlations</strong> </p>
+##### Partial Correlations
 
-<p style="font-family: times" > 
 Here we want to know whether ROIs correlate to our different behavioral variables when we control for age and sex. So we will run partial correlations.When controlling for age and sex, our ROIS are not significantly correlated </p>
 
 <br>
@@ -452,10 +452,10 @@ TableOutput(FA_maze_results,"classic",500,300)
 
 ```
 
-<br>
+<br><br><br><br><br>
 
-<p style="text-align:center ; font-size: 20px" > <strong>Multiple Linear Regression</strong> </p> 
-Here, I will runa  multiple linear regression so examine the relationship between roi and performance. formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior. Fornix body was the only ROI with a significant sex effect just barely p = 0.046. Cingulum ROIs appeared to have a trend for sex and age p>0.05.
+##### Multiple Linear Regression
+Here, I will run  multiple linear regression so examine the relationship between roi and performance. formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior. Fornix body was the only ROI with a significant sex effect just barely p = 0.046. Cingulum ROIs appeared to have a trend for sex and age p>0.05.
 
 ```{r, echo=FALSE,results='hide', message=FALSE }
 apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
@@ -478,8 +478,7 @@ for (roi in 1:length(apriori_rois)){
 
 <br>
 
-##### **ROIS** {.tabset .tabset-dropdown}
-###### Fornix 
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
 
 <p style= "text-align: center;"> Fornix Body </p> 
 `r TableOutput(maze_FA_models[["fornix_body"]], "classic", 500,150) `
@@ -493,7 +492,7 @@ for (roi in 1:length(apriori_rois)){
 `r TableOutput(maze_FA_models[["fornix_L"]], "classic", 500,150) `
 <br>
 
-###### Cingulum 
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum Bundle</strong> </p>
 
 <p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
 `r TableOutput(maze_FA_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
@@ -508,12 +507,14 @@ for (roi in 1:length(apriori_rois)){
 <br>
 
 <p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
-`r TableOutput(maze_FA_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
-<br>
+`r TableOutput(maze_FA_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
 
-#### Dual Solution Paradigm 
+<br><br><br><br><br>
 
-<p style="text-align:center; font-family: times; font-size: 20px" > <strong>Partial Correlations</strong> </p>
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Dual Solution Paradigm**  </span> { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
+
+##### Partial Correlations
 
 When controlling for age and sex, fornix body appears to be significantly correlated with maze accuracy 
 ```{r, echo=FALSE, message=FALSE }
@@ -522,9 +523,10 @@ TableOutput(FA_DSP_results, "classic")
 
 ```
 
+<br><br><br><br><br>
 
-<p style="text-align:center; font-family: times; font-size: 20px" > <strong>Multiple Linear Regression</strong> </p>
 
+##### Multiple Linear Regression
 
 Mostly effects of age with some effects of sex. Fornix body appears to have an effect of sex.
 ```{r, echo=FALSE,results='hide', message=FALSE }
@@ -546,9 +548,9 @@ for (roi in 1:length(apriori_rois)){
 
 ```
 
-##### **ROIS** {.tabset .tabset-dropdown}
 
-###### Fornix 
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
+<br>
 
 <p style= "text-align: center;"> Fornix Body </p> 
 `r TableOutput(DSP_FA_models[["fornix_body"]], "classic", 500,150) `
@@ -562,7 +564,7 @@ for (roi in 1:length(apriori_rois)){
 `r TableOutput(DSP_FA_models[["fornix_L"]], "classic", 500,150) `
 <br>
 
-###### Cingulum 
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum Bundle</strong> </p>
 
 <p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
 `r TableOutput(DSP_FA_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
@@ -577,19 +579,21 @@ for (roi in 1:length(apriori_rois)){
 <br>
 
 <p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
-`r TableOutput(DSP_FA_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
-<br>
+`r TableOutput(DSP_FA_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
 
-##### 
+<br><br><br><br><br>
 
-<p style="text-align:center; font-family: times; font-size: 20px" >  <strong>Sex stratified partial correlations</strong> </p>
+##### Sex stratified partial correlations
 
-
+<p style="text-align:center ; font-size: 20px" > <strong>Males</strong> </p>
 For males, the fornix body and right cingulum hippocampus were significantly correlated 
 ```{r, echo=FALSE, message=FALSE }
 FA_DSP_male_results <- AprioriPcorTest(dataframe = male_apriori_FA, task ="dsp_si_true_pct",covariates = c("age_scan_years"))
 TableOutput(FA_DSP_male_results, "classic", 400, 200)
 ```
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Females</strong> </p>
 
 For women, nothing was significantly correlated 
 ```{r, echo=FALSE, message=FALSE }
@@ -597,11 +601,14 @@ FA_DSP_female_results <- AprioriPcorTest(dataframe = female_apriori_FA, task ="d
 TableOutput(FA_DSP_female_results, "classic", 400, 200)
 ```
 
+<br><br><br><br><br>
 
-#### Loop Degrees Traveled {.tabset .tabset-dropdown}
-##### Radius 3 
 
-<p style="text-align:center; font-family: times; font-size: 20px" > <strong>Partial Correlations</strong> </p>
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Loop Degrees Traveled** </span> { .tabset .tabset-dropdown}
+##### Radius 3 { .tabset .tabset-fade .tabset-pills}
+
+###### Partial Correlations
 
 ```{r, echo=FALSE, message=FALSE }
 rad3_loopDE_results <- AprioriPcorTest(dataframe = apriori_FA, task ="loop_de_rad3_degree",covariates = c("sex.1","age_scan_years"))
@@ -609,7 +616,9 @@ TableOutput(rad3_loopDE_results,"classic",500,300)
 
 ```
 
-<p style="text-align:center ; font-size: 20px" > <strong>Multiple Linear Regression</strong> </p> 
+<br><br><br><br><br>
+
+###### Multiple Linear Regression
 
 Sex appears to have the largest effect on all ROIs
 
@@ -632,18 +641,17 @@ for (roi in 1:length(apriori_rois)){
 
 ```
 **ROIS** 
+
 <p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
-
 <p style= "text-align: center;"> Fornix Body </p> 
-`r TableOutput(rad3_loopDE_models[["fornix_body"]], "classic", 500,150) `
+`r TableOutput(rad3_loopDE_models[["fornix_body"]], "classic", 500,150)`
 <br>
-
 <p style= "text-align: center;">Fornix R </p> 
-`r TableOutput(rad3_loopDE_models[["fornix_R"]], "classic", 500,150) `
+`r TableOutput(rad3_loopDE_models[["fornix_R"]], "classic", 500,150)`
 <br>
 
 <p style= "text-align: center;">Fornix L </p> 
-`r TableOutput(rad3_loopDE_models[["fornix_L"]], "classic", 500,150) `
+`r TableOutput(rad3_loopDE_models[["fornix_L"]], "classic", 500,150)`
 <br>
 
 <p style="text-align:center ; font-size: 20px" > <strong>Cingulum</strong> </p>
@@ -661,33 +669,38 @@ for (roi in 1:length(apriori_rois)){
 <br>
 
 <p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
-`r TableOutput(rad3_loopDE_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
-<br>
+`r TableOutput(rad3_loopDE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+<br><br><br><br><br>             
 
-<p style="text-align:center; font-family: times; font-size: 20px" >  <strong>Sex stratified partial correlations</strong> </p>
 
+###### Sex stratified partial correlations
+
+<p style="text-align:center ; font-size: 20px" > <strong>Males</strong> </p>
 ```{r, echo=FALSE, message=FALSE }
 rad3_loopDE_male_results <- AprioriPcorTest(dataframe = male_apriori_FA, task ="loop_de_rad3_degree",covariates = c("age_scan_years"))
 TableOutput(rad3_loopDE_male_results, "classic", 400, 200)
 ```
 
+<br>
 
+<p style="text-align:center ; font-size: 20px" > <strong>Females</strong> </p>
 ```{r, echo=FALSE, message=FALSE }
 rad3_loopDE_female_results <- AprioriPcorTest(dataframe = female_apriori_FA, task ="loop_de_rad3_degree",covariates = c("age_scan_years"))
 TableOutput(rad3_loopDE_female_results, "classic", 400, 200)
 ```
 
+<br><br><br><br><br> 
 
-##### Average
-<p style="text-align:center; font-family: times; font-size: 20px" > <strong>Partial Correlations</strong> </p>
+##### Average { .tabset .tabset-fade .tabset-pills}
+###### Partial Correlations
 ```{r, echo=FALSE, message=FALSE }
 ave_loopDE_results <- AprioriPcorTest(dataframe = apriori_FA, task ="loop_de_avg_degree",covariates = c("sex.1","age_scan_years"))
 TableOutput(ave_loopDE_results,"classic",500,300)
 
 ```
+<br><br><br><br><br>
 
-<p style="text-align:center ; font-size: 20px" > <strong>Multiple Linear Regression</strong> </p> 
-
+###### Multiple Linear Regression
 ```{r, echo=FALSE,results='hide', message=FALSE }
 apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
 
@@ -707,7 +720,6 @@ for (roi in 1:length(apriori_rois)){
 
 ```
 
-**ROIS** 
 <p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
 
 <p style= "text-align: center;"> Fornix Body </p> 
@@ -737,25 +749,300 @@ for (roi in 1:length(apriori_rois)){
 <br>
 
 <p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
-`r TableOutput(ave_loopDE_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
-<br>
+`r TableOutput(ave_loopDE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+<br><br><br><br><br>
 
-<p style="text-align:center; font-family: times; font-size: 20px" >  <strong>Sex stratified partial correlations</strong> </p>
 
+###### Sex stratified partial correlations
+<p style= "text-align: center;">Males </p>
 ```{r, echo=FALSE, message=FALSE }
 ave_loopDE_male_results <- AprioriPcorTest(dataframe = male_apriori_FA, task ="loop_de_avg_degree",covariates = c("age_scan_years"))
 TableOutput(ave_loopDE_male_results, "classic", 400, 200)
 ```
+<br>
 
-
+<p style= "text-align: center;">Females </p>
 ```{r, echo=FALSE, message=FALSE }
 ave_loopDE_female_results <- AprioriPcorTest(dataframe = female_apriori_FA, task ="loop_de_avg_degree",covariates = c("age_scan_years"))
 TableOutput(ave_loopDE_female_results, "classic", 400, 200)
 ```
 
 
+<br><br><br><br><br>
 
-#### Loop Position Error {.tabset .tabset-dropdown}
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Loop Position Error** </span> {.tabset .tabset-dropdown}
+
+
+##### Radius 3 { .tabset .tabset-fade .tabset-pills}
+###### Partial Correlations
+```{r, echo=FALSE, message=FALSE }
+rad3_loopPE_results <- AprioriPcorTest(dataframe = apriori_FA, task ="loop_pe_rad3_m",covariates = c("sex.1","age_scan_years"))
+TableOutput(rad3_loopPE_results,"classic",500,300)
+
+```
+<br><br><br><br><br>
+
+###### Multiple Linear Regression
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
+
+rad3_loopPE_models<- vector(mode='list', length=length(apriori_rois))
+
+for (roi in 1:length(apriori_rois)){
+    
+    
+    rad3_loopPE_models[[roi]] <- broom::tidy(lm(loop_pe_rad3_m ~ apriori_FA[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_FA))
+    
+    names(rad3_loopPE_models)[roi] <- apriori_rois[roi]
+    
+    rad3_loopPE_models[[roi]]["term"][2,] <- apriori_rois[roi]
+    rad3_loopPE_models[[roi]]["term"][3,] <- "sex"
+    rad3_loopPE_models[[roi]]["term"][4,] <- "age"
+}
+
+```
+
+
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
+
+<p style= "text-align: center;"> Fornix Body </p> 
+`r TableOutput(rad3_loopPE_models[["fornix_body"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix R </p> 
+`r TableOutput(rad3_loopPE_models[["fornix_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix L </p> 
+`r TableOutput(rad3_loopPE_models[["fornix_L"]], "classic", 500,150) `
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum</strong> </p>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
+`r TableOutput(rad3_loopPE_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_L </p> 
+`r TableOutput(rad3_loopPE_models[["Cingulum_(cingulate_gyrus)_L"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_R </p> 
+`r TableOutput(rad3_loopPE_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
+`r TableOutput(rad3_loopPE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+<br><br><br><br><br>
+
+###### Sex stratified partial correlations
+
+
+##### Average { .tabset .tabset-fade .tabset-pills}
+###### Partial Correlations
+```{r, echo=FALSE, message=FALSE }
+ave_loopPE_results <- AprioriPcorTest(dataframe = apriori_FA, task ="loop_pe_avg_m",covariates = c("sex.1","age_scan_years"))
+TableOutput(ave_loopPE_results,"classic",500,300)
+
+```
+
+<br><br><br><br><br>
+
+###### Multiple Linear Regression
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
+
+ave_loopPE_models<- vector(mode='list', length=length(apriori_rois))
+
+for (roi in 1:length(apriori_rois)){
+    
+    
+    ave_loopPE_models[[roi]] <- broom::tidy(lm(loop_pe_avg_m ~ apriori_FA[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_FA))
+    
+    names(ave_loopPE_models)[roi] <- apriori_rois[roi]
+    
+    ave_loopPE_models[[roi]]["term"][2,] <- apriori_rois[roi]
+    ave_loopPE_models[[roi]]["term"][3,] <- "sex"
+    ave_loopPE_models[[roi]]["term"][4,] <- "age"
+}
+
+```
+
+
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
+
+<p style= "text-align: center;"> Fornix Body </p> 
+`r TableOutput(ave_loopPE_models[["fornix_body"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix R </p> 
+`r TableOutput(ave_loopPE_models[["fornix_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix L </p> 
+`r TableOutput(ave_loopPE_models[["fornix_L"]], "classic", 500,150) `
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum</strong> </p>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
+`r TableOutput(ave_loopPE_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_L </p> 
+`r TableOutput(ave_loopPE_models[["Cingulum_(cingulate_gyrus)_L"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_R </p> 
+`r TableOutput(ave_loopPE_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
+`r TableOutput(ave_loopPE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+<br><br><br><br><br>
+
+
+
+
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Loop Angular Error** </span> {.tabset .tabset-dropdown}
+
+##### Radius 3 { .tabset .tabset-fade .tabset-pills}
+###### Partial Correlations
+```{r, echo=FALSE, message=FALSE }
+rad3_loopAE_results <- AprioriPcorTest(dataframe = apriori_FA, task ="loop_ae_rad3_degree",covariates = c("sex.1","age_scan_years"))
+TableOutput(rad3_loopAE_results,"classic",500,300)
+
+```
+<br><br><br><br><br>
+
+###### Multiple Linear Regression
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
+
+rad3_loopAE_models<- vector(mode='list', length=length(apriori_rois))
+
+for (roi in 1:length(apriori_rois)){
+    
+    
+    rad3_loopAE_models[[roi]] <- broom::tidy(lm(loop_ae_rad3_degree ~ apriori_FA[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_FA))
+    
+    names(rad3_loopAE_models)[roi] <- apriori_rois[roi]
+    
+    rad3_loopAE_models[[roi]]["term"][2,] <- apriori_rois[roi]
+    rad3_loopAE_models[[roi]]["term"][3,] <- "sex"
+    rad3_loopAE_models[[roi]]["term"][4,] <- "age"
+}
+
+```
+
+
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
+
+<p style= "text-align: center;"> Fornix Body </p> 
+`r TableOutput(rad3_loopAE_models[["fornix_body"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix R </p> 
+`r TableOutput(rad3_loopAE_models[["fornix_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix L </p> 
+`r TableOutput(rad3_loopAE_models[["fornix_L"]], "classic", 500,150) `
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum</strong> </p>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
+`r TableOutput(rad3_loopAE_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_L </p> 
+`r TableOutput(rad3_loopAE_models[["Cingulum_(cingulate_gyrus)_L"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_R </p> 
+`r TableOutput(rad3_loopAE_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
+`r TableOutput(rad3_loopAE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+<br><br><br><br><br>
+
+###### Sex stratified partial correlations
+
+##### Average { .tabset .tabset-fade .tabset-pills}
+
+###### Partial Correlations 
+```{r, echo=FALSE, message=FALSE }
+ave_loopAE_results <- AprioriPcorTest(dataframe = apriori_FA, task ="loop_ae_avg_degree",covariates = c("sex.1","age_scan_years"))
+TableOutput(ave_loopAE_results,"classic",500,300)
+
+```
+<br><br><br><br><br>
+
+###### Multiple Linear Regression
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
+
+ave_loopAE_models<- vector(mode='list', length=length(apriori_rois))
+
+for (roi in 1:length(apriori_rois)){
+    
+    
+    ave_loopAE_models[[roi]] <- broom::tidy(lm(loop_ae_avg_degree ~ apriori_FA[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_FA))
+    
+    names(ave_loopAE_models)[roi] <- apriori_rois[roi]
+    
+    ave_loopAE_models[[roi]]["term"][2,] <- apriori_rois[roi]
+    ave_loopAE_models[[roi]]["term"][3,] <- "sex"
+    ave_loopAE_models[[roi]]["term"][4,] <- "age"
+}
+
+```
+
+
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
+
+<p style= "text-align: center;"> Fornix Body </p> 
+`r TableOutput(ave_loopAE_models[["fornix_body"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix R </p> 
+`r TableOutput(ave_loopAE_models[["fornix_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix L </p> 
+`r TableOutput(ave_loopAE_models[["fornix_L"]], "classic", 500,150) `
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum</strong> </p>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
+`r TableOutput(ave_loopAE_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_L </p> 
+`r TableOutput(ave_loopAE_models[["Cingulum_(cingulate_gyrus)_L"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_R </p> 
+`r TableOutput(ave_loopAE_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
+`r TableOutput(ave_loopAE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+<br><br><br><br><br>
+
+
+
+
+
 
 
 
@@ -811,4 +1098,134 @@ The following ROIs are ones that show some level of significance.
 
 
 
+
+
+
 ## <span style="color: darkorange;"> MD </span>  {.tabset .tabset-dropdown}  
+### Apriori 
+
+First, let's start with our apriori regions: Fornix body fornix (L and R), Cingulum bundle (cingulate gyrus and hippocampus ) L and R. 
+<br>
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+#  Creating our data frame  by taking apriori rois and also renaming them for a clean name and binding them with or subject information
+apriori_MD <- GetAprioriDF(raw_MD) %>% cbind(sub_info_master, .)
+
+male_apriori_MD <- GetAprioriDF(raw_MD) %>% cbind(sub_info_master, .) %>% filter(sex == "Male")
+
+female_apriori_MD <- GetAprioriDF(raw_MD) %>% cbind(sub_info_master, .) %>% filter(sex == "Female")
+
+```
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Maze Accuracy** </span> { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
+
+##### Partial Correlations
+<br>
+
+```{r, echo=FALSE, message=FALSE }
+MD_maze_results <- AprioriPcorTest(dataframe = apriori_MD, task ="maze_accuracy_pct",covariates = c("sex.1","age_scan_years"))
+TableOutput(MD_maze_results,"classic",500,300)
+
+```
+
+<br><br><br><br><br>
+
+##### Multiple Linear Regression
+Here, I will run  multiple linear regression so examine the relationship between roi and performance. formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior. Fornix body was the only ROI with a significant sex effect just barely p = 0.046. Cingulum ROIs appeared to have a trend for sex and age p>0.05.
+
+```{r, echo=FALSE,results='hide', message=FALSE }
+apriori_rois <- c("fornix_body", "fornix_R", "fornix_L","Cingulum_(cingulate_gyrus)_R","Cingulum_(cingulate_gyrus)_L","Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L")
+
+maze_MD_models<- vector(mode='list', length=length(apriori_rois))
+
+for (roi in 1:length(apriori_rois)){
+    
+    
+    maze_MD_models[[roi]] <- broom::tidy(lm(maze_accuracy_pct ~ apriori_MD[[apriori_rois[roi]]] + sex.1 + age_scan_years, data = apriori_MD))
+    
+    names(maze_MD_models)[roi] <- apriori_rois[roi]
+    
+    maze_MD_models[[roi]]["term"][2,] <- apriori_rois[roi]
+    maze_MD_models[[roi]]["term"][3,] <- "sex"
+    maze_MD_models[[roi]]["term"][4,] <- "age"
+}
+
+```
+
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Fornix</strong> </p>
+
+<p style= "text-align: center;"> Fornix Body </p> 
+`r TableOutput(maze_MD_models[["fornix_body"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix R </p> 
+`r TableOutput(maze_MD_models[["fornix_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Fornix L </p> 
+`r TableOutput(maze_MD_models[["fornix_L"]], "classic", 500,150) `
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Cingulum Bundle</strong> </p>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_R </p> 
+`r TableOutput(maze_MD_models[["Cingulum_(cingulate_gyrus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(cingulate_gyrus)_L </p> 
+`r TableOutput(maze_MD_models[["Cingulum_(cingulate_gyrus)_L"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_R </p> 
+`r TableOutput(maze_MD_models[["Cingulum_(hippocampus)_R"]], "classic", 500,150) `
+<br>
+
+<p style= "text-align: center;">Cingulum_(hippocampus)_L </p> 
+`r TableOutput(maze_MD_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
+
+<br><br><br><br><br>
+
+
+
+
+##### Sex stratified partial correlations
+<p style= "text-align: center;">Males </p>
+```{r, echo=FALSE, message=FALSE }
+maze_male_MD <- AprioriPcorTest(dataframe = male_apriori_MD, task ="maze_accuracy_pct",covariates = c("age_scan_years"))
+TableOutput(maze_male_MD, "classic", 400, 200)
+```
+<br>
+
+<p style= "text-align: center;">Females </p>
+```{r, echo=FALSE, message=FALSE }
+maze_female_MD <- AprioriPcorTest(dataframe = female_apriori_MD, task ="maze_accuracy_pct",covariates = c("age_scan_years"))
+TableOutput(maze_female_MD, "classic", 400, 200)
+```
+
+
+<br><br><br><br><br>
+
+
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Dual Solution Paradigm**  </span> { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
+
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Loop Degrees Traveled**  </span> { .tabset .tabset-dropdown .tabset-fade .tabset-pills}
+
+##### Radius 3 { .tabset .tabset-fade .tabset-pills}
+##### Average { .tabset .tabset-fade .tabset-pills}
+
+
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Loop Position Error** </span> {.tabset .tabset-dropdown}
+##### Radius 3 { .tabset .tabset-fade .tabset-pills}
+##### Average { .tabset .tabset-fade .tabset-pills}
+
+
+
+
+#### <span style="font-size: 28px; text-decoration:underline"> **Loop Angular Error** </span> {.tabset .tabset-dropdown}
+##### Radius 3 { .tabset .tabset-fade .tabset-pills}
+##### Average { .tabset .tabset-fade .tabset-pills}

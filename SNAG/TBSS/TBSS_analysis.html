@@ -427,17 +427,15 @@ Here, I will run a partial correlation and control for sex and age. Then I will 
 </div>
 </div>
 </div>
-<div id="fa" class="section level2 tabset">
-<h2 class="tabset"><span style="color: darkorange;"> FA </span></h2>
-<div id="apriori" class="section level3 tabset tabset-dropdown tabset-fade tabset-pills">
-<h3 class="tabset tabset-dropdown tabset-fade tabset-pills">Apriori</h3>
-<p>First, let’s start with our apriori regions: Fornix body fornix (L and R), Cingulum bundle (cingulate gyrus and hippocampus ) L and R.</p>
-<div id="maze-accuracy-1" class="section level4">
-<h4>Maze Accuracy</h4>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Partial Correlations</strong>
-</p>
-<p style="font-family: times">
+<div id="fa" class="section level2 tabset tabset-dropdown">
+<h2 class="tabset tabset-dropdown"><span style="color: darkorange;"> FA </span></h2>
+<div id="apriori" class="section level3">
+<h3>Apriori</h3>
+<p>First, let’s start with our apriori regions: Fornix body fornix (L and R), Cingulum bundle (cingulate gyrus and hippocampus ) L and R. <br></p>
+<div id="maze-accuracy-1" class="section level4 tabset tabset-dropdown tabset-fade tabset-pills">
+<h4 class="tabset tabset-dropdown tabset-fade tabset-pills"><span style="font-size: 28px; text-decoration:underline"> <strong>Maze Accuracy</strong> </span></h4>
+<div id="partial-correlations" class="section level5">
+<h5>Partial Correlations</h5>
 Here we want to know whether ROIs correlate to our different behavioral variables when we control for age and sex. So we will run partial correlations.When controlling for age and sex, our ROIS are not significantly correlated
 </p>
 <p><br></p>
@@ -631,16 +629,15 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression" class="section level5">
+<h5>Multiple Linear Regression</h5>
+<p>Here, I will run multiple linear regression so examine the relationship between roi and performance. formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior. Fornix body was the only ROI with a significant sex effect just barely p = 0.046. Cingulum ROIs appeared to have a trend for sex and age p&gt;0.05.</p>
 <p><br></p>
 <p style="text-align:center ; font-size: 20px">
-<strong>Multiple Linear Regression</strong>
+<strong>Fornix</strong>
 </p>
-<p>Here, I will runa multiple linear regression so examine the relationship between roi and performance. formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior. Fornix body was the only ROI with a significant sex effect just barely p = 0.046. Cingulum ROIs appeared to have a trend for sex and age p&gt;0.05.</p>
-<p><br></p>
-<div id="rois" class="section level5 tabset tabset-dropdown">
-<h5 class="tabset tabset-dropdown"><strong>ROIS</strong></h5>
-<div id="fornix" class="section level6">
-<h6>Fornix</h6>
 <p style="text-align: center;">
 Fornix Body
 </p>
@@ -926,9 +923,9 @@ age
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div id="cingulum" class="section level6">
-<h6>Cingulum</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum Bundle</strong>
+</p>
 <p style="text-align: center;">
 Cingulum_(cingulate_gyrus)_R
 </p>
@@ -1243,33 +1240,33 @@ p.value
 (Intercept)
 </td>
 <td style="text-align:right;">
-0.8803922
+0.9448289
 </td>
 <td style="text-align:right;">
-0.3487588
+0.3641720
 </td>
 <td style="text-align:right;">
-2.5243585
+2.5944579
 </td>
 <td style="text-align:right;">
-0.0136214
+0.0113129
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Cingulum_(hippocampus)_R
+Cingulum_(hippocampus)_L
 </td>
 <td style="text-align:right;">
--1.4766971
+-2.0498718
 </td>
 <td style="text-align:right;">
-2.2684888
+2.3699297
 </td>
 <td style="text-align:right;">
--0.6509607
+-0.8649505
 </td>
 <td style="text-align:right;">
-0.5169850
+0.3897184
 </td>
 </tr>
 <tr>
@@ -1277,16 +1274,16 @@ Cingulum_(hippocampus)_R
 sex
 </td>
 <td style="text-align:right;">
-0.0870572
+0.0866497
 </td>
 <td style="text-align:right;">
-0.0494402
+0.0486340
 </td>
 <td style="text-align:right;">
-1.7608576
+1.7816718
 </td>
 <td style="text-align:right;">
-0.0821819
+0.0786951
 </td>
 </tr>
 <tr>
@@ -1294,29 +1291,27 @@ sex
 age
 </td>
 <td style="text-align:right;">
--0.0121485
+-0.0124720
 </td>
 <td style="text-align:right;">
-0.0058541
+0.0058231
 </td>
 <td style="text-align:right;">
--2.0752241
+-2.1418239
 </td>
 <td style="text-align:right;">
-0.0412624
+0.0353284
 </td>
 </tr>
 </tbody>
 </table>
-<p><br></p>
+<p><br><br><br><br><br></p>
 </div>
 </div>
-</div>
-<div id="dual-solution-paradigm" class="section level4">
-<h4>Dual Solution Paradigm</h4>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Partial Correlations</strong>
-</p>
+<div id="dual-solution-paradigm" class="section level4 tabset tabset-dropdown tabset-fade tabset-pills">
+<h4 class="tabset tabset-dropdown tabset-fade tabset-pills"><span style="font-size: 28px; text-decoration:underline"> <strong>Dual Solution Paradigm</strong> </span></h4>
+<div id="partial-correlations-1" class="section level5">
+<h5>Partial Correlations</h5>
 When controlling for age and sex, fornix body appears to be significantly correlated with maze accuracy
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -1508,14 +1503,15 @@ spearman
 </tr>
 </tbody>
 </table>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Multiple Linear Regression</strong>
-</p>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-1" class="section level5">
+<h5>Multiple Linear Regression</h5>
 <p>Mostly effects of age with some effects of sex. Fornix body appears to have an effect of sex.</p>
-<div id="rois-1" class="section level5 tabset tabset-dropdown">
-<h5 class="tabset tabset-dropdown"><strong>ROIS</strong></h5>
-<div id="fornix-1" class="section level6">
-<h6>Fornix</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Fornix</strong>
+</p>
+<p><br></p>
 <p style="text-align: center;">
 Fornix Body
 </p>
@@ -1801,9 +1797,9 @@ age
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div id="cingulum-1" class="section level6">
-<h6>Cingulum</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum Bundle</strong>
+</p>
 <p style="text-align: center;">
 Cingulum_(cingulate_gyrus)_R
 </p>
@@ -2118,33 +2114,33 @@ p.value
 (Intercept)
 </td>
 <td style="text-align:right;">
-0.8803922
+0.9448289
 </td>
 <td style="text-align:right;">
-0.3487588
+0.3641720
 </td>
 <td style="text-align:right;">
-2.5243585
+2.5944579
 </td>
 <td style="text-align:right;">
-0.0136214
+0.0113129
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Cingulum_(hippocampus)_R
+Cingulum_(hippocampus)_L
 </td>
 <td style="text-align:right;">
--1.4766971
+-2.0498718
 </td>
 <td style="text-align:right;">
-2.2684888
+2.3699297
 </td>
 <td style="text-align:right;">
--0.6509607
+-0.8649505
 </td>
 <td style="text-align:right;">
-0.5169850
+0.3897184
 </td>
 </tr>
 <tr>
@@ -2152,16 +2148,16 @@ Cingulum_(hippocampus)_R
 sex
 </td>
 <td style="text-align:right;">
-0.0870572
+0.0866497
 </td>
 <td style="text-align:right;">
-0.0494402
+0.0486340
 </td>
 <td style="text-align:right;">
-1.7608576
+1.7816718
 </td>
 <td style="text-align:right;">
-0.0821819
+0.0786951
 </td>
 </tr>
 <tr>
@@ -2169,27 +2165,26 @@ sex
 age
 </td>
 <td style="text-align:right;">
--0.0121485
+-0.0124720
 </td>
 <td style="text-align:right;">
-0.0058541
+0.0058231
 </td>
 <td style="text-align:right;">
--2.0752241
+-2.1418239
 </td>
 <td style="text-align:right;">
-0.0412624
+0.0353284
 </td>
 </tr>
 </tbody>
 </table>
-<p><br></p>
+<p><br><br><br><br><br></p>
 </div>
-</div>
-<div id="section" class="section level5">
-<h5></h5>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Sex stratified partial correlations</strong>
+<div id="sex-stratified-partial-correlations" class="section level5">
+<h5>Sex stratified partial correlations</h5>
+<p style="text-align:center ; font-size: 20px">
+<strong>Males</strong>
 </p>
 For males, the fornix body and right cingulum hippocampus were significantly correlated
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
@@ -2382,6 +2377,10 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Females</strong>
+</p>
 For women, nothing was significantly correlated
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -2573,15 +2572,15 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br><br><br><br><br></p>
 </div>
 </div>
 <div id="loop-degrees-traveled" class="section level4 tabset tabset-dropdown">
-<h4 class="tabset tabset-dropdown">Loop Degrees Traveled</h4>
-<div id="radius-3" class="section level5">
-<h5>Radius 3</h5>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Partial Correlations</strong>
-</p>
+<h4 class="tabset tabset-dropdown"><span style="font-size: 28px; text-decoration:underline"> <strong>Loop Degrees Traveled</strong> </span></h4>
+<div id="radius-3" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Radius 3</h5>
+<div id="partial-correlations-2" class="section level6">
+<h6>Partial Correlations</h6>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2772,11 +2771,12 @@ spearman
 </tr>
 </tbody>
 </table>
-<p style="text-align:center ; font-size: 20px">
-<strong>Multiple Linear Regression</strong>
-</p>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-2" class="section level6">
+<h6>Multiple Linear Regression</h6>
 <p>Sex appears to have the largest effect on all ROIs</p>
-<strong>ROIS</strong>
+<p><strong>ROIS</strong></p>
 <p style="text-align:center ; font-size: 20px">
 <strong>Fornix</strong>
 </p>
@@ -2874,7 +2874,7 @@ age
 </tr>
 </tbody>
 </table>
-<p><br></p>
+<br>
 <p style="text-align: center;">
 Fornix R
 </p>
@@ -3382,33 +3382,33 @@ p.value
 (Intercept)
 </td>
 <td style="text-align:right;">
-420.049162
+466.6054952
 </td>
 <td style="text-align:right;">
-224.903732
+230.748296
 </td>
 <td style="text-align:right;">
-1.8676843
+2.0221406
 </td>
 <td style="text-align:right;">
-0.0704458
+0.0510865
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Cingulum_(hippocampus)_R
+Cingulum_(hippocampus)_L
 </td>
 <td style="text-align:right;">
--855.173359
+-1294.2546930
 </td>
 <td style="text-align:right;">
-1472.164132
+1500.489707
 </td>
 <td style="text-align:right;">
--0.5808954
+-0.8625549
 </td>
 <td style="text-align:right;">
-0.5651420
+0.3944257
 </td>
 </tr>
 <tr>
@@ -3416,16 +3416,16 @@ Cingulum_(hippocampus)_R
 sex
 </td>
 <td style="text-align:right;">
--69.288809
+-69.8923781
 </td>
 <td style="text-align:right;">
-26.403911
+26.137965
 </td>
 <td style="text-align:right;">
--2.6241873
+-2.6739793
 </td>
 <td style="text-align:right;">
-0.0129151
+0.0114359
 </td>
 </tr>
 <tr>
@@ -3433,23 +3433,26 @@ sex
 age
 </td>
 <td style="text-align:right;">
-1.036348
+0.8550832
 </td>
 <td style="text-align:right;">
-3.606374
+3.589223
 </td>
 <td style="text-align:right;">
-0.2873655
+0.2382363
 </td>
 <td style="text-align:right;">
-0.7755767
+0.8131278
 </td>
 </tr>
 </tbody>
 </table>
-<p><br></p>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Sex stratified partial correlations</strong>
+<p><br><br><br><br><br></p>
+</div>
+<div id="sex-stratified-partial-correlations-1" class="section level6">
+<h6>Sex stratified partial correlations</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Males</strong>
 </p>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -3641,6 +3644,10 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Females</strong>
+</p>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -3831,12 +3838,13 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br><br><br><br><br></p>
 </div>
-<div id="average" class="section level5">
-<h5>Average</h5>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Partial Correlations</strong>
-</p>
+</div>
+<div id="average" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Average</h5>
+<div id="partial-correlations-3" class="section level6">
+<h6>Partial Correlations</h6>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -4027,10 +4035,10 @@ spearman
 </tr>
 </tbody>
 </table>
-<p style="text-align:center ; font-size: 20px">
-<strong>Multiple Linear Regression</strong>
-</p>
-<strong>ROIS</strong>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-3" class="section level6">
+<h6>Multiple Linear Regression</h6>
 <p style="text-align:center ; font-size: 20px">
 <strong>Fornix</strong>
 </p>
@@ -4636,33 +4644,33 @@ p.value
 (Intercept)
 </td>
 <td style="text-align:right;">
-320.95769
+324.6702779
 </td>
 <td style="text-align:right;">
-152.785385
+165.079438
 </td>
 <td style="text-align:right;">
-2.1007094
+1.9667518
 </td>
 <td style="text-align:right;">
-0.0423558
+0.0565460
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Cingulum_(hippocampus)_R
+Cingulum_(hippocampus)_L
 </td>
 <td style="text-align:right;">
-42.76843
+0.2572046
 </td>
 <td style="text-align:right;">
-1023.706426
+1077.213270
 </td>
 <td style="text-align:right;">
-0.0417780
+0.0002388
 </td>
 <td style="text-align:right;">
-0.9668944
+0.9998107
 </td>
 </tr>
 <tr>
@@ -4670,16 +4678,16 @@ Cingulum_(hippocampus)_R
 sex
 </td>
 <td style="text-align:right;">
--39.90308
+-40.0741298
 </td>
 <td style="text-align:right;">
-18.443255
+18.331997
 </td>
 <td style="text-align:right;">
--2.1635598
+-2.1860210
 </td>
 <td style="text-align:right;">
-0.0368522
+0.0350446
 </td>
 </tr>
 <tr>
@@ -4687,23 +4695,26 @@ sex
 age
 </td>
 <td style="text-align:right;">
-1.04202
+1.0450987
 </td>
 <td style="text-align:right;">
-2.458383
+2.470795
 </td>
 <td style="text-align:right;">
-0.4238641
+0.4229807
 </td>
 <td style="text-align:right;">
-0.6740548
+0.6746936
 </td>
 </tr>
 </tbody>
 </table>
-<p><br></p>
-<p style="text-align:center; font-family: times; font-size: 20px">
-<strong>Sex stratified partial correlations</strong>
+<p><br><br><br><br><br></p>
+</div>
+<div id="sex-stratified-partial-correlations-2" class="section level6">
+<h6>Sex stratified partial correlations</h6>
+<p style="text-align: center;">
+Males
 </p>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -4895,6 +4906,10 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br></p>
+<p style="text-align: center;">
+Females
+</p>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -5085,12 +5100,3510 @@ spearman
 </tr>
 </tbody>
 </table>
+<p><br><br><br><br><br></p>
+</div>
+</div>
+</div>
+<div id="loop-position-error" class="section level4 tabset tabset-dropdown">
+<h4 class="tabset tabset-dropdown"><span style="font-size: 28px; text-decoration:underline"> <strong>Loop Position Error</strong> </span></h4>
+<div id="radius-3-1" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Radius 3</h5>
+<div id="partial-correlations-4" class="section level6">
+<h6>Partial Correlations</h6>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+0.2825692
+</td>
+<td style="text-align:right;">
+0.0949578
+</td>
+<td style="text-align:right;">
+1.7176468
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+-0.0067578
+</td>
+<td style="text-align:right;">
+0.9687979
+</td>
+<td style="text-align:right;">
+-0.0394051
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.1500853
+</td>
+<td style="text-align:right;">
+0.3822844
+</td>
+<td style="text-align:right;">
+0.8851663
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.1961538
+</td>
+<td style="text-align:right;">
+0.2515601
+</td>
+<td style="text-align:right;">
+1.1664233
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+0.1267165
+</td>
+<td style="text-align:right;">
+0.4614611
+</td>
+<td style="text-align:right;">
+0.7448822
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+0.0256071
+</td>
+<td style="text-align:right;">
+0.8821497
+</td>
+<td style="text-align:right;">
+0.1493630
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+0.2041260
+</td>
+<td style="text-align:right;">
+0.2324171
+</td>
+<td style="text-align:right;">
+1.2158490
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-4" class="section level6">
+<h6>Multiple Linear Regression</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Fornix</strong>
+</p>
+<p style="text-align: center;">
+Fornix Body
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+2.2345788
+</td>
+<td style="text-align:right;">
+2.3501322
+</td>
+<td style="text-align:right;">
+0.9508311
+</td>
+<td style="text-align:right;">
+0.3484007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+15.6921635
+</td>
+<td style="text-align:right;">
+8.6752891
+</td>
+<td style="text-align:right;">
+1.8088346
+</td>
+<td style="text-align:right;">
+0.0793273
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.3330684
+</td>
+<td style="text-align:right;">
+0.3013282
+</td>
+<td style="text-align:right;">
+-1.1053342
+</td>
+<td style="text-align:right;">
+0.2767754
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0059656
+</td>
+<td style="text-align:right;">
+0.0419356
+</td>
+<td style="text-align:right;">
+-0.1422557
+</td>
+<td style="text-align:right;">
+0.8877177
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+3.5947437
+</td>
+<td style="text-align:right;">
+2.7975149
+</td>
+<td style="text-align:right;">
+1.2849775
+</td>
+<td style="text-align:right;">
+0.2074853
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+4.1179657
+</td>
+<td style="text-align:right;">
+12.8372449
+</td>
+<td style="text-align:right;">
+0.3207827
+</td>
+<td style="text-align:right;">
+0.7503385
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.3897115
+</td>
+<td style="text-align:right;">
+0.3156077
+</td>
+<td style="text-align:right;">
+-1.2347971
+</td>
+<td style="text-align:right;">
+0.2253718
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0183002
+</td>
+<td style="text-align:right;">
+0.0432668
+</td>
+<td style="text-align:right;">
+-0.4229628
+</td>
+<td style="text-align:right;">
+0.6749857
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+3.1162423
+</td>
+<td style="text-align:right;">
+3.5092288
+</td>
+<td style="text-align:right;">
+0.8880134
+</td>
+<td style="text-align:right;">
+0.3807728
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+5.5924098
+</td>
+<td style="text-align:right;">
+14.7985197
+</td>
+<td style="text-align:right;">
+0.3779033
+</td>
+<td style="text-align:right;">
+0.7078515
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.3872449
+</td>
+<td style="text-align:right;">
+0.3153776
+</td>
+<td style="text-align:right;">
+-1.2278768
+</td>
+<td style="text-align:right;">
+0.2279262
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0142313
+</td>
+<td style="text-align:right;">
+0.0445036
+</td>
+<td style="text-align:right;">
+-0.3197778
+</td>
+<td style="text-align:right;">
+0.7510936
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum</strong>
+</p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+-1.1120866
+</td>
+<td style="text-align:right;">
+3.5761360
+</td>
+<td style="text-align:right;">
+-0.3109743
+</td>
+<td style="text-align:right;">
+0.7577187
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+69.5081072
+</td>
+<td style="text-align:right;">
+38.2530434
+</td>
+<td style="text-align:right;">
+1.8170608
+</td>
+<td style="text-align:right;">
+0.0780312
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.3801939
+</td>
+<td style="text-align:right;">
+0.2989192
+</td>
+<td style="text-align:right;">
+-1.2718952
+</td>
+<td style="text-align:right;">
+0.2120415
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0209750
+</td>
+<td style="text-align:right;">
+0.0413972
+</td>
+<td style="text-align:right;">
+-0.5066764
+</td>
+<td style="text-align:right;">
+0.6156521
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+1.9254867
+</td>
+<td style="text-align:right;">
+3.4131441
+</td>
+<td style="text-align:right;">
+0.5641387
+</td>
+<td style="text-align:right;">
+0.5763625
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+25.7773281
+</td>
+<td style="text-align:right;">
+30.4690160
+</td>
+<td style="text-align:right;">
+0.8460177
+</td>
+<td style="text-align:right;">
+0.4034580
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.4354750
+</td>
+<td style="text-align:right;">
+0.3117335
+</td>
+<td style="text-align:right;">
+-1.3969462
+</td>
+<td style="text-align:right;">
+0.1714815
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0191945
+</td>
+<td style="text-align:right;">
+0.0428981
+</td>
+<td style="text-align:right;">
+-0.4474452
+</td>
+<td style="text-align:right;">
+0.6573914
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+4.3458109
+</td>
+<td style="text-align:right;">
+2.7019176
+</td>
+<td style="text-align:right;">
+1.6084172
+</td>
+<td style="text-align:right;">
+0.1169916
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+-2.1767233
+</td>
+<td style="text-align:right;">
+17.6860836
+</td>
+<td style="text-align:right;">
+-0.1230755
+</td>
+<td style="text-align:right;">
+0.9027720
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.4108397
+</td>
+<td style="text-align:right;">
+0.3172077
+</td>
+<td style="text-align:right;">
+-1.2951756
+</td>
+<td style="text-align:right;">
+0.2039854
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0181361
+</td>
+<td style="text-align:right;">
+0.0433258
+</td>
+<td style="text-align:right;">
+-0.4185995
+</td>
+<td style="text-align:right;">
+0.6781414
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+2.4009400
+</td>
+<td style="text-align:right;">
+2.7462461
+</td>
+<td style="text-align:right;">
+0.8742625
+</td>
+<td style="text-align:right;">
+0.3881091
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+18.4707708
+</td>
+<td style="text-align:right;">
+17.8580471
+</td>
+<td style="text-align:right;">
+1.0343108
+</td>
+<td style="text-align:right;">
+0.3082920
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.3589869
+</td>
+<td style="text-align:right;">
+0.3110804
+</td>
+<td style="text-align:right;">
+-1.1540002
+</td>
+<td style="text-align:right;">
+0.2565476
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0160345
+</td>
+<td style="text-align:right;">
+0.0427171
+</td>
+<td style="text-align:right;">
+-0.3753659
+</td>
+<td style="text-align:right;">
+0.7097200
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="sex-stratified-partial-correlations-3" class="section level6">
+<h6>Sex stratified partial correlations</h6>
+</div>
+</div>
+<div id="average-1" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Average</h5>
+<div id="partial-correlations-5" class="section level6">
+<h6>Partial Correlations</h6>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+0.2779095
+</td>
+<td style="text-align:right;">
+0.0825097
+</td>
+<td style="text-align:right;">
+1.7834026
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+-0.0699098
+</td>
+<td style="text-align:right;">
+0.6681756
+</td>
+<td style="text-align:right;">
+-0.4320101
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.0333769
+</td>
+<td style="text-align:right;">
+0.8379965
+</td>
+<td style="text-align:right;">
+0.2058635
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.1328545
+</td>
+<td style="text-align:right;">
+0.4137951
+</td>
+<td style="text-align:right;">
+0.8262947
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+0.1838483
+</td>
+<td style="text-align:right;">
+0.2561240
+</td>
+<td style="text-align:right;">
+1.1529697
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+0.0240722
+</td>
+<td style="text-align:right;">
+0.8827853
+</td>
+<td style="text-align:right;">
+0.1484339
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+0.2125365
+</td>
+<td style="text-align:right;">
+0.1879472
+</td>
+<td style="text-align:right;">
+1.3407959
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-5" class="section level6">
+<h6>Multiple Linear Regression</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Fornix</strong>
+</p>
+<p style="text-align: center;">
+Fornix Body
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+1.3182027
+</td>
+<td style="text-align:right;">
+1.3638875
+</td>
+<td style="text-align:right;">
+0.9665040
+</td>
+<td style="text-align:right;">
+0.3399033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+9.4022003
+</td>
+<td style="text-align:right;">
+5.2175375
+</td>
+<td style="text-align:right;">
+1.8020379
+</td>
+<td style="text-align:right;">
+0.0794767
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2234377
+</td>
+<td style="text-align:right;">
+0.1781479
+</td>
+<td style="text-align:right;">
+-1.2542256
+</td>
+<td style="text-align:right;">
+0.2174205
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0037574
+</td>
+<td style="text-align:right;">
+0.0244577
+</td>
+<td style="text-align:right;">
+-0.1536265
+</td>
+<td style="text-align:right;">
+0.8787172
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+2.2712223
+</td>
+<td style="text-align:right;">
+1.6860988
+</td>
+<td style="text-align:right;">
+1.3470280
+</td>
+<td style="text-align:right;">
+0.1859498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+1.0773637
+</td>
+<td style="text-align:right;">
+7.9280530
+</td>
+<td style="text-align:right;">
+0.1358926
+</td>
+<td style="text-align:right;">
+0.8926235
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2564607
+</td>
+<td style="text-align:right;">
+0.1874621
+</td>
+<td style="text-align:right;">
+-1.3680669
+</td>
+<td style="text-align:right;">
+0.1793270
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0102997
+</td>
+<td style="text-align:right;">
+0.0251920
+</td>
+<td style="text-align:right;">
+-0.4088491
+</td>
+<td style="text-align:right;">
+0.6849456
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+2.2726908
+</td>
+<td style="text-align:right;">
+2.1297057
+</td>
+<td style="text-align:right;">
+1.0671384
+</td>
+<td style="text-align:right;">
+0.2926424
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.7991610
+</td>
+<td style="text-align:right;">
+9.1496807
+</td>
+<td style="text-align:right;">
+0.0873430
+</td>
+<td style="text-align:right;">
+0.9308575
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2584333
+</td>
+<td style="text-align:right;">
+0.1868853
+</td>
+<td style="text-align:right;">
+-1.3828445
+</td>
+<td style="text-align:right;">
+0.1747852
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0097774
+</td>
+<td style="text-align:right;">
+0.0260821
+</td>
+<td style="text-align:right;">
+-0.3748696
+</td>
+<td style="text-align:right;">
+0.7098416
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum</strong>
+</p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+-0.4042884
+</td>
+<td style="text-align:right;">
+2.1559710
+</td>
+<td style="text-align:right;">
+-0.1875203
+</td>
+<td style="text-align:right;">
+0.8522504
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+38.5194148
+</td>
+<td style="text-align:right;">
+24.1408035
+</td>
+<td style="text-align:right;">
+1.5956144
+</td>
+<td style="text-align:right;">
+0.1188592
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2570110
+</td>
+<td style="text-align:right;">
+0.1784575
+</td>
+<td style="text-align:right;">
+-1.4401804
+</td>
+<td style="text-align:right;">
+0.1580050
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0136303
+</td>
+<td style="text-align:right;">
+0.0244749
+</td>
+<td style="text-align:right;">
+-0.5569115
+</td>
+<td style="text-align:right;">
+0.5808534
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.8175531
+</td>
+<td style="text-align:right;">
+2.0420762
+</td>
+<td style="text-align:right;">
+0.4003539
+</td>
+<td style="text-align:right;">
+0.6911379
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+18.9190224
+</td>
+<td style="text-align:right;">
+19.0097566
+</td>
+<td style="text-align:right;">
+0.9952270
+</td>
+<td style="text-align:right;">
+0.3259213
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2842205
+</td>
+<td style="text-align:right;">
+0.1834355
+</td>
+<td style="text-align:right;">
+-1.5494306
+</td>
+<td style="text-align:right;">
+0.1295675
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0116546
+</td>
+<td style="text-align:right;">
+0.0249046
+</td>
+<td style="text-align:right;">
+-0.4679704
+</td>
+<td style="text-align:right;">
+0.6424788
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+2.4987148
+</td>
+<td style="text-align:right;">
+1.5662522
+</td>
+<td style="text-align:right;">
+1.5953464
+</td>
+<td style="text-align:right;">
+0.1189192
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+-0.8770391
+</td>
+<td style="text-align:right;">
+10.4943445
+</td>
+<td style="text-align:right;">
+-0.0835725
+</td>
+<td style="text-align:right;">
+0.9338350
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2646635
+</td>
+<td style="text-align:right;">
+0.1890677
+</td>
+<td style="text-align:right;">
+-1.3998341
+</td>
+<td style="text-align:right;">
+0.1696745
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0103060
+</td>
+<td style="text-align:right;">
+0.0252017
+</td>
+<td style="text-align:right;">
+-0.4089426
+</td>
+<td style="text-align:right;">
+0.6848775
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+1.4489192
+</td>
+<td style="text-align:right;">
+1.6754760
+</td>
+<td style="text-align:right;">
+0.8647806
+</td>
+<td style="text-align:right;">
+0.3925858
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+9.6032689
+</td>
+<td style="text-align:right;">
+10.9331908
+</td>
+<td style="text-align:right;">
+0.8783592
+</td>
+<td style="text-align:right;">
+0.3852691
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-0.2292140
+</td>
+<td style="text-align:right;">
+0.1860609
+</td>
+<td style="text-align:right;">
+-1.2319305
+</td>
+<td style="text-align:right;">
+0.2255440
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0080755
+</td>
+<td style="text-align:right;">
+0.0250774
+</td>
+<td style="text-align:right;">
+-0.3220236
+</td>
+<td style="text-align:right;">
+0.7491997
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+</div>
+</div>
+<div id="loop-angular-error" class="section level4 tabset tabset-dropdown">
+<h4 class="tabset tabset-dropdown"><span style="font-size: 28px; text-decoration:underline"> <strong>Loop Angular Error</strong> </span></h4>
+<div id="radius-3-2" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Radius 3</h5>
+<div id="partial-correlations-6" class="section level6">
+<h6>Partial Correlations</h6>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+0.3222847
+</td>
+<td style="text-align:right;">
+0.0552425
+</td>
+<td style="text-align:right;">
+1.9851488
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+-0.0018463
+</td>
+<td style="text-align:right;">
+0.9914732
+</td>
+<td style="text-align:right;">
+-0.0107658
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.1400400
+</td>
+<td style="text-align:right;">
+0.4152943
+</td>
+<td style="text-align:right;">
+0.8246933
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.1616159
+</td>
+<td style="text-align:right;">
+0.3463545
+</td>
+<td style="text-align:right;">
+0.9549284
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+0.1011950
+</td>
+<td style="text-align:right;">
+0.5570339
+</td>
+<td style="text-align:right;">
+0.5931080
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+0.0313409
+</td>
+<td style="text-align:right;">
+0.8560116
+</td>
+<td style="text-align:right;">
+0.1828373
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+0.1888031
+</td>
+<td style="text-align:right;">
+0.2701165
+</td>
+<td style="text-align:right;">
+1.1210642
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-6" class="section level6">
+<h6>Multiple Linear Regression</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Fornix</strong>
+</p>
+<p style="text-align: center;">
+Fornix Body
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+33.0883160
+</td>
+<td style="text-align:right;">
+63.485530
+</td>
+<td style="text-align:right;">
+0.5211946
+</td>
+<td style="text-align:right;">
+0.6056096
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+466.2779650
+</td>
+<td style="text-align:right;">
+234.350790
+</td>
+<td style="text-align:right;">
+1.9896582
+</td>
+<td style="text-align:right;">
+0.0547206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-6.7412583
+</td>
+<td style="text-align:right;">
+8.139960
+</td>
+<td style="text-align:right;">
+-0.8281685
+</td>
+<td style="text-align:right;">
+0.4133508
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+0.0168218
+</td>
+<td style="text-align:right;">
+1.132832
+</td>
+<td style="text-align:right;">
+0.0148494
+</td>
+<td style="text-align:right;">
+0.9882392
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+75.804509
+</td>
+<td style="text-align:right;">
+76.277834
+</td>
+<td style="text-align:right;">
+0.9937947
+</td>
+<td style="text-align:right;">
+0.3273433
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+105.364029
+</td>
+<td style="text-align:right;">
+350.023964
+</td>
+<td style="text-align:right;">
+0.3010195
+</td>
+<td style="text-align:right;">
+0.7652329
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-8.484553
+</td>
+<td style="text-align:right;">
+8.605450
+</td>
+<td style="text-align:right;">
+-0.9859511
+</td>
+<td style="text-align:right;">
+0.3311219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.349317
+</td>
+<td style="text-align:right;">
+1.179725
+</td>
+<td style="text-align:right;">
+-0.2961004
+</td>
+<td style="text-align:right;">
+0.7689545
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+68.4066953
+</td>
+<td style="text-align:right;">
+95.749082
+</td>
+<td style="text-align:right;">
+0.7144371
+</td>
+<td style="text-align:right;">
+0.4798336
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+116.9282975
+</td>
+<td style="text-align:right;">
+403.776662
+</td>
+<td style="text-align:right;">
+0.2895866
+</td>
+<td style="text-align:right;">
+0.7738912
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-8.5012010
+</td>
+<td style="text-align:right;">
+8.605058
+</td>
+<td style="text-align:right;">
+-0.9879307
+</td>
+<td style="text-align:right;">
+0.3301654
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.2638172
+</td>
+<td style="text-align:right;">
+1.214279
+</td>
+<td style="text-align:right;">
+-0.2172625
+</td>
+<td style="text-align:right;">
+0.8293023
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum</strong>
+</p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+-49.919533
+</td>
+<td style="text-align:right;">
+97.719726
+</td>
+<td style="text-align:right;">
+-0.5108440
+</td>
+<td style="text-align:right;">
+0.6127616
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+1848.354921
+</td>
+<td style="text-align:right;">
+1045.283760
+</td>
+<td style="text-align:right;">
+1.7682805
+</td>
+<td style="text-align:right;">
+0.0859868
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-8.216797
+</td>
+<td style="text-align:right;">
+8.168119
+</td>
+<td style="text-align:right;">
+-1.0059595
+</td>
+<td style="text-align:right;">
+0.3215410
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.420534
+</td>
+<td style="text-align:right;">
+1.131198
+</td>
+<td style="text-align:right;">
+-0.3717598
+</td>
+<td style="text-align:right;">
+0.7123786
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+27.514899
+</td>
+<td style="text-align:right;">
+92.986357
+</td>
+<td style="text-align:right;">
+0.2959025
+</td>
+<td style="text-align:right;">
+0.7691043
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+724.143509
+</td>
+<td style="text-align:right;">
+830.085900
+</td>
+<td style="text-align:right;">
+0.8723718
+</td>
+<td style="text-align:right;">
+0.3891248
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-9.733608
+</td>
+<td style="text-align:right;">
+8.492746
+</td>
+<td style="text-align:right;">
+-1.1461084
+</td>
+<td style="text-align:right;">
+0.2597529
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.374667
+</td>
+<td style="text-align:right;">
+1.168699
+</td>
+<td style="text-align:right;">
+-0.3205848
+</td>
+<td style="text-align:right;">
+0.7504872
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+94.1481896
+</td>
+<td style="text-align:right;">
+73.664575
+</td>
+<td style="text-align:right;">
+1.2780660
+</td>
+<td style="text-align:right;">
+0.2098831
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+-45.8845715
+</td>
+<td style="text-align:right;">
+482.190067
+</td>
+<td style="text-align:right;">
+-0.0951587
+</td>
+<td style="text-align:right;">
+0.9247474
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-8.9956511
+</td>
+<td style="text-align:right;">
+8.648291
+</td>
+<td style="text-align:right;">
+-1.0401652
+</td>
+<td style="text-align:right;">
+0.3056038
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.3454492
+</td>
+<td style="text-align:right;">
+1.181225
+</td>
+<td style="text-align:right;">
+-0.2924498
+</td>
+<td style="text-align:right;">
+0.7717200
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+47.0187335
+</td>
+<td style="text-align:right;">
+75.086281
+</td>
+<td style="text-align:right;">
+0.6261961
+</td>
+<td style="text-align:right;">
+0.5353681
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+454.0423715
+</td>
+<td style="text-align:right;">
+488.264460
+</td>
+<td style="text-align:right;">
+0.9299108
+</td>
+<td style="text-align:right;">
+0.3589731
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-7.7439427
+</td>
+<td style="text-align:right;">
+8.505383
+</td>
+<td style="text-align:right;">
+-0.9104755
+</td>
+<td style="text-align:right;">
+0.3689817
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.2935308
+</td>
+<td style="text-align:right;">
+1.167946
+</td>
+<td style="text-align:right;">
+-0.2513224
+</td>
+<td style="text-align:right;">
+0.8030777
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="sex-stratified-partial-correlations-4" class="section level6">
+<h6>Sex stratified partial correlations</h6>
+</div>
+</div>
+<div id="average-2" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Average</h5>
+<div id="partial-correlations-7" class="section level6">
+<h6>Partial Correlations</h6>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+0.2279602
+</td>
+<td style="text-align:right;">
+0.1571463
+</td>
+<td style="text-align:right;">
+1.4432406
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+-0.0573358
+</td>
+<td style="text-align:right;">
+0.7252780
+</td>
+<td style="text-align:right;">
+-0.3540237
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.0312035
+</td>
+<td style="text-align:right;">
+0.8484183
+</td>
+<td style="text-align:right;">
+0.1924453
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.1052480
+</td>
+<td style="text-align:right;">
+0.5180604
+</td>
+<td style="text-align:right;">
+0.6524159
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+0.1825968
+</td>
+<td style="text-align:right;">
+0.2594312
+</td>
+<td style="text-align:right;">
+1.1448498
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+0.0519425
+</td>
+<td style="text-align:right;">
+0.7502492
+</td>
+<td style="text-align:right;">
+0.3206276
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+0.1901671
+</td>
+<td style="text-align:right;">
+0.2398559
+</td>
+<td style="text-align:right;">
+1.1940584
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-7" class="section level6">
+<h6>Multiple Linear Regression</h6>
+<p style="text-align:center ; font-size: 20px">
+<strong>Fornix</strong>
+</p>
+<p style="text-align: center;">
+Fornix Body
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+61.0037417
+</td>
+<td style="text-align:right;">
+54.2623106
+</td>
+<td style="text-align:right;">
+1.1242378
+</td>
+<td style="text-align:right;">
+0.2679640
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+361.3750494
+</td>
+<td style="text-align:right;">
+207.5799089
+</td>
+<td style="text-align:right;">
+1.7408961
+</td>
+<td style="text-align:right;">
+0.0897942
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-7.9510282
+</td>
+<td style="text-align:right;">
+7.0876222
+</td>
+<td style="text-align:right;">
+-1.1218189
+</td>
+<td style="text-align:right;">
+0.2689784
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.5880388
+</td>
+<td style="text-align:right;">
+0.9730523
+</td>
+<td style="text-align:right;">
+-0.6043239
+</td>
+<td style="text-align:right;">
+0.5492197
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+89.1822613
+</td>
+<td style="text-align:right;">
+66.8291946
+</td>
+<td style="text-align:right;">
+1.3344806
+</td>
+<td style="text-align:right;">
+0.1899881
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+101.7748025
+</td>
+<td style="text-align:right;">
+314.2315246
+</td>
+<td style="text-align:right;">
+0.3238848
+</td>
+<td style="text-align:right;">
+0.7478012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-8.9581770
+</td>
+<td style="text-align:right;">
+7.4301356
+</td>
+<td style="text-align:right;">
+-1.2056546
+</td>
+<td style="text-align:right;">
+0.2354046
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.8356747
+</td>
+<td style="text-align:right;">
+0.9984945
+</td>
+<td style="text-align:right;">
+-0.8369348
+</td>
+<td style="text-align:right;">
+0.4078620
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+87.5295024
+</td>
+<td style="text-align:right;">
+84.455035
+</td>
+<td style="text-align:right;">
+1.0364036
+</td>
+<td style="text-align:right;">
+0.3065644
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+85.0796227
+</td>
+<td style="text-align:right;">
+362.837268
+</td>
+<td style="text-align:right;">
+0.2344842
+</td>
+<td style="text-align:right;">
+0.8158679
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-9.1120674
+</td>
+<td style="text-align:right;">
+7.411072
+</td>
+<td style="text-align:right;">
+-1.2295209
+</td>
+<td style="text-align:right;">
+0.2264353
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.7792486
+</td>
+<td style="text-align:right;">
+1.034305
+</td>
+<td style="text-align:right;">
+-0.7534032
+</td>
+<td style="text-align:right;">
+0.4558505
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum</strong>
+</p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+15.0898992
+</td>
+<td style="text-align:right;">
+86.6307283
+</td>
+<td style="text-align:right;">
+0.1741865
+</td>
+<td style="text-align:right;">
+0.8626436
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+1203.9674324
+</td>
+<td style="text-align:right;">
+970.0202037
+</td>
+<td style="text-align:right;">
+1.2411777
+</td>
+<td style="text-align:right;">
+0.2221477
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-9.2710541
+</td>
+<td style="text-align:right;">
+7.1707394
+</td>
+<td style="text-align:right;">
+-1.2929007
+</td>
+<td style="text-align:right;">
+0.2038511
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.9440872
+</td>
+<td style="text-align:right;">
+0.9834436
+</td>
+<td style="text-align:right;">
+-0.9599810
+</td>
+<td style="text-align:right;">
+0.3431335
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+63.3054873
+</td>
+<td style="text-align:right;">
+81.6645678
+</td>
+<td style="text-align:right;">
+0.7751892
+</td>
+<td style="text-align:right;">
+0.4430253
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+473.1211172
+</td>
+<td style="text-align:right;">
+760.2182144
+</td>
+<td style="text-align:right;">
+0.6223491
+</td>
+<td style="text-align:right;">
+0.5374291
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-9.9772897
+</td>
+<td style="text-align:right;">
+7.3357580
+</td>
+<td style="text-align:right;">
+-1.3600898
+</td>
+<td style="text-align:right;">
+0.1818163
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.8742944
+</td>
+<td style="text-align:right;">
+0.9959603
+</td>
+<td style="text-align:right;">
+-0.8778406
+</td>
+<td style="text-align:right;">
+0.3855469
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+103.6842069
+</td>
+<td style="text-align:right;">
+62.155227
+</td>
+<td style="text-align:right;">
+1.6681494
+</td>
+<td style="text-align:right;">
+0.1035071
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+-2.9058198
+</td>
+<td style="text-align:right;">
+416.458062
+</td>
+<td style="text-align:right;">
+-0.0069775
+</td>
+<td style="text-align:right;">
+0.9944693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-9.4117385
+</td>
+<td style="text-align:right;">
+7.502974
+</td>
+<td style="text-align:right;">
+-1.2544012
+</td>
+<td style="text-align:right;">
+0.2173575
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.8419114
+</td>
+<td style="text-align:right;">
+1.000104
+</td>
+<td style="text-align:right;">
+-0.8418235
+</td>
+<td style="text-align:right;">
+0.4051536
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+62.8968034
+</td>
+<td style="text-align:right;">
+66.4148095
+</td>
+<td style="text-align:right;">
+0.9470298
+</td>
+<td style="text-align:right;">
+0.3496073
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+400.0017719
+</td>
+<td style="text-align:right;">
+433.3847682
+</td>
+<td style="text-align:right;">
+0.9229715
+</td>
+<td style="text-align:right;">
+0.3618457
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+-8.0703253
+</td>
+<td style="text-align:right;">
+7.3753345
+</td>
+<td style="text-align:right;">
+-1.0942318
+</td>
+<td style="text-align:right;">
+0.2807411
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.7466315
+</td>
+<td style="text-align:right;">
+0.9940511
+</td>
+<td style="text-align:right;">
+-0.7510998
+</td>
+<td style="text-align:right;">
+0.4572191
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
 </div>
 </div>
 </div>
 <div id="whole-brain" class="section level3">
 <h3>Whole Brain</h3>
-<div id="partial-correlations" class="section level5">
+<div id="partial-correlations-8" class="section level5">
 <h5>Partial Correlations</h5>
 </div>
 <div id="multiple-linear-regressions" class="section level5">
@@ -5232,6 +8745,1305 @@ Tapetum_L
 </div>
 <div id="md" class="section level2 tabset tabset-dropdown">
 <h2 class="tabset tabset-dropdown"><span style="color: darkorange;"> MD </span></h2>
+<div id="apriori-1" class="section level3">
+<h3>Apriori</h3>
+<p>First, let’s start with our apriori regions: Fornix body fornix (L and R), Cingulum bundle (cingulate gyrus and hippocampus ) L and R. <br></p>
+<div id="maze-accuracy-2" class="section level4 tabset tabset-dropdown tabset-fade tabset-pills">
+<h4 class="tabset tabset-dropdown tabset-fade tabset-pills"><span style="font-size: 28px; text-decoration:underline"> <strong>Maze Accuracy</strong> </span></h4>
+<div id="partial-correlations-9" class="section level5">
+<h5>Partial Correlations</h5>
+<p><br></p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+-0.0357589
+</td>
+<td style="text-align:right;">
+0.7528340
+</td>
+<td style="text-align:right;">
+-0.3160166
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+0.1466150
+</td>
+<td style="text-align:right;">
+0.1943728
+</td>
+<td style="text-align:right;">
+1.3090147
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.0851398
+</td>
+<td style="text-align:right;">
+0.4527171
+</td>
+<td style="text-align:right;">
+0.7546742
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.0380287
+</td>
+<td style="text-align:right;">
+0.7376950
+</td>
+<td style="text-align:right;">
+0.3361038
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+-0.0162758
+</td>
+<td style="text-align:right;">
+0.8860583
+</td>
+<td style="text-align:right;">
+-0.1437632
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+0.0204449
+</td>
+<td style="text-align:right;">
+0.8571479
+</td>
+<td style="text-align:right;">
+0.1806026
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+0.0554800
+</td>
+<td style="text-align:right;">
+0.6249867
+</td>
+<td style="text-align:right;">
+0.4907421
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="multiple-linear-regression-8" class="section level5">
+<h5>Multiple Linear Regression</h5>
+<p>Here, I will run multiple linear regression so examine the relationship between roi and performance. formula used is accuracy ~ ROI_FA + Sex + age_scan_years. Age appears to be the larger factor here not sex or even ROI in predicting maze accuracy behavior. Fornix body was the only ROI with a significant sex effect just barely p = 0.046. Cingulum ROIs appeared to have a trend for sex and age p&gt;0.05.</p>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Fornix</strong>
+</p>
+<p style="text-align: center;">
+Fornix Body
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.7402493
+</td>
+<td style="text-align:right;">
+0.3776440
+</td>
+<td style="text-align:right;">
+1.9601779
+</td>
+<td style="text-align:right;">
+0.0535462
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+248.1357301
+</td>
+<td style="text-align:right;">
+3202.2989394
+</td>
+<td style="text-align:right;">
+0.0774867
+</td>
+<td style="text-align:right;">
+0.9384348
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.0970015
+</td>
+<td style="text-align:right;">
+0.0498369
+</td>
+<td style="text-align:right;">
+1.9463782
+</td>
+<td style="text-align:right;">
+0.0552104
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0123976
+</td>
+<td style="text-align:right;">
+0.0058979
+</td>
+<td style="text-align:right;">
+-2.1020187
+</td>
+<td style="text-align:right;">
+0.0387787
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.3006786
+</td>
+<td style="text-align:right;">
+0.5037199
+</td>
+<td style="text-align:right;">
+0.5969162
+</td>
+<td style="text-align:right;">
+0.5522920
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+5379.1518796
+</td>
+<td style="text-align:right;">
+4816.4526004
+</td>
+<td style="text-align:right;">
+1.1168286
+</td>
+<td style="text-align:right;">
+0.2674961
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.1117598
+</td>
+<td style="text-align:right;">
+0.0493918
+</td>
+<td style="text-align:right;">
+2.2627196
+</td>
+<td style="text-align:right;">
+0.0264347
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0118334
+</td>
+<td style="text-align:right;">
+0.0058313
+</td>
+<td style="text-align:right;">
+-2.0292932
+</td>
+<td style="text-align:right;">
+0.0458397
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Fornix L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.3980749
+</td>
+<td style="text-align:right;">
+0.4919753
+</td>
+<td style="text-align:right;">
+0.8091359
+</td>
+<td style="text-align:right;">
+0.4208983
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+4112.5414199
+</td>
+<td style="text-align:right;">
+4505.1913687
+</td>
+<td style="text-align:right;">
+0.9128450
+</td>
+<td style="text-align:right;">
+0.3641370
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.1050549
+</td>
+<td style="text-align:right;">
+0.0484782
+</td>
+<td style="text-align:right;">
+2.1670538
+</td>
+<td style="text-align:right;">
+0.0332825
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0121501
+</td>
+<td style="text-align:right;">
+0.0058295
+</td>
+<td style="text-align:right;">
+-2.0842466
+</td>
+<td style="text-align:right;">
+0.0404112
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align:center ; font-size: 20px">
+<strong>Cingulum Bundle</strong>
+</p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.3340518
+</td>
+<td style="text-align:right;">
+5.560545e-01
+</td>
+<td style="text-align:right;">
+0.6007536
+</td>
+<td style="text-align:right;">
+0.5497458
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+10162.0208108
+</td>
+<td style="text-align:right;">
+1.130654e+04
+</td>
+<td style="text-align:right;">
+0.8987736
+</td>
+<td style="text-align:right;">
+0.3715394
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.0991841
+</td>
+<td style="text-align:right;">
+4.757430e-02
+</td>
+<td style="text-align:right;">
+2.0848262
+</td>
+<td style="text-align:right;">
+0.0403570
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0121300
+</td>
+<td style="text-align:right;">
+5.832100e-03
+</td>
+<td style="text-align:right;">
+-2.0798823
+</td>
+<td style="text-align:right;">
+0.0408210
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(cingulate_gyrus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.3225471
+</td>
+<td style="text-align:right;">
+5.684668e-01
+</td>
+<td style="text-align:right;">
+0.5673984
+</td>
+<td style="text-align:right;">
+0.5720730
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+9841.6490761
+</td>
+<td style="text-align:right;">
+1.098951e+04
+</td>
+<td style="text-align:right;">
+0.8955496
+</td>
+<td style="text-align:right;">
+0.3732488
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.0976677
+</td>
+<td style="text-align:right;">
+4.747560e-02
+</td>
+<td style="text-align:right;">
+2.0572188
+</td>
+<td style="text-align:right;">
+0.0430075
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0121501
+</td>
+<td style="text-align:right;">
+5.831000e-03
+</td>
+<td style="text-align:right;">
+-2.0837084
+</td>
+<td style="text-align:right;">
+0.0404615
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_R
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.6761621
+</td>
+<td style="text-align:right;">
+0.4624868
+</td>
+<td style="text-align:right;">
+1.4620140
+</td>
+<td style="text-align:right;">
+0.1477548
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+1354.7852078
+</td>
+<td style="text-align:right;">
+5860.3675175
+</td>
+<td style="text-align:right;">
+0.2311775
+</td>
+<td style="text-align:right;">
+0.8177822
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.0998689
+</td>
+<td style="text-align:right;">
+0.0506929
+</td>
+<td style="text-align:right;">
+1.9700775
+</td>
+<td style="text-align:right;">
+0.0523788
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0122528
+</td>
+<td style="text-align:right;">
+0.0059141
+</td>
+<td style="text-align:right;">
+-2.0717888
+</td>
+<td style="text-align:right;">
+0.0415905
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Cingulum_(hippocampus)_L
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+std.error
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.5275653
+</td>
+<td style="text-align:right;">
+0.4791878
+</td>
+<td style="text-align:right;">
+1.1009574
+</td>
+<td style="text-align:right;">
+0.2743012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+3638.5279170
+</td>
+<td style="text-align:right;">
+5957.3471792
+</td>
+<td style="text-align:right;">
+0.6107631
+</td>
+<td style="text-align:right;">
+0.5431321
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0.1055733
+</td>
+<td style="text-align:right;">
+0.0501429
+</td>
+<td style="text-align:right;">
+2.1054464
+</td>
+<td style="text-align:right;">
+0.0384705
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+-0.0118397
+</td>
+<td style="text-align:right;">
+0.0059233
+</td>
+<td style="text-align:right;">
+-1.9988156
+</td>
+<td style="text-align:right;">
+0.0491121
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+<div id="sex-stratified-partial-correlations-5" class="section level5">
+<h5>Sex stratified partial correlations</h5>
+<p style="text-align: center;">
+Males
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+0.0110222
+</td>
+<td style="text-align:right;">
+0.9621799
+</td>
+<td style="text-align:right;">
+0.0480474
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+0.3549108
+</td>
+<td style="text-align:right;">
+0.1144017
+</td>
+<td style="text-align:right;">
+1.6547441
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.2924424
+</td>
+<td style="text-align:right;">
+0.1982959
+</td>
+<td style="text-align:right;">
+1.3330013
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.0025243
+</td>
+<td style="text-align:right;">
+0.9913355
+</td>
+<td style="text-align:right;">
+0.0110034
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+0.0731316
+</td>
+<td style="text-align:right;">
+0.7527373
+</td>
+<td style="text-align:right;">
+0.3196292
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+0.1067828
+</td>
+<td style="text-align:right;">
+0.6450155
+</td>
+<td style="text-align:right;">
+0.4681322
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+0.2456315
+</td>
+<td style="text-align:right;">
+0.2831586
+</td>
+<td style="text-align:right;">
+1.1045220
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p style="text-align: center;">
+Females
+</p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+ROI
+</th>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+gp
+</th>
+<th style="text-align:left;">
+Method
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+fornix_body
+</td>
+<td style="text-align:right;">
+-0.0707968
+</td>
+<td style="text-align:right;">
+0.5941480
+</td>
+<td style="text-align:right;">
+-0.5358487
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_R
+</td>
+<td style="text-align:right;">
+0.0682449
+</td>
+<td style="text-align:right;">
+0.6075439
+</td>
+<td style="text-align:right;">
+0.5164417
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fornix_L
+</td>
+<td style="text-align:right;">
+0.0432049
+</td>
+<td style="text-align:right;">
+0.7452460
+</td>
+<td style="text-align:right;">
+0.3264945
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_R
+</td>
+<td style="text-align:right;">
+0.0278408
+</td>
+<td style="text-align:right;">
+0.8342030
+</td>
+<td style="text-align:right;">
+0.2102749
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(cingulate_gyrus)_L
+</td>
+<td style="text-align:right;">
+-0.0411834
+</td>
+<td style="text-align:right;">
+0.7567899
+</td>
+<td style="text-align:right;">
+-0.3111920
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_R
+</td>
+<td style="text-align:right;">
+-0.0249137
+</td>
+<td style="text-align:right;">
+0.8514249
+</td>
+<td style="text-align:right;">
+-0.1881531
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_(hippocampus)_L
+</td>
+<td style="text-align:right;">
+-0.0298914
+</td>
+<td style="text-align:right;">
+0.8221835
+</td>
+<td style="text-align:right;">
+-0.2257757
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spearman
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br><br><br></p>
+</div>
+</div>
+<div id="dual-solution-paradigm-1" class="section level4 tabset tabset-dropdown tabset-fade tabset-pills">
+<h4 class="tabset tabset-dropdown tabset-fade tabset-pills"><span style="font-size: 28px; text-decoration:underline"> <strong>Dual Solution Paradigm</strong> </span></h4>
+</div>
+<div id="loop-degrees-traveled-1" class="section level4 tabset tabset-dropdown tabset-fade tabset-pills">
+<h4 class="tabset tabset-dropdown tabset-fade tabset-pills"><span style="font-size: 28px; text-decoration:underline"> <strong>Loop Degrees Traveled</strong> </span></h4>
+<div id="radius-3-3" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Radius 3</h5>
+</div>
+<div id="average-3" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Average</h5>
+</div>
+</div>
+<div id="loop-position-error-1" class="section level4 tabset tabset-dropdown">
+<h4 class="tabset tabset-dropdown"><span style="font-size: 28px; text-decoration:underline"> <strong>Loop Position Error</strong> </span></h4>
+<div id="radius-3-4" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Radius 3</h5>
+</div>
+<div id="average-4" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Average</h5>
+</div>
+</div>
+<div id="loop-angular-error-1" class="section level4 tabset tabset-dropdown">
+<h4 class="tabset tabset-dropdown"><span style="font-size: 28px; text-decoration:underline"> <strong>Loop Angular Error</strong> </span></h4>
+<div id="radius-3-5" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Radius 3</h5>
+</div>
+<div id="average-5" class="section level5 tabset tabset-fade tabset-pills">
+<h5 class="tabset tabset-fade tabset-pills">Average</h5>
+</div>
+</div>
+</div>
 </div>
 </div>
 
