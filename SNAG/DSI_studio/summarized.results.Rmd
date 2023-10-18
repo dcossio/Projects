@@ -239,6 +239,10 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 Broadly, QA is positively associated with maze accuracy. Better QA in tracts (associated with motor, cingulum) is associated with better maze accuracy score. This relationship is similar in men and women. Interestingly, in a previous run, men showed more negative correlations but in this run there are only positive association  when controlling for FNAME performance.
 
+MD in fornix was positively associated with maze accuracy for all subject but this effect is fairly weak (FDR=0.125). In females, a majority of tracks in the fornix were negatively associated with accuracy. in males, fornix was positively associated with MD. 
+
+All subjects, better white matter integrity in regions outside of the limbic area were associated with better maze accuracy scores. In females, better white matter integrity in limbic, and sensorimotor areas were associated with better maze accuracy score.In males, better white matter integrity in tracts involved in sensorimotor processing was associated to better performance. 
+
 ### QA {.tabset .tabset-pills}
 
 #### All subjects 
@@ -258,7 +262,7 @@ TableOutput(all_QA, "classic", 500, 200," Table 1.Tracts with QA positively asso
 
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.043228)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
@@ -277,7 +281,7 @@ TableOutput(all_QA_neg1, "classic", 500, 200, " Table 2.Tracts with QA negativel
 
 <br><br><br>
 
-#### females
+#### Females
 
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
@@ -290,7 +294,7 @@ TableOutput(females_QA, "classic", 500, 200, " Table 2.Tracts with QA positively
 
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 <br><br>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= 0.000263</strong> </span>
@@ -323,7 +327,7 @@ TableOutput(males_QA, "classic", 500, 200, " Table 2.Tracts with QA positively a
 ```
 <br><br><br><br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 <br>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positive (FDR = 0.018519)</strong> </span>
@@ -345,16 +349,80 @@ TableOutput(males_QA2, "classic", 500, 200," Table 1.Tracts with QA negatively a
 <br><br><br>
 
 
-
-
 ### MD {.tabset}
 
+#### All subjects 
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<br><br>
+
+<!-- Previous Run  -->
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<br>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.124661)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+all_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_all_pos.csv"))
+
+TableOutput(all_MD_maze, "classic", 500, 200," Table 1.Tracts with MD positively associated with maze accuracy")
+```
+<br><br><br><br>
+
+#### Females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.071429)</strong> </span>
+<br>
+
+```{r, echo=FALSE,message=FALSE}
+fem_pos_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_female_pos.csv"))
+
+TableOutput(fem_pos_MD_maze, "classic", 500, 200," Table 1.Tracts with MD positively associated with maze accuracy")
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.061328)</strong> </span>
+<br>
+
+```{r, echo=FALSE,message=FALSE}
+fem_neg_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_female_neg.csv"))
+
+TableOutput(fem_neg_MD_maze, "classic", 500, 200," Table 1.Tracts with MD negatively associated with maze accuracy")
+```
+
+<br><br><br><br>
+
+#### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<br>
+
+<p style="text-align:center ; font-size: 24px" > <strong> Previous run </strong> </p>
+<br>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.012068)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+male_pos_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_male_pos.csv"))
+
+TableOutput(male_pos_MD_maze, "classic", 500, 200," Table 1.Tracts with MD positively associated with maze accuracy")
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.075269)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+male_neg_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_male_neg.csv"))
+
+TableOutput(male_neg_MD_maze, "classic", 500, 200," Table 1.Tracts with MD negatively associated with maze accuracy")
+```
 
 ## <span style="color: darkorange;"> **Position Error** </span>  {.tabset .tabset-dropdown} 
 
 ### Rad3 {.tabset .tabset-pills}
 #### Summary
-Increased QA in many tracts outside of the limbic area are associated with a lower position error.
+Increased QA in many tracts outside of the limbic area are associated with a lower position error. Many regions involved in motor functions and movements showed negative associations with PE. Better white matter integrity in these regions corresponded to lower position error. In females, QA is negatively associated with tracts involved in motor/sensory input, corpus callosum body/taptum and the cingulum frontal-parietal  bundle. The corpus callosum forceps (major and minor), and congulum frontal parahippocampal appear to be positively associated with performance, greater QA values are associated with greater PE. suggesting that, reliance on the regions may lead to inefficient path integration.
+
+in all subjects, MD is negatively associated with PE in limbic regions. Lower MD (better WM) is associated with higher MD. Suggesting that perhaps midlife adults are not relying on limbic regions to successfully navigate. In women, this relationship is maintained. Males display an opposite relationship with lower MD (better wm) being asscoaicted with lower PE (better performance ). Suggesting that in males, better WM in limbic regions is necessary for better path integration. 
 
 #### QA {.tabset .tabset-pills}
 ##### All subject
@@ -362,65 +430,346 @@ Increased QA in many tracts outside of the limbic area are associated with a low
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000407)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-loopPE_QA_all<- CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.average.neg.csv"))
+rad3PE_QA_all<- CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.rad3.neg.csv"))
 
-TableOutput(loopPE_QA_all, "classic", 500, 200," Table 1.Tracts with QA positively associated with loop PE")
+TableOutput(rad3PE_QA_all, "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop PE rad3 ")
 ```
 
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000547)</strong> </span>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.077333)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-loopPE_QA_all1 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopAvgPE_allsubs_pos.csv"))
+rad3PE_QA_all1 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopRad3_all_pos.csv"))
 
-TableOutput(loopPE_QA_all1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+TableOutput(rad3PE_QA_all1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE rad3")
 ```
 
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.015697)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-loopPE_QA_all2 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopAvgPE_allsubs_neg.csv"))
+rad3PE_QA_all2 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopRad3_all_neg.csv"))
 
-TableOutput(loopPE_QA_all2, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with loop PE")
+TableOutput(rad3PE_QA_all2, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with loop PE rad3")
 ```
 
 <br><br><br>
 
 ##### Females
 
+<!------ fname --------->  
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.033223)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_pos_QA_fem <- CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/females.loopPE.rad3.pos.csv"))
+
+TableOutput(rad3PE_pos_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.014408)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_QA_fem <- CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/females.loopPE.rad3.neg.csv"))
+
+TableOutput(rad3PE_neg_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.076923)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_pos_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopRad3_female_pos.csv"))
+
+TableOutput(rad3PE_pos_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000559)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopRad3_female_neg.csv"))
+
+TableOutput(rad3PE_neg_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
+
 
 ##### Males
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.039893)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_QA_male <- CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/males.loopPE.rad3.neg.csv"))
+
+TableOutput(rad3PE_neg_QA_male, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.074986)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_pos_QA_male <- CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/QA_loopRad3_male_pos.csv"))
+
+TableOutput(rad3PE_pos_QA_male, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop PE")
+```
+
 
 #### MD {.tabset .tabset-pills}
 ##### All subject
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.086273)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_MD_all <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/fname/MD_loop_pe_rad3_all_neg.csv"))
+
+TableOutput(rad3PE_neg_MD_all, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
+```
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000616)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/nofname/MD_loopRad3_all_neg.csv"))
+
+TableOutput(rad3PE_neg_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
+```
+
+
 ##### Females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000221)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_MD_fem <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/fname/MD_loop_pe_rad3_fem_neg.csv"))
+
+TableOutput(rad3PE_neg_MD_fem, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
+```
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000443)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_neg_MD_fem1 <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/nofname/MD_loopRad3_female_neg.csv"))
+
+TableOutput(rad3PE_neg_MD_fem1, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
+```
+
+
+
 ##### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.101287)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_pos_MD_male <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/fname/MD_loop_pe_rad3_male_pos.csv"))
+
+TableOutput(rad3PE_pos_MD_male, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop PE")
+```
+
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.058621)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3PE_pos_MD_male1 <- CleanInput(ReadingCSVFunc("/Loop/MD/Loop/nofname/MD_loopRad3_male_pos.csv"))
+
+TableOutput(rad3PE_pos_MD_male1, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop PE")
+```
+
 ### Average {.tabset .tabset-pills}
 #### QA {.tabset .tabset-pills}
 ##### All subject
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 ##### Females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 ##### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 
 #### MD{.tabset .tabset-pills}
 ##### All subject
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 ##### Females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 ##### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-## <span style="color: darkorange;"> DEgrees Traveled </span>  {.tabset .tabset-pills} 
-### QA {.tabset .tabset-pills}
-#### All subject
-#### Females
-#### Males
+<br><br><br>
 
-### MD {.tabset .tabset-pills}
-#### All subject
-#### Females
-#### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+## <span style="color: darkorange;"> **Degrees Traveled** </span>  {.tabset .tabset-dropdown} 
+### Rad3 {.tabset .tabset-pills}
+#### summary
+#### QA {.tabset .tabset-pills}
+##### All subject
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000183)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_QA_all <- CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/all.loopDE.rad3.pos.csv"))
+
+TableOutput(rad3DE_pos_QA_all, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.180868)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_QA_all1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_all_pos.csv"))
+
+TableOutput(rad3DE_pos_QA_all1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.047850)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_neg_QA_all1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_all_neg.csv"))
+
+TableOutput(rad3DE_neg_QA_all1, "classic", 500, 200, "Table 1.Tracts with QA negatively associated with loop PE")
+```
+
+
+##### Females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000076)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_QA_fem <- CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/female.loopDE.ave.pos.csv"))
+
+TableOutput(rad3DE_pos_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.062500)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_neg_QA_fem <- CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/female.loopDE.rad3.neg.csv"))
+
+TableOutput(rad3DE_neg_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA negatively associated with loop PE")
+```
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000325)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_QA_female_pos.csv"))
+
+TableOutput(rad3DE_pos_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.002141)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_neg_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_QA_female_neg.csv"))
+
+TableOutput(rad3DE_neg_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA negatively associated with loop PE")
+```
+
+
+##### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.178310)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_QA_male <- CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/males.loopDE.rad3.pos.csv"))
+
+TableOutput(rad3DE_pos_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br><br><br>
+
+
+#### MD {.tabset .tabset-pills}
+##### All subject
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.042231)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_MD_all <- CleanInput(ReadingCSVFunc("/Loop/MD/Loop/fname/MD_loop_DE_rad3_all_pos.csv"))
+
+TableOutput(rad3DE_pos_MD_all, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
+```
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.029053)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/nofname/MD_loopRad3_all_neg.csv"))
+
+TableOutput(rad3DE_pos_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
+```
+
+##### Females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.100772)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_pos_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_QA_female_pos.csv"))
+
+TableOutput(rad3DE_pos_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.023033)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_neg_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_QA_female_neg.csv"))
+
+TableOutput(rad3DE_neg_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA negatively associated with loop PE")
+```
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+##### Males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 
 
 ## <span style="color: darkorange;"> DSP </span>  {.tabset .tabset-pills} 
