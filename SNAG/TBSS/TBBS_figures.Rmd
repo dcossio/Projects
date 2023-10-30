@@ -50,6 +50,7 @@ library(gridExtra)
 library(markdown)
 library(ppcor)
 library(mediation)
+library(paletteer)
 
 ```
 
@@ -71,12 +72,43 @@ raw_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv")) %>% remove_emp
 
 raw_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
 
+FA <- cbind(sub_info_master,raw_FA)
+
 ```
 
 
 ```{r, Loop DEgrees TRaveled fornix}
 
+FA_temp <- FA %>% filter(!is.na(FA[["loop_de_rad3_degree"]]))
+fem_FA_temp <- FA %>% filter(!is.na(FA[["loop_de_rad3_degree"]])) %>% filter(sex == "Female")
+resid1 <- lm(loop_de_rad3_degree ~`Cingulum_(cingulate_gyrus)_L`+ age_scan_years, data = fem_FA_temp)
+
+model1 <- lm(loop_de_rad3_degree ~`Fornix_(column_and_body_of_fornix)`+ sex.1 +age_scan_years, data = FA_temp)
+ggplot(FA_temp, 
+             aes(x = `Fornix_(column_and_body_of_fornix)`,
+                 y = loop_de_rad3_degree)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              mapping = aes(y = predict(model1, FA_temp))) 
+
+ 
+
+plot(fem_FA_temp$loop_de_rad3_degree, resid1)
+
+resid2 <- resid(lm(loop_de_rad3_degree ~ `Fornix_(column_and_body_of_fornix)`+ sex.1 +age_scan_years, data = FA_temp))
+
+plot(FA_temp$loop_de_rad3_degree, resid2)
 
 
+plot(lm(loop_de_rad3_degree ~   `Cingulum_(cingulate_gyrus)_L` + age_scan_years, data = fem_FA_temp))
+
+ggplot(FA_temp,aes(y=loop_de_rad3_degree,x=`Cingulum_(cingulate_gyrus)_R`,color=sex,1))+geom_point()+
+   geom_smooth(formula = y ~ x, method = "lm")+
+   labs(x= "Quantitative Anisotropy", y= "Proportion of correct trials" ) +
+   theme(legend.position = "none") +
+    stat_cor(method = "spearman", label.x.npc = 0.70, label.y.npc = 1) +
+    stat_regline_equation( aes(label = ..rr.label..)) +
+    font("xlab", size=30)+
+    font("ylab", size=30)
 ```
 
