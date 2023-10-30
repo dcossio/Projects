@@ -1,0 +1,82 @@
+---
+title: "TBSS FIgures"
+author: "Daniela Cossio"
+date: "09/14/2023"
+mainfont: Times
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
+---
+
+``` {r, libraries, echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+library(ppcor)
+library(mediation)
+
+```
+
+```{r REad in our CSVS, echo=FALSE, results='hide',message=FALSE}
+
+# Lets read in our subject information
+top_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
+  # laptop path "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/MIDLIFE_TBSS/"
+
+ROIs <- read.table(paste0(top_workdir,"JHU-WhiteMatter-labels-1mm.txt")) %>% dplyr::select(V2)
+
+sub_info_master <- read.csv(paste0(top_workdir,"subject_info.csv"))
+
+raw_FA <- read.csv(paste0(top_workdir,"JHU-skeletonized-FA.csv"), header=FALSE) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2)) 
+
+raw_MD <- read.csv(paste0(top_workdir,"JHU-skeletonized-MD.csv"))  %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
+
+raw_AD <- read.csv(paste0(top_workdir,"JHU-skeletonized-AD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
+
+raw_RD <- read.csv(paste0(top_workdir,"JHU-skeletonized-RD.csv")) %>% remove_empty(. ,which = "cols") %>% `colnames<-`(c(ROIs$V2))
+
+```
+
+
+```{r, Loop DEgrees TRaveled fornix}
+
+
+
+```
+
