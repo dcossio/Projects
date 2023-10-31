@@ -93,13 +93,28 @@ ReadingCSVFunc <- function(pathname){
 CleanInput <- function(DF){
   
 
-  DF <- DF %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
+  DF <- DF %>% remove_empty("cols") 
+  
+  if(length(DF) < 3){
+    DF <- DF %>% 
+            filter(V1 %in% rows2grab) %>% 
+              t() %>% 
+                `colnames<-`(rows2grab) %>% 
+                  as.data.frame() %>% 
+                    `[`(-c(1),) 
+    
+  } else{
+    
+    DF <- DF %>% 
+      filter(V1 %in% rows2grab) %>% 
+        t() %>% 
             `colnames<-`(rows2grab) %>% 
                 `[`(-c(1),) %>% 
-                    as.data.frame()
+                    as.data.frame() %>% 
+                      arrange(`Tract Name`)
+  }
+ 
+          
   return(DF)
 }
 
@@ -523,6 +538,7 @@ TableOutput(rad3PE_pos_QA_male, "classic", 500, 200, "Table 1.Tracts with QA pos
 ```
 
 
+
 #### MD {.tabset .tabset-pills}
 ##### All subject
 
@@ -530,7 +546,7 @@ TableOutput(rad3PE_pos_QA_male, "classic", 500, 200, "Table 1.Tracts with QA pos
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.086273)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_all <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/fname/MD_loop_pe_rad3_all_neg.csv"))
+rad3PE_neg_MD_all <- CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_all_neg.csv"))
 
 TableOutput(rad3PE_neg_MD_all, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
 ```
@@ -541,7 +557,7 @@ TableOutput(rad3PE_neg_MD_all, "classic", 500, 200, "Table 1.Tracts with MD nega
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000616)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/nofname/MD_loopRad3_all_neg.csv"))
+rad3PE_neg_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_all_neg.csv"))
 
 TableOutput(rad3PE_neg_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
 ```
@@ -552,7 +568,7 @@ TableOutput(rad3PE_neg_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD neg
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000221)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_fem <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/fname/MD_loop_pe_rad3_fem_neg.csv"))
+rad3PE_neg_MD_fem <- CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_fem_neg.csv"))
 
 TableOutput(rad3PE_neg_MD_fem, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
 ```
@@ -563,7 +579,7 @@ TableOutput(rad3PE_neg_MD_fem, "classic", 500, 200, "Table 1.Tracts with MD nega
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000443)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_fem1 <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/nofname/MD_loopRad3_female_neg.csv"))
+rad3PE_neg_MD_fem1 <- CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_female_neg.csv"))
 
 TableOutput(rad3PE_neg_MD_fem1, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
 ```
@@ -575,7 +591,7 @@ TableOutput(rad3PE_neg_MD_fem1, "classic", 500, 200, "Table 1.Tracts with MD neg
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.101287)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_pos_MD_male <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/fname/MD_loop_pe_rad3_male_pos.csv"))
+rad3PE_pos_MD_male <- CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_male_pos.csv"))
 
 TableOutput(rad3PE_pos_MD_male, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop PE")
 ```
@@ -587,12 +603,17 @@ TableOutput(rad3PE_pos_MD_male, "classic", 500, 200, "Table 1.Tracts with MD pos
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.058621)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_pos_MD_male1 <- CleanInput(ReadingCSVFunc("/Loop/MD/Loop/nofname/MD_loopRad3_male_pos.csv"))
+rad3PE_pos_MD_male1 <- CleanInput(ReadingCSVFunc("/Loop/MD/nofname/MD_loopRad3_male_pos.csv"))
 
 TableOutput(rad3PE_pos_MD_male1, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop PE")
 ```
 
 ### Average {.tabset .tabset-pills}
+##### All subject
+
+##### Female
+##### Male 
+
 #### QA {.tabset .tabset-pills}
 ##### All subject
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
@@ -717,10 +738,22 @@ TableOutput(rad3DE_neg_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA neg
 ```{r,echo=FALSE,message=FALSE}
 rad3DE_pos_QA_male <- CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/males.loopDE.rad3.pos.csv"))
 
-TableOutput(rad3DE_pos_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+TableOutput(rad3DE_pos_QA_male, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
 ```
 
 <br><br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.032287)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+rad3DE_neg_QA_male <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/QA_loopAvgDE_male_neg.csv"))
+
+TableOutput(rad3DE_neg_QA_male, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br><br><br><br><br><br>
 
 
 #### MD {.tabset .tabset-pills}
@@ -729,7 +762,7 @@ TableOutput(rad3DE_pos_QA_fem, "classic", 500, 200, "Table 1.Tracts with QA posi
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.042231)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3DE_pos_MD_all <- CleanInput(ReadingCSVFunc("/Loop/MD/Loop/fname/MD_loop_DE_rad3_all_pos.csv"))
+rad3DE_pos_MD_all <- CleanInput(ReadingCSVFunc("/Loop/MD/fname/MD_loop_DE_rad3_all_pos.csv"))
 
 TableOutput(rad3DE_pos_MD_all, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
 ```
@@ -739,7 +772,7 @@ TableOutput(rad3DE_pos_MD_all, "classic", 500, 200, "Table 1.Tracts with MD posi
 <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.029053)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3DE_pos_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/Loop/nofname/MD_loopRad3_all_neg.csv"))
+rad3DE_pos_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_all_neg.csv"))
 
 TableOutput(rad3DE_pos_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
 ```
@@ -748,29 +781,140 @@ TableOutput(rad3DE_pos_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD pos
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.100772)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3DE_pos_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_QA_female_pos.csv"))
-
-TableOutput(rad3DE_pos_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_De_rad3_fem_pos.csv")), "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
 ```
 
 <br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.023033)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3DE_neg_QA_fem1 <- CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/loopDT_QA_female_neg.csv"))
-
-TableOutput(rad3DE_neg_QA_fem1, "classic", 500, 200, "Table 1.Tracts with QA negatively associated with loop PE")
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_De_rad3_fem_neg.csv")), "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
 ```
 <br><br><br>
 
 <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.023865)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_female_neg.csv")), "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
+```
+
+<br>
+
+
 ##### Males
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
+No results
 <br><br><br>
 
 <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 
+No results
+
+<br><br><br><br><br><br>
+
+
+
+
+### average
+
+## <span style="color: darkorange;"> **Angular Error** </span>  {.tabset .tabset-dropdown}
+### Rad3 {.tabset .tabset-pills}
+#### QA {.tabset .tabset-pills}
+##### all subs
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000188)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/all.loopAE.rad3.neg.csv")), "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop AE rad3 ")
+```
+
+<br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000675)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/QA_loopAErad3_all_pos.csv")), "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop AE rad3")
+```
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.004296)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/QA_loopAErad3_all_neg.csv")), "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop AE rad3 ")
+```
+
+
+
+
+<br><br><br>
+
+
+##### males
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.026294)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/male.loopAE.rad3.neg.csv")), "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop AE rad3 ")
+```
+
+<br>
+<br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.012481)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/QA_loopAErad3_male_pos.csv")), "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop AE rad3")
+```
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.024096)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/QA_loopAErad3_male_neg.csv")), "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop AE rad3 ")
+```
+
+##### females
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.077778)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAE.rad3.pos.csv")), "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop AE rad3")
+```
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.006016)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAE.rad3.neg.csv")), "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop AE rad3 ")
+```
+
+<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.015385)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/QA_loopAErad3_female_pos.csv")), "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop AE rad3")
+```
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.001027)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/QA_loopAErad3_female_neg.csv")), "classic", 500, 200," Table 1.Tracts with QA negatively associated with loop AE rad3 ")
+```
+#### MD {.tabset .tabset-pills}
+##### all subs
+##### males
+##### females
+
+### Average {.tabset .tabset-pills}
+#### QA {.tabset .tabset-pills}
+##### all subs
+##### males
+##### females
+
+
+
+#### MD {.tabset .tabset-pills}
+##### all subs
+##### males
+##### females
 
 ## <span style="color: darkorange;"> DSP </span>  {.tabset .tabset-pills} 
 ### QA {.tabset .tabset-pills}

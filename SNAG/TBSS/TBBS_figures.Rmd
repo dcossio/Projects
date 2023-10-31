@@ -77,35 +77,36 @@ FA <- cbind(sub_info_master,raw_FA)
 ```
 
 
-```{r, Loop DEgrees TRaveled fornix}
+```{r, Loop DEgrees TRaveled Cingulate}
 
-FA_temp <- FA %>% filter(!is.na(FA[["loop_de_rad3_degree"]]))
-fem_FA_temp <- FA %>% filter(!is.na(FA[["loop_de_rad3_degree"]])) %>% filter(sex == "Female")
-resid1 <- lm(loop_de_rad3_degree ~`Cingulum_(cingulate_gyrus)_L`+ age_scan_years, data = fem_FA_temp)
+FA_temp <- FA %>% filter(!is.na(FA[["loop_de_avg_degree"]]))
 
-model1 <- lm(loop_de_rad3_degree ~`Fornix_(column_and_body_of_fornix)`+ sex.1 +age_scan_years, data = FA_temp)
-ggplot(FA_temp, 
-             aes(x = `Fornix_(column_and_body_of_fornix)`,
-                 y = loop_de_rad3_degree)) +
-  geom_point() +
-  geom_smooth(method = "lm",
-              mapping = aes(y = predict(model1, FA_temp))) 
+paletteer_d(`"LaCroixColoR::MelonPomelo"`)
+paletteer_d(`"LaCroixColoR::MelonPomelo"`)
 
- 
-
-plot(fem_FA_temp$loop_de_rad3_degree, resid1)
-
-resid2 <- resid(lm(loop_de_rad3_degree ~ `Fornix_(column_and_body_of_fornix)`+ sex.1 +age_scan_years, data = FA_temp))
-
-plot(FA_temp$loop_de_rad3_degree, resid2)
-
-
-plot(lm(loop_de_rad3_degree ~   `Cingulum_(cingulate_gyrus)_L` + age_scan_years, data = fem_FA_temp))
-
-ggplot(FA_temp,aes(y=loop_de_rad3_degree,x=`Cingulum_(cingulate_gyrus)_R`,color=sex,1))+geom_point()+
+ggplot(FA_temp,aes(y=loop_de_avg_degree,x=`Cingulum_(cingulate_gyrus)_L`,color=sex,1))+geom_point() +
    geom_smooth(formula = y ~ x, method = "lm")+
-   labs(x= "Quantitative Anisotropy", y= "Proportion of correct trials" ) +
-   theme(legend.position = "none") +
+    scale_color_manual(values = c('#4F5791FF','#EE404EFF')) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+                         
+                         
+   labs(x= "Fractional Anisotropy", y= "Average Degrees Traveled" )+
+    theme(legend.position = "none") +
     stat_cor(method = "spearman", label.x.npc = 0.70, label.y.npc = 1) +
     stat_regline_equation( aes(label = ..rr.label..)) +
     font("xlab", size=30)+
