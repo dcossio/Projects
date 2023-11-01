@@ -955,6 +955,25 @@ for (roi in 1:length(apriori_rois)){
 
 
 
+
+###### Sex stratified partial correlations
+
+<p style="text-align:center ; font-size: 20px" > <strong>Males</strong> </p>
+
+```{r, echo=FALSE, message=FALSE }
+TableOutput(AprioriPcorTest(dataframe = male_apriori_FA, task ="loop_pe_avg_m",covariates = c("age_scan_years")), "classic", 400, 200)
+```
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong>Females</strong> </p>
+
+For women, nothing was significantly correlated 
+```{r, echo=FALSE, message=FALSE }
+TableOutput(AprioriPcorTest(dataframe = female_apriori_FA, task ="loop_pe_avg_m",covariates = c("age_scan_years")), "classic", 400, 200)
+```
+
+<br><br><br><br><br>
+
 #### <span style="font-size: 28px; text-decoration:underline"> **Loop Angular Error** </span> {.tabset .tabset-dropdown}
 
 ##### Radius 3 { .tabset .tabset-fade .tabset-pills}
@@ -1086,6 +1105,21 @@ for (roi in 1:length(apriori_rois)){
 `r TableOutput(ave_loopAE_models[["Cingulum_(hippocampus)_L"]], "classic", 500,150) `
 <br><br><br><br><br>
 
+###### Sex stratified partial correlations
+
+<p style="text-align:center ; font-size: 20px" > <strong> Males</strong> </p>
+
+```{r, echo=FALSE, message=FALSE }
+TableOutput(AprioriPcorTest(dataframe = male_apriori_FA, task ="loop_ae_avg_degree",covariates = c("age_scan_years")), "classic", 400, 200)
+```
+<br>
+
+<p style="text-align:center ; font-size: 20px" > <strong> Females </strong> </p>
+
+For women, nothing was significantly correlated 
+```{r, echo=FALSE, message=FALSE }
+TableOutput(AprioriPcorTest(dataframe = female_apriori_FA, task ="loop_ae_avg_degree",covariates = c("age_scan_years")), "classic", 400, 200)
+```
 
 
 
