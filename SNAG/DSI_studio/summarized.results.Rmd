@@ -161,10 +161,9 @@ Extract_raw_values <- function(DF,Metric) {
 
 
 TableOutput <- function(df, style, width, height, caption){
-  
+ 
   if (style == "classic"){
-      knitr::kable(df, row.names=F, caption = caption) %>% kable_classic(full_width = F, html_font = "Cambria")
-    
+      knitr::kable(df, row.names=F) %>% kable_classic(full_width = F, html_font = "Cambria")
   } else {
       knitr::kable(df, row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = paste0(width,"px"), height = paste0(height,"px")) 
     
@@ -246,9 +245,9 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 <br><br><br><br><br><br>
 
-# <span style="color: darkorange;"> Results </span>  {.tabset .tabset-dropdown}  
+# <span style="color: darkorange;"> Results </span>    
 
-## <span style="color: darkorange;"> **Maze Accuracy** </span>  {.tabset .tabset-pills} 
+## <span style="color: darkorange;"> **Maze Accuracy** </span>  {.tabset .tabset-dropdown}
 
 ### Summary 
 
@@ -270,28 +269,16 @@ In this analysis we have included all subjects while controlling for age, and se
 We decided to control for general memory changes by using performance on the FNAME task as a covariate. Here we see that QA is positively associated with  maze performance in midlife adults (Table 1; FDR=0.00381). 
 
 ```{r, echo=FALSE,message=FALSE}
-all_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/QA_positive_mazeacc_all_fname.csv"))
-
-TableOutput(all_QA, "classic", 500, 200," Table 1.Tracts with QA positively associated with maze accuracy")
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/QA_positive_mazeacc_all_fname.csv")),"classic", 500, 200)
 ```
 
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.043228)</strong> </span>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000282)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-all_QA1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_all_pos.csv"))
-
-TableOutput(all_QA1, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in midlife adults")
-```
-
-
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.122807)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-all_QA_neg1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_all_neg.csv"))
-
-TableOutput(all_QA_neg1, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with maze accuracy in midlife adults")
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/all_maze_accuracy_pct.t2.length25.pos.csv")), "classic", 500, 200)
 ```
 
 <br><br><br>
@@ -304,65 +291,106 @@ TableOutput(all_QA_neg1, "classic", 500, 200, " Table 2.Tracts with QA negativel
 ```{r,echo=FALSE,message=FALSE}
 females_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/female.mazelearningacc.pos.csv"))
 
-TableOutput(females_QA, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in female midlife adults")
+TableOutput(females_QA, "classic", 500, 200)
 ```
 
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
 <br><br>
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= 0.000263</strong> </span>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= 0.000327</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-females_Q1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_female_pos.csv"))
-
-TableOutput(females_Q1, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in female midlife adults")
+TableOutput( CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/females_maze_accuracy_pos.csv")), "classic", 500, 200)
 ```
 
-<br><br>
-
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow">Negatively FDR= 0.002809</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-females_QA2 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_female-neg.csv"))
-
-TableOutput(females_QA2, "classic", 500, 200, " Table 2.Tracts with QA negatively associated with maze accuracy in female midlife adults")
-```
 
 <br><br><br>
 
 #### Males 
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br><br>
+<br>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR= 0.000042</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-males_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/male.mazelearning.acc.pos.csv"))
-
-TableOutput(males_QA, "classic", 500, 200, " Table 2.Tracts with QA positively associated with maze accuracy in male midlife adults")
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/male.mazelearning.acc.pos.csv")), "classic", 500, 200)
 ```
-<br><br><br><br>
+<br><br><br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
 <br>
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positive (FDR = 0.018519)</strong> </span>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positive (FDR = 0.000131)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-males_QA1 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_male_pos.csv"))
-
-TableOutput(males_QA1, "classic", 500, 200," Table 1.Tracts with QA positively associatated with maze accuracy")
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/male.maze_accuracy_pct.t2.length25.pos_corr.csv")), "classic", 500, 200)
 ```
 
 <br><br>
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.001161)</strong> </span>
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.001658)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-males_QA2 <- CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/QA_male_neg.csv"))
-
-TableOutput(males_QA2, "classic", 500, 200," Table 1.Tracts with QA negatively associatated with maze accuracy")
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/male.maze_accuracy_pct.t2.length25.neg_corr.csv")), "classic", 500, 200)
 ```
 
 <br><br><br>
 
+####  pre
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR= </strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/pre.mazelearningacc.pos.csv")), "classic", 500, 200)
+```
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = )</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/pre.mazelearningacc.neg.csv")), "classic", 500, 200)
+```
+
+<p style="text-align:center ; font-size: 24px" > <strong>CNo FNAME</strong> </p>
+
+####  Peri
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR=  </strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/peri.mazelearning.acc.pos.csv")), "classic", 500, 200)
+```
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR =  )</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/peri.mazelearning.acc.neg.csv")), "classic", 500, 200)
+```
+
+
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+
+
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+
+####  Post
+
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR=  </strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/post.mazelearning.acc.pos.csv")), "classic", 500, 200)
+```
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR =  )</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/post.mazelearning.acc.neg.csv")), "classic", 500, 200)
+```
+
+
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+
+<br><br><br>
 
 ### MD {.tabset}
 
