@@ -134,7 +134,7 @@ Extract_raw_values <- function(DF,Metric) {
   filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
   
   
-  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct")) 
+  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct", "REPO")) 
  
   # Let's grab our values 
   if (Metric == "MD"){
@@ -391,6 +391,110 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/post.mazelear
 <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
 
 <br><br><br>
+
+#### Scatter Plots
+
+```{r, cortico spinal tract L }
+
+figDF <- Extract_raw_values(ReadingCSVFunc("maze_acc/QA/fname_covariate/female.mazelearningacc.pos.csv"), "QA") %>%  select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct", "REPO", "Corticospinal_Tract_L", "Corticospinal_Tract_R")) %>% filter(sex == "Female")
+
+temp <- Extract_raw_values(ReadingCSVFunc("maze_acc/QA/fname_covariate/male.mazelearning.acc.pos.csv"), "QA") %>%  select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct", "REPO", "Corticospinal_Tract_L", "Corticospinal_Tract_R")) %>% filter(sex == "Male")
+
+figDF <- rbind(figDF, temp)
+
+
+jpeg("CorticoSpinalL.jpeg")
+ggplot(figDF,aes(y=maze_accuracy_pct,x=Corticospinal_Tract_L,color=sex,1))+geom_point() +
+   geom_smooth(method="lm")+
+    scale_color_manual(values = c('#de5285','#00cdff')) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+dev.off()
+
+jpeg("CorticoSpinalR.jpeg")
+ggplot(figDF,aes(y=maze_accuracy_pct,x=Corticospinal_Tract_R,color=sex,1))+geom_point() +
+   geom_smooth(method="lm")+
+    scale_color_manual(values = c('#de5285','#00cdff')) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+dev.off()
+
+jpeg("REPOCorticoSpinalR.jpeg")
+
+figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_Tract_R,color=factor(REPO),1))+geom_point() +
+   geom_smooth(method="lm")+
+    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0')) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+dev.off()
+
+jpeg("REPOCorticoSpinalL.jpeg")
+
+figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_Tract_L,color=factor(REPO),1))+geom_point() +
+   geom_smooth(method="lm")+
+    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0')) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+dev.off()
+
+```
+
 
 ### MD {.tabset}
 
