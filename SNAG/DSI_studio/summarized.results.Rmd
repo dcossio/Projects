@@ -398,7 +398,7 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/post.mazelear
 
 figDF <- Extract_raw_values(ReadingCSVFunc("maze_acc/QA/fname_covariate/female.mazelearningacc.pos.csv"), "QA") %>%  select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct", "REPO", "Corticospinal_Tract_L", "Corticospinal_Tract_R")) %>% filter(sex == "Female")
 
-temp <- Extract_raw_values(ReadingCSVFunc("maze_acc/QA/fname_covariate/male.mazelearning.acc.pos.csv"), "QA") %>%  select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct", "REPO", "Corticospinal_Tract_L", "Corticospinal_Tract_R")) %>% filter(sex == "Male")
+temp <- Extract_raw_values(ReadingCSVFunc("maze_acc/QA/fname_covariate/male.mazelearning.acc.pos.csv"), "QA") %>%  select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct", "REPO", "Corticospinal_Tract_L", "Corticospinal_Tract_R",)) %>% filter(sex == "Male")
 
 figDF <- rbind(figDF, temp)
 
@@ -492,6 +492,31 @@ figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_
     )
   )
 dev.off()
+
+jpeg("Cing_l_parietalL.jpeg")
+
+Extract_raw_values(ReadingCSVFunc("maze_acc/QA/fname_covariate/QA_positive_mazeacc_all_fname.csv"), "QA") %>%  ggplot(aes(y=maze_accuracy_pct,x=Cingulum_Frontal_Parietal_L,color= sex,1))+geom_point() +
+   geom_smooth(method="lm")+
+    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0')) +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 16),
+    axis.title.y = element_text(vjust = 8, size = 16),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.margin = margin(1, 2, 1, 1.5, "cm"),
+    plot.title = element_text(
+      hjust = 0.5,
+      vjust = 2,
+      size = 16,
+      face = "bold"
+    )
+  )
+dev.off()
+
+
 
 ```
 
