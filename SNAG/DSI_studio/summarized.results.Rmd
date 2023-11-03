@@ -72,14 +72,16 @@ library(markdown)
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+# working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
 
-# PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
 
-sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
+#sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
+
+sub_info <- read.csv(paste0(working_dir,"subject_info.csv"))
 ```
 
 ```{r functions, echo=FALSE, results='hide',message=FALSE}
@@ -274,7 +276,7 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/QA_positive_m
 
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000282)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
@@ -289,9 +291,7 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/all_maze_accuracy_pct
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= 0.000571</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-females_QA <- CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/female.mazelearningacc.pos.csv"))
-
-TableOutput(females_QA, "classic", 500, 200)
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/female.mazelearningacc.pos.csv")), "classic", 500, 200)
 ```
 
 <br>
@@ -340,13 +340,14 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/male.maze_accuracy_pc
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR= </strong> </span>
 ```{r,echo=FALSE,message=FALSE}
+
 TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/pre.mazelearningacc.pos.csv")), "classic", 500, 200)
 ```
 
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = )</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/pre.mazelearningacc.neg.csv")), "classic", 500, 200)
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/fname_covariate/pre.mazelearningacc.neg.csv")), "classic", 500, 200) 
 ```
 
 <p style="text-align:center ; font-size: 24px" > <strong>CNo FNAME</strong> </p>
@@ -525,31 +526,42 @@ dev.off()
 
 #### All subjects 
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR= </strong> </span>
+```{r,echo=FALSE,message=FALSE}
+
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.all.pos.csv")), "classic", 500, 200)
+```
+
 <br><br>
 
 <!-- Previous Run  -->
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME </strong> </p>
 <br>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.124661)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
-all_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_all_pos.csv"))
-
-TableOutput(all_MD_maze, "classic", 500, 200," Table 1.Tracts with MD positively associated with maze accuracy")
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_all_pos.csv")), "classic", 500, 200," Table 1.Tracts with MD positively associated with maze accuracy") 
 ```
+
 <br><br><br><br>
 
 #### Females
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = )</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.female.neg")), "classic", 500, 200)
+```
+
+
 <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.071429)</strong> </span>
 <br>
 
 ```{r, echo=FALSE,message=FALSE}
-fem_pos_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_female_pos.csv"))
-
-TableOutput(fem_pos_MD_maze, "classic", 500, 200," Table 1.Tracts with MD positively associated with maze accuracy")
+TableOutput( CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_female_pos.csv")), "classic", 500, 200)
 ```
 
 <br>
@@ -558,18 +570,24 @@ TableOutput(fem_pos_MD_maze, "classic", 500, 200," Table 1.Tracts with MD positi
 <br>
 
 ```{r, echo=FALSE,message=FALSE}
-fem_neg_MD_maze <- CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_female_neg.csv"))
-
-TableOutput(fem_neg_MD_maze, "classic", 500, 200," Table 1.Tracts with MD negatively associated with maze accuracy")
+TableOutput( CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_female_neg.csv")), "classic", 500, 200)
 ```
 
 <br><br><br><br>
 
 #### Males
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = )</strong> </span>
 <br>
 
-<p style="text-align:center ; font-size: 24px" > <strong> Previous run </strong> </p>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/maze.MD.male.pos.csv")), "classic", 500, 200)
+```
+
+<br>
+
+<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
 <br>
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.012068)</strong> </span>
