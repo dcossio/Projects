@@ -471,8 +471,8 @@ tiff("REPOCorticoSpinalL.tiff", units="in", width=5, height=3, res=300)
 figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_Tract_L,color=factor(REPO),1))+
   geom_point()+
    stat_smooth(method="lm", se=FALSE)+
-    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0')) +
-  labs( x = "CorticoSpinalR.",
+    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0'), labels = c("Pre", "Peri", "Post")) +
+  labs( x = "CorticoSpinalL.",
        y = "% Correct")+
   scale_y_continuous(breaks=c(0,1)) +
   theme(
@@ -482,8 +482,12 @@ figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_
     axis.text.y = element_text(size = 12,color="black"),
     panel.background = element_blank(),
     panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"))+
-  ylim(min(figDF$maze_accuracy_pct), max(figDF$maze_accuracy_pct)) 
+    axis.line = element_line(colour = "black"),
+    legend.title=element_blank())+
+  ylim(min(figDF$maze_accuracy_pct), max(figDF$maze_accuracy_pct)) +
+  annotate("text", label = "FDR< 0.01", x = 0.25 , y = 0.9, color="#de5285", size=4) +
+     annotate("text", label = "FDR<0.001", x = 0.25 , y = 0.8, color="#00cdff", size=4)  +
+     annotate("text", label = "FDR<0.01", x = 0.25 , y = 0.7, color="#f4a2d0", size=4)  
 dev.off()
 
 tiff("Cing_l_parietalL.tiff", units="in", width=5, height=3, res=300) 
@@ -547,9 +551,9 @@ figDF %>% filter(REPO != 0) %>% ggplot(aes(y=maze_accuracy_pct,x=Cerebellum_L,co
     axis.line = element_line(colour = "black"),
     legend.title=element_blank())+
   ylim(min(figDF$maze_accuracy_pct), max(figDF$maze_accuracy_pct)) +
-  annotate("text", label = "FDR< 0.001", x = 1.4 , y = 0.9, color="#de5285", size=4) +
-     annotate("text", label = "FDR< 0.001", x = 1.4 , y = 0.8, color="#00cdff", size=4)  +
-     annotate("text", label = "FDR<0.001", x = 1.4 , y = 0.7, color="#f4a2d0", size=4)  
+  annotate("text", label = "FDR< 0.01", x = 0.17 , y = 0.9, color="#de5285", size=4) +
+     annotate("text", label = "FDR=0.05", x = 0.17 , y = 0.8, color="#00cdff", size=4)  +
+     annotate("text", label = "FDR<0.01", x = 0.17 , y = 0.7, color="#f4a2d0", size=4)  
 dev.off()
 
 
