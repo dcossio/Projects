@@ -72,9 +72,9 @@ library(markdown)
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
 
- working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
+ #working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
@@ -452,7 +452,7 @@ dev.off()
 tiff("REPOCorticoSpinalR.tiff", units="in", width=5, height=3, res=300) 
 figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_Tract_R,color=factor(REPO),1))+geom_point() +
    stat_smooth(method="lm", se=FALSE)+
-    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0')) +
+    scale_color_manual(values = c('#a521e0','#f9dd9a','#87ced0')) +
   labs( x = "CorticoSpinalR.",
        y = "% Correct")+
   scale_y_continuous(breaks=c(0,1)) +
@@ -471,7 +471,7 @@ tiff("REPOCorticoSpinalL.tiff", units="in", width=5, height=3, res=300)
 figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_Tract_L,color=factor(REPO),1))+
   geom_point()+
    stat_smooth(method="lm", se=FALSE)+
-    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0'), labels = c("Pre", "Peri", "Post")) +
+    scale_color_manual(values = c('#a521e0','#f9dd9a','#87ced0'), labels = c("Pre", "Peri", "Post")) +
   labs( x = "CorticoSpinalL.",
        y = "% Correct")+
   scale_y_continuous(breaks=c(0,1)) +
@@ -485,9 +485,9 @@ figDF %>% filter(REPO != 0) %>%  ggplot(aes(y=maze_accuracy_pct,x=Corticospinal_
     axis.line = element_line(colour = "black"),
     legend.title=element_blank())+
   ylim(min(figDF$maze_accuracy_pct), max(figDF$maze_accuracy_pct)) +
-  annotate("text", label = "FDR< 0.01", x = 0.25 , y = 0.9, color="#de5285", size=4) +
-     annotate("text", label = "FDR<0.001", x = 0.25 , y = 0.8, color="#00cdff", size=4)  +
-     annotate("text", label = "FDR<0.01", x = 0.25 , y = 0.7, color="#f4a2d0", size=4)  
+  annotate("text", label = "FDR< 0.01", x = 0.25 , y = 0.9, color="#a521e0", size=4) +
+     annotate("text", label = "FDR<0.001", x = 0.25 , y = 0.8, color="#f9dd9a", size=4)  +
+     annotate("text", label = "FDR<0.01", x = 0.25 , y = 0.7, color="#87ced0", size=4)  
 dev.off()
 
 tiff("Cing_l_parietalL.tiff", units="in", width=5, height=3, res=300) 
@@ -537,7 +537,7 @@ dev.off()
 tiff("QA_cerebellumL.noFame_REPO.tiff", units="in", width=5, height=4, res=300)
 figDF %>% filter(REPO != 0) %>% ggplot(aes(y=maze_accuracy_pct,x=Cerebellum_L,color=factor(REPO)))+geom_point() +
    stat_smooth(method="lm", se=FALSE)+
-    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0'),labels = c("Pre", "Peri", "Post")) +
+    scale_color_manual(values = c('#a521e0','#f9dd9a','#87ced0'),labels = c("Pre", "Peri", "Post")) +
   labs( x = "Cerebellum_L",
        y = "% Correct")+
   scale_y_continuous(breaks=c(0,1)) +
@@ -551,9 +551,9 @@ figDF %>% filter(REPO != 0) %>% ggplot(aes(y=maze_accuracy_pct,x=Cerebellum_L,co
     axis.line = element_line(colour = "black"),
     legend.title=element_blank())+
   ylim(min(figDF$maze_accuracy_pct), max(figDF$maze_accuracy_pct)) +
-  annotate("text", label = "FDR< 0.01", x = 0.17 , y = 0.9, color="#de5285", size=4) +
-     annotate("text", label = "FDR=0.05", x = 0.17 , y = 0.8, color="#00cdff", size=4)  +
-     annotate("text", label = "FDR<0.01", x = 0.17 , y = 0.7, color="#f4a2d0", size=4)  
+  annotate("text", label = "FDR< 0.01", x = 0.17 , y = 0.9, color="#a521e0", size=4) +
+     annotate("text", label = "FDR=0.05", x = 0.17 , y = 0.8, color="#f9dd9a", size=4)  +
+     annotate("text", label = "FDR<0.01", x = 0.17 , y = 0.7, color="#87ced0", size=4)  
 dev.off()
 
 
@@ -689,7 +689,7 @@ figDF <- Extract_raw_values(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.
 tiff("MD_fornixR.REPO.nofname.tiff", units="in", width=5, height=3, res=300)
 ggplot(figDF,aes(y=maze_accuracy_pct,x=Fornix_R,color=factor(REPO)))+geom_point() +
    stat_smooth(method="lm", se=FALSE)+
-    scale_color_manual(values = c('#de5285','#00cdff','#f4a2d0'),labels = c("Pre", "Peri", "Post"))+
+    scale_color_manual(values = c('#a521e0','#f9dd9a','#87ced0'),labels = c("Pre", "Peri", "Post"))+
   labs( x = "Fornix R",
        y = "% Correct")+
   scale_y_continuous(breaks=c(0,1)) +
@@ -703,9 +703,9 @@ ggplot(figDF,aes(y=maze_accuracy_pct,x=Fornix_R,color=factor(REPO)))+geom_point(
     axis.line = element_line(colour = "black"),
     legend.title=element_blank())+
   ylim(min(figDF$maze_accuracy_pct), max(figDF$maze_accuracy_pct))+
-  annotate("text", label = "FDR< 0.001", x = 1.4 , y = 0.9, color="#de5285", size=4) +
-     annotate("text", label = "FDR< 0.001", x = 1.4 , y = 0.8, color="#00cdff", size=4)  +
-     annotate("text", label = "FDR<0.001", x = 1.4 , y = 0.7, color="#f4a2d0", size=4)  
+  annotate("text", label = "FDR< 0.001", x = 1.4 , y = 0.9, color="#a521e0", size=4) +
+     annotate("text", label = "FDR< 0.001", x = 1.4 , y = 0.8, color="#f9dd9a", size=4)  +
+     annotate("text", label = "FDR<0.001", x = 1.4 , y = 0.7, color="#87ced0", size=4)  
 dev.off()
 
 ```
