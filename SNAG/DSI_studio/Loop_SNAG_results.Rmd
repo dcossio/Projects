@@ -1,7 +1,7 @@
 ---
 title: "SNAG Loop"
 author: "Daniela Cossio"
-date: "10/21/2023"
+date: "11/27/2023"
 output:
    html_document:
     toc: true
@@ -828,7 +828,21 @@ s
 
 
 ### average
+#### QA {.tabset .tabset-pills}
+##### all subs
+##### males
+##### females
+##### pre
+##### peri
+##### post
 
+#### MD {.tabset .tabset-pills}
+##### all subs
+##### males
+##### females
+##### pre
+##### peri
+##### post
 
 ## <span style="color: darkorange;"> **Angular Error** </span>  {.tabset .tabset-dropdown}
 ### Rad3 {.tabset .tabset-pills}

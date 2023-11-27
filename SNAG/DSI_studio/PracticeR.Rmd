@@ -1,0 +1,155 @@
+---
+title: "Creating DSI Summary Notebooks"
+author: "Daniela Cossio"
+date: "11/27/2023"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
+---
+
+The option above this set global options for the html. Basically telling R to create an HTML and also to add a floating table of contents. You can change those options or remove them. See how things change when you do that. 
+
+# HTML design elements {.tabset .tabset-pills}
+
+
+The chunk of code below just sets font, color, and size for the text in the notebook. 
+
+This sets all headers to be centered and Times new roman font. To create headers you use " #" so header 1 = " # H1".  You can also add things like "{.tabset .tabset-pills .tabset-dropdown}"  to change it up. The current header is  "{.tabset .tabset-pills}". Then you can create subheading.
+
+```{css}
+
+h1, h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Times;
+  
+}
+```
+
+## background color
+This sets the top 2 headers to be bolded and have a colored background
+```{css}
+h1, h2 {
+background-color: LavenderBlush;
+  font-weight: bold;
+}
+```
+
+## body of text
+This sets all body font to be black and times 
+```{css}
+body, p {
+  color: black; 
+  font-family: Times;
+}
+```
+
+## hiding code
+If you don't want the code chunk to show, then you'll need to have the echo=false in your code  " ``` {css, echo=FALSE}" 
+```{css, echo=FALSE}
+
+```
+
+# Libraries
+The next thing I do, is to add in all my libraries, you probably won't need all of these but I keep one single list and add it to all my codes just in case.  You'll probably just need KableExtra, ggplot2, and tidyverse for this. 
+```{r adding libraries, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+```
+
+
+# REading in CSVs {.tabset .tabset-pills}
+
+Learning to read in your data is one of the most critical pieces of coding because it can lead to issues if not read in correctly. 
+Here I am using read.CSV to read a CSV in but that may not always work and you may need to read in using read.delim. or read.text.
+
+**You will need to change the path to the path on your computer. Thses paths are just for my computer**
+
+Here I set a working directory variable because my path's are long and I don't want to type it every time or copy and paste.  You'll notice that I have one path commented, that's because the paths are slightly different when I'm on my imac versus laptop.
+
+```{r setting workdir}
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+
+ #working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
+```
+
+Now here we can read in a CSV with just a specific path. This is fine but get's tedious when you're trying to reading in a ton of files from the same location.
+```{r reading in our CSVs part 1 }
+sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
+```
+
+So instead, I just do it this way using our workdir variable and the function called "paste0" which allows me to combine the path from working_dir to the CSV filename. 
+```{r reading in our CSVs part 2, echo=TRUE}
+test_path <- paste0(working_dir,"subject_info.csv")
+print(test_path)
+
+sub_info <- read.csv(paste0(working_dir,"subject_info.csv"))
+```
+
+For reading in the stats from dsi, they read weirdly using read.csv so we need to read using read.delim. 
+
+Here I am grabbing a random loop CSV to test things. 
+
+Let's try running it with read.csv
+
+## Read CSV
+```{r reading in our delim 1, echo=FALSE}
+
+read.csv(paste0(working_dir,"Loop/MD/fname/MD_loop_pe_rad3_all_neg.csv")) %>% knitr::kable( row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = 500, height = 200)
+
+```
+
+
+##  Read  delim 
+```{r reading in our delim, echo=FALSE}
+
+read.delim(paste0(working_dir,"Loop/MD/fname/MD_loop_pe_rad3_all_neg.csv")) %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = 50, height = 50)
+```
+
+#Functions
+
+So in my htmls i use a bunch of custom functions because I rerun the same code and I don't want to have to type every line again and again. 
+
+The first function I have is a script to read in the CSV files that come out of DSI studio. One issue with them is that if we run useing read.csv they get weird so we run using read
+
+ReadingCSVFunc <- function(pathname){
+  
+  read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
+  
+}
