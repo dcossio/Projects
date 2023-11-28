@@ -274,70 +274,73 @@ in all subjects, MD is negatively associated with PE in limbic regions. Lower MD
 
 #### QA {.tabset .tabset-pills}
 ##### All subject
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000407)</strong> </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000407)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br>
+<!-- <br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000760)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.all.qa.neg.csv")), "classic", 500, 200)
 ```
-<br><br><br>
+
+<br><br><br><br>
 
 ##### Females
 
-<!------ fname --------->  
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <!------ fname --------->
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.033223)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/females.loopPE.rad3.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.033223)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/females.loopPE.rad3.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.014408)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/females.loopPE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.014408)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/females.loopPE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.005420)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.fem.qa.pos.csv")), "classic", 500, 200)
 ```
 
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.029793)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.fem.qa.neg.csv")), "classic", 500, 200)
 ```
 
+<br><br><br><br>
 
 ##### Males
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<br>
+<!-- <br> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.039893)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.039893)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
 
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/males.loopPE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/males.loopPE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.184615)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
@@ -351,22 +354,23 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.male.qa.pos.csv
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.male.qa.neg.csv")), "classic", 500, 200)
 ```
 
+<br><br><br><br>
 
 ##### pre
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<br>
+<!-- <br> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.088051)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.088051)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
 
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/pre.loopPE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/pre.loopPE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.068586)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
@@ -380,24 +384,24 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.pre.qa.pos.csv"
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.pre.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br>
+<br><br><br><br>
 
 ##### Peri
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<br>
+<!-- <br> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = )</strong> </span>
-```{r,echo=FALSE,message=FALSE}
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = )</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
 
-# TableOutput(CleanInput(ReadingCSVFunc("")), "classic", 500, 200)
-```
+<!-- # TableOutput(CleanInput(ReadingCSVFunc("")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
-<br>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
+<!-- <br> -->
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.048013)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
@@ -405,245 +409,303 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.pre.qa.neg.csv"
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.peri.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br>
+<br><br><br><br>
 
 ##### post
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<br>
+<!-- <br> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = )</strong> </span>
-```{r,echo=FALSE,message=FALSE}
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = )</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
 
-# TableOutput(CleanInput(ReadingCSVFunc("")), "classic", 500, 200)
-```
+<!-- # TableOutput(CleanInput(ReadingCSVFunc("")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 No significant results
-<br><br>
+
+
+<br><br><br><br>
 
 #### MD {.tabset .tabset-pills}
 ##### All subject
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.086273)</strong> </span>
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.086273)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_all_neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+<!-- <br><br><br> -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p> -->
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.111613)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_all <- CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_all_neg.csv"))
 
-TableOutput(rad3PE_neg_MD_all, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/rad3pe.all.md.neg.csv")), "classic", 500, 200)
 ```
-
-<br><br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
-
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000616)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_all_neg.csv"))
-
-TableOutput(rad3PE_neg_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
-```
-
+<br><br><br><br>
 
 ##### Females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000221)</strong> </span>
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000221)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_fem_neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+<!-- <br><br><br> -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> no fname </strong> </p> -->
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.007040)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_fem <- CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_fem_neg.csv"))
 
-TableOutput(rad3PE_neg_MD_fem, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
-```
-
-<br><br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
-
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000443)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-rad3PE_neg_MD_fem1 <- CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_female_neg.csv"))
-
-TableOutput(rad3PE_neg_MD_fem1, "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/rad3pe.fem.md.neg.csv")), "classic", 500, 200)
 ```
 
 
 
 ##### Males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.101287)</strong> </span>
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.101287)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_male_pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+
+<!-- <br><br><br> -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.011441)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_pos_MD_male <- CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_pe_rad3_male_pos.csv"))
 
-TableOutput(rad3PE_pos_MD_male, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop PE")
+TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/rad3pe.male.md.pos.csv")), "classic", 500, 200)
+```
+<br><br><br><br>
+
+##### Pre
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.046384)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/rad3pe.pre.md.neg.csv")), "classic", 500, 200)
+```
+<br><br><br><br>
+
+##### Peri
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.014336)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/rad3pe.peri.md.neg.csv")), "classic", 500, 200)
 ```
 
+<br><br><br><br>
 
-<br><br><br>
+##### Post
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
-
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.058621)</strong> </span>
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.064846)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3PE_pos_MD_male1 <- CleanInput(ReadingCSVFunc("/Loop/MD/nofname/MD_loopRad3_male_pos.csv"))
 
-TableOutput(rad3PE_pos_MD_male1, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop PE")
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/rad3pe.post.md.neg.csv")), "classic", 500, 200)
 ```
+
+<br><br><br><br>
 
 ### Average {.tabset .tabset-pills}
 
 #### QA {.tabset .tabset-pills}
 ##### All subject
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.002682)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.average.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.002682)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/all.loopPE.average.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.015957)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.all.qa.pos.csv")), "classic", 500, 200)
 ```
 
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.067564)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.all.qa.neg.csv")), "classic", 500, 200)
 ```
 
+<br><br><br><br>
+
 ##### Females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.001412)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/female.loopPE.average.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.001412)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/female.loopPE.average.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.003136)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/female.loopPE.average.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.003136)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/female.loopPE.average.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.002551)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.fem.qa.pos.csv")), "classic", 500, 200)
 ```
-
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.001030)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.fem.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 ##### Males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.015386)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/males.loopPE.average.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.015386)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/males.loopPE.average.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.017570)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.male.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 
 ##### Pre
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.051982)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/pre.LoopPE.ave.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.051982)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/fname_cov/pre.LoopPE.ave.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.163683)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.pre.qa.pos.csv")), "classic", 500, 200)
 ```
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.037464)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.pre.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 ##### Peri
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.034684)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.peri.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 ##### post
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-did not run 
-<br><br>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+<!-- did not run  -->
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.145591)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.post.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
-
-
+<br><br><br><br>
 
 #### MD{.tabset .tabset-pills}
 ##### All subject
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<br><br><br>
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000150)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/avepe.all.md.neg.csv")), "classic", 500, 200)
+```
+<br><br><br><br>
+
 ##### Females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000147)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
 
-<br><br><br>
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/avgpe.fem.md.neg.csv")), "classic", 500, 200)
+```
+<br><br><br><br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
 ##### Males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.006360)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
 
-<br><br><br>
+TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/avgpe.male.md.pos.csv")), "classic", 500, 200)
+```
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<br><br><br><br>
+
+##### Pre
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.032327)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/avgpe.pre.md.neg.csv")), "classic", 500, 200)
+```
+<br><br><br><br>
+
+##### Peri
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.018830)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+
+TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/avgpe.peri.md.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
+
+##### Post
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.088732)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+
+TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/avgpe.post.md.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
 
 ## <span style="color: darkorange;"> **Degrees Traveled** </span>  {.tabset .tabset-dropdown} 
 ### Rad3 {.tabset .tabset-pills}
@@ -651,43 +713,43 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/avgpe.post.qa.neg.csv"
 #### QA {.tabset .tabset-pills}
 ##### All subject
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000183)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/all.loopDE.rad3.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000183)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/all.loopDE.rad3.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000549)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.all.qa.pos.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 ##### Females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000076)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/female.loopDE.rad3.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000076)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/female.loopDE.rad3.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br>
+<!-- <br> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.062500)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.062500)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
 
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/female.loopDE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/female.loopDE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p> -->
 
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000189)</strong> </span>
@@ -696,56 +758,56 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/female.loopDE.rad3.neg.c
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.fem.qa.pos.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 
 ##### Males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.178310)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/males.loopDE.rad3.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.178310)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("/Loop/QA/DE/fname/males.loopDE.rad3.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br><br>
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.082808)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.male.qa.pos.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 
 ##### Pre
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-no significant results
-<br>
+<!-- no significant results -->
+<!-- <br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.077631)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.pre.qa.pos.csv")), "classic", 500, 200)
 ```
-
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.007108)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.pre.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 ##### Peri
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-did not run
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+<!-- did not run -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p> -->
 
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.068688)</strong> </span>
@@ -754,59 +816,55 @@ did not run
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.peri.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 
 ##### Post
 
 No significant results
 
-<br><br><br>
+<br><br><br><br>
 
 #### MD {.tabset .tabset-pills}
 ##### All subject
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.042231)</strong> </span>
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.042231)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- rad3DE_pos_MD_all <- CleanInput(ReadingCSVFunc("/Loop/MD/fname/MD_loop_DE_rad3_all_pos.csv")) -->
+
+<!-- TableOutput(rad3DE_pos_MD_all, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled") -->
+<!-- ``` -->
+
+<!-- <br><br><br> -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p> -->
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.019884)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
-rad3DE_pos_MD_all <- CleanInput(ReadingCSVFunc("/Loop/MD/fname/MD_loop_DE_rad3_all_pos.csv"))
-
-TableOutput(rad3DE_pos_MD_all, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/rad3de.all.md.pos.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.029053)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-rad3DE_pos_MD_all1 <- CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_all_neg.csv"))
-
-TableOutput(rad3DE_pos_MD_all1, "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
-```
+<br><br><br><br>
 
 ##### Females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.100772)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_De_rad3_fem_pos.csv")), "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled")
-```
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.100772)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_De_rad3_fem_pos.csv")), "classic", 500, 200, "Table 1.Tracts with MD positively associated with loop Degrees Traveled") -->
+<!-- ``` -->
 
-<br>
+<!-- <br> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.023033)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_De_rad3_fem_neg.csv")), "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE")
-```
-<br><br><br>
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.023033)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/fname/MD_loop_De_rad3_fem_neg.csv")), "classic", 500, 200, "Table 1.Tracts with MD negatively associated with loop PE") -->
+<!-- ``` -->
+<!-- <br><br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.023865)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/MD_loopRad3_female_neg.csv")), "classic", 500, 200, "Table 1.Tracts with QA positively associated with loop Degrees Traveled")
-```
 
-<br>
+<br><br><br><br>
 
 
 ##### Males
@@ -819,105 +877,111 @@ No results
 
 No results
 
-<br><br><br><br><br><br>
+<br><br><br><br>
 
-s
-
+##### Pre
+##### Peri
+##### Post
 
 ### average
 #### QA {.tabset .tabset-pills}
 ##### all subs
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000163 )</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/all.loopDE.ave.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000163 )</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/all.loopDE.ave.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000385 )</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.all.qa.pos.csv")), "classic", 500, 200)
 ```
-<br><br><br>
+<br><br><br><br>
 
 ##### males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.008738 )</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/male.loopDE.ave.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.008738 )</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/male.loopDE.ave.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.098032 )</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/male.loopDE.ave.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.098032 )</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/male.loopDE.ave.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.013758)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.male.qa.pos.csv")), "classic", 500, 200)
 ```
-
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =0.149973)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.male.qa.neg.csv")), "classic", 500, 200)
 ```
-<br><br><br>
+<br><br><br><br>
 
 ##### females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000274)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/female.loopDE.ave.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000274)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/fname/female.loopDE.ave.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000577)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.fem.qa.pos.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 ##### pre
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-No results 
+<!-- No results  -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.017587)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.pos.csv")), "classic", 500, 200)
 ```
-
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.006990)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.neg.csv")), "classic", 500, 200)
 ```
-<br><br><br>
+<br><br><br><br>
 
 ##### peri
 ##### post
 
 #### MD {.tabset .tabset-pills}
 ##### all subs
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000194)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.all.md.pos.csv")), "classic", 500, 200)
+```
+
 ##### males
 ##### females
 ##### pre
@@ -929,41 +993,42 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.neg.csv")
 #### QA {.tabset .tabset-pills}
 ##### all subs
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000188)</strong> </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/all.loopAE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000188)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/all.loopAE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br>
+<!-- <br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p> -->
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000151)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.all.qa.neg.csv")), "classic", 500, 200)
 ```
 
-<br><br><br>
+<br><br><br><br>
 
 
 ##### males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.026294)</strong> </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/male.loopAE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.026294)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/male.loopAE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<br><br>
+<!-- <br><br> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.198113)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.male.qa.pos.csv")), "classic", 500, 200)
 ```
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.015257)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
@@ -972,24 +1037,25 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.male.qa.neg.csv
 <br><br><br><br>
 
 ##### females
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.077778)</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAE.rad3.pos.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.077778)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAE.rad3.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.006016)</strong> </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAE.rad3.neg.csv")), "classic", 500, 200)
-```
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.006016)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAE.rad3.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.007463)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.fem.qa.pos.csv")), "classic", 500, 200)
 ```
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.009456)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
@@ -999,14 +1065,15 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.fem.qa.neg.csv"
 <br><br><br><br>
 
 ##### pre
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.087579)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.pre.qa.pos.csv")), "classic", 500, 200)
 ```
+<br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.027984)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
@@ -1017,7 +1084,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.pre.qa.neg.csv"
 
 ##### peri
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p>
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.029396)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
@@ -1034,9 +1101,110 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.peri.qa.neg.csv
 ### Average {.tabset .tabset-pills}
 #### QA {.tabset .tabset-pills}
 ##### all subs
-##### males
-##### females
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.012195)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/all.loopAE.ave.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000355)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/all.loopAE.ave.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.064935)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.all.qa.pos.csv")), "classic", 500, 200)
+```
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.033989)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.all.qa.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
+
+##### males
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.014851)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/male.loopAE.ave.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+<!-- <br><br> -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.003413)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.male.qa.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
+
+##### females
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+
+<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.004950)</strong> </span> -->
+<!-- ```{r,echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAe.ave.pos.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000126)</strong> </span> -->
+<!-- ```{r, echo=FALSE,message=FALSE} -->
+<!-- TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/fname/female.loopAe.ave.neg.csv")), "classic", 500, 200) -->
+<!-- ``` -->
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.007326)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.fem.qa.pos.csv")), "classic", 500, 200)
+```
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000339)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.fem.qa.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
+
+##### pre
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.087757)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.pre.qa.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
+
+##### peri
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.023132)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.peri.qa.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
+
+##### post
+
+<!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.023132)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.post.qa.neg.csv")), "classic", 500, 200)
+```
+
+<br><br><br><br>
 
 
 #### MD {.tabset .tabset-pills}
