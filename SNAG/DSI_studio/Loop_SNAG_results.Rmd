@@ -884,7 +884,7 @@ No results
 ##### Peri
 ##### Post
 
-### average
+### average {.tabset .tabset-pills}
 #### QA {.tabset .tabset-pills}
 ##### all subs
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
@@ -975,6 +975,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.neg.csv")
 
 ##### peri
 ##### post
+
 
 #### MD {.tabset .tabset-pills}
 ##### all subs
