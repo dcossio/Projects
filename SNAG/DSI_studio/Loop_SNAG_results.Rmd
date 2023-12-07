@@ -263,7 +263,7 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 <br><br><br><br><br><br>
 
-# <span style="color: darkorange;"> Results </span>    
+# <span style="color: darkorange;"> Results </span> 
 
 ## <span style="color: darkorange;"> **Position Error** </span>  {.tabset .tabset-dropdown} 
 
@@ -1212,3 +1212,38 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.post.qa.neg.csv"
 ##### all subs
 ##### males
 ##### females
+
+
+
+
+# ROIs 
+
+## Arcuate Fasciculus (frontal)
+  Anatomy 
+  - Connects temporal cortex and inferior parietal to frontal lobe
+  -  Critical for verbal language mostly 
+  - ties to motor training
+  Links to papers 
+  
+  https://www.frontiersin.org/articles/10.3389/fnhum.2021.672665/full#B69
+  https://onlinelibrary.wiley.com/doi/full/10.1002/brb3.3107
+  https://pubmed.ncbi.nlm.nih.gov/29355798/
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5479403/#b0335
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2141547/
+  
+## Corpus Callosum 
+
+  Anatomy 
+  - tapetum
+         The tapetum is another fiber tract arising from the body and splenium of the corpus callosum. The tapetum projects laterally to form the roof and lateral walls of the atrium, temporal and occipital horns, where it is the fiber tract closest to the ependyma of the ventricle.
+  
+  https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0039804
+  https://www.mdpi.com/2077-0383/10/14/3158
+  https://www.kenhub.com/en/library/anatomy/corpus-callosum
+  https://onlinelibrary.wiley.com/doi/full/10.1002/hbm.23339
+  https://www.sciencedirect.com/science/article/pii/B9780128117835000057
+  chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://content.iospress.com/download/journal-of-alzheimers-disease/jad01370?id=journal-of-alzheimers-disease%2Fjad01370
+  
+  
+  
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4925207/
