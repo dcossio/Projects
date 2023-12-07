@@ -1,7 +1,7 @@
 ---
 title: "SNAG Loop"
 author: "Daniela Cossio"
-date: "11/27/2023"
+date: "12/05/2023"
 output:
    html_document:
     toc: true
@@ -80,6 +80,7 @@ rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)"
 
 sub_info <- read.csv(paste0(working_dir,"subject_info.csv"))
 ```
+
 
 ```{r functions, echo=FALSE, results='hide',message=FALSE}
 
