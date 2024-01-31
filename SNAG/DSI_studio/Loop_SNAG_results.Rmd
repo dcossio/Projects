@@ -6,7 +6,7 @@ output:
    html_document:
     toc: true
     toc_float: true
-    toc_depth: 6
+    toc_depth: 2
     classoption:
     - twocolumn
 ---
@@ -1001,9 +1001,9 @@ No results
 ###### Peri
 ###### Post
 
-### average {.tabset .tabset-pills}
-#### QA {.tabset .tabset-pills}
-##### all subs
+#### average {.tabset .tabset-pills}
+##### QA {.tabset .tabset-pills}
+###### all subs
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000163 )</strong> </span> -->
@@ -1021,7 +1021,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.all.qa.pos.csv")
 ```
 <br><br><br><br>
 
-##### males
+###### males
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.008738 )</strong> </span> -->
@@ -1050,7 +1050,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.male.qa.neg.csv"
 ```
 <br><br><br><br>
 
-##### females
+###### females
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000274)</strong> </span> -->
@@ -1069,7 +1069,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.fem.qa.pos.csv")
 
 <br><br><br><br>
 
-##### pre
+###### pre
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- No results  -->
@@ -1090,27 +1090,27 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.neg.csv")
 ```
 <br><br><br><br>
 
-##### peri
-##### post
+###### peri
+###### post
 
 
-#### MD {.tabset .tabset-pills}
-##### all subs
+##### MD {.tabset .tabset-pills}
+###### all subs
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.000194)</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.all.md.pos.csv")))
 ```
 
-##### males
-##### females
-##### pre
-##### peri
-##### post
+###### males
+###### females
+###### pre
+###### peri
+###### post
 
-## <span style="color: darkorange;"> **Angular Error** </span>  {.tabset .tabset-dropdown}
-### Rad3 {.tabset .tabset-pills}
-#### QA {.tabset .tabset-pills}
-##### all subs
+### <span style="color: darkorange;"> **Angular Error** </span>  {.tabset .tabset-dropdown}
+#### Rad3 {.tabset .tabset-pills}
+##### QA {.tabset .tabset-pills}
+###### all subs
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
@@ -1131,7 +1131,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.all.qa.neg.csv"
 <br><br><br><br>
 
 
-##### males
+###### males
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.026294)</strong> </span> -->
@@ -1155,7 +1155,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.male.qa.neg.csv
 ```
 <br><br><br><br>
 
-##### females
+###### females
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.077778)</strong> </span> -->
@@ -1183,7 +1183,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.fem.qa.neg.csv"
 
 <br><br><br><br>
 
-##### pre
+###### pre
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
@@ -1201,7 +1201,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.pre.qa.neg.csv"
 
 <br><br><br><br>
 
-##### peri
+###### peri
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
@@ -1212,14 +1212,14 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.peri.qa.neg.csv
 
 <br><br><br><br>
 
-#### MD {.tabset .tabset-pills}
-##### all subs
-##### males
-##### females
+##### MD {.tabset .tabset-pills}
+###### all subs
+###### males
+###### females
 
-### Average {.tabset .tabset-pills}
-#### QA {.tabset .tabset-pills}
-##### all subs
+#### Average {.tabset .tabset-pills}
+##### QA {.tabset .tabset-pills}
+###### all subs
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.012195)</strong> </span> -->
@@ -1247,7 +1247,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.all.qa.neg.csv")
 
 <br><br><br><br>
 
-##### males
+###### males
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.014851)</strong> </span> -->
@@ -1265,7 +1265,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.male.qa.neg.csv"
 
 <br><br><br><br>
 
-##### females
+###### females
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.004950)</strong> </span> -->
@@ -1292,7 +1292,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.fem.qa.neg.csv")
 
 <br><br><br><br>
 
-##### pre
+###### pre
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
@@ -1303,7 +1303,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.pre.qa.neg.csv")
 
 <br><br><br><br>
 
-##### peri
+###### peri
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
@@ -1314,7 +1314,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.peri.qa.neg.csv"
 
 <br><br><br><br>
 
-##### post
+###### post
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>No FNAME</strong> </p> -->
 
@@ -1334,26 +1334,43 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.post.qa.neg.csv"
 
 
 
-# ROIs 
+## ROIs 
 
-## Arcuate Fasciculus (frontal)
-  Anatomy 
-  - Connects temporal cortex and inferior parietal to frontal lobe
-  -  Critical for verbal language mostly 
-  - ties to motor training
+### Arcuate Fasciculus (frontal)
+  Anatomy   
+  - Connects temporal cortex and inferior parietal to frontal lobe  
+  -  Critical for verbal language mostly   
+  - ties to motor training  
   Links to papers 
   
-  https://www.frontiersin.org/articles/10.3389/fnhum.2021.672665/full#B69
-  https://onlinelibrary.wiley.com/doi/full/10.1002/brb3.3107
-  https://pubmed.ncbi.nlm.nih.gov/29355798/
-  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5479403/#b0335
-  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2141547/
+  https://www.frontiersin.org/articles/10.3389/fnhum.2021.672665/full#B69  
+  https://onlinelibrary.wiley.com/doi/full/10.1002/brb3.3107  
+  https://pubmed.ncbi.nlm.nih.gov/29355798/  
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5479403/#b0335  
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2141547/  
   
-## Corpus Callosum 
+### Corpus Callosum 
 
-  Anatomy 
+  Anatomy   
   - tapetum
          The tapetum is another fiber tract arising from the body and splenium of the corpus callosum. The tapetum projects laterally to form the roof and lateral walls of the atrium, temporal and occipital horns, where it is the fiber tract closest to the ependyma of the ventricle.
+  
+  -Forcep Minor: anterior portion of CC. connectects to frontal lobes
+    https://radiopaedia.org/articles/forceps-minor?lang=us
+    Tied to executive funtioning skills 
+      https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5811666/
+    Motor control
+      https://pubmed.ncbi.nlm.nih.gov/19850077/
+    Poorer gait velocity in older adults 
+      https://www.ajnr.org/content/38/3/500#ref-43
+    
+    
+    
+  
+  -forcep major: Posterior portion of CC: connecting Occipital lobes
+    https://radiopaedia.org/articles/forceps-major?lang=us  
+    
+  
   
   https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0039804
   https://www.mdpi.com/2077-0383/10/14/3158
@@ -1365,3 +1382,5 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.post.qa.neg.csv"
   
   
   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4925207/
+
+### Arcuate Fasciculus (frontal)
