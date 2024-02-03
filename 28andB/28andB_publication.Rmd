@@ -663,8 +663,8 @@ TableOutput(Gest_summarystats,"QA")
 ```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE}
 
 #Tractography working dir
-Main_workdir <-"/Users/danielacossio/Downloads/Global_QA/"
-tract_workdir <-"/Users/danielacossio/Downloads/Global_QA/tractometry/"
+Main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/28andB/Global_QA/"
+tract_workdir <-paste0(Main_workdir,"tractometry/")
 AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
 
 AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
@@ -729,7 +729,7 @@ AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 
 <span class="text-center" style="color: black;"> QA </span>
 ```{r QA output}
-QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-026", "sub-027")))
+QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(V1 %in% c("sub-026", "sub-027"))) #had to change to match col names
 
 TableOutput(QA_master_DF,"QA")
 ```
@@ -738,7 +738,7 @@ TableOutput(QA_master_DF,"QA")
 
 <span class="text-center" style="color: pink;"> MD </span>
 ```{r MD output}
-MD_master_DF<- read.csv(paste0(tract_workdir,"/MD_master_DF.csv"))%>% filter(!(subjects %in% c("sub-026", "sub-027")))
+MD_master_DF<- read.csv(paste0(tract_workdir,"/MD_master_DF.csv"))%>% filter(!(V1 %in% c("sub-026", "sub-027")))
 
 TableOutput(MD_master_DF,"MD")
 
@@ -751,13 +751,13 @@ TableOutput(MD_master_DF,"MD")
 Main_workdir <-"/Users/danielacossio/Downloads/Updated_gest_figs_082322/"
 
 # reading in info 
-AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7", "27")))
+AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7", "27","26")))
 AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
 AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
 AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week)
 
 # Let's get our entire QA ROI Data frame 
-QA_ROI_master_DF <- read.csv(paste0(Main_workdir,"ROI_QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-007", "sub-027"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))
+QA_ROI_master_DF <- read.csv(paste0(Main_workdir,"ROI_QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-007", "sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))
 
 ROIS <-c ("Arcuate_Fasciculus_L","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Cortico_Striatal_Pathway_L")
 
@@ -771,7 +771,7 @@ for (ROI in 1:length(ROIS)) {
   QAplot <- QA_ROI_master_DF %>%
     ggplot(aes(x = trimester, y = QA_ROI_master_DF[,ROIS[ROI]], fill = trimester)) +
     #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
-    geom_boxplot() +
+    geom_boxplot(linewidth=1) +
     theme_bw() + scale_fill_manual(values = grp_colors)+
     # scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
     labs(x = "Trimester", y = "Quantitative Anisotropy") +
@@ -781,6 +781,7 @@ for (ROI in 1:length(ROIS)) {
         color = "black",
         face = "bold.italic"
       ),
+      panel.border = element_rect(linewidth=1, linetype="solid"),
       strip.text.y = element_text(
         size = 12,
         color = "black",
@@ -793,7 +794,7 @@ for (ROI in 1:length(ROIS)) {
             axis.title.y = element_text(size = 16))+ theme(legend.position = "none")
 
     #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319)
-    pdf(file = paste0(Main_workdir,y,"_QA.pdf"),width=10, height=8)
+    pdf(file = paste0(Main_workdir,y,"_atttempt2QA.pdf"),width=10, height=8)
     print(QAplot)
     dev.off()
 }
@@ -802,18 +803,20 @@ for (ROI in 1:length(ROIS)) {
 
 ```{r MD, echo=FALSE,echo=FALSE, results='hide',message=FALSE}
 
-MD_scans <- MD_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
+# MD_scans <- MD_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
+MD_scans <- read.csv("/Users/danielacossio/Downloads/MD_master_DF.csv") %>% filter(!(subjects %in% c("sub-007", "sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))
 
-for (ROI in 2:nrow(ROIS)) {
-  print(ROI)
-  roiname <- str_split_1(ROIS[ROI,1], '_') %>% paste(collapse=' ')
-  y <- ROIS[ROI,1]
+ROIS <-c("Cerebellum_L","Middle_Cerebellar_Peduncle","Corpus_Callosum","Arcuate_Fasciculus_L","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Cortico_Striatal_Pathway_L")
+
+for (ROI in 1:length(ROIS)) {
+   print(ROIS[ROI])
+  roiname <- stringr::str_split_1(ROIS[ROI], '_') %>% paste(collapse=' ')
+   y <- ROIS[ROI]
   
-  MDplot <- MD_scans %>%
-    ggplot(aes(x = trimester, y = MD_scans[, ROI], group = trimester)) +  
+  MDplot <-ggplot(data= MD_scans, aes(x = trimester, y =.data[[ROIS[ROI]]] , fill = trimester)) +  
     #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
-    geom_boxplot(width = 0.5 , fill = grp_colors) +
-    #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+    geom_boxplot(linewidth=1)+
+    theme_bw() + scale_fill_manual(values = grp_colors)+
     labs(x = "Trimester", y = "MD", title = roiname) +
     theme(
       strip.text.x = element_text(
@@ -821,12 +824,13 @@ for (ROI in 2:nrow(ROIS)) {
         color = "black",
         face = "bold.italic"
       ),
+      panel.border = element_rect(linewidth=1, linetype="solid"),
       strip.text.y = element_text(
         size = 12,
         color = "black",
         face = "bold.italic"
       )
-    ) + xlab("Trimester") + ylab("QA") +
+    ) + xlab("Trimester") + ylab("MD") +
     theme(
       axis.title.x = element_text(size = 16),
       axis.text.x = element_text(size = 12),
@@ -835,7 +839,7 @@ for (ROI in 2:nrow(ROIS)) {
       plot.title = element_text(hjust = 0.5,size=16)
     ) + theme(legend.position = "none")
    #
-   pdf(file = paste0(tract_workdir,"/boxplots/MD/",y,"_MD.pdf"),width=10, height=8)
+   pdf(file = paste0("/Users/danielacossio/Downloads/",y,"_attempt2MD.pdf"),width=10, height=8)
    print(MDplot)
    dev.off()
 }
