@@ -759,7 +759,8 @@ AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week)
 # Let's get our entire QA ROI Data frame 
 QA_ROI_master_DF <- read.csv(paste0(Main_workdir,"ROI_QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-007", "sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))
 
-ROIS <-c ("Arcuate_Fasciculus_L","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Cortico_Striatal_Pathway_L")
+ROIS <-c ("Arcuate_Fasciculus_L")
+#,"Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Cortico_Striatal_Pathway_L")
 
 
 #To grab every ROIS
@@ -771,7 +772,7 @@ for (ROI in 1:length(ROIS)) {
   QAplot <- QA_ROI_master_DF %>%
     ggplot(aes(x = trimester, y = QA_ROI_master_DF[,ROIS[ROI]], fill = trimester)) +
     #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
-    geom_boxplot(linewidth=1) +
+    geom_boxplot(linewidth=0.5) +
     theme_bw() + scale_fill_manual(values = grp_colors)+
     # scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
     labs(x = "Trimester", y = "Quantitative Anisotropy") +
@@ -794,9 +795,9 @@ for (ROI in 1:length(ROIS)) {
             axis.title.y = element_text(size = 16))+ theme(legend.position = "none")
 
     #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319)
-    pdf(file = paste0(Main_workdir,y,"_atttempt2QA.pdf"),width=10, height=8)
+   # pdf(file = paste0(Main_workdir,y,"_atttempt2QA.pdf"),width=10, height=8)
     print(QAplot)
-    dev.off()
+   # dev.off()
 }
 
 ```
@@ -1098,7 +1099,7 @@ labs(x= "gestational week", y= " Isotropic Diffusion" )  + geom_label(label="bir
 library(mgcv)
 
 # Sub info 
-AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Global_QA/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
+AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Updated_gest_figs_082322/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
 
 AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
 
@@ -1114,7 +1115,7 @@ QA_df <- read.csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv
 
 
 #Whole brain DF
-MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Global_QA/Global_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)
+MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Updated_gest_figs_082322/Global_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)
 
 
 
@@ -1130,13 +1131,11 @@ summary(qa_mod_gam1)
 # assess model differences
 anova(qa_mod_lm, qa_mod_gam1, test = "Chisq")
 
-#plotting, basic & w/ ggplot
+#plotting,Whole brain GAM
 plot(qa_mod_gam1)
 
-pdf(file = "/Users/danielacossio/Downloads/WholeBrain_GAM.pdf",
-    width = 10,
-    height = 5)
-ggplot(data = MergedWholebrain,
+#pdf(file = "/Users/danielacossio/Downloads/WholeBrain_GAM.pdf",width = 10,height = 5)
+x <- ggplot(data = MergedWholebrain,
        mapping = aes(x = gestWK, y = qa)) + 
   geom_point(size = 2, alpha = 0.5,color = "#EBB97B") + 
   geom_smooth(method = "gam", color ="#EBB97B", fill= "#EBB97B", formula= y~s(x, bs = "cs")) + 
@@ -1162,10 +1161,19 @@ ggplot(data = MergedWholebrain,
     )
   )
 
-dev.off()
+#dev.off()
+
+## Whole BRain GAM using Laura's code
+GAMwithlabels <-ggplot(MergedWholebrain, aes(x=gestWK, y=qa, label=gestWK)) + geom_point(size = 3, color = "#AD733E") + geom_text()+ theme_bw() + theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) +
+  geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic()
+
+L_GAM <- ggplot(MergedWholebrain, aes(x=gestWK, y=qa)) + geom_point(size = 3, color = "#AD733E") + theme_bw()  +  theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) +
+  geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic() +  theme(axis.text.x=element_blank(),   axis.text.y=element_blank()) + xlab("") + ylab("")
 
 
 
+
+#I forgot whtat the below code did fml 
 
 QA_df <- QA_df %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week) 
 
