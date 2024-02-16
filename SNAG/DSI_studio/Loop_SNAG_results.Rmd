@@ -1591,35 +1591,51 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.post.qa.neg.csv"
 ### Corpus Callosum 
 
   Anatomy   
-  - tapetum
-         The tapetum is another fiber tract arising from the body and splenium of the corpus callosum. The tapetum projects laterally to form the roof and lateral walls of the atrium, temporal and occipital horns, where it is the fiber tract closest to the ependyma of the ventricle.
+  - tapetum  
+         The tapetum is another fiber tract arising from the body and splenium of the corpus callosum. The tapetum projects laterally to form the roof and lateral walls of the atrium, temporal and occipital horns, where it is the fiber tract closest to the dependably of the ventricle. Connects temporal lobes.  
   
-  -Forcep Minor: anterior portion of CC. connectects to frontal lobes
+  -Forcep Minor: anterior portion of CC. connectects to frontal lobes  
     https://radiopaedia.org/articles/forceps-minor?lang=us
-    Tied to executive funtioning skills 
+    Tied to executive funtioning skill  
       https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5811666/
-    Motor control
+    Motor control  
       https://pubmed.ncbi.nlm.nih.gov/19850077/
-    Poorer gait velocity in older adults 
+    Poorer gait velocity in older adults  
       https://www.ajnr.org/content/38/3/500#ref-43
     
     
     
   
   -forcep major: Posterior portion of CC: connecting Occipital lobes
-    https://radiopaedia.org/articles/forceps-major?lang=us  
-    
-  
-  
-  https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0039804
+  Interestingly this proesses vision but has direct connections to RSC 
+  Pops up with men  
+    https://radiopaedia.org/articles/forceps-major?lang=us   
+
+  https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0039804  
   https://www.mdpi.com/2077-0383/10/14/3158
   https://www.kenhub.com/en/library/anatomy/corpus-callosum
   https://onlinelibrary.wiley.com/doi/full/10.1002/hbm.23339
   https://www.sciencedirect.com/science/article/pii/B9780128117835000057
   chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://content.iospress.com/download/journal-of-alzheimers-disease/jad01370?id=journal-of-alzheimers-disease%2Fjad01370
-  
-  
-  
+  https://link.springer.com/article/10.1007/s11682-023-00814-1#Sec15
+  https://www.ncbi.nlm.nih.gov/books/NBK448209/
+  https://www.sciencedirect.com/science/article/pii/S0010945210001942?via%3Dihub  
+  https://link.springer.com/article/10.1007/s11682-018-0010-2  
   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4925207/
+  https://www.sciencedirect.com/science/article/pii/S0920121108001356?via%3Dihub  
 
-### Arcuate Fasciculus (frontal)
+https://scholar.google.com/scholar_lookup?author=T.+Schulte&author=E.+M.+M%C3%BCller-Oehring&publication_year=2010&title=Contribution+of+callosal+connections+to+the+interhemispheric+integration+of+visuomotor+and+cognitive+processes&journal=Neuropsychol.+Rev.&volume=20&pages=174-190
+
+### COrtico Striatal
+
+### Inferior Fronto Occipital Fasciculus
+connects the occipital and parietal lobes to frontal. May be important for visual attention. visuospatial
+
+Goal orientated behavior
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5280002/  
+https://www.frontiersin.org/articles/10.3389/fnana.2016.00088/full#B4
+https://www.neurology.org/doi/10.1212/WNL.0b013e31822313dc
+https://kclpure.kcl.ac.uk/portal/en/publications/a-lateralized-brain-network-for-visuospatial-attention-2
+https://pubmed.ncbi.nlm.nih.gov/28180079/ 
+
+
