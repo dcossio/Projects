@@ -1,7 +1,7 @@
 ---
 title: "SNAG_DSI Summary"
 author: "Daniela Cossio"
-date: "06/04/2023"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
    html_document:
     toc: true
@@ -13,7 +13,58 @@ editor_options:
 ---
 <!-- code_folding: "hide" -->
 
----
+```{css, echo=FALSE}
+TOC {
+  color: #F6B2DB;
+  font-family: Times;
+  font-size: "16px"; 
+  border-color: #F6B2DB;
+}
+
+h1.title {
+  color: black ;
+  font-family: Times;
+  font-size: "72px";
+  padding: "10px 0";
+  background-color: #F6B2DB ;
+  text-align: center;
+}
+
+h4.date {
+  color: black ;
+  font-family: Times;
+  font-size: "34px";
+  text-align: center;
+}
+
+h4.author {
+  color: black;
+  font-size: "34px";
+  font-family: Times;
+  text-align: center;
+}
+
+
+h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Times;
+  
+}
+
+body, p, h2{
+  color: black; 
+  font-family: Times;
+}
+
+hr {
+  height:5px;
+  border-width:0;
+  background-color: black ;
+}
+
+
+
+```
 
 ```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
 library(ggplot2)
@@ -52,28 +103,29 @@ library(moonBook)
 library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
+```
 
-# REad in my Functions
-rmarkdown::render("/Users/danielacossio/Documents/Chrastil_Lab/Scripts/UsefulScripts/Functions.Rmd")
+```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
+
+# The most currrent run and data alives on my imac not google drive
+
+# Reading in our paths when working on Imac
+
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+
+# Paths when on laptop
 
 Acc_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
 
 PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-
 Acc_sub_info <- CleanSubInfo('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv')
 
+
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 ```
 
-```{css, echo=FALSE}
-h1, h2 {
-  text-align: center;
-  color: darkblue;
-  font-weight: bold;
-}
-```
+
 
 ```{r,echo=FALSE, results='hide',message=FALSE}
 

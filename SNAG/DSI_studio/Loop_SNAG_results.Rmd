@@ -353,17 +353,33 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 #### Rad3 {.tabset .tabset-pills}
 ##### Summary
 
-**QA** 
-All:FDR = 0.000760
-Female:
-Male:
-Pre :
-Peri:
-Post:
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**QA FDRs **     
+All: **(<span style="color: LightSeaGreen;"> - </span>) 0.000760**   
+Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.029793** | **(+) 0.005420**    
+Male: **(<span style="color: LightSeaGreen;"> - </span>) 0.040864** | (<span style="color: MediumOrchid;"> + </span>) 0.184615     
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.020932** | (<span style="color: MediumOrchid;"> + </span>) 0.068586     
+Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.048013**    
+Post: No Significant Tracts
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs **  
+  All: (<span style="color: LightSeaGreen;"> - </span>) 0.111613   
+  Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.007040**     
+  Male:  **(<span style="color: MediumOrchid;"> + </span>) 0.011441**    
+  Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.046384**      
+  Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.014336**    
+  Post: (<span style="color: LightSeaGreen;"> - </span>) 0.064846
+:::
+::::::
 
 <!-- Increased QA in many tracts outside of the limbic area are associated with a lower position error. Many regions involved in motor functions and movements showed negative associations with PE. Better white matter integrity in these regions corresponded to lower position error. In females, QA is negatively associated with tracts involved in motor/sensory input, corpus callosum body/tapetum and the cingulum frontal-parietal  bundle. The corpus callosum forceps (major and minor), and cingulum frontal parahippocampal appear to be positively associated with performance, greater QA values are associated with greater PE. suggesting that, reliance on the regions may lead to inefficient path integration. -->
 
 <!-- in all subjects, MD is negatively associated with PE in limbic regions. Lower MD (better WM) is associated with higher MD. Suggesting that perhaps midlife adults are not relying on limbic regions to successfully navigate. In women, this relationship is maintained. Males display an opposite relationship with lower MD (better wm) being asscoaicted with lower PE (better performance ). Suggesting that in males, better WM in limbic regions is necessary for better path integration.  -->
+<br><br>
 
 <hr> 
 
@@ -804,6 +820,37 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/PE/rad3pe.post.md.neg.csv
 
 #### Average {.tabset .tabset-pills}
 
+##### Summary 
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**QA FDRs **  
+All: (<span style="color: LightSeaGreen;"> - </span>) 0.067564 | **(<span style="color: MediumOrchid;"> + </span>) 0.015957**       
+Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.001030** | **(<span style="color: MediumOrchid;"> + </span>) 0.002551**    
+Male: **(<span style="color: LightSeaGreen;"> - </span>) 0.017570**   
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.037464** | (<span style="color: MediumOrchid;"> + </span>) 0.163683   
+Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.034684**  
+Post:  (<span style="color: LightSeaGreen;"> - </span>) 0.145591  
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs **  
+  All: **(<span style="color: LightSeaGreen;"> - </span>) 0.000150**
+  Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.000147**     
+  Male:  **(<span style="color: MediumOrchid;"> + </span>) 0.006360**    
+  Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.032327**      
+  Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.018830**    
+  Post: (<span style="color: LightSeaGreen;"> - </span>) 0.088732
+:::
+::::::
+
+<br><br>
+
+<hr> 
+
+<br><br> 
+
+
 ##### QA {.tabset .tabset-pills}
 ###### All subject
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
@@ -1000,6 +1047,36 @@ TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/avgpe.post.md.neg.csv
 ### **Degrees Traveled** {.tabset .tabset-dropdown} 
 #### Rad3 {.tabset .tabset-pills}
 ##### summary
+
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**QA FDRs **  
+All: **(<span style="color: MediumOrchid;"> + </span>) 0.000549**         
+Female: **(<span style="color: MediumOrchid;"> + </span>) 0.000189**     
+Male: (<span style="color: MediumOrchid;"> + </span>) 0.082808   
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.007108**  | (<span style="color: MediumOrchid;"> + </span>) 0.077631        
+Peri: (<span style="color: LightSeaGreen;"> - </span>) 0.068688     
+Post: No significant Results
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs **  
+  All: **(<span style="color: MediumOrchid;"> + </span>) 0.019884**         
+  Female: No significant Tracts     
+  Male: No significant Tracts    
+  Pre : (<span style="color: MediumOrchid;"> + </span>) 0.135399        
+  Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.023040**     
+  Post: **(<span style="color: LightSeaGreen;"> - </span>) 0.035402**
+:::
+::::::
+
+<br><br>
+
+<hr> 
+
+<br><br> 
+
 ##### QA {.tabset .tabset-pills}
 ###### All subject
 
@@ -1120,6 +1197,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.male.qa.pos.csv
 <!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME</strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.077631)</strong> </span>
+
 ```{r,echo=FALSE,message=FALSE}
 
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.pre.qa.pos.csv")))
@@ -1127,6 +1205,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.pre.qa.pos.csv"
 <br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.007108)</strong> </span>
+
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.pre.qa.neg.csv")))
 ```
@@ -1142,11 +1221,14 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.pre.qa.neg.csv"
 
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.068688)</strong> </span>
+
 ```{r,echo=FALSE,message=FALSE}
 
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/rad3de.peri.qa.neg.csv")))
 ```
+
 <hr>
+
 <br><br><br><br>
 
 
@@ -1221,6 +1303,7 @@ pdf(file = paste0("/Users/danielacossio/Downloads/","fornix_MD_DE.pdf"),width=12
 ###### Females
 
 No results
+
 <br><br><br>
 
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
@@ -1246,30 +1329,80 @@ No results
 ###### Males
 
 No results
+
 <br><br><br>
 
 <hr>
 
 ###### Pre
 
-<br><br><br>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.135399 )</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/rad3de.pre.md.pos.csv")))
+```
+
+<br><br>
 
 <hr>
 
+<br><br>
+
 ###### Peri
 
-<br><br><br>
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =0.023040)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/rad3de.peri.md.neg.csv")))
+```
+
+<br><br><br><br>
 
 <hr>
 
 ###### Post
 
-<br><br><br>
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =0.035402)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/rad3de.post.neg.csv")))
+```
+
+<br><br><br><br>
 
 <hr>
 
 
 #### average {.tabset .tabset-pills}
+##### Summary 
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**QA FDRs **  
+All: **(<span style="color: MediumOrchid;"> + </span>) 0.000385**         
+Female: **(<span style="color: MediumOrchid;"> + </span>) 0.000577**     
+Male: (<span style="color: LightSeaGreen;"> - </span>) 0.149973  | **(<span style="color: MediumOrchid;"> + </span>) 0.013758**    
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.006990**  | **(<span style="color: MediumOrchid;"> + </span>) 0.017587**        
+Peri: No significant Results    
+Post: No significant Results
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs **  
+  All: **(<span style="color: MediumOrchid;"> + </span>) 0.000194**         
+  Female: **(<span style="color: MediumOrchid;"> + </span>) 0.006897**     
+  Male: **(<span style="color: MediumOrchid;"> + </span>) 0.036723**    
+  Pre : (<span style="color: MediumOrchid;"> + </span>) 0.140900        
+  Peri: (<span style="color: LightSeaGreen;"> - </span>) 0.080523     
+  Post: (<span style="color: LightSeaGreen;"> - </span>) 0.087945
+:::
+::::::
+
+<br><br>
+
+<hr>
+
+<br><br>
+
 ##### QA {.tabset .tabset-pills}
 ###### all subs
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
@@ -1284,6 +1417,7 @@ No results
 <!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME </strong> </p> -->
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000385 )</strong> </span>
+
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.all.qa.pos.csv")))
 ```
@@ -1312,6 +1446,7 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.all.qa.pos.csv")
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.male.qa.pos.csv")))
 ```
+
 <br>
 
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =0.149973)</strong> </span>
@@ -1452,6 +1587,38 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.post.md.neg.csv"
 
 ### **Angular Error** {.tabset .tabset-dropdown}
 #### Rad3 {.tabset .tabset-pills}
+##### Summary 
+
+::::::{style="display: flex;"}
+
+:::{.column width="50%"} 
+**QA FDRs **  
+All: **(<span style="color: LightSeaGreen;"> - </span>) 0.000151**         
+Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.009456**  | **(<span style="color: MediumOrchid;"> + </span>) 0.007463**    
+Male: **(<span style="color: LightSeaGreen;"> - </span>) 0.015257**  | (<span style="color: MediumOrchid;"> + </span>) 0.198113    
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.027984**  | (<span style="color: MediumOrchid;"> + </span>) 0.087579     
+Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.029396**    
+Post: No significant Results
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs **  
+  All: **(<span style="color: LightSeaGreen;"> - </span>) 0.057542**         
+  Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.001810**     
+  Male: **(<span style="color: MediumOrchid;"> + </span>) 0.027344**    
+  Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.035685**      
+  Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.017843**     
+  Post: No significant Results
+:::
+::::::
+
+
+<br><br>
+
+<hr>
+
+<br><br>
+
 ##### QA {.tabset .tabset-pills}
 ###### all subs
 
@@ -1634,6 +1801,38 @@ No results
 
 
 #### Average {.tabset .tabset-pills}
+##### Summary 
+
+
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**QA FDRs **  
+All: **(<span style="color: LightSeaGreen;"> - </span>) 0.000151**         
+Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.009456**  | **(<span style="color: MediumOrchid;"> + </span>)  0.007463**    
+Male: **(<span style="color: LightSeaGreen;"> - </span>) 0.015257**  | (<span style="color: MediumOrchid;"> + </span>)  0.198113    
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.027984**  | (<span style="color: MediumOrchid;"> + </span>)  0.087579     
+Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.029396**    
+Post: No significant Results
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs **  
+  All: **(<span style="color: LightSeaGreen;"> - </span>) 0.002809** | (<span style="color: MediumOrchid;"> + </span>)  0.079505        
+  Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.007988** | (<span style="color: MediumOrchid;"> + </span>)   0.176768     
+  Male: **(<span style="color: MediumOrchid;"> + </span>)  0.036479**    
+  Pre : (<span style="color: LightSeaGreen;"> - </span>) 0.055238      
+  Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.004026**     
+  Post: **(<span style="color: LightSeaGreen;"> - </span>) 0.041597**  
+:::
+::::::
+
+<br><br>
+
+<hr>
+
+<br><br>
+
 ##### QA {.tabset .tabset-pills}
 ###### all subs
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
