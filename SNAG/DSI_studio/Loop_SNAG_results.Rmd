@@ -109,8 +109,8 @@ library(markdown)
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
- working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+ #working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
@@ -140,7 +140,7 @@ CleanInput <- function(DF){
               t() %>% 
                 `colnames<-`(rows2grab) %>% 
                   as.data.frame() %>% 
-                    `[`(-c(1),) 
+                    `[`(-c(1),)
     
   } else{
     
@@ -149,8 +149,7 @@ CleanInput <- function(DF){
         t() %>% 
             `colnames<-`(rows2grab) %>% 
                 `[`(-c(1),) %>% 
-                    as.data.frame() %>% 
-                      arrange(`Tract Name`)
+                    as.data.frame() 
   }
  
           
@@ -342,13 +341,29 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 ## **Results**  
 
+### Behavior
+
+<br><br><br><br>
+
+<hr>
+
+
 ### **Position Error**   {.tabset .tabset-dropdown} 
 
 #### Rad3 {.tabset .tabset-pills}
 ##### Summary
-Increased QA in many tracts outside of the limbic area are associated with a lower position error. Many regions involved in motor functions and movements showed negative associations with PE. Better white matter integrity in these regions corresponded to lower position error. In females, QA is negatively associated with tracts involved in motor/sensory input, corpus callosum body/taptum and the cingulum frontal-parietal  bundle. The corpus callosum forceps (major and minor), and congulum frontal parahippocampal appear to be positively associated with performance, greater QA values are associated with greater PE. suggesting that, reliance on the regions may lead to inefficient path integration.
 
-in all subjects, MD is negatively associated with PE in limbic regions. Lower MD (better WM) is associated with higher MD. Suggesting that perhaps midlife adults are not relying on limbic regions to successfully navigate. In women, this relationship is maintained. Males display an opposite relationship with lower MD (better wm) being asscoaicted with lower PE (better performance ). Suggesting that in males, better WM in limbic regions is necessary for better path integration. 
+**QA** 
+All:FDR = 0.000760
+Female:
+Male:
+Pre :
+Peri:
+Post:
+
+<!-- Increased QA in many tracts outside of the limbic area are associated with a lower position error. Many regions involved in motor functions and movements showed negative associations with PE. Better white matter integrity in these regions corresponded to lower position error. In females, QA is negatively associated with tracts involved in motor/sensory input, corpus callosum body/tapetum and the cingulum frontal-parietal  bundle. The corpus callosum forceps (major and minor), and cingulum frontal parahippocampal appear to be positively associated with performance, greater QA values are associated with greater PE. suggesting that, reliance on the regions may lead to inefficient path integration. -->
+
+<!-- in all subjects, MD is negatively associated with PE in limbic regions. Lower MD (better WM) is associated with higher MD. Suggesting that perhaps midlife adults are not relying on limbic regions to successfully navigate. In women, this relationship is maintained. Males display an opposite relationship with lower MD (better wm) being asscoaicted with lower PE (better performance ). Suggesting that in males, better WM in limbic regions is necessary for better path integration.  -->
 
 <hr> 
 
@@ -982,7 +997,7 @@ TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/avgpe.post.md.neg.csv
 <br><br><br><br>
 
 
-### <span style="color: darkorange;"> **Degrees Traveled** </span>  {.tabset .tabset-dropdown} 
+### **Degrees Traveled** {.tabset .tabset-dropdown} 
 #### Rad3 {.tabset .tabset-pills}
 ##### summary
 ##### QA {.tabset .tabset-pills}
@@ -1204,6 +1219,10 @@ pdf(file = paste0("/Users/danielacossio/Downloads/","fornix_MD_DE.pdf"),width=12
 <br><br><br><br>
 
 ###### Females
+
+No results
+<br><br><br>
+
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 <!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.100772)</strong> </span> -->
 <!-- ```{r,echo=FALSE,message=FALSE} -->
@@ -1225,20 +1244,30 @@ pdf(file = paste0("/Users/danielacossio/Downloads/","fornix_MD_DE.pdf"),width=12
 
 
 ###### Males
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
 No results
 <br><br><br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>Previous run</strong> </p>
-
-No results
-<br><br><br><br>
 <hr>
 
 ###### Pre
+
+<br><br><br>
+
+<hr>
+
 ###### Peri
+
+<br><br><br>
+
+<hr>
+
 ###### Post
+
+<br><br><br>
+
+<hr>
+
 
 #### average {.tabset .tabset-pills}
 ##### QA {.tabset .tabset-pills}
@@ -1259,6 +1288,8 @@ No results
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.all.qa.pos.csv")))
 ```
 <br><br><br><br>
+
+<hr>
 
 ###### males
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
@@ -1289,6 +1320,8 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.male.qa.neg.csv"
 ```
 <br><br><br><br>
 
+<hr>
+
 ###### females
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
@@ -1307,6 +1340,8 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.fem.qa.pos.csv")
 ```
 
 <br><br><br><br>
+
+<hr>
 
 ###### pre
 <!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
@@ -1329,8 +1364,20 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.neg.csv")
 ```
 <br><br><br><br>
 
+<hr>
+
 ###### peri
+
+<br><br><br><br>
+
+<hr>
+
+
 ###### post
+
+<br><br><br><br>
+
+<hr>
 
 
 ##### MD {.tabset .tabset-pills}
@@ -1340,13 +1387,70 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/DE/nofname/avgde.pre.qa.neg.csv")
 TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.all.md.pos.csv")))
 ```
 
+<br><br><br><br>
+
+<hr>
+
 ###### males
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.036723)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.male.md.pos.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### females
+
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.006897)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.fem.md.pos.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### pre
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.140900)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.pre.md.pos.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### peri
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.080523)</strong> </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.peri.md.neg.csv")))
+```
+<br><br><br><br>
+
+<hr>
+
 ###### post
 
-### <span style="color: darkorange;"> **Angular Error** </span>  {.tabset .tabset-dropdown}
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong> Negative  (FDR = 0.087945)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/DE/avgde.post.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+### **Angular Error** {.tabset .tabset-dropdown}
 #### Rad3 {.tabset .tabset-pills}
 ##### QA {.tabset .tabset-pills}
 ###### all subs
@@ -1451,10 +1555,83 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.peri.qa.neg.csv
 
 <br><br><br><br>
 
+<hr>
+
+###### post
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.041597)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/rad3ae.peri.qa.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+
 ##### MD {.tabset .tabset-pills}
 ###### all subs
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.057542)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/rad3ae.all.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### males
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.027344)</strong> </span>
+
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/rad3ae.male.md.pos.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### females
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.001810)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/rad3ae.fem.all.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+###### pre
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.035685)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/rad3ae.pre.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+###### peri
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.017843)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/rad3ae.peri.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+###### post
+
+No results
+
+<br><br><br><br>
+
+<hr>
+
 
 #### Average {.tabset .tabset-pills}
 ##### QA {.tabset .tabset-pills}
@@ -1567,9 +1744,84 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/AE/nofname/avgae.post.qa.neg.csv"
 
 ##### MD {.tabset .tabset-pills}
 ###### all subs
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.079505)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.all.md.pos.csv")))
+```
+
+<br><br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.002809)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.all.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### males
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.036479)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.male.md.pos.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
 ###### females
 
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR =  0.079505)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.fem.md.pos.csv")))
+```
+
+<br><br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.007988)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/avgae.fem.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+###### Pre
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.055238)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.pre.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+###### Peri
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.004026)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.peri.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
+
+###### Post
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR =  0.041597)</strong> </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.post.md.neg.csv")))
+```
+
+<br><br><br><br>
+
+<hr>
 
 
 
