@@ -113,12 +113,6 @@ library(markdown)
 
 working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
 
-# Paths when on laptop
-
-Acc_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Accuracy/"
-
-PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
-
 Acc_sub_info <- CleanSubInfo('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/maze_subinfo.csv')
 
 
