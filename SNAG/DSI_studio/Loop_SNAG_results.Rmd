@@ -115,7 +115,7 @@ working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_re
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
 
-# sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
+ #sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
 
 sub_info <- read.csv(paste0(working_dir,"subject_info.csv"))
 ```
@@ -243,7 +243,6 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 
 <hr> 
 
-<br><br><br>
 
 ### **Loop**
 
@@ -271,9 +270,10 @@ Post = 17 <br>
 :::
 ::::::
 
+<br><br>
 <hr> 
 
-<br><br><br><br><br>
+
 
 
   
@@ -281,10 +281,11 @@ Post = 17 <br>
 ### **Scan parameters** 
 
   * Locations from UCSB and UCI
+<br><br>
 
 <hr> 
 
-<br><br><br><br><br><br><br>
+
 
 
 
@@ -297,7 +298,7 @@ Post = 17 <br>
     * hmc_model **3dSHORE** 
     * hmc-transform **Rigid** 
     * shoreline_iters **2**
-<br><br><br><br><br>
+<br><br>
 
 <hr> 
 
@@ -335,17 +336,208 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 <hr>
 
-<br><br><br> 
-
-
-
 ## **Results**  
 
-### Behavior
+<br>
+
+### Behavior {.tabset .tabset-pills} 
+
+#### Summary 
+Let's double check for any sex differences in midlife adults here.
+
+No sex differences for PE, or AE. Sex differences for degrees traveled with men undershooting and women overshooting. 
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+
+# creating our separated databases
+
+m_subinfo <- sub_info %>% filter(sex == "Male")
+f_subinfo <- sub_info %>% filter(sex == "Female")
+```
 
 <br><br><br><br>
 
 <hr>
+
+#### Position Error
+
+Males are normally distributed on PE
+
+**Average**
+```{r,echo=FALSE, warning='hide',message=FALSE}
+p1 <- ggplot(m_subinfo, aes(x=loop_ae_avg_degree)) +geom_histogram(bins=10,fill="#028476") +labs(title="male")
+shapiro.test(m_subinfo$loop_pe_avg_m) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+**rad3**
+```{r,echo=FALSE, warning='hide',message=FALSE}
+p2 <- ggplot(m_subinfo, aes(x=loop_ae_rad3_degree)) +geom_histogram(bins=10,fill="#028476") +labs(title="male")
+shapiro.test(m_subinfo$loop_pe_rad3_m)%>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+```{r,  echo=FALSE, warning=FALSE,message=FALSE,out.width="50%"}
+grid.arrange(p1, p2, nrow = 1)
+```
+
+<br>
+
+**Average**
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+p3 <- ggplot(f_subinfo, aes(x=loop_pe_avg_m)) +geom_histogram(bins=10,fill="#FB6B90")+labs(title="female")
+F_PE_avg_norm <- shapiro.test(f_subinfo$loop_pe_avg_m) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+**rad3**
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+p4 <- ggplot(f_subinfo, aes(x=loop_pe_rad3_m)) +geom_histogram(bins=10,fill="#FB6B90")+labs(title="female")
+F_PE_rad3_norm <- shapiro.test(f_subinfo$loop_pe_rad3_m)
+```
+
+```{r, message=FALSE,echo=FALSE, warning=FALSE,out.width="50%"}
+grid.arrange(p3,p4, nrow = 1)
+
+```
+
+<br><br>
+
+No sex differences for  average position error
+```{r Sex differences, echo=FALSE,message=FALSE}
+t.test(m_subinfo$loop_pe_avg_m,f_subinfo$loop_pe_avg_m) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling(full_width = F)
+
+```
+
+No sex differences for  rad3 position error
+```{r Sex differences rad3,warnings=FALSE, echo=FALSE,message=FALSE}
+t.test(m_subinfo$loop_pe_rad3_m,f_subinfo$loop_pe_rad3_m) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling(full_width = F)
+
+```
+
+
+<br><br>
+
+<hr>
+
+
+#### Angular Error
+
+Both Avg and Rad3 are normally distributed  
+
+**Avg**
+```{r, echo=FALSE,message=FALSE}
+# Let's check out normality 
+shapiro.test(m_subinfo$loop_ae_avg_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+**Rad3**
+```{r, echo=FALSE,message=FALSE}
+shapiro.test(m_subinfo$loop_ae_rad3_degree)%>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+```{r,  echo=FALSE, warning=FALSE,message=FALSE,out.width="50%"}
+p1 <- ggplot(m_subinfo, aes(x=loop_ae_avg_degree)) +geom_histogram(bins=10,fill="#028476") +labs(title="male")
+p2 <- ggplot(m_subinfo, aes(x=loop_ae_rad3_degree)) +geom_histogram(bins=10,fill="#028476") +labs(title="male")
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+<br>
+
+Average angular error for females is not normally distributed 
+```{r, echo=FALSE,message=FALSE}
+p3 <- ggplot(f_subinfo, aes(x=loop_ae_avg_degree)) +geom_histogram(bins=10,fill="#FB6B90")+labs(title="female")
+
+shapiro.test(f_subinfo$loop_ae_avg_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+**rad3**
+```{r, echo=FALSE,message=FALSE}
+p4 <- ggplot(f_subinfo, aes(x=loop_ae_rad3_degree)) +geom_histogram(bins=10,fill="#FB6B90")+labs(title="female")
+
+shapiro.test(f_subinfo$loop_ae_rad3_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+```{r,  echo=FALSE, warning=FALSE,message=FALSE,out.width="50%"}
+grid.arrange(p3,p4, nrow = 1)
+```
+
+
+<br><br>
+
+No sex differences for  average position error. Used wilcox test since females are not normally distributed
+```{r , echo=FALSE,message=FALSE}
+wilcox.test(m_subinfo$loop_ae_avg_degree,f_subinfo$loop_ae_avg_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+
+```
+
+<br>
+No sex differences for  rad3 position error
+```{r ,warnings=FALSE, echo=FALSE,message=FALSE}
+t.test(m_subinfo$loop_ae_rad3_degree,f_subinfo$loop_ae_rad3_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling(full_width = F)
+
+```
+
+<br><br>
+
+<hr>
+
+#### Degrees Traveled
+ 
+
+**Avg**
+```{r, echo=FALSE,message=FALSE}
+# Let's check out normality 
+p1 <- ggplot(m_subinfo, aes(x=loop_de_avg_degree)) +geom_histogram(bins=10,fill="#028476") +labs(title="male")
+
+shapiro.test(m_subinfo$loop_de_avg_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+**Rad3**: Not normally distributed
+```{r, echo=FALSE,message=FALSE}
+p2 <- ggplot(m_subinfo, aes(x=loop_de_rad3_degree)) +geom_histogram(bins=10,fill="#028476") +labs(title="male")
+
+shapiro.test(m_subinfo$loop_de_rad3_degree)%>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+```{r,  echo=FALSE, warning=FALSE,message=FALSE, out.height="50%"}
+grid.arrange( p1,p2, nrow = 1)
+```
+
+<br>
+
+Average angular error for females is not normally distributed 
+```{r, echo=FALSE,message=FALSE}
+p3 <- ggplot(f_subinfo, aes(x=loop_de_avg_degree)) +geom_histogram(bins=10,fill="#FB6B90")+labs(title="female")
+
+shapiro.test(f_subinfo$loop_de_avg_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+**rad3**
+```{r, echo=FALSE,message=FALSE}
+p4 <- ggplot(f_subinfo, aes(x=loop_de_rad3_degree)) +geom_histogram(bins=10,fill="#FB6B90")+labs(title="female")
+
+shapiro.test(f_subinfo$loop_de_rad3_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling()
+```
+
+```{r,  echo=FALSE, warning=FALSE,message=FALSE, out.height="50%"}
+grid.arrange( p3,p4, nrow = 1)
+```
+
+
+Sex differences in average degrees traveled. Males had an average of `r mean(m_subinfo$loop_de_avg_degree,na.rm = TRUE,trim = 0.3)` degrees traveled compared to females `r mean(f_subinfo$loop_de_avg_degree,na.rm = TRUE,trim = 0.3)` 
+
+```{r , echo=FALSE,message=FALSE}
+t.test(m_subinfo$loop_de_avg_degree,f_subinfo$loop_de_avg_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling(full_width = F)
+
+```
+
+Sex differences in rad3 degrees traveled. Males had an average of `r mean(m_subinfo$loop_de_rad3_degree,na.rm = TRUE,trim = 0.3)` degrees traveled compared to females `r mean(f_subinfo$loop_de_rad3_degree,na.rm = TRUE,trim = 0.3)`
+
+```{r ,warnings=FALSE, echo=FALSE,message=FALSE}
+wilcox.test(m_subinfo$loop_de_rad3_degree,f_subinfo$loop_de_rad3_degree) %>% broom::tidy() %>% knitr::kable() %>%  kable_styling(full_width = F)
+
+```
+
+
 
 
 ### **Position Error**   {.tabset .tabset-dropdown} 
@@ -401,6 +593,7 @@ Post: No Significant Tracts
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.000760)</strong> </span>
 ```{r, echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("Loop/QA/PE/noFNAME/rad3pe.all.qa.neg.csv")))
+
 ```
 
 
