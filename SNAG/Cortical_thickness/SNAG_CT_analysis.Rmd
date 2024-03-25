@@ -1,0 +1,172 @@
+---
+title: "SNAG Cortical Thickness"
+author: "Daniela Cossio"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    classoption:
+    - twocolumn
+---
+
+```{css, echo=FALSE}
+TOC {
+  color: #F6B2DB;
+  font-family: Times;
+  font-size: "16px"; 
+  border-color: #F6B2DB;
+}
+
+h1.title {
+  color: black ;
+  font-family: Times;
+  font-size: "72px";
+  padding: "10px 0";
+  background-color: #F6B2DB ;
+  text-align: center;
+}
+
+h4.date {
+  color: black ;
+  font-family: Times;
+  font-size: "34px";
+  text-align: center;
+}
+
+h4.author {
+  color: black;
+  font-size: "34px";
+  font-family: Times;
+  text-align: center;
+}
+
+
+h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Times;
+  
+}
+
+body, p, h2{
+  color: black; 
+  font-family: Times;
+}
+
+hr {
+  height:5px;
+  border-width:0;
+  background-color: black ;
+}
+
+
+
+```
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 100)
+```
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(ppcor)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+```
+
+```{r, Functions, echo=FALSE, results='hide',message=FALSE}
+
+ReadingCSVFunc <- function(pathname){
+  
+  
+  read.csv(paste0(working_dir, pathname), header=TRUE)
+  
+  
+  
+}
+
+CleanDF <- function(DF,Variable){
+  
+  
+  
+  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years","repo_status", Variable)) 
+  
+  cleanedDF <- cbind(subinfo, DF) %>% na.omit() 
+  
+    return (cleanedDF)
+}
+
+
+```
+
+```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
+
+#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/"
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/" # Laptop path
+
+sub_info <- ReadingCSVFunc("subject_info.csv")%>% filter(!(subject_id %in% c("309", "341")))
+
+atlas_rois <- ReadingCSVFunc("Schaefer2018_200Parcels_17Networks_order_FSLMNI152_1mm.Centroid_RAS.csv")
+
+col_names <-c("subject_id",atlas_rois$ROI.Name)
+  
+CT_df <- ReadingCSVFunc("master_corticalthicknessROIs.csv") %>% `colnames<-`(col_names) %>%  arrange(subject_id) 
+
+
+```
+
+# Overview and Hypothesis 
+Let's choose a few apriori regions to follow up with. In  this case, I believe we can go with the somatosensory motor L and R.
+
+
+# Path integration results 
+## Position Error
+### Average Angular error
+```{r,echo=FALSE, results='hide',message=FALSE}
+
+AE_ave_df <-CleanDF(CT_df,"loop_ae_avg_degree")ß
+
+
+```
+
+```{r, Partial correlations with average}
+
+pcor.test(AE_ave_df$  )
+```
+
+
+
