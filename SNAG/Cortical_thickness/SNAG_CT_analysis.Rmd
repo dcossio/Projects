@@ -121,11 +121,15 @@ ReadingCSVFunc <- function(pathname){
 
 CleanDF <- function(DF,Variable){
   
+  DF <- DF %>% select(-c("subject_id"))
   
+  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years","repo_status",Variable))
   
-  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years","repo_status", Variable)) 
+  cleanedDF <- cbind(subinfo, DF) %>% drop_na()
   
-  cleanedDF <- cbind(subinfo, DF) %>% na.omit() 
+  cleanedDF$sex[cleanedDF$sex=="Male"] <- 1 
+  cleanedDF$sex[cleanedDF$sex=="Female"] <- 0
+  cleanedDF$sex <- as.numeric(cleanedDF$sex)
   
     return (cleanedDF)
 }
@@ -158,14 +162,20 @@ Let's choose a few apriori regions to follow up with. In  this case, I believe w
 ### Average Angular error
 ```{r,echo=FALSE, results='hide',message=FALSE}
 
-AE_ave_df <-CleanDF(CT_df,"loop_ae_avg_degree")ß
+AE_ave_df <-CleanDF(CT_df,"loop_ae_avg_degree")
+
+M_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==1)
+F_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==0)
 
 
+SomMotA_network <- AE_ave_df %>% mutate(SomMotA = rowMeans(AE_ave_df[,c("17Networks_LH_SomMotA_1","17Networks_LH_SomMotA_2","17Networks_LH_SomMotA_3","17Networks_LH_SomMotA_4","17Networks_LH_SomMotA_5","17Networks_LH_SomMotA_6","17Networks_LH_SomMotA_7","17Networks_LH_SomMotA_8")]))
 ```
+
+Preliminary : LH_SomMotA_2 =0.044
 
 ```{r, Partial correlations with average}
 
-pcor.test(AE_ave_df$  )
+pcor.test(x=M_AE_ave_df["loop_ae_avg_degree"],y=M_AE_ave_df["17Networks_RH_SomMotA_6"],z= M_AE_ave_df[,c("age_scan_years")])
 ```
 
 
