@@ -171,6 +171,9 @@ F_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==0)
 SomMotA_network <- AE_ave_df %>% mutate(SomMotA = rowMeans(AE_ave_df[,c("17Networks_LH_SomMotA_1","17Networks_LH_SomMotA_2","17Networks_LH_SomMotA_3","17Networks_LH_SomMotA_4","17Networks_LH_SomMotA_5","17Networks_LH_SomMotA_6","17Networks_LH_SomMotA_7","17Networks_LH_SomMotA_8")]))
 ```
 
+Let's try and look at scatter plots of our ROIs and our things. Out of 200 parcellations, let's focus on a lower ammount.
+
+
 Preliminary : LH_SomMotA_2 =0.044
 
 ```{r, Partial correlations with average}
@@ -178,5 +181,6 @@ Preliminary : LH_SomMotA_2 =0.044
 pcor.test(x=M_AE_ave_df["loop_ae_avg_degree"],y=M_AE_ave_df["17Networks_RH_SomMotA_6"],z= M_AE_ave_df[,c("age_scan_years")])
 ```
 
+# ROIs
 
 
