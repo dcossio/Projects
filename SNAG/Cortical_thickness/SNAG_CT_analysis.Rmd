@@ -112,6 +112,8 @@ library(markdown)
 
 ReadingCSVFunc <- function(pathname){
   
+   #' @description: purpose of this is to read in CSVs and clean them up 
+  #' @return: DF
   
   read.csv(paste0(working_dir, pathname), header=TRUE)
   
@@ -135,20 +137,32 @@ CleanDF <- function(DF,Variable){
 }
 
 
+SelectAtlas <- function(Parcel,NetworkNum){
+  #' @description: purpose of this is to read in and extract the ROIs from schaefer atlas you choose
+  #' @return: A list of all the ROIs
+  
+  atlas_path <- ReadingCSVFunc(paste0("Schaefer2018_",Parcel,"Parcels_",NetworkNum, "Networks_order_FSLMNI152_1mm.Centroid_RAS.csv"))
+  
+  col_names <-c("subject_id",atlas_path$ROI.Name)
+  
+  return(col_names)
+}
+
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 
-#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/"
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/" # Laptop path
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/"
+#working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/" # Laptop path
 
 sub_info <- ReadingCSVFunc("subject_info.csv")%>% filter(!(subject_id %in% c("309", "341")))
 
-atlas_rois <- ReadingCSVFunc("Schaefer2018_200Parcels_17Networks_order_FSLMNI152_1mm.Centroid_RAS.csv")
 
-col_names <-c("subject_id",atlas_rois$ROI.Name)
-  
-CT_df <- ReadingCSVFunc("master_corticalthicknessROIs.csv") %>% `colnames<-`(col_names) %>%  arrange(subject_id) 
+CT_7network <- ReadingCSVFunc("master_CT400_parces7_networks.csv") %>% `colnames<-`(SelectAtlas(400,7)) %>%  arrange(subject_id) 
+
+CT_17network <- ReadingCSVFunc("master_CT400_parces17_networks.csv") %>% `colnames<-`(SelectAtlas(400,17)) %>%  arrange(subject_id) 
+
+
 
 
 ```
@@ -156,8 +170,12 @@ CT_df <- ReadingCSVFunc("master_corticalthicknessROIs.csv") %>% `colnames<-`(col
 # Overview and Hypothesis 
 Let's choose a few apriori regions to follow up with. In  this case, I believe we can go with the somatosensory motor L and R.
 
+General approach : Do correlation between each parcellation and variable and then average by network. 
+
 
 # Path integration results 
+
+
 ## Position Error
 ### Average Angular error
 ```{r,echo=FALSE, results='hide',message=FALSE}
@@ -168,11 +186,41 @@ M_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==1)
 F_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==0)
 
 
-SomMotA_network <- AE_ave_df %>% mutate(SomMotA = rowMeans(AE_ave_df[,c("17Networks_LH_SomMotA_1","17Networks_LH_SomMotA_2","17Networks_LH_SomMotA_3","17Networks_LH_SomMotA_4","17Networks_LH_SomMotA_5","17Networks_LH_SomMotA_6","17Networks_LH_SomMotA_7","17Networks_LH_SomMotA_8")]))
 ```
 
-Let's try and look at scatter plots of our ROIs and our things. Out of 200 parcellations, let's focus on a lower ammount.
+Let's try and look at scatter plots of our ROIs and our things. Out of 400 parcellations, let's focus on a lower ammount.
 
+```{r}
+
+
+
+for (ROI in colnames(QA_df[2:5])) {
+  print(ROI)
+  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
+      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
+      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
+      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
+       stat_boxplot(geom = "errorbar",
+               width = 0.15) +
+      labs(x= "Sex", y= " QA", title =paste0(ROI)) +
+      theme(axis.title.x = element_text(vjust=- 4, size = 16),
+            axis.title.y = element_text(vjust=8, size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            panel.background =element_blank(),
+            axis.line = element_line(colour = "black"),
+            plot.margin = margin(1, 2, 1, 1.5, "cm"),
+            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+
+
+    #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
+    print(y)
+    #dev.off()
+}
+
+
+
+```
 
 Preliminary : LH_SomMotA_2 =0.044
 
