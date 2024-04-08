@@ -177,56 +177,152 @@ General approach : Do correlation between each parcellation and variable and the
 
 
 ## Position Error
-### Average Angular error
+## Average Angular error
+
+Running partial correlations on our results using the 400 parcellation and 7 network. 
+
+
+
+
 ```{r,echo=FALSE, results='hide',message=FALSE}
 
-AE_ave_df <-CleanDF(CT_df,"loop_ae_avg_degree")
-
-M_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==1)
-F_AE_ave_df <- CleanDF(CT_df,"loop_ae_avg_degree") %>% filter(sex==0)
+AE_ave_df <-CleanDF(CT_7network,"loop_ae_avg_degree")
+M_AE_ave_df <- CleanDF(CT_7network,"loop_ae_avg_degree") %>% filter(sex==1)
+F_AE_ave_df <- CleanDF(CT_7network,"loop_ae_avg_degree") %>% filter(sex==0)
 
 
 ```
 
-Let's try and look at scatter plots of our ROIs and our things. Out of 400 parcellations, let's focus on a lower ammount.
+
 
 ```{r}
 
+ROIs <- SelectAtlas(400,7) %>% .[-1] # removing sibject ID
 
+plist <- list()
 
-for (ROI in colnames(QA_df[2:5])) {
+for (ROI in ROIs) {
   print(ROI)
-  y <- ggplot(QA_df, aes(x=sex, y=.data[[ROI]], group=sex)) +
-      geom_boxplot(outlier.shape = NA,width =0.5,fill= c("#CF92BF", "#D1E7E6")) +
-      geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.2) +
-      #scale_y_binned(n.breaks=10, nice.breaks = TRUE) +
-       stat_boxplot(geom = "errorbar",
-               width = 0.15) +
-      labs(x= "Sex", y= " QA", title =paste0(ROI)) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background =element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  plist[[ROI]] <- ggplot(AE_ave_df, aes(x=loop_ae_avg_degree, y=.data[[ROI]]))  +
+   geom_point(color="#502E23", size=4) +
+   geom_smooth(method="lm", level=0.95,color ="#E2929D", se=FALSE,linewidth=2) +
+    theme_classic() +
+   labs(x ="Cortical Thickness", y = "Position Error", title = ROI) +
+   theme( axis.title.x = element_text(vjust = -4,size = 16),
+      axis.text.x = element_text(size = 25),
+      axis.text.y = element_text(size = 25),
+      axis.title.y = element_text(vjust = 4, size = 16),
+      plot.title = element_text(hjust = 0.5 ,size=16),
+      panel.border = element_rect(fill=NA,color = "#502E23"),
+      panel.background =element_blank(), 
+      strip.text.x = element_text(
+        size = 16,
+        color = "black",
+        face = "bold.italic"
+      ),
+      legend.position = "right")
+      #legend.key.size = unit(2, 'cm'),
+         #legend.title = element_text(size=18), #change legend title font size
+         #legend.text = element_text(size=18),
+      #plot.margin = margin(1, 1, 1, 1, "cm")) 
 
 
     #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
-    print(y)
+    print(plist[[ROI]] )
     #dev.off()
 }
 
 
-
 ```
 
-Preliminary : LH_SomMotA_2 =0.044
+
 
 ```{r, Partial correlations with average}
 
-pcor.test(x=M_AE_ave_df["loop_ae_avg_degree"],y=M_AE_ave_df["17Networks_RH_SomMotA_6"],z= M_AE_ave_df[,c("age_scan_years")])
+ ROIs<- SelectAtlas(400,7) %>% .[-1] 
+WholeBrain_7network400parc <- list()
+
+cols <- 
+sigWB_7network400parc <-data.frame(matrix(nrow=0,ncol=7)) %>% `colnames<-`(c("roi", "estimate" ,"p.value","statistic","n","gp","Method"))
+
+for (ROI in ROIs) {
+    WholeBrain_7network400parc[[ROI]] <- pcor.test(x=AE_ave_df["loop_ae_avg_degree"],y=AE_ave_df[[ROI]],z= AE_ave_df[,c("age_scan_years", "sex")])
+    
+    if (WholeBrain_7network400parc[[ROI]][["p.value"]] < 0.05){
+      temp <-cbind(ROI,WholeBrain_7network400parc[[ROI]])
+      
+      sigWB_7network400parc <- rbind(sigWB_7network400parc,temp)
+      
+    }
+  
+}
+
+```
+
+
+```{r, 17 netowrk Partial correlations with average}
+
+WholeBrain_17network400parc <- list()
+
+ROIs<- SelectAtlas(400,17) %>% .[-1] 
+cols <- 
+sigWB_17network400parc <-data.frame(matrix(nrow=0,ncol=7)) %>% `colnames<-`(c("roi", "estimate" ,"p.value","statistic","n","gp","Method"))
+
+df <-CleanDF(CT_17network,"loop_ae_avg_degree")
+
+for (ROI in ROIs) {
+    WholeBrain_17network400parc[[ROI]] <- pcor.test(x=df["loop_ae_avg_degree"],y=df[[ROI]],z= df[,c("age_scan_years", "sex")])
+    
+    if (WholeBrain_17network400parc[[ROI]][["p.value"]] < 0.05){
+      temp <-cbind(ROI,WholeBrain_17network400parc[[ROI]])
+      
+      sigWB_17network400parc <- rbind(sigWB_17network400parc,temp)
+      
+    }
+  
+}
+
+```
+
+```{r}
+
+ROIs<- c(sigWB_17network400parc$ROI)  # removing sibject ID
+
+plotlist <- list()
+
+for (ROI in ROIs) {
+  print(ROI)
+  plotlist[[ROI]] <- ggplot(df, aes(x=loop_ae_avg_degree, y=.data[[ROI]]))  +
+   geom_point(color="#502E23", size=4) +
+   geom_smooth(method="lm", level=0.95,color ="#E2929D", se=FALSE,linewidth=2) +
+    theme_classic() +
+   labs(x ="Cortical Thickness", y = "Position Error", title = ROI) +
+   theme( axis.title.x = element_text(vjust = -4,size = 16),
+      axis.text.x = element_text(size = 25),
+      axis.text.y = element_text(size = 25),
+      axis.title.y = element_text(vjust = 4, size = 16),
+      plot.title = element_text(hjust = 0.5 ,size=16),
+      panel.border = element_rect(fill=NA,color = "#502E23"),
+      panel.background =element_blank(), 
+      strip.text.x = element_text(
+        size = 16,
+        color = "black",
+        face = "bold.italic"
+      ),
+      legend.position = "right")+
+    stat_cor( method = "pearson")
+      #legend.key.size = unit(2, 'cm'),
+         #legend.title = element_text(size=18), #change legend title font size
+         #legend.text = element_text(size=18),
+      #plot.margin = margin(1, 1, 1, 1, "cm")) 
+
+
+    #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
+    print(plotlist[[ROI]] )
+    #dev.off()
+}
+
+
 ```
 
 # ROIs
