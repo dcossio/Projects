@@ -43,7 +43,7 @@ h4.author {
 }
 
 
-h2, h3, h4, h5 ,h6 {
+h1,h2, h3, h4, h5 ,h6 {
   text-align: center;
   font-family: Times;
   
@@ -116,10 +116,13 @@ ReadingCSVFunc <- function(pathname){
   #' @return: DF
   
   read.csv(paste0(working_dir, pathname), header=TRUE)
-  
-  
-  
+
 }
+
+TableOutput <- function(df){
+      knitr::kable(df, row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "600px", height = "300px")
+    
+  }
 
 CleanDF <- function(DF,Variable){
   
@@ -142,7 +145,7 @@ SelectAtlas <- function(Parcel,NetworkNum){
   #' @return: A list of all the ROIs
   
   atlas_path <- ReadingCSVFunc(paste0("Schaefer2018_",Parcel,"Parcels_",NetworkNum, "Networks_order_FSLMNI152_1mm.Centroid_RAS.csv"))
-  
+  atlas_path$ROI.Name <- str_remove(atlas_path$ROI.Name,paste0(NetworkNum,"Networks_"))
   col_names <-c("subject_id",atlas_path$ROI.Name)
   
   return(col_names)
@@ -167,35 +170,36 @@ CT_17network <- ReadingCSVFunc("master_CT400_parces17_networks.csv") %>% `colnam
 
 ```
 
+<hr>
+
 # Overview and Hypothesis 
 Let's choose a few apriori regions to follow up with. In  this case, I believe we can go with the somatosensory motor L and R.
 
 General approach : Do correlation between each parcellation and variable and then average by network. 
 
+<hr>
 
 # Path integration results 
 
 
-## Position Error
-## Average Angular error
+## Degrees Traveled {.tabset .tabset-dropdown} 
+### Average {.tabset .tabset-pills} 
 
-Running partial correlations on our results using the 400 parcellation and 7 network. 
+<hr>
 
-
-
-
+## Angular error {.tabset .tabset-dropdown} 
+### Average {.tabset .tabset-pills} 
+#### All
 ```{r,echo=FALSE, results='hide',message=FALSE}
 
-AE_ave_df <-CleanDF(CT_7network,"loop_ae_avg_degree")
 M_AE_ave_df <- CleanDF(CT_7network,"loop_ae_avg_degree") %>% filter(sex==1)
-F_AE_ave_df <- CleanDF(CT_7network,"loop_ae_avg_degree") %>% filter(sex==0)
 
 
 ```
 
+```{r, echo=FALSE, results='hide',message=FALSE,fig.show='hide'}
 
-
-```{r}
+df <-CleanDF(CT_7network,"loop_ae_avg_degree")
 
 ROIs <- SelectAtlas(400,7) %>% .[-1] # removing sibject ID
 
@@ -203,7 +207,7 @@ plist <- list()
 
 for (ROI in ROIs) {
   print(ROI)
-  plist[[ROI]] <- ggplot(AE_ave_df, aes(x=loop_ae_avg_degree, y=.data[[ROI]]))  +
+  plist[[ROI]] <- ggplot(df, aes(x=loop_ae_avg_degree, y=.data[[ROI]]))  +
    geom_point(color="#502E23", size=4) +
    geom_smooth(method="lm", level=0.95,color ="#E2929D", se=FALSE,linewidth=2) +
     theme_classic() +
@@ -228,7 +232,7 @@ for (ROI in ROIs) {
 
 
     #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
-    print(plist[[ROI]] )
+    #print(plist[[ROI]] )
     #dev.off()
 }
 
@@ -236,9 +240,15 @@ for (ROI in ROIs) {
 ```
 
 
+Running partial correlations on our results using the 400 parcellation and 7 network. 
+Out of the 400 parcellations, these are the ones that were significant. Uncorrected pvalue. 
 
-```{r, Partial correlations with average}
+##### 7 network 
 
+```{r, Partial correlations with average, echo=FALSE, results='hide',message=FALSE}
+
+
+df <-CleanDF(CT_7network,"loop_ae_avg_degree")
  ROIs<- SelectAtlas(400,7) %>% .[-1] 
 WholeBrain_7network400parc <- list()
 
@@ -246,7 +256,7 @@ cols <-
 sigWB_7network400parc <-data.frame(matrix(nrow=0,ncol=7)) %>% `colnames<-`(c("roi", "estimate" ,"p.value","statistic","n","gp","Method"))
 
 for (ROI in ROIs) {
-    WholeBrain_7network400parc[[ROI]] <- pcor.test(x=AE_ave_df["loop_ae_avg_degree"],y=AE_ave_df[[ROI]],z= AE_ave_df[,c("age_scan_years", "sex")])
+    WholeBrain_7network400parc[[ROI]] <- pcor.test(x=df["loop_ae_avg_degree"],y=df[[ROI]],z= df[,c("age_scan_years", "sex")])
     
     if (WholeBrain_7network400parc[[ROI]][["p.value"]] < 0.05){
       temp <-cbind(ROI,WholeBrain_7network400parc[[ROI]])
@@ -259,8 +269,63 @@ for (ROI in ROIs) {
 
 ```
 
+```{r,echo=FALSE,message=FALSE}
+TableOutput(sigWB_7network400parc)
+```
 
-```{r, 17 netowrk Partial correlations with average}
+<br>
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+
+ROIs<- c(sigWB_7network400parc$ROI)  # removing sibject ID
+
+plotlist <- list()
+
+for (ROI in ROIs) {
+  print(ROI)
+  plotlist[[ROI]] <- ggplot(df, aes(x=loop_ae_avg_degree, y=.data[[ROI]]))  +
+   geom_point(color="#502E23", size=4) +
+   geom_smooth(method="lm", level=0.95,color ="#E2929D", se=FALSE,linewidth=2) +
+    theme_classic() +
+   labs(x ="Cortical Thickness", y = "Position Error", title = ROI) +
+   theme( axis.title.x = element_text(vjust = -4), 
+          plot.margin = margin(1, 1, 1, 1, "cm")) +
+   #    axis.text.x = element_text(size = 25),
+   #    axis.text.y = element_text(size = 25),
+   #    axis.title.y = element_text(vjust = 4, size = 16),
+   #    plot.title = element_text(hjust = 0.5 ,size=16),
+   #    panel.border = element_rect(fill=NA,color = "#502E23"),
+   #    panel.background =element_blank(), 
+   #    strip.text.x = element_text(
+   #      size = 16,
+   #      color = "black",
+   #      face = "bold.italic"
+   #    ),
+      # legend.position = "right")+
+    stat_cor( method = "pearson", label.x.npc = "center",
+  label.y.npc = "top")
+      #legend.key.size = unit(2, 'cm'),
+         #legend.title = element_text(size=18), #change legend title font size
+         #legend.text = element_text(size=18),
+     
+
+
+    #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
+    #print(plotlist[[ROI]] )
+    #dev.off()
+}
+
+
+```
+
+```{r,echo=FALSE, warning=FALSE,message=FALSE, fig.width=16, fig.height=24}
+grid.arrange(plotlist[[1]],plotlist[[2]],plotlist[[3]], plotlist[[4]], plotlist[[5]],plotlist[[6]], plotlist[[7]], plotlist[[8]],plotlist[[9]],plotlist[[10]],plotlist[[11]],plotlist[[12]],plotlist[[13]],plotlist[[14]],plotlist[[15]],plotlist[[16]],plotlist[[17]],plotlist[[18]],nrow=6)
+```
+
+
+##### 17 network 
+
+```{r, 17 netowrk Partial correlations with average, echo=FALSE, results='hide',message=FALSE, fig.show='hide'}
 
 WholeBrain_17network400parc <- list()
 
@@ -284,7 +349,13 @@ for (ROI in ROIs) {
 
 ```
 
-```{r}
+```{r,echo=FALSE,message=FALSE}
+TableOutput(sigWB_17network400parc)
+```
+
+<br>
+
+```{r, echo=FALSE, results='hide',message=FALSE,fig.show='hide'}
 
 ROIs<- c(sigWB_17network400parc$ROI)  # removing sibject ID
 
@@ -297,34 +368,71 @@ for (ROI in ROIs) {
    geom_smooth(method="lm", level=0.95,color ="#E2929D", se=FALSE,linewidth=2) +
     theme_classic() +
    labs(x ="Cortical Thickness", y = "Position Error", title = ROI) +
-   theme( axis.title.x = element_text(vjust = -4,size = 16),
-      axis.text.x = element_text(size = 25),
-      axis.text.y = element_text(size = 25),
-      axis.title.y = element_text(vjust = 4, size = 16),
-      plot.title = element_text(hjust = 0.5 ,size=16),
-      panel.border = element_rect(fill=NA,color = "#502E23"),
-      panel.background =element_blank(), 
-      strip.text.x = element_text(
-        size = 16,
-        color = "black",
-        face = "bold.italic"
-      ),
-      legend.position = "right")+
-    stat_cor( method = "pearson")
+   theme( axis.title.x = element_text(vjust = -4), 
+          plot.margin = margin(1, 1, 1, 1, "cm")) +
+   #    axis.text.x = element_text(size = 25),
+   #    axis.text.y = element_text(size = 25),
+   #    axis.title.y = element_text(vjust = 4, size = 16),
+   #    plot.title = element_text(hjust = 0.5 ,size=16),
+   #    panel.border = element_rect(fill=NA,color = "#502E23"),
+   #    panel.background =element_blank(), 
+   #    strip.text.x = element_text(
+   #      size = 16,
+   #      color = "black",
+   #      face = "bold.italic"
+   #    ),
+      # legend.position = "right")+
+    stat_cor( method = "pearson", label.x.npc = "center",
+  label.y.npc = "top")
       #legend.key.size = unit(2, 'cm'),
          #legend.title = element_text(size=18), #change legend title font size
          #legend.text = element_text(size=18),
-      #plot.margin = margin(1, 1, 1, 1, "cm")) 
+     
 
 
     #png(file = CleanCSVsfigpath,ROI,"_sexdiff_QA.png"))  #,".png"))
-    print(plotlist[[ROI]] )
+    #print(plotlist[[ROI]] )
     #dev.off()
 }
 
 
 ```
 
+```{r,echo=FALSE, warning=FALSE,message=FALSE, fig.width=16, fig.height=24}
+grid.arrange(plotlist[[1]],plotlist[[2]],plotlist[[3]], plotlist[[4]], plotlist[[5]],plotlist[[6]], plotlist[[7]], plotlist[[8]],plotlist[[9]],plotlist[[10]],plotlist[[11]],plotlist[[12]],plotlist[[13]],plotlist[[14]],plotlist[[15]],plotlist[[16]],plotlist[[17]],plotlist[[18]],nrow=6)
+```
+
+#### Female 
+##### 7 netw=ork
+```{r, Partial correlations with average, echo=FALSE, results='hide',message=FALSE}
+
+df <- CleanDF(CT_7network,"loop_ae_avg_degree") %>% filter(sex==0)
+
+ROIs<- SelectAtlas(400,7) %>% .[-1] 
+fem_7network400parc <- list()
+
+cols <- 
+sigWB_7network400parc <-data.frame(matrix(nrow=0,ncol=7)) %>% `colnames<-`(c("roi", "estimate" ,"p.value","statistic","n","gp","Method"))
+
+for (ROI in ROIs) {
+    WholeBrain_7network400parc[[ROI]] <- pcor.test(x=df["loop_ae_avg_degree"],y=df[[ROI]],z= df[,c("age_scan_years", "sex")])
+    
+    if (WholeBrain_7network400parc[[ROI]][["p.value"]] < 0.05){
+      temp <-cbind(ROI,WholeBrain_7network400parc[[ROI]])
+      
+      sigWB_7network400parc <- rbind(sigWB_7network400parc,temp)
+      
+    }
+  
+}
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(sigWB_7network400parc)
+```
+
+#### Male 
 # ROIs
 
 
