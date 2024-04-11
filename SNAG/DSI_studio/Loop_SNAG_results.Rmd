@@ -109,8 +109,8 @@ library(markdown)
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+#working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/" # Laptop path
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
@@ -1244,6 +1244,7 @@ TableOutput(CleanInput(ReadingCSVFunc("/Loop/MD/nofname/PE/avgpe.post.md.neg.csv
 ::::::{style="display: flex;"}
 
 :::{.column width="50%"}
+
 **QA FDRs **  
 All: **(<span style="color: MediumOrchid;"> + </span>) 0.000549**         
 Female: **(<span style="color: MediumOrchid;"> + </span>) 0.000189**     
@@ -1254,6 +1255,7 @@ Post: No significant Results
 ::: 
   
 :::{ .column width="50%"}
+
   **MD FDRs **  
   All: **(<span style="color: MediumOrchid;"> + </span>) 0.019884**         
   Female: No significant Tracts     
@@ -2272,6 +2274,16 @@ TableOutput(CleanInput(ReadingCSVFunc("Loop/MD/nofname/AE/aveae.post.md.neg.csv"
 https://scholar.google.com/scholar_lookup?author=T.+Schulte&author=E.+M.+M%C3%BCller-Oehring&publication_year=2010&title=Contribution+of+callosal+connections+to+the+interhemispheric+integration+of+visuomotor+and+cognitive+processes&journal=Neuropsychol.+Rev.&volume=20&pages=174-190
 
 ### COrtico Striatal
+
+- MAy be tied to visual spatial processing  
+https://journals.sagepub.com/doi/10.1177/1073858413494269#bibr51-1073858413494269  
+
+### SLF
+
+SLF II has more right lateralization but can tie to ventral visual processing  
+https://www.nature.com/articles/nn.2905
+
+https://academic.oup.com/cercor/article/20/1/121/416448
 
 ### Inferior Fronto Occipital Fasciculus
 connects the occipital and parietal lobes to frontal. May be important for visual attention. visuospatial
