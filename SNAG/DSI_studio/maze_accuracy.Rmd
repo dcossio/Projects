@@ -620,7 +620,7 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.ma
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.000315)</strong> </span>
 
 ```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.male.pos.csv")))
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.pre.neg.csv")))
 ```
 
 <br>

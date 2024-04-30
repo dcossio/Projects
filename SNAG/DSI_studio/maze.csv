@@ -1,0 +1,18 @@
+Tract Name,number of tracts,mean length(mm),diameter(mm),volume(mm^3)
+Corticospinal_Tract_L,634,58.8675,9.0312,3771
+Corpus_Callosum_Forceps_Major,495,56.198,9.08374,3642
+Corpus_Callosum_Tapetum,402,53.4826,9.71929,3968
+Cerebellum_R,238,53.8992,9.87253,4126
+Middle_Cerebellar_Peduncle,128,55.25,5.79652,1458
+Cerebellum_L,116,53.8103,8.53269,3077
+Corticobulbar_Tract_L,102,59.1765,5.78051,1553
+Inferior_Longitudinal_Fasciculus_L,72,55.0278,5.75016,1429
+Corpus_Callosum_Body,58,51.6207,5.02811,1025
+Corticopontine_Tract_Parietal_L,57,54.2807,5.04019,1083
+Inferior_Fronto_Occipital_Fasciculus_L,53,52.6415,5.26252,1145
+Vermis,33,53.0909,5.094,1082
+Thalamic_Radiation_Posterior_L,20,54.5,4.10701,722
+Corticopontine_Tract_Frontal_L,17,57.4118,3.69011,614
+Corticostriatal_Tract_Posterior_L,17,52.1176,3.43152,482
+Corticobulbar_Tract_R,15,55.0667,3.40692,502
+Corticopontine_Tract_Frontal_R,11,57.0909,2.90731,379
