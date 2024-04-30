@@ -643,7 +643,7 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.pr
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000309)</strong> </span>
 
 ```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.peri.pos.csv")))
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.peri.pos.csv")))
 ```
 
 <br>
