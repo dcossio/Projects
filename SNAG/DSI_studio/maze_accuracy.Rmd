@@ -640,7 +640,7 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.pr
 
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000309)</strong> </span>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.014418)</strong> </span>
 
 ```{r, echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.peri.pos.csv")))
@@ -698,6 +698,6 @@ TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.po
 <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.017321)</strong> </span>
 
 ```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.post.neg.csv")))
+TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_post_neg.csv")))
 ```
 
