@@ -1217,61 +1217,1381 @@ TableOutput(cor_results)
 ### Female {.tabset .tabset-pills} 
 
 #### Parcellation (apriori)
-#### Network (apriori)
-#### Label (apriori)
-### Male {.tabset .tabset-pills} 
-#### Parcellation (apriori)
-#### Network (apriori)
-#### Label (apriori)
 
-## Radius 3 {.tabset .tabset-pills}
-### All{.tabset .tabset-pills}
-#### Parcellation (apriori)
-#### Network (apriori)
-#### Label (apriori)
 
-### female {.tabset .tabset-pills}
-#### Parcellation (apriori)
-#### Network (apriori)
-#### Label (apriori)
+```{r, female AE avg 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
 
-### male {.tabset .tabset-pills}
-#### Parcellation (apriori)
-#### Network (apriori)
-#### Label (apriori)
+df <- CleanDF(CT_17, "loop_ae_avg_degree") %>% filter(sex==0)
 
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_avg_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
 
 <br>
 
 <hr>
 
+<br>
+
+#### Network (apriori)
+
+```{r, female AE Ave 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_ae_avg_degree") %>% filter(sex==0)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_avg_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Label (apriori)
+```{r, female AE avg label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_ae_avg_degree") %>% filter(sex==0)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_avg_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### Male {.tabset .tabset-pills} 
+#### Parcellation (apriori)
+
+```{r, male AE avg 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_ae_avg_degree") %>% filter(sex==1)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_avg_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Network (apriori)
+
+```{r, male AE Ave 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_ae_avg_degree") %>% filter(sex==1)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_avg_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Label (apriori)
+
+```{r, male AE avg label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_ae_avg_degree") %>% filter(sex==1)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_avg_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+## Radius 3 {.tabset .tabset-pills}
+### All{.tabset .tabset-pills}
+#### Parcellation (apriori)
+
+
+```{r, all AE rad3 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_ae_rad3_degree")
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Network (apriori)
+
+```{r, all AE rad3 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_ae_rad3_degree") 
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Label (apriori)
+
+
+```{r, all rad3 label  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_ae_rad3_degree") 
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### female {.tabset .tabset-pills}
+
+#### Parcellation (apriori)
+
+```{r, female AE rad3 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_ae_rad3_degree") %>% filter(sex==0)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Network (apriori)
+
+```{r, female AE rad3 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_ae_rad3_degree") %>% filter(sex==0)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Label (apriori)
+
+```{r, female AE rad3 label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_ae_rad3_degree") %>% filter(sex==0)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### male {.tabset .tabset-pills}
+#### Parcellation (apriori)
+
+```{r, male AE rad3 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_ae_rad3_degree") %>% filter(sex==1)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Network (apriori)
+
+```{r, male AE rad3 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_ae_rad3_degree") %>% filter(sex==1)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+#### Label (apriori)
+
+```{r, male AE rad3 label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_ae_rad3_degree") %>% filter(sex==1)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_ae_rad3_degree"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
 
 # Position Error {.tabset .tabset-dropdown} 
 ## Average {.tabset .tabset-pills}
 ### All {.tabset .tabset-pills}
 #### Parcellation (apriori)
+
+
+```{r, all PE AVG 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_pe_avg_m")
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Network (apriori)
+
+```{r, all PE AVG 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_pe_avg_m") 
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Label (apriori)
+
+
+```{r, all PE AVG label  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_pe_avg_m") 
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+
 ### Female {.tabset .tabset-pills}
 #### Parcellation (apriori)
+
+```{r, female PE AVG 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_pe_avg_m") %>% filter(sex==0)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Network (apriori)
+
+```{r, female PE AVG 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_pe_avg_m") %>% filter(sex==0)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Label (apriori)
+
+```{r, female PE AVG label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_pe_avg_m") %>% filter(sex==0)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 ### male {.tabset .tabset-pills}
 #### Parcellation (apriori)
+
+
+```{r, male PE AVG 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_pe_avg_m") %>% filter(sex==1)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
+
 #### Network (apriori)
+
+```{r, male PE AVG 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_pe_avg_m") %>% filter(sex==1)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Label (apriori)
+
+```{r, male PE AVG label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_pe_avg_m") %>% filter(sex==1)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_avg_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
 
 ## Radius 3 {.tabset .tabset-pills}
 ### All{.tabset .tabset-pills}
-#### Parcellation (apriori)
+
+```{r, all PE rad3 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_pe_rad3_m")
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Network (apriori)
+
+```{r, all PE rad3 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_pe_rad3_m") 
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Label (apriori)
+
+
+```{r, all PE rad3 label  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_pe_rad3_m") 
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years", "sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+
 ### Female {.tabset .tabset-pills}
 #### Parcellation (apriori)
+
+```{r, female PE rad3 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_pe_rad3_m") %>% filter(sex==0)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Network (apriori)
+
+```{r, female PE rad3 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_pe_rad3_m") %>% filter(sex==0)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Label (apriori)
+
+```{r, female PE rad3 label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_pe_rad3_m") %>% filter(sex==0)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 ### male {.tabset .tabset-pills}
 #### Parcellation (apriori)
+
+
+```{r, male PE rad3 400 parcs + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17, "loop_pe_rad3_m") %>% filter(sex==1)
+
+ROIs <- CT_17 %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH",  n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results) 
+```
+
+<br>
+
+<hr>
+
+<br>
+
+
 #### Network (apriori)
+
+```{r, male PE rad3 17 network  + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_merged, "loop_pe_rad3_m") %>% filter(sex==1)
+
+ROIs <- CT_17net_merged %>% select(matches(apriori_networknames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
 #### Label (apriori)
+
+```{r, male PE rad3 label + Partial correlations, echo=FALSE, results='hide',message=FALSE,warning=FALSE}
+
+df <- CleanDF(CT_17net_ROImerged, "loop_pe_rad3_m") %>% filter(sex==1)
+
+ROIs <- CT_17net_ROImerged %>% select(matches(apriori_labelnames)) %>% colnames()
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 17)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in ROIs) {
+  
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+    
+    pcorlist[[ROI]] <- NA
+    
+  } else{
+ pcorlist[[ROI]] <-
+    pcor.test(x = df["loop_pe_rad3_m"], y = df[[ROI]], z = df[, c("age_scan_years")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
 
