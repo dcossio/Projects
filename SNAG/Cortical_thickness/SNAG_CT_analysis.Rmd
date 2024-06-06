@@ -1,5 +1,5 @@
 ---
-title: "SNAG Cortical Thickness"
+title: "SNAG Cortical Thickness _ANTS"
 author: "Daniela Cossio"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -194,7 +194,7 @@ Combine_ROIs <- function(DF,labels) {
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/"
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/ANTS/"
 #working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/" # Laptop path
 
 sub_info <- ReadingCSVFunc("subject_info.csv")%>% filter(!(subject_id %in% c("309", "341")))

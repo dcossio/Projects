@@ -1,0 +1,250 @@
+---
+title: "FREESurfer CT"
+title: "SNAG Cortical Thickness _ANTS"
+author: "Daniela Cossio"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+   html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    classoption:
+    - twocolumn
+---
+
+```{css, echo=FALSE}
+TOC {
+  color: #F6B2DB;
+  font-family: Times;
+  font-size: "16px"; 
+  border-color: #F6B2DB;
+}
+
+h1.title {
+  color: black ;
+  font-family: Times;
+  font-size: "72px";
+  padding: "10px 0";
+  background-color: #F6B2DB ;
+  text-align: center;
+}
+
+h4.date {
+  color: black ;
+  font-family: Times;
+  font-size: "34px";
+  text-align: center;
+}
+
+h4.author {
+  color: black;
+  font-size: "34px";
+  font-family: Times;
+  text-align: center;
+}
+
+
+h1,h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Times;
+  
+}
+
+body, p, h2{
+  color: black; 
+  font-family: Times;
+}
+
+hr {
+  height:5px;
+  border-width:0;
+  background-color: black ;
+}
+
+
+
+```
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 100)
+```
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(ppcor)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+```
+
+```{r, Functions, echo=FALSE, results='hide',message=FALSE}
+# Here i have created a bunch of functions for things actions that i will be using repetitively.
+
+ReadingCSVFunc <- function(pathname){
+  
+   #' @description: purpose of this is to read in CSVs and clean them up 
+  #' @return: DF
+  
+  read.csv(paste0(working_dir, pathname), header=TRUE)
+
+}
+
+TableOutput <- function(df){
+      knitr::kable(df, row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"),position = "center") %>% scroll_box(width = "600px", height = "300px") 
+    
+  }
+
+
+CleanDF <- function(DF,Variable){
+  
+  DF <- DF %>% select(-c("subject_id"))
+  
+  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years","repo_status",Variable))
+  
+  cleanedDF <- cbind(subinfo, DF) %>% drop_na(Variable) 
+  
+  cleanedDF$sex[cleanedDF$sex=="Male"] <- 1 
+  cleanedDF$sex[cleanedDF$sex=="Female"] <- 0
+  cleanedDF$sex <- as.numeric(cleanedDF$sex)
+  
+    return (cleanedDF)
+}
+
+
+
+```
+
+```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/"
+#working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/" # Laptop path
+
+sub_info <- ReadingCSVFunc("subject_info.csv") %>% filter(!(subject_id %in% c("309", "341")))
+
+left_ct <- read.delim(paste0(working_dir,"DK_LH_parc_atlas.csv"),header=TRUE)
+right_ct <- read.delim(paste0(working_dir,"DK_RH_parc_atlas.csv"),header=TRUE)
+sub_cort <- read.delim(paste0(working_dir,"DK_seg_atlas.csv"),header=TRUE)
+
+
+```
+
+```{r, Clean up our column names}
+
+
+for (i in 1:length(colnames(left_ct))){
+  
+  if (grepl("_thickness", colnames(left_ct[i]))){
+    print(colnames(left_ct[i]))
+  #   str_remove(left_ct_colnames[i],"_thickness")
+   colnames(left_ct)[i] <- str_remove(colnames(left_ct[i]),"_thickness")
+    
+  }
+  
+}
+
+
+all_rois <- cbind(sub_info, left_ct)
+
+
+for (i in 1:length(colnames(right_ct))){
+  
+  if (grepl("_thickness", colnames(right_ct[i]))){
+    print(colnames(right_ct[i]))
+  #   str_remove(left_ct_colnames[i],"_thickness")
+   colnames(right_ct)[i] <- str_remove(colnames(right_ct[i]),"_thickness")
+    
+  }
+  
+}
+
+
+all_rois <- cbind(all_rois,right_ct)
+
+colnames(sub_cort)[1] <- "subjects"
+
+all_rois <- cbind(all_rois,sub_cort)
+
+
+```
+
+
+```{r, Apriori lists}
+
+
+# precentral, postcentral, superoir parietal, superior frontal, caudate and putamen 
+lh_apriori <- c("lh_postcentral","lh_precentral","lh_superiorparietal","lh_superiorfrontal")
+
+rh_apriori <- c("rh_postcentral","rh_precentral","rh_superiorparietal","rh_superiorfrontal")
+
+all_apriori <- c(lh_apriori,rh_apriori)
+
+```
+
+
+
+```{r, }
+
+
+df <- all_rois %>% filter(loop_ae_avg_degree != "NA")
+df$sex[df$sex=="Male"] <- 1 
+  df$sex[df$sex=="Female"] <- 0
+  df$sex <- as.numeric(df$sex)
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df[["loop_ae_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","sex")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
