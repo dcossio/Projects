@@ -1,6 +1,5 @@
 ---
 title: "FREESurfer CT"
-title: "SNAG Cortical Thickness _ANTS"
 author: "Daniela Cossio"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -148,8 +147,8 @@ CleanDF <- function(DF,Variable){
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/"
-#working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/" # Laptop path
+#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/"
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/" # Laptop path
 
 sub_info <- ReadingCSVFunc("subject_info.csv") %>% filter(!(subject_id %in% c("309", "341")))
 
@@ -160,7 +159,7 @@ sub_cort <- read.delim(paste0(working_dir,"DK_seg_atlas.csv"),header=TRUE)
 
 ```
 
-```{r, Clean up our column names}
+```{r, Clean up our column names, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
 for (i in 1:length(colnames(left_ct))){
@@ -196,31 +195,53 @@ colnames(sub_cort)[1] <- "subjects"
 
 all_rois <- cbind(all_rois,sub_cort)
 
+all_rois <- all_rois[,unique(colnames(all_rois))]
+
+
+all_rois$sex[all_rois$sex=="Male"] <- 1 
+  all_rois$sex[all_rois$sex=="Female"] <- 0
+  all_rois$sex <- as.numeric(all_rois$sex)
 
 ```
 
 
-```{r, Apriori lists}
+
+# Overview and Hypothesis 
+Using the DK atlas output 
+
+Partial correlation with sex, age and intrcranial volume as covariates
+bonferroni correction
+
+
+
+
+```{r, Apriori lists, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
 # precentral, postcentral, superoir parietal, superior frontal, caudate and putamen 
-lh_apriori <- c("lh_postcentral","lh_precentral","lh_superiorparietal","lh_superiorfrontal")
+lh_apriori <- c("lh_postcentral","lh_precentral","lh_superiorparietal","lh_superiorfrontal", "lh_cuneus","lh_medialorbitofrontal","lh_entorhinal","lh_parahippocampal","lh_precuneus","lh_lateraloccipital","lh_posteriorcingulate")
 
-rh_apriori <- c("rh_postcentral","rh_precentral","rh_superiorparietal","rh_superiorfrontal")
+rh_apriori <- c("rh_postcentral","rh_precentral","rh_superiorparietal","rh_superiorfrontal", "rh_cuneus","rh_medialorbitofrontal","rh_entorhinal","rh_parahippocampal","rh_precuneus","rh_lateraloccipital","rh_posteriorcingulate")
 
-all_apriori <- c(lh_apriori,rh_apriori)
+sub_apriori <- c("Left.Caudate","Right.Caudate","Left.Putamen","Right.Putamen","Left.Hippocampus","Right.Hippocampus")
+  
+all_apriori <- c(lh_apriori,rh_apriori,sub_apriori)
 
 ```
 
+aprioris are ```r print(all_apriori) ``` 
+
+<hr>
+
+# Degrees Traveled {.tabset .tabset-dropdown} 
+## Average {.tabset .tabset-pills} 
+
+### All {.tabset .tabset-pills} 
+
+```{r, All DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
-```{r, }
-
-
-df <- all_rois %>% filter(loop_ae_avg_degree != "NA")
-df$sex[df$sex=="Male"] <- 1 
-  df$sex[df$sex=="Female"] <- 0
-  df$sex <- as.numeric(df$sex)
+df <- all_rois %>% filter(loop_de_avg_degree != "NA")
 
 cor_results <-
   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
@@ -236,15 +257,277 @@ for (ROI in all_apriori) {
 
   }else{
   pcorlist[[ROI]] <-
-    pcor.test(x = df[["loop_ae_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","sex")])
+    pcor.test(x = df[["loop_de_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","sex","EstimatedTotalIntraCranialVol")])
   temp <- cbind(ROI, pcorlist[[ROI]])
   cor_results <- rbind(cor_results, temp)
   }
 }
 
-cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "bonferroni", n = length(cor_results$p.value))
 cor_results <- arrange(cor_results,p.value)
 
 
 ```
 
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### Female {.tabset .tabset-pills}
+
+```{r, Female DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+df <- all_rois %>% filter(loop_de_avg_degree != "NA") %>% filter(sex==0)
+
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df[["loop_de_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","EstimatedTotalIntraCranialVol")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "bonferroni", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### Male {.tabset .tabset-pills}
+
+
+```{r, Male DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+df <- all_rois %>% filter(loop_de_avg_degree != "NA") %>% filter(sex==1)
+
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df[["loop_de_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","EstimatedTotalIntraCranialVol")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "bonferroni", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+
+
+<br>
+
+<hr>
+
+<br>
+
+
+# Angular Error  {.tabset .tabset-dropdown} 
+## Average {.tabset .tabset-pills} 
+
+### All {.tabset .tabset-pills} 
+
+```{r, All AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+df <- all_rois %>% filter(loop_ae_avg_degree != "NA")
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df[["loop_ae_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","sex","EstimatedTotalIntraCranialVol")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "bonferroni", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+
+```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+ggplot(data = df, aes(x =lh_superiorparietal, y = loop_ae_avg_degree)) +
+  geom_point()+
+  stat_smooth(method="lm",se=FALSE)+
+  stat_cor() +
+  scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
+  labs(
+    x = "Left.Putamen",
+    y = "loop_ae_avg_degree") +
+  theme(legend.position = "right",  
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 25),
+        axis.text.y = element_text(size = 25),
+        panel.background =element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key.size = unit(2, 'cm'),
+        legend.title = element_text(size=18), #change legend title font size
+        legend.text = element_text(size=18))
+
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### Female {.tabset .tabset-pills}
+
+```{r, Female AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+df <- all_rois %>% filter(loop_ae_avg_degree != "NA") %>% filter(sex==0)
+
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df[["loop_ae_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","EstimatedTotalIntraCranialVol")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "bonferroni", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+<br>
+
+<hr>
+
+<br>
+
+### Male {.tabset .tabset-pills}
+
+```{r, male DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+df <- all_rois %>% filter(loop_ae_avg_degree != "NA") %>% filter(sex==1)
+
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(df[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = df[["loop_ae_avg_degree"]], y = df[[ROI]], z = df[, c("age_scan_years","EstimatedTotalIntraCranialVol")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "bonferroni", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
+
+## rad3 {.tabset .tabset-pills} 
+
+### All {.tabset .tabset-pills} 
+### Female {.tabset .tabset-pills}
+### Male {.tabset .tabset-pills}
