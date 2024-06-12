@@ -364,7 +364,29 @@ cor_results <- arrange(cor_results,p.value)
 TableOutput(cor_results)
 ```
 
+```{r, rh_cuneus, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
+fit.1 <- lm(loop_de_avg_degree ~ age_scan_years + EstimatedTotalIntraCranialVol , data=df)
+
+df$residual1 <- residuals(fit.1)
+
+fit.2 <- lm(rh_cuneus ~ age_scan_years +EstimatedTotalIntraCranialVol, data=df)
+df$residual2 <- residuals(fit.2)
+
+ggplot(df, aes(x=residual2, y=residual1)) +
+   geom_point(color="#1E4273") +
+   stat_smooth(method="lm",se=FALSE, color="#1E4273")+
+  stat_cor(label.x.npc = 0.5) +
+  labs(
+    x = "loop_de_avg_degree",
+    y = "rh_cuneus") +
+  theme(legend.position = "right",  
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        panel.background =element_blank(),
+        axis.line = element_line(colour = "black"))
+
+```
 
 <br>
 
@@ -414,27 +436,50 @@ TableOutput(cor_results)
 ```
 
 
-```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r, lh_superiorparietal, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
+fit.1 <- lm(loop_ae_avg_degree ~ sex + age_scan_years + EstimatedTotalIntraCranialVol , data=df)
 
-ggplot(data = df, aes(x =lh_superiorparietal, y = loop_ae_avg_degree)) +
-  geom_point()+
-  stat_smooth(method="lm",se=FALSE)+
-  stat_cor() +
-  scale_color_manual(values = c("#E45A5A", "#80792B"),name="Sex") +
+df$residual1 <- residuals(fit.1)
+
+fit.2 <- lm(lh_superiorparietal ~ sex + age_scan_years +EstimatedTotalIntraCranialVol, data=df)
+df$residual2 <- residuals(fit.2)
+
+ggplot(df, aes(x=residual2, y=residual1)) +
+   geom_point(color="#243D25") +
+   stat_smooth(method="lm",se=FALSE, color="#243D25")+
+  stat_cor(label.x.npc = 0.5) +
   labs(
-    x = "Left.Putamen",
-    y = "loop_ae_avg_degree") +
-  theme(legend.position = "right",  
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 25),
-        axis.text.y = element_text(size = 25),
+    x = "loop_ae_avg_degree",
+    y = "lh_superiorparietal") +
+  theme(legend.position = "center",  
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
         panel.background =element_blank(),
-        axis.line = element_line(colour = "black"),
-        legend.key.size = unit(2, 'cm'),
-        legend.title = element_text(size=18), #change legend title font size
-        legend.text = element_text(size=18))
+        axis.line = element_line(colour = "black"))
+
+```
+```{r, rh_superiorparietal, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+fit.1 <- lm(loop_ae_avg_degree ~ sex + age_scan_years + EstimatedTotalIntraCranialVol , data=df)
+
+df$residual1 <- residuals(fit.1)
+
+fit.2 <- lm(rh_superiorparietal ~ sex + age_scan_years +EstimatedTotalIntraCranialVol, data=df)
+df$residual2 <- residuals(fit.2)
+
+ggplot(df, aes(x=residual2, y=residual1)) +
+   geom_point(color="#243D25") +
+   stat_smooth(method="lm",se=FALSE, color="#243D25")+
+  stat_cor(label.x.npc = 0.5) +
+  labs(
+    x = "loop_ae_avg_degree",
+    y = "rh_superiorparietal") +
+  theme(legend.position = "right",  
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        panel.background =element_blank(),
+        axis.line = element_line(colour = "black"))
 
 ```
 
@@ -482,6 +527,30 @@ cor_results <- arrange(cor_results,p.value)
 TableOutput(cor_results)
 ```
 
+```{r, lh_postcentral, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+fit.1 <- lm(loop_ae_avg_degree ~ age_scan_years + EstimatedTotalIntraCranialVol , data=df)
+
+df$residual1 <- residuals(fit.1)
+
+fit.2 <- lm(lh_postcentral ~ age_scan_years +EstimatedTotalIntraCranialVol, data=df)
+df$residual2 <- residuals(fit.2)
+
+ggplot(df, aes(x=residual2, y=residual1)) +
+   geom_point(color="#F8B2AC") +
+   stat_smooth(method="lm",se=FALSE, color="#F8B2AC")+
+  stat_cor(label.x.npc = 0.5) +
+  labs(
+    x = "loop_ae_avg_degree",
+    y = "lh_postcentral") +
+  theme(legend.position = "right",  
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        panel.background =element_blank(),
+        axis.line = element_line(colour = "black"))
+
+```
+
 <br>
 
 <hr>
@@ -525,6 +594,9 @@ cor_results <- arrange(cor_results,p.value)
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(cor_results)
 ```
+
+
+
 
 ## rad3 {.tabset .tabset-pills} 
 
