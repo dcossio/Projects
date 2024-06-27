@@ -147,8 +147,8 @@ CleanDF <- function(DF,Variable){
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-#working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/"
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/" # Laptop path
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/"
+#working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/Cortical_thickness/Freesurfer/" # Laptop path
 
 sub_info <- ReadingCSVFunc("subject_info.csv") %>% filter(!(subject_id %in% c("309", "341")))
 
@@ -340,7 +340,7 @@ pcorlist <- list()
 
 for (ROI in all_apriori) {
   
-  print(ROI)
+
   if(!is.na(sum(df[[ROI]])) == FALSE){
 
     pcorlist[[ROI]] <- NA
@@ -364,6 +364,8 @@ cor_results <- arrange(cor_results,p.value)
 TableOutput(cor_results)
 ```
 
+
+
 ```{r, rh_cuneus, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 fit.1 <- lm(loop_de_avg_degree ~ age_scan_years + EstimatedTotalIntraCranialVol , data=df)
@@ -374,15 +376,17 @@ fit.2 <- lm(rh_cuneus ~ age_scan_years +EstimatedTotalIntraCranialVol, data=df)
 df$residual2 <- residuals(fit.2)
 
 ggplot(df, aes(x=residual2, y=residual1)) +
-   geom_point(color="#1E4273") +
+   geom_point(color="#1E4273", size=8) +
    stat_smooth(method="lm",se=FALSE, color="#1E4273")+
-  stat_cor(label.x.npc = 0.5) +
+  stat_cor(label.x.npc = 0.5, size=8) +
   labs(
     x = "loop_de_avg_degree",
     y = "rh_cuneus") +
   theme(legend.position = "right",  
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
+        axis.ticks.y=element_blank(),
+        axis.ticks.x=element_blank(),
         panel.background =element_blank(),
         axis.line = element_line(colour = "black"))
 
@@ -412,7 +416,6 @@ pcorlist <- list()
 
 for (ROI in all_apriori) {
   
-  print(ROI)
   if(!is.na(sum(df[[ROI]])) == FALSE){
 
     pcorlist[[ROI]] <- NA
@@ -446,9 +449,9 @@ fit.2 <- lm(lh_superiorparietal ~ sex + age_scan_years +EstimatedTotalIntraCrani
 df$residual2 <- residuals(fit.2)
 
 ggplot(df, aes(x=residual2, y=residual1)) +
-   geom_point(color="#243D25") +
+   geom_point(color="#243D25", size=8) +
    stat_smooth(method="lm",se=FALSE, color="#243D25")+
-  stat_cor(label.x.npc = 0.5) +
+  stat_cor(label.x.npc = 0.5, size=8) +
   labs(
     x = "loop_ae_avg_degree",
     y = "lh_superiorparietal") +
@@ -456,6 +459,8 @@ ggplot(df, aes(x=residual2, y=residual1)) +
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         panel.background =element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.ticks.x=element_blank(),
         axis.line = element_line(colour = "black"))
 
 ```
@@ -478,10 +483,13 @@ ggplot(df, aes(x=residual2, y=residual1)) +
   theme(legend.position = "right",  
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
+         axis.ticks.y=element_blank(),
+        axis.ticks.x=element_blank(),
         panel.background =element_blank(),
         axis.line = element_line(colour = "black"))
 
 ```
+
 
 <br>
 
@@ -504,7 +512,6 @@ pcorlist <- list()
 
 for (ROI in all_apriori) {
   
-  print(ROI)
   if(!is.na(sum(df[[ROI]])) == FALSE){
 
     pcorlist[[ROI]] <- NA
@@ -537,6 +544,26 @@ fit.2 <- lm(lh_postcentral ~ age_scan_years +EstimatedTotalIntraCranialVol, data
 df$residual2 <- residuals(fit.2)
 
 ggplot(df, aes(x=residual2, y=residual1)) +
+   geom_point(color="#F8B2AC",size=8) +
+   stat_smooth(method="lm",se=FALSE, color="#F8B2AC")+
+  stat_cor(label.x.npc = 0.5,size=8) +
+  labs(
+    x = "loop_ae_avg_degree",
+    y = "lh_postcentral") +
+  theme(legend.position = "right",  
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        panel.background =element_blank(),
+         axis.ticks.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.line = element_line(colour = "black"))
+
+```
+
+```{r, , echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+ggplot(df, aes(x=loop_ae_avg_degree, y=lh_postcentral)) +
    geom_point(color="#F8B2AC") +
    stat_smooth(method="lm",se=FALSE, color="#F8B2AC")+
   stat_cor(label.x.npc = 0.5) +
@@ -559,7 +586,7 @@ ggplot(df, aes(x=residual2, y=residual1)) +
 
 ### Male {.tabset .tabset-pills}
 
-```{r, male DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r, male AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
 df <- all_rois %>% filter(loop_ae_avg_degree != "NA") %>% filter(sex==1)
