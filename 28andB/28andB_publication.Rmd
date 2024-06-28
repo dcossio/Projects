@@ -1,6 +1,6 @@
 ---
 title: "28andBpublication"
-date: "2023-06-02"
+date: "2024-06-27"
 output:
    html_document:
     toc: true
@@ -44,6 +44,184 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
                       fig.align = "center")
 
 ```
+
+
+# Overview
+
+This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
+
+
+##### **Sessions**
+
+  * One subject and a total of 26 scans from July 2019 to May 2021 and two follow up in 2022. Scans range from baseline to IVF to post pregnancy. 
+  
+  
+  * 24 scans were preprocessed successfully. 2 scans removed due to issues with the DWI.
+  
+  
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**Session 01 7/12/19** : UCI does not have raw data. USCB gave us bids. Preproc successful. Pre 
+<br>
+
+**Session 02 7/31/19** : Preproc successful. Pre 
+<br>
+
+**Session 03 8/13/19** : Preproc successful. Pre
+<br>
+
+**Session 04 8/17/19** : Preproc successful. Pre
+<br>
+
+**Session 05 8/19/19** : Preproc successful. Pre
+<br>
+
+**Session 06 8/29/19** : Preproc successful. First
+<br>
+
+**Session 07 10/10/19** : diffusion and fmaps have different naming scheme than all of the other scans. Excluded bc og different b val. It can be preprocessed. First 
+<br>
+
+**Session 08 10/25/19** : Preproc successful. First
+<br>
+
+**Session 09 11/12/19** : No diffusion data available. Second.
+<br>
+
+**Session 10 11/18/19** : UCSB has incomplete data. There are 3 FMAPS. WE grabbed the third set but all of them are wonky. Passed QC and preproc but may or may not exclude this. Second.
+<br>
+
+**Session 11 12/03/19** : Preproc successful. Second 
+<br>
+
+**Session 12 12/17/19** : Preproc successful. Second 
+<br>
+
+**Session 13 1/20/20** : Preproc successful. Second 
+<br>
+
+::: 
+  
+:::{ .column width="50%"}
+**Session 14 1/22/20** : Preproc successful. Second 
+<br>
+
+**Session 15 2/7/20** : No diffusion image
+<br>
+
+**Session 16 2/24/20** : Preproc successful. Second 
+<br>
+
+**Session 17 3/12/20** : Preproc successful. Third 
+<br>
+
+**Session 18 3/24/20** : Preproc successful. Third  
+<br>
+
+**Session 19 4/15/20** : Preproc successful. Third  
+<br>
+
+**Session 20 6/4/20** : Preproc successful. Post 
+<br>
+
+**Session 21 6/25/20** : Preproc successful. Post 
+<br>
+
+**Session 22 7/14/20** : Preproc successful. Post 
+<br>
+
+**Session 23 7/30/20** : Preproc successful. Post 
+<br>
+
+**Session 24 11/25/20** : Preproc successful. Post 
+<br>
+
+**Session 25 5/18/21** : Preproc successful. Post 
+<br>
+
+**Session 26 9/14/22** : Preproc successful. Post 
+<br>
+
+**Session 27 9/15/22** :Preproc successful. Follow up scan  to 26. Used as a test-retest. Post 
+<br>
+
+:::
+::::::
+
+##### **Scan parameters** 
+  * Locations from UCSB and UCI
+
+##### **Blood work**
+  * Subject was measured for various levels of hormones including estrogen, progesterone, LH, FSH
+  
+##### **Heudicon** 
+
+We use heudicon to convert raw dicoms to BIDS. In the UCI databases, part of the raw folders are in a .DCM and part are in a .IMA. I used two separate bash scripts to automate the process so that it would be fast but they run with the same code they just change from IMA to DCM. 
+  * Script names: DCM2BIDS and IMA2BIDS
+  
+**DCM sessions** : 01 02 03 04 05 06 07 27
+**IMA sessions** : 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
+
+
+**NOTES**
+
+* UCI does not have a diffusion scan for ses-01. We got the scan from ucsb already in a bids format 
+
+* Sessions 13 and sessions 26 have extra T1 scans that get converted and cause some weird non bids compiant things to convert. EAsiest way to avoid this is by just removing them from the Info txts and tsvs before running the second pass
+  * You could also just remove them after 
+  
+* Session 10 has 3 fmaps but all of them are a bit wonky. The script will grab the third set automatically. You can choose the best looking fmap but in this case all are wonky.
+
+
+At the end, we just run one bids validation
+
+##### **QSIprep** 
+  * Version used 16.1
+  
+For QSI prep we are using the following commands.
+  
+--skip_bids_validation --output_resolution 1.8 --fs-license-file /mnt/chrastil/users/cossio/Scripts/QSI/license.txt --dwi_denoise_window 5 --hmc_model 3dSHORE --hmc-transform Rigid --shoreline_iters 2 --omp-nthreads 
+
+##### **DSI Studio : Correlational connectometry **
+
+  * Version and tags used **chen-2022-07-31**
+  
+  * Parameters 
+    * Length = 25
+    * Permutation = 4000
+    * pruning 4
+    * non normalized QA
+    * T threshold: 2.5
+
+
+# Methods
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.
+
+
+
+##### Analyses {.tabset}
+###### Estrogen 
+* Total scans: 17
+* Total pregnancy scans = 10
+
+  
+###### Progesterone
+* Total scans: 15
+* Total pregnancy scans = 10
+
+###### Gestational
+* Total scans: 16
+* pre pregnancy and pregnancy only
+
+###### Tractometry
+* Total scans: 25 scans
+
+  
+<br><br>
+# Results   
+
+Estrogen, progesterone, and gestational week were positively correlated with QA in white matter
 
 ```{r reading in paths, echo=FALSE, results='hide',message=FALSE}
 
@@ -130,73 +308,6 @@ h1, h2 {
 }
 ```
 
-# Overview
-
-This is the analysis of the relationship between white matter microstructure and hormones across pregnancy in one single subject.
-
-
-##### **Participants**
-
-  * One subject and a total of 25 scans from July 2019 to May 2021. Scans range from baseline to IVF
-  
-  to post pregnancy. The number of scans in the analyses varies by hormone analysis and time. 
-  
-  
-  
-  * 23 scans were preprocessed successfully. 2 scans removed due to issues with the DWI.
-
-##### **Scan parameters** 
-  * Locations from UCSB and UCI
-
-##### **Blood work**
-  * Subject was measured for various levels of hormones including estrogen, progesterone, LH, FSH
-
-##### **QSIprep** 
-  * Version used
-  
-##### **DSI Studio : Correlational connectometry **
-
-  * Version and tags used **chen-2022-07-31**
-  
-  * Parameters 
-    * Length = 25
-    * Permutation = 4000
-    * pruning 4
-    * non normalized QA
-    * T threshold: 2.5
-
-
-# Methods
-A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010).  A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.
-
-
-
-##### Analyses {.tabset}
-###### Estrogen 
-* Total scans: 17
-* Total pregnancy scans = 10
-
-  
-###### Progesterone
-* Total scans: 15
-* Total pregnancy scans = 10
-
-###### Gestational
-* Total scans: 16
-* pre pregnancy and pregnancy only
-
-###### Tractometry
-* Total scans: 21
-
-  
-<br><br>
-# Results   
-
-Estrogen, progesterone, and gestational week were positively correlated with QA in white matter
-
-For all figures please see the google folder below.
-https://drive.google.com/drive/folders/1-V_XaS87D_WtO-IjLsjRZdveZ0iu1Hzr?usp=sharing
-
 
 <br><br><br><br>
 
@@ -211,71 +322,39 @@ Est_subinfo <-subinfo_DF %>% select("new scan name","Estrogen","Trimester") %>% 
 
 
 # Lets read in one main df and clean from there
-Est_QA_allwks_pos_DF <-read.delim(paste0(estrogen_path, '/allscans/Est_qa_allscans_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols") 
+Est_QA_allwks_pos_DF <-read.delim(paste0(estrogen_path, '/allscans/Est_qa_allscans_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")
 
-# ALl weeks 
+# ALl weeks
 Est_summarystats <- Est_QA_allwks_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame()
 
-Est_QA_allwks_pos_ROIs <- Est_QA_allwks_pos_DF %>% 
+Est_QA_allwks_pos_ROIs <- Est_QA_allwks_pos_DF %>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Est_summarystats[,1])))
 
 # Need to create a loop fix the subject IDs to match
-for (sub in 1:nrow((Est_QA_allwks_pos_ROIs))) { 
- clean_subnum <- str_split(Est_QA_allwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
- Est_QA_allwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum) 
- 
+for (sub in 1:nrow((Est_QA_allwks_pos_ROIs))) {
+ clean_subnum <- str_split(Est_QA_allwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)
+ Est_QA_allwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)
+
 }
 
 # now we cab grab the right subs
 Est_QA_allwks_pos_ROIs <- Est_QA_allwks_pos_ROIs %>% filter(Subjects %in% Est_subinfo$`new scan name`) %>%  mutate(trimester = factor(Est_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(estrogen = Est_subinfo$Estrogen)
 
- # change to numeric 
- Est_QA_allwks_pos_ROIs[,c(Est_summarystats[,1])] <- as.numeric(unlist(Est_QA_allwks_pos_ROIs[,c(Est_summarystats[,1])])) 
- 
+ # change to numeric
+ Est_QA_allwks_pos_ROIs[,c(Est_summarystats[,1])] <- as.numeric(unlist(Est_QA_allwks_pos_ROIs[,c(Est_summarystats[,1])]))
 
 
-```
-
-```{r QA all weeks Figures exporting ,echo=FALSE, results='hide',message=FALSE}
-
-figpath <- paste0(estrogen_path, '/allscans/boxplots/')
-ROIcols <- c(Est_summarystats$`Tract Name`)
-
-
-# positive ROIS
-for (ROI in ROIcols) {
-  print(ROI)
-  y <- Est_QA_allwks_pos_ROIs %>%
-    ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
-      scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
-      labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_rect(fill = 'white', color='gray'),
-            panel.grid.major=element_line(colour='gray96'),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-   #
-   png(file = paste0(figpath,ROI,"_Est_QA_all_Pos.png"))
-   print(y)
-   dev.off()
-}
 
 ```
 
 <span class="text-center" style="color: pink;"> Figures and Tables </span>
+
 ```{r}
 
 TableOutput(Est_summarystats,"QA")
 
 ```
-
-<br><br><br><br>
 
 ### pregnancy only
 ```{r QA preg data clean estroge ,echo=FALSE, results='hide',message=FALSE}
@@ -284,57 +363,26 @@ pregWks <- c("1st","2nd", "3rd")
 Est_pregwksinfo <-Est_subinfo %>% filter(Trimester %in% pregWks)
 
 # Lets read in one main df and clean from there
-Est_QA_preg_pos_DF <-read.delim(paste0(estrogen_path, '/pregnancy_only/Est_qa_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols") 
+Est_QA_preg_pos_DF <-read.delim(paste0(estrogen_path, '/pregnancy_only/Est_qa_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")
 
 Est_preg_summarystats <- Est_QA_preg_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame()
 
-Est_QA_pregwks_pos_ROIs <- Est_QA_preg_pos_DF %>% 
+Est_QA_pregwks_pos_ROIs <- Est_QA_preg_pos_DF %>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Est_preg_summarystats[,1])))
 
 # Need to create a loop fix the subject IDs to match
-for (sub in 1:nrow((Est_QA_pregwks_pos_ROIs))) { 
- clean_subnum <- str_split(Est_QA_pregwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
- Est_QA_pregwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum) 
- 
+for (sub in 1:nrow((Est_QA_pregwks_pos_ROIs))) {
+ clean_subnum <- str_split(Est_QA_pregwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)
+ Est_QA_pregwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)
+
 }
 
 # now we cab grab the right subs
 Est_QA_pregwks_pos_ROIs <- Est_QA_pregwks_pos_ROIs %>% filter(Subjects %in% Est_pregwksinfo$`new scan name`) %>%  mutate(trimester = factor(Est_pregwksinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(estrogen = Est_pregwksinfo$Estrogen)
 
- # change to numeric 
- Est_QA_pregwks_pos_ROIs[,c(Est_preg_summarystats[,1])] <- as.numeric(unlist(Est_QA_pregwks_pos_ROIs[,c(Est_preg_summarystats[,1])])) 
- 
-
-```
-
-```{r QA pregnancy weeks Figures ,echo=FALSE, results='hide',message=FALSE}
-
-figpath <- paste0(estrogen_path, '/pregnancy_only/boxplots/')
-ROIcols <- c(Est_preg_summarystats$`Tract Name`)
-
-
-for (ROI in ROIcols) {
-  print(ROI)
-  y <- Est_QA_pregwks_pos_ROIs %>%
-    ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#D1E7E6", "#A8D2C6", "#6AA390")) +
-      scale_y_binned(n.breaks=15, nice.breaks = TRUE) +
-      labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_rect(fill = 'white', color='gray'),
-            panel.grid.major=element_line(colour='gray96'),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-   #
-   png(file = paste0(figpath,ROI,"_Est_QA__pregnancyonly_Pos.png"))
-   print(y)
-   dev.off()
-}
+ # change to numeric
+ Est_QA_pregwks_pos_ROIs[,c(Est_preg_summarystats[,1])] <- as.numeric(unlist(Est_QA_pregwks_pos_ROIs[,c(Est_preg_summarystats[,1])]))
 
 ```
 
@@ -343,217 +391,6 @@ TableOutput(Est_preg_summarystats,"QA")
 ```
 
 
-<br><br><br><br>
-
-# <span style="color: pink;"> Progesterone </span>  {.tabset .tabset-dropdown}
-
-## QA {.tabset}
-### All weeks
-```{r, QA Progesterone data cleaning cleaning ,echo=FALSE, results='hide',message=FALSE}
-
-Prog_subinfo <-subinfo_DF %>% select("new scan name","Progesterone","Trimester") %>% na.omit()
-
-# Lets read in one main df and clean from there
-Prog_QA_allwks_pos_DF <-read.delim(paste0(Prog_path,'/allscans/QA_prog_pos_allscans.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols") 
-
-# Splitting up the big data frame into summary stats 
-Prog_summarystats <- Prog_QA_allwks_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame()
-
-# and QA metrics
-Prog_QA_allwks_pos_ROIs <- Prog_QA_allwks_pos_DF %>% 
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Prog_summarystats[,1])))
-
-# Need to create a loop fix the subject IDs to match
-for (sub in 1:nrow((Prog_QA_allwks_pos_ROIs))) { 
- clean_subnum <- str_split(Prog_QA_allwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
- Prog_QA_allwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum) 
- 
-}
-
-# now we cab grab the right subs
-Prog_QA_allwks_pos_ROIs <- Prog_QA_allwks_pos_ROIs %>% filter(Subjects %in% Prog_subinfo$`new scan name`) %>%  mutate(trimester = factor(Prog_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(progesterone = Prog_subinfo$Progesterone)
-
- # change to numeric 
- Prog_QA_allwks_pos_ROIs[,c(Prog_summarystats[,1])] <- as.numeric(unlist(Prog_QA_allwks_pos_ROIs[,c(Prog_summarystats[,1])])) 
-
-# let's create a check for things 
-TestVars <- sample(c(Prog_summarystats[,1]), size=1)
-if (is.numeric(Prog_QA_allwks_pos_ROIs[,c(TestVars)])){
-  print(" Looks good")
-} else {
-  print("ERROR")
-}
-  
-```
-
-```{r, Progesterone QA all weeks Figures ,echo=FALSE, results='hide',message=FALSE}
-
-figpath <- paste0(Prog_path, '/allscans/boxplots/')
-ROIcols <- c(Prog_summarystats$`Tract Name`)
-
-
-for (ROI in ROIcols) {
-  print(ROI)
-  y <- Prog_QA_allwks_pos_ROIs %>%
-    ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) +
-      scale_y_binned(n.breaks=15, nice.breaks = TRUE) +
-      labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
-    theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_rect(fill = 'white', color='gray'),
-            panel.grid.major=element_line(colour='gray96'),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-   #
-   png(file = paste0(figpath,ROI,"_Prog_QA_allwks_Pos.png"))
-   print(y)
-   dev.off()
-}
-
-```
-
-```{r, Individual Progesterone QA all weeks Correlations ,echo=FALSE, results='hide',message=FALSE}
-
-# figpath <- paste0(Prog_path, '/allscans/Correlations/')
-# ROIcols <- c(Prog_summarystats$`Tract Name`)
-# stages <-  unique(Prog_subinfo$Trimester)
-# 
-#  for (stage in stages) {
-#    print(stage)
-#    df <- Prog_QA_allwks_pos_ROIs %>% filter(trimester == stage)
-#    
-#    if(stage == "Pre"){
-#     color_val <- c("#CF92BF")
-#   }
-#   if(stage == "1st"){
-#     color_val <- c("#D1E7E6")
-#   }
-#   if(stage == "2nd"){
-#     color_val <- c("#A8D2C6")
-#   }
-#   if(stage == "3rd"){
-#     color_val <- c("#6AA390")
-#   }
-#   if(stage == "Post"){
-#     color_val <- c("#90A0C9")
-#   }
-#    
-#    for (ROI in ROIcols) {
-#      #pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8)
-#      z <-
-#        ggplot(data = df, aes(
-#          x = .data[[ROI]],
-#          y = progesterone,
-#          color = factor(trimester)
-#        )) +
-#        geom_point() +
-#        stat_smooth(method = "lm", se = FALSE) +
-#        scale_color_manual(
-#          values = color_val,
-#          name = "Trimester"
-#        ) +
-#        labs(x = paste(ROI,"_",stage),
-#             y = "progesterone") +
-#        theme(
-#          legend.position = "right",
-#          panel.background = element_blank(),
-#          axis.line = element_line(colour = "black")
-#        ) 
-#       
-# 
-#      png(file = paste0(figpath,ROI,"_",stage,"_Prog_QA_allwks_Pos.png"))
-#      print(z)
-#      dev.off()
-#    }
-#  }
-```
-
-```{r, progresterone allweeks stats}
-TableOutput(Prog_summarystats,"QA")
-```
-
-<br><br><br><br>
-
-### pregnancy only
-```{r, QA Progesterone pregnancy wks ,echo=FALSE, results='hide',message=FALSE}
-
-Prog_preg_subinfo <-Prog_subinfo %>% filter(Trimester %in% pregWks)
-
-# Lets read in one main df and clean from there
-Prog_QA_preg_pos_DF <-read.delim(paste0(Prog_path,'/pregnancy_only/QA_prog_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols") 
-
-# Splitting up the big data frame into summary stats 
-Prog_preg_summarystats <- Prog_QA_preg_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame()
-
-# and QA metrics
-Prog_QA_preg_pos_ROIs <- Prog_QA_preg_pos_DF %>% 
-  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Prog_preg_summarystats[,1])))
-
-# Need to create a loop fix the subject IDs to match
-for (sub in 1:nrow((Prog_QA_preg_pos_ROIs))) { 
- clean_subnum <- str_split(Prog_QA_preg_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
- Prog_QA_preg_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum) 
- 
-}
-
-# now we cab grab the right subs
-Prog_QA_preg_pos_ROIs <- Prog_QA_preg_pos_ROIs %>% filter(Subjects %in% Prog_preg_subinfo$`new scan name`) %>%  mutate(trimester = factor(Prog_preg_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(progesterone = Prog_preg_subinfo$Progesterone)
-
- # change to numeric 
- Prog_QA_preg_pos_ROIs[,c(Prog_preg_summarystats[,1])] <- as.numeric(unlist(Prog_QA_preg_pos_ROIs[,c(Prog_preg_summarystats[,1])])) 
-
-# let's create a check for things 
-TestVars <- sample(c(Prog_preg_summarystats[,1]), size=1)
-if (is.numeric(Prog_QA_preg_pos_ROIs[,c(TestVars)])){
-  print(" Looks good")
-} else {
-  print("ERROR")
-}
-  
-```
-
-```{r Progesterone QA pregnancy weeks Figures}
-
-figpath <- paste0(Prog_path, '/pregnancy_only/boxplots/')
-ROIcols <- c(Prog_preg_summarystats$`Tract Name`)
-
-
-for (ROI in ROIcols) {
-  print(ROI)
-  y <- Prog_QA_preg_pos_ROIs %>%
-    ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#D1E7E6", "#A8D2C6", "#6AA390")) +
-      scale_y_binned(n.breaks=15, nice.breaks = TRUE) +
-      labs(x= "Trimester", y= " QA", title =paste0(ROI) ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_rect(fill = 'white', color='gray'),
-            panel.grid.major=element_line(colour='gray96'),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-   #
-   png(file = paste0(figpath,ROI,"_Prog_QA_pregnancyonly_Pos.png"))
-   print(y)
-   dev.off()
-}
-```
-
-```{r, progresterone pregnancy stats,echo=FALSE, results='hide',message=FALSE}
-TableOutput(Prog_preg_summarystats,"QA")
-```
-
-
-<br><br><br><br>
-
 # <span style="color: pink;"> Gestational Week </span>  {.tabset .tabset-dropdown}
 
 ```{r QA Gestational preganancy only ,echo=FALSE, results='hide',message=FALSE}
@@ -561,37 +398,37 @@ TableOutput(Prog_preg_summarystats,"QA")
 Gest_subinfo <-subinfo_DF %>% select("new scan name","GestWeek","Trimester") %>% na.omit() %>% filter(GestWeek < 40)
 
 # Lets read in one main df and clean from there
-Gest_QA_pos_DF <-read.delim(paste0(Gest_path,'/QA_gestwk_pre_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols") 
+Gest_QA_pos_DF <-read.delim(paste0(Gest_path,'/QA_gestwk_pre_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")
 
-# Splitting up the big data frame into summary stats 
+# Splitting up the big data frame into summary stats
 Gest_summarystats <- Gest_QA_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame()
 
 # and QA metrics
-Gest_QA_pos_ROIs <- Gest_QA_pos_DF %>% 
+Gest_QA_pos_ROIs <- Gest_QA_pos_DF %>%
   filter(str_detect(V1, c("mean_qa"))) %>%
   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Gest_summarystats[,1])))
 
 # Need to create a loop fix the subject IDs to match
-for (sub in 1:nrow((Gest_QA_pos_ROIs))) { 
- clean_subnum <- str_split(Gest_QA_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
- Gest_QA_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum) 
- 
+for (sub in 1:nrow((Gest_QA_pos_ROIs))) {
+ clean_subnum <- str_split(Gest_QA_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)
+ Gest_QA_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)
+
 }
 
 # now we cab grab the right subs
 Gest_QA_pos_ROIs <- Gest_QA_pos_ROIs %>% filter(Subjects %in% Gest_subinfo$`new scan name`) %>%  mutate(trimester = factor(Gest_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd'))) %>% mutate(Gestational = Gest_subinfo$GestWeek)
 
- # change to numeric 
- Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])] <- as.numeric(unlist(Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])])) 
+ # change to numeric
+ Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])] <- as.numeric(unlist(Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])]))
 
-# let's create a check for things 
+# let's create a check for things
 TestVars <- sample(c(Gest_summarystats[,1]), size=1)
 if (is.numeric(Gest_QA_pos_ROIs[,c(TestVars)])){
   print(" Looks good")
 } else {
   print("ERROR")
 }
-  
+
 ```
 
 ```{r Gestational week QAbox plots Figures,echo=FALSE, results='hide',message=FALSE}
@@ -622,958 +459,1343 @@ for (ROI in ROIcols) {
 }
 ```
 
-```{r Gestational week QA correlations Figures,echo=FALSE, results='hide',message=FALSE}
-# 
-# ROIcols <- c(Gest_summarystats$`Tract Name`)
-# 
-#   
-# for (ROI in ROIcols) {
-#   
-#      z <- Gest_QA_pos_ROIs %>% ggplot( aes(x = .data[[ROI]], y = Gestational)) +
-#        geom_point(aes(color = trimester), size=5) +
-#        stat_smooth(method = "lm", color= "#6AA390") +
-#        scale_color_manual(
-#          values = c("#CF92BF", "#D1E7E6", "#A8D2C6", "#90A0C9"),
-#          name = "Gestational Week"
-#        ) +
-#        labs(x = paste0(ROI,"_"),
-#             y = "Gestational Week") +
-#        theme(
-#          legend.position = "right",
-#          panel.background = element_blank(),
-#          axis.line = element_line(colour = "black")
-#        ) +
-#        stat_cor(method = "spearman", aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")))+
-#        xlim(0.5, 40)  +   
-#        scale_x_continuous(n.breaks = 3) 
-#        
-#    png(file = paste0(Gest_path,"/scatterplots/",ROI,"_Gestwks_Pos_QA.png"))
-#    print(z)
-#    dev.off()
-# }
-```
-
 ```{r, gestational  stats}
 TableOutput(Gest_summarystats,"QA")
 ```
+
 <br><br><br><br>
 
-# <span style="color: pink;"> Tractometry    </span>  {.tabset.tabset-dropdown}
-
-```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE}
 
-#Tractography working dir
-#Main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/28andB/Global_QA/"
-Main_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/Global_QA/"
-tract_workdir <-paste0(Main_workdir,"ROI/")
-AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
 
-AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%02d")
+<!-- ```{r QA all weeks Figures exporting ,echo=FALSE, results='hide',message=FALSE} -->
 
-AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
+<!-- figpath <- paste0(estrogen_path, '/allscans/boxplots/') -->
+<!-- ROIcols <- c(Est_summarystats$`Tract Name`) -->
 
-# 
-# 
- # Below is the combining and merging code. I exported as cvs so i wont re run it again
-subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
 
-ROIS_cols <- length(c("Arcuate_Fasciculus_L","Corpus_Callosum","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L"))
-#The ROI ccode below is if we want every single one of the rois in one csv. For my sake i'm only grabbing a few specific ones 
-#ROIS_cols <- length(list.dirs(paste0(tract_workdir,subfiles[1]))) # Changing the ROI
-master_DF <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = length(subfiles)))
+<!-- # positive ROIS -->
+<!-- for (ROI in ROIcols) { -->
+<!--   print(ROI) -->
+<!--   y <- Est_QA_allwks_pos_ROIs %>% -->
+<!--     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) + -->
+<!--       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) + -->
+<!--       scale_y_binned(n.breaks=5, nice.breaks = TRUE) + -->
+<!--       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_rect(fill = 'white', color='gray'), -->
+<!--             panel.grid.major=element_line(colour='gray96'), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!--    # -->
+<!--    png(file = paste0(figpath,ROI,"_Est_QA_all_Pos.png")) -->
+<!--    print(y) -->
+<!--    dev.off() -->
+<!-- } -->
 
-for(sub in 1:length(subfiles)){
+<!-- ``` -->
 
-   print(paste("running subject",subfiles[sub]))
 
-  temp_df <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = 1))
-  temp_df[,1] <- subfiles[sub]
-  ROIS <- c("Arcuate_Fasciculus_L","Corpus_Callosum","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L")
-  
-  #ROIS <- list.dirs(paste0(tract_workdir,subfiles[sub]),full.names = TRUE, recursive = FALSE)
-
-  for(roi in 1:length(ROIS)){
-
-  print(paste("running ",ROIS[roi]))
-  #text_file <- list.files(path = paste0(tract_workdir,subfiles[sub],"/",ROIS[roi]), pattern = "*.txt")
-  csv_file <-paste0(tract_workdir,subfiles[sub],"/",ROIS[roi],".stat.csv")
-    # Check if CSV exists
-
-    if (length(read.csv(csv_file)) == 0){
-        print("no ouput. skipping ROI")
-        temp_df[,roi+1] <- NA
-        next
-      }
-
-      # Checking that the text file is not empty.
-      if (file.size(csv_file) > 0 ){
-        print("File Exists lets read it in")
-        #ROI_txt <- read.delim(paste0(tract_workdir,subfiles[sub],"/",ROIS[roi],"/",text_file), header=FALSE) %>% filter(V1 %in% c("qa"))
-        ROI_txt <- read.delim(csv_file, header = FALSE) %>% filter(V1 %in% c("qa"))
-        temp_df[,roi+1] <- ROI_txt %>% pull(V2)
-        }
-      else{
-        print("File does not exist. Add NA instead")
-        temp_df[,roi+1] <- NA #KEEP but CHANGE
-        }
-  }
-
-  master_DF[sub,] <- temp_df[1,]
-
-}
-
-#
-colnames(master_DF) <- c("subjects",ROIS)
-# colnames(MD_master_DF) <- c("subjects",ROIS$V1)
-#
-# QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
-#
-# MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
-#
-write.csv(master_DF, paste0(tract_workdir,"QA_master_DF.csv"), row.names=FALSE)
-# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
-
-```
-<br>
-
-<span class="text-center" style="color: black;"> QA </span>
-```{r QA output}
-QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(V1 %in% c("sub-026", "sub-027"))) #had to change to match col names
-
-TableOutput(QA_master_DF,"QA")
-```
-
-<br><br>
-
-<span class="text-center" style="color: pink;"> MD </span>
-```{r MD output}
-MD_master_DF<- read.csv(paste0(tract_workdir,"/MD_master_DF.csv"))%>% filter(!(V1 %in% c("sub-026", "sub-027")))
-
-TableOutput(MD_master_DF,"MD")
-
-```
-
-```{r Creating QA figs,echo=FALSE, echo=FALSE, results='hide',message=FALSE}
-# Change code as needed especially if you don't need every ROI
-
-# Main data path
-#Main_workdir <-"/Users/danielacossio/Downloads/Updated_gest_figs_082322/"
-# reading in info 
-
-Main_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/Global_QA/"
-
-
-AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("27","26")))
-AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%02d")
-AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
-AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week)
-
-# Let's get our entire QA ROI Data frame 
-QA_ROI_master_DF <- read.csv(paste0(tract_workdir,"QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))
-
-
-ROIS <-c ("Inferior_Fronto_Occipital_Fasciculus_R","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Arcuate_Fasciculus_L")
-#,")
-
-
-#To grab every ROIS
-for (ROI in 1:length(ROIS)) {
-  print(ROIS[ROI])
-  roiname <- stringr::str_split_1(ROIS[ROI], '_') %>% paste(collapse=' ')
-  y <- ROIS[ROI]
-#
-  QAplot <- QA_ROI_master_DF %>%
-    ggplot(aes(x = trimester, y = QA_ROI_master_DF[,ROIS[ROI]], fill = trimester)) +
-    #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
-    geom_boxplot(linewidth=0.5) +
-    theme_bw() + scale_fill_manual(values = grp_colors)+
-    # scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
-    labs(x = "Trimester", y = "Quantitative Anisotropy") +
-    theme(
-      strip.text.x = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      ),
-      panel.border = element_rect(linewidth=1, linetype="solid"),
-      strip.text.y = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      )
-    ) + xlab("Trimester") + ylab("Quantitative Anisotropy") +
-     theme(axis.title.x = element_text(size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 16))+ theme(legend.position = "none")
-
-    #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319)
-   # pdf(file = paste0(Main_workdir,y,"_atttempt2QA.pdf"),width=10, height=8)
-    print(QAplot)
-   # dev.off()
-}
-
-```
-
-```{r MD, echo=FALSE,echo=FALSE, results='hide',message=FALSE}
-
-# MD_scans <- MD_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) 
-MD_scans <- read.csv("/Users/danielacossio/Downloads/MD_master_DF.csv") %>% filter(!(subjects %in% c("sub-007", "sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))
-
-ROIS <-c("Cerebellum_L","Middle_Cerebellar_Peduncle","Corpus_Callosum","Arcuate_Fasciculus_L","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Cortico_Striatal_Pathway_L")
-
-for (ROI in 1:length(ROIS)) {
-   print(ROIS[ROI])
-  roiname <- stringr::str_split_1(ROIS[ROI], '_') %>% paste(collapse=' ')
-   y <- ROIS[ROI]
-  
-  MDplot <-ggplot(data= MD_scans, aes(x = trimester, y =.data[[ROIS[ROI]]] , fill = trimester)) +  
-    #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
-    geom_boxplot(linewidth=1)+
-    theme_bw() + scale_fill_manual(values = grp_colors)+
-    labs(x = "Trimester", y = "MD", title = roiname) +
-    theme(
-      strip.text.x = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      ),
-      panel.border = element_rect(linewidth=1, linetype="solid"),
-      strip.text.y = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      )
-    ) + xlab("Trimester") + ylab("MD") +
-    theme(
-      axis.title.x = element_text(size = 16),
-      axis.text.x = element_text(size = 12),
-      axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 16),
-      plot.title = element_text(hjust = 0.5,size=16)
-    ) + theme(legend.position = "none")
-   #
-   pdf(file = paste0("/Users/danielacossio/Downloads/",y,"_attempt2MD.pdf"),width=10, height=8)
-   print(MDplot)
-   dev.off()
-}
-
-```
-
-```{r, echo=FALSE, results='hide',message=FALSE} 
-#  # Below is the combining and merging code. I exported as cvs so i wont re run it again
-# 
-# main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography"
-# 
-# AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27")))
-# 
-# AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
-# 
-# AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
-# 
-#  ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R")
-#  
-# subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
-# 
-# QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
-# MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles)))
-# 
-# for(sub in 1:length(subfiles)){
-# 
-#    print(paste("running subject",subfiles[sub]))
-# 
-#   md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
-#   md_df[,1] <- subfiles[sub]
-# 
-#   qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1))
-#   qa_df[,1] <- subfiles[sub]
-# 
-#   for ( roi in 1:nrow(ROIS)){
-# 
-#   print(paste("running ",ROIS[roi,1]))
-# 
-#     # Check if CSV exists
-#     CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv")
-# 
-#     if (file.exists(CSV_path) == TRUE){
-# 
-#       print("File Exists lets read it in")
-#       ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md"))
-#       qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2)
-#       md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2)
-#     }
-#     else{
-#       print("File does not exist. Add NA instead")
-# 
-#       qa_df[,roi+1] <- NA
-#       md_df[,roi+1] <- NA
-# 
-#     }
-# 
-#   }
-# 
-#   QA_master_DF[sub,] <- qa_df[1,]
-#   MD_master_DF[sub,] <- md_df[1,]
-# }
-# 
-# colnames(QA_master_DF) <- c("subjects",ROIS$V1)
-# colnames(MD_master_DF) <- c("subjects",ROIS$V1)
-# 
-# QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
-# 
-# MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
-# 
-# write.csv(QA_master_DF, paste0(tract_workdir,"/QA_master_DF.csv"), row.names=FALSE)
-# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
-
-```
-
-
-# <span style="color: pink;"> ISO component </span> 
-
-```{r}
-
-ISO_scans <-read.csv("/Users/danielacossio/Downloads/temp_demo.csv") %>%  ChangeTrimesterLabels()
-
-MeanISO <- read.delim("/Users/danielacossio/Downloads/meanIso.csv", sep ="\t", header = FALSE) %>%  filter(str_detect(V1, c("mean_iso"))) %>% select(-c(3))
-
-MergedISODF <- MeanISO %>%  mutate(Trimester = factor(ISO_scans$Trimester)) %>% na.omit()
-
-
-  ISOplot <- MergedISODF %>% ggplot(aes(x=Trimester, y=V2, group=Trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) +
-      geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#A8D2C6", "#6AA390","#90A0C9")) +
-      #scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
-      labs(x= "Trimester", y= " ISO" ) +
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_rect(fill = 'white', color='gray'),
-            panel.grid.major=element_line(colour='gray96'),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-    #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319)
-#    pdf(file = paste0(tract_workdir,"/boxplots/QA/",y,"_QA.pdf"),width=10, height=8)
-    print(ISOplot)
-    #dev.off()
-
-```
-
-
-# Whole Brain TRactography
-```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE}
-
-# #Tractography working dir
-# tract_workdir <-"/Users/danielacossio/Downloads/Global_QA"
-# 
-# 
-# 
-# 
-#  # Below is the combining and merging code. I exported as cvs so i wont re run it again
-# subfiles <- list.files(path = tract_workdir, full.names = FALSE,recursive = FALSE, pattern ='.txt')
-# 
-# # 
-# 
-# master_DF <- as.data.frame(matrix(ncol = 4, nrow = length(subfiles)))
-#  
-# for(sub in 1:length(subfiles)){
-# 
-#    print(paste("running subject",subfiles[sub]))
-# 
-#   df <- as.data.frame(matrix(ncol = 3, nrow = 1))
-#   df[,1] <- subfiles[sub]
-#   
-#   text <- read.delim(paste0(tract_workdir,"/",subfiles[sub]), header=FALSE)
-#   
-#   df[,2] <- text %>% filter(V1 %in% "qa") %>% select(V2)  #qa
-#   df[,3] <- text %>% filter(V1 %in% "md") %>% select(V2) 
-#   df[,4] <- text %>% filter(V1 %in% "iso") %>% select(V2) 
-# 
-# 
-#   master_DF[sub,] <- df[1,]
-#   
-# }
-# 
-# colnames(master_DF) <- c("subjects","qa","md","iso")
-# 
-# write.csv(master_DF, paste0(tract_workdir,"/global_master_DF.csv"), row.names=FALSE)
-# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
-
-```
-
-```{r Data plot for output,echo=FALSE, results='hide',message=FALSE}
-AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Global_QA/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
-
-AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
-
-AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
-
-
-
-MergedWholebrain$gestWK <- as.numeric(MergedWholebrain$gestWK)
-
-UCIOnly <- MergedWholebrain[6:21,]
-#
-jpeg(file=paste0(tract_workdir,"/",y,"_globaliso.jpg"), width=449, height=319)
-
-UCIOnly %>% ggplot(aes(x=Trimester, y=qa, fill=Trimester)) +
-    geom_boxplot() +
-    theme_bw() + scale_fill_manual(values = grp_colors)+
-    theme(
-      strip.text.x = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      ),
-      strip.text.y = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      )
-    ) +
-     theme(axis.title.x = element_blank(),
-            axis.text.x = element_text(),
-            axis.text.y = element_text(),
-            axis.title.y = element_blank())+ theme(legend.position = "none")
-
-    dev.off()
-    
-    
-# SCatter plot
-
-    UCI_gest %>% ggplot(aes(x=gestWK, y=qa)) +
-    geom_point(aes(color = grp_colors[3])) + geom_smooth(method=lm)+
-    stat_cor(aes(color = grp_colors[3]),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) +theme_bw() +
-    theme(
-      strip.text.x = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      ),
-      strip.text.y = element_text(
-        size = 12,
-        color = "black",
-        face = "bold.italic"
-      )
-    ) +
-     theme(axis.title.x = element_blank(),
-            axis.text.x = element_text(),
-            axis.text.y = element_text(),
-            axis.title.y = element_blank())+ theme(legend.position = "none")
-
-    
-```
-
-```{r, GAM analysis ISO}
-
-# you'll need: 
-library(mgcv)
-
-##### GAM models
-# linear fit
-mod_lm = gam(iso ~ gestWK, data = MergedWholebrain)
-summary(mod_lm)
-
-# GAM fit
-mod_gam1 = gam(iso ~ s(MergedWholebrain$gestWK, bs = "cr"), data =MergedWholebrain)
-summary(mod_gam1)
-
-# assess model differences
-anova(mod_lm, mod_gam1, test = "Chisq")
-
-#plotting, basic & w/ ggplot
-plot(mod_gam1)
-
-ggplot(data = MergedWholebrain, mapping = aes(x = gestWK, y = iso)) + geom_point(color = "#CF92BF") + geom_smooth(method = "gam", color ="#CF92BF" )+ geom_vline(xintercept=c(40),linetype="dotted") +
-labs(x= "gestational week", y= " Isotropic Diffusion" )  + geom_label(label="birth", 
-    x=42,
-    y=1.00, # Rectangle size around label
-    label.size = NA,
-    color = "black") + geom_label(label="deviance explained = 74.7%", 
-    x=70,
-    y=.98, # Rectangle size around label
-    label.size = NA,
-    color = "black")+ 
-      theme(axis.title.x = element_text(vjust=- 4, size = 16),
-            axis.title.y = element_text(vjust=8, size = 16),
-            axis.text.x = element_text(size = 12),
-            axis.text.y = element_text(size = 12),
-            panel.background = element_blank(),
-            panel.grid.major=element_blank(),
-            axis.line = element_line(colour = "black"),
-            plot.margin = margin(1, 2, 1, 1.5, "cm"),
-            plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
-```
-
-```{r, GAM analysis QA}
-
-# you'll need: 
-library(mgcv)
-
-# Sub info 
-AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Updated_gest_figs_082322/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
-
-AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d")
-
-AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
-
-AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week)
-# addgest week to scan 26 
-AllScanInfo$gest_week[21] <- 162
-
-
-#ROIS DF
-QA_df <- read.csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv") %>% filter(!(subjects == "sub-007")) %>% select(c("subjects","Arcuate_Fasciculus_L", "Corpus_Callosum", "Cortico_Striatal_Pathway_L","Cortico_Striatal_Pathway_R","Cortico_Spinal_Tract_L","Cortico_Spinal_Tract_R","Inferior_Fronto_Occipital_Fasciculus_L","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L", "Inferior_Longitudinal_Fasciculus_R"))
-
-
-#Whole brain DF
-MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Updated_gest_figs_082322/Global_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)
-
-
-
-##### Whole BRain ####
-# linear fit
-qa_mod_lm = gam(qa ~ gestWK, data = MergedWholebrain)
-summary(qa_mod_lm)
-
-# GAM fit
-qa_mod_gam1 = gam(qa ~ s(MergedWholebrain$gestWK, bs = "cr"), data =MergedWholebrain)
-summary(qa_mod_gam1)
-
-# assess model differences
-anova(qa_mod_lm, qa_mod_gam1, test = "Chisq")
-
-#plotting,Whole brain GAM
-plot(qa_mod_gam1)
-
-#pdf(file = "/Users/danielacossio/Downloads/WholeBrain_GAM.pdf",width = 10,height = 5)
-x <- ggplot(data = MergedWholebrain,
-       mapping = aes(x = gestWK, y = qa)) + 
-  geom_point(size = 2, alpha = 0.5,color = "#EBB97B") + 
-  geom_smooth(method = "gam", color ="#EBB97B", fill= "#EBB97B", formula= y~s(x, bs = "cs")) + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size =1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-#dev.off()
-
-## Whole BRain GAM using Laura's code
-GAMwithlabels <-ggplot(MergedWholebrain, aes(x=gestWK, y=qa, label=gestWK)) + geom_point(size = 3, color = "#AD733E") + geom_text()+ theme_bw() + theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) +
-  geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic()
-
-L_GAM <- ggplot(MergedWholebrain, aes(x=gestWK, y=qa)) + geom_point(size = 3, color = "#AD733E") + theme_bw()  +  theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) +
-  geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic() +  theme(axis.text.x=element_blank(),   axis.text.y=element_blank()) + xlab("") + ylab("")
-
-
-
-
-#I forgot whtat the below code did fml 
-
-QA_df <- QA_df %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week) 
-
-QA_df$gestWK <- as.numeric(QA_df$gestWK)
-
-### GAM for AF #####
-AF_mod_gam1 = gam(Arcuate_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(AF_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/AF_GAM.pdf",
-    width = 10,
-    height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Arcuate_Fasciculus_L)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size =1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-### GAM for CC #####
-
-CC_mod_gam1 = gam(Corpus_Callosum ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(CC_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/CC_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Corpus_Callosum)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-
-### GAM for C striatal  L and R #####
-CSP_mod_gam1 = gam(Cortico_Striatal_Pathway_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(CSP_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Striatal_Pathway_L_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Cortico_Striatal_Pathway_L)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-CSP_R_mod_gam1 = gam(Cortico_Striatal_Pathway_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(CSP_R_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Striatal_Pathway_R_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Cortico_Striatal_Pathway_R)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-
-## Cortico spinal  ####
-Cortico_spinal_mod_gam1 = gam(Cortico_Spinal_Tract_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(Cortico_spinal_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Spinal_Tract_L_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Cortico_Spinal_Tract_L)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF",  fill= "#CF92BF", formula= y~s(x, bs = "cs")) + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-
-Cortico_spinal_R_mod_gam1 = gam(Cortico_Spinal_Tract_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(Cortico_spinal_R_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Spinal_Tract_R_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Cortico_Spinal_Tract_R)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-
-
-
-## IFOF ####
-
-IFOF_L_mod_gam1 = gam(Inferior_Fronto_Occipital_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(IFOF_L_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Fronto_Occipital_Fasciculus_L_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Inferior_Fronto_Occipital_Fasciculus_L)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-IFOF_R_mod_gam1 = gam(Inferior_Fronto_Occipital_Fasciculus_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(IFOF_R_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Fronto_Occipital_Fasciculus_R_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Inferior_Fronto_Occipital_Fasciculus_R)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-#ILF ####
-
-ILF_L_mod_gam1 = gam(Inferior_Longitudinal_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(ILF_L_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Longitudinal_Fasciculus_L_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Inferior_Longitudinal_Fasciculus_L)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-
-
-ILF_R_mod_gam1 = gam(Inferior_Longitudinal_Fasciculus_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df)
-summary(ILF_R_mod_gam1)
-
-pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Longitudinal_Fasciculus_R_GAM.pdf",width = 10, height = 5)
-ggplot(data = QA_df,
-       mapping = aes(x = gestWK, y = Inferior_Longitudinal_Fasciculus_R)) + 
-  geom_point(color = "#CF92BF") + 
-  geom_smooth(method = "gam", color ="#CF92BF") + 
-  geom_vline(xintercept = c(40), linetype = "dotted", size = 1) +
-  labs(x = "gestational week", y = " QA")  + 
-  # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) + 
-  # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) +
-  # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 16),
-    axis.title.y = element_text(vjust = 8, size = 16),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
-    panel.grid.major = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.margin = margin(1, 2, 1, 1.5, "cm"),
-    plot.title = element_text(
-      hjust = 0.5,
-      vjust = 2,
-      size = 16,
-      face = "bold"
-    )
-  )
-
-dev.off()
-```
-
-
-```{r, ICC on sessions 26 and 26}
-
-library(irr)
-# Read in CSV with ROI mean QA information
-
-ICC <- read_csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv") 
-
-# Need to create a loop fix the subject IDs to match
-for (sub in 1:nrow((ICC))) { 
- clean_subnum <- str_split(ICC$subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,) 
- ICC$subjects[sub] <-  sub("^0+", "", clean_subnum) 
-}
-
-# Need to transpose and clean up data
-ICC <- ICC %>% filter(subjects %in% c("26","27")) 
-ICC <- as.data.frame(t(ICC[,-1]))
-colnames(ICC) <- c("26", "27")
-
-ICC_output <- icc(ICC, model = "twoway",
-    type = "agreement", unit = "single")
-p <- format(ICC_output[["p.value"]], scientific=FALSE)
-
-```
-
-```{r, ICC on sessions 26 and 26 using the global QA}
-
-library(irr)
-# Read in ICC analysis 
-
-ICC <- read.delim("/Users/danielacossio/Downloads/Global_QA/sub-101_ses-DIFFERENCE.qa.db.fib.gz.tt.gz.stat.txt", header = FALSE) %>%  filter(str_detect(V1, c("mean_qa"))) %>%
-  filter(!str_detect(V1, c("mean_qa_post_norm"))) 
-
-ICC <- as.data.frame(t(ICC[,-1])) %>% `colnames<-`(c("26","27"))
-
-ICC_output <- icc(ICC, model = "twoway",
-    type = "agreement", unit = "single")
-p <- format(ICC_output[["p.value"]], scientific=FALSE)
-
-```
-
-```{r GAM Plots using specific ROIS}
-# REading in df ####
-
-
-```
+
+<!-- <br><br><br><br> -->
+
+<!-- ### pregnancy only -->
+<!-- ```{r QA preg data clean estroge ,echo=FALSE, results='hide',message=FALSE} -->
+<!-- pregWks <- c("1st","2nd", "3rd") -->
+
+<!-- Est_pregwksinfo <-Est_subinfo %>% filter(Trimester %in% pregWks) -->
+
+<!-- # Lets read in one main df and clean from there -->
+<!-- Est_QA_preg_pos_DF <-read.delim(paste0(estrogen_path, '/pregnancy_only/Est_qa_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")  -->
+
+<!-- Est_preg_summarystats <- Est_QA_preg_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame() -->
+
+<!-- Est_QA_pregwks_pos_ROIs <- Est_QA_preg_pos_DF %>%  -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Est_preg_summarystats[,1]))) -->
+
+<!-- # Need to create a loop fix the subject IDs to match -->
+<!-- for (sub in 1:nrow((Est_QA_pregwks_pos_ROIs))) {  -->
+<!--  clean_subnum <- str_split(Est_QA_pregwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)  -->
+<!--  Est_QA_pregwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)  -->
+
+<!-- } -->
+
+<!-- # now we cab grab the right subs -->
+<!-- Est_QA_pregwks_pos_ROIs <- Est_QA_pregwks_pos_ROIs %>% filter(Subjects %in% Est_pregwksinfo$`new scan name`) %>%  mutate(trimester = factor(Est_pregwksinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(estrogen = Est_pregwksinfo$Estrogen) -->
+
+<!--  # change to numeric  -->
+<!--  Est_QA_pregwks_pos_ROIs[,c(Est_preg_summarystats[,1])] <- as.numeric(unlist(Est_QA_pregwks_pos_ROIs[,c(Est_preg_summarystats[,1])]))  -->
+
+
+<!-- ``` -->
+
+<!-- ```{r QA pregnancy weeks Figures ,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- figpath <- paste0(estrogen_path, '/pregnancy_only/boxplots/') -->
+<!-- ROIcols <- c(Est_preg_summarystats$`Tract Name`) -->
+
+
+<!-- for (ROI in ROIcols) { -->
+<!--   print(ROI) -->
+<!--   y <- Est_QA_pregwks_pos_ROIs %>% -->
+<!--     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) + -->
+<!--       geom_boxplot(width=0.5 ,fill= c("#D1E7E6", "#A8D2C6", "#6AA390")) + -->
+<!--       scale_y_binned(n.breaks=15, nice.breaks = TRUE) + -->
+<!--       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_rect(fill = 'white', color='gray'), -->
+<!--             panel.grid.major=element_line(colour='gray96'), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!--    # -->
+<!--    png(file = paste0(figpath,ROI,"_Est_QA__pregnancyonly_Pos.png")) -->
+<!--    print(y) -->
+<!--    dev.off() -->
+<!-- } -->
+
+<!-- ``` -->
+
+
+
+<!-- <br><br><br><br> -->
+
+<!-- # <span style="color: pink;"> Progesterone </span>  {.tabset .tabset-dropdown} -->
+
+<!-- ## QA {.tabset} -->
+<!-- ### All weeks -->
+<!-- ```{r, QA Progesterone data cleaning cleaning ,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- Prog_subinfo <-subinfo_DF %>% select("new scan name","Progesterone","Trimester") %>% na.omit() -->
+
+<!-- # Lets read in one main df and clean from there -->
+<!-- Prog_QA_allwks_pos_DF <-read.delim(paste0(Prog_path,'/allscans/QA_prog_pos_allscans.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")  -->
+
+<!-- # Splitting up the big data frame into summary stats  -->
+<!-- Prog_summarystats <- Prog_QA_allwks_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame() -->
+
+<!-- # and QA metrics -->
+<!-- Prog_QA_allwks_pos_ROIs <- Prog_QA_allwks_pos_DF %>%  -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Prog_summarystats[,1]))) -->
+
+<!-- # Need to create a loop fix the subject IDs to match -->
+<!-- for (sub in 1:nrow((Prog_QA_allwks_pos_ROIs))) {  -->
+<!--  clean_subnum <- str_split(Prog_QA_allwks_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)  -->
+<!--  Prog_QA_allwks_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)  -->
+
+<!-- } -->
+
+<!-- # now we cab grab the right subs -->
+<!-- Prog_QA_allwks_pos_ROIs <- Prog_QA_allwks_pos_ROIs %>% filter(Subjects %in% Prog_subinfo$`new scan name`) %>%  mutate(trimester = factor(Prog_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(progesterone = Prog_subinfo$Progesterone) -->
+
+<!--  # change to numeric  -->
+<!--  Prog_QA_allwks_pos_ROIs[,c(Prog_summarystats[,1])] <- as.numeric(unlist(Prog_QA_allwks_pos_ROIs[,c(Prog_summarystats[,1])]))  -->
+
+<!-- # let's create a check for things  -->
+<!-- TestVars <- sample(c(Prog_summarystats[,1]), size=1) -->
+<!-- if (is.numeric(Prog_QA_allwks_pos_ROIs[,c(TestVars)])){ -->
+<!--   print(" Looks good") -->
+<!-- } else { -->
+<!--   print("ERROR") -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r, Progesterone QA all weeks Figures ,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- figpath <- paste0(Prog_path, '/allscans/boxplots/') -->
+<!-- ROIcols <- c(Prog_summarystats$`Tract Name`) -->
+
+
+<!-- for (ROI in ROIcols) { -->
+<!--   print(ROI) -->
+<!--   y <- Prog_QA_allwks_pos_ROIs %>% -->
+<!--     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) + -->
+<!--       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")) + -->
+<!--       scale_y_binned(n.breaks=15, nice.breaks = TRUE) + -->
+<!--       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) + -->
+<!--     theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_rect(fill = 'white', color='gray'), -->
+<!--             panel.grid.major=element_line(colour='gray96'), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!--    # -->
+<!--    png(file = paste0(figpath,ROI,"_Prog_QA_allwks_Pos.png")) -->
+<!--    print(y) -->
+<!--    dev.off() -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r, Individual Progesterone QA all weeks Correlations ,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- # figpath <- paste0(Prog_path, '/allscans/Correlations/') -->
+<!-- # ROIcols <- c(Prog_summarystats$`Tract Name`) -->
+<!-- # stages <-  unique(Prog_subinfo$Trimester) -->
+<!-- #  -->
+<!-- #  for (stage in stages) { -->
+<!-- #    print(stage) -->
+<!-- #    df <- Prog_QA_allwks_pos_ROIs %>% filter(trimester == stage) -->
+<!-- #     -->
+<!-- #    if(stage == "Pre"){ -->
+<!-- #     color_val <- c("#CF92BF") -->
+<!-- #   } -->
+<!-- #   if(stage == "1st"){ -->
+<!-- #     color_val <- c("#D1E7E6") -->
+<!-- #   } -->
+<!-- #   if(stage == "2nd"){ -->
+<!-- #     color_val <- c("#A8D2C6") -->
+<!-- #   } -->
+<!-- #   if(stage == "3rd"){ -->
+<!-- #     color_val <- c("#6AA390") -->
+<!-- #   } -->
+<!-- #   if(stage == "Post"){ -->
+<!-- #     color_val <- c("#90A0C9") -->
+<!-- #   } -->
+<!-- #     -->
+<!-- #    for (ROI in ROIcols) { -->
+<!-- #      #pdf(file = paste0(figpath,"corr_QA_FornixL.pdf"),width=10, height=8) -->
+<!-- #      z <- -->
+<!-- #        ggplot(data = df, aes( -->
+<!-- #          x = .data[[ROI]], -->
+<!-- #          y = progesterone, -->
+<!-- #          color = factor(trimester) -->
+<!-- #        )) + -->
+<!-- #        geom_point() + -->
+<!-- #        stat_smooth(method = "lm", se = FALSE) + -->
+<!-- #        scale_color_manual( -->
+<!-- #          values = color_val, -->
+<!-- #          name = "Trimester" -->
+<!-- #        ) + -->
+<!-- #        labs(x = paste(ROI,"_",stage), -->
+<!-- #             y = "progesterone") + -->
+<!-- #        theme( -->
+<!-- #          legend.position = "right", -->
+<!-- #          panel.background = element_blank(), -->
+<!-- #          axis.line = element_line(colour = "black") -->
+<!-- #        )  -->
+<!-- #        -->
+<!-- #  -->
+<!-- #      png(file = paste0(figpath,ROI,"_",stage,"_Prog_QA_allwks_Pos.png")) -->
+<!-- #      print(z) -->
+<!-- #      dev.off() -->
+<!-- #    } -->
+<!-- #  } -->
+<!-- ``` -->
+
+<!-- ```{r, progresterone allweeks stats} -->
+<!-- TableOutput(Prog_summarystats,"QA") -->
+<!-- ``` -->
+
+<!-- <br><br><br><br> -->
+
+<!-- ### pregnancy only -->
+<!-- ```{r, QA Progesterone pregnancy wks ,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- Prog_preg_subinfo <-Prog_subinfo %>% filter(Trimester %in% pregWks) -->
+
+<!-- # Lets read in one main df and clean from there -->
+<!-- Prog_QA_preg_pos_DF <-read.delim(paste0(Prog_path,'/pregnancy_only/QA_prog_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")  -->
+
+<!-- # Splitting up the big data frame into summary stats  -->
+<!-- Prog_preg_summarystats <- Prog_QA_preg_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame() -->
+
+<!-- # and QA metrics -->
+<!-- Prog_QA_preg_pos_ROIs <- Prog_QA_preg_pos_DF %>%  -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Prog_preg_summarystats[,1]))) -->
+
+<!-- # Need to create a loop fix the subject IDs to match -->
+<!-- for (sub in 1:nrow((Prog_QA_preg_pos_ROIs))) {  -->
+<!--  clean_subnum <- str_split(Prog_QA_preg_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)  -->
+<!--  Prog_QA_preg_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)  -->
+
+<!-- } -->
+
+<!-- # now we cab grab the right subs -->
+<!-- Prog_QA_preg_pos_ROIs <- Prog_QA_preg_pos_ROIs %>% filter(Subjects %in% Prog_preg_subinfo$`new scan name`) %>%  mutate(trimester = factor(Prog_preg_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(progesterone = Prog_preg_subinfo$Progesterone) -->
+
+<!--  # change to numeric  -->
+<!--  Prog_QA_preg_pos_ROIs[,c(Prog_preg_summarystats[,1])] <- as.numeric(unlist(Prog_QA_preg_pos_ROIs[,c(Prog_preg_summarystats[,1])]))  -->
+
+<!-- # let's create a check for things  -->
+<!-- TestVars <- sample(c(Prog_preg_summarystats[,1]), size=1) -->
+<!-- if (is.numeric(Prog_QA_preg_pos_ROIs[,c(TestVars)])){ -->
+<!--   print(" Looks good") -->
+<!-- } else { -->
+<!--   print("ERROR") -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r Progesterone QA pregnancy weeks Figures} -->
+
+<!-- figpath <- paste0(Prog_path, '/pregnancy_only/boxplots/') -->
+<!-- ROIcols <- c(Prog_preg_summarystats$`Tract Name`) -->
+
+
+<!-- for (ROI in ROIcols) { -->
+<!--   print(ROI) -->
+<!--   y <- Prog_QA_preg_pos_ROIs %>% -->
+<!--     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) + -->
+<!--       geom_boxplot(width=0.5 ,fill= c("#D1E7E6", "#A8D2C6", "#6AA390")) + -->
+<!--       scale_y_binned(n.breaks=15, nice.breaks = TRUE) + -->
+<!--       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_rect(fill = 'white', color='gray'), -->
+<!--             panel.grid.major=element_line(colour='gray96'), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!--    # -->
+<!--    png(file = paste0(figpath,ROI,"_Prog_QA_pregnancyonly_Pos.png")) -->
+<!--    print(y) -->
+<!--    dev.off() -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r, progresterone pregnancy stats,echo=FALSE, results='hide',message=FALSE} -->
+<!-- TableOutput(Prog_preg_summarystats,"QA") -->
+<!-- ``` -->
+
+
+<!-- <br><br><br><br> -->
+
+<!-- # <span style="color: pink;"> Gestational Week </span>  {.tabset .tabset-dropdown} -->
+
+<!-- ```{r QA Gestational preganancy only ,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- Gest_subinfo <-subinfo_DF %>% select("new scan name","GestWeek","Trimester") %>% na.omit() %>% filter(GestWeek < 40) -->
+
+<!-- # Lets read in one main df and clean from there -->
+<!-- Gest_QA_pos_DF <-read.delim(paste0(Gest_path,'/QA_gestwk_pre_preg_pos.csv'), header=FALSE, sep="\t") %>% as.data.frame() %>% janitor::remove_empty( which = "cols")  -->
+
+<!-- # Splitting up the big data frame into summary stats  -->
+<!-- Gest_summarystats <- Gest_QA_pos_DF %>%filter(V1 %in% rows2grab) %>% t() %>% `colnames<-`(rows2grab)  %>%  `[`(-c(1),) %>% as.data.frame() -->
+
+<!-- # and QA metrics -->
+<!-- Gest_QA_pos_ROIs <- Gest_QA_pos_DF %>%  -->
+<!--   filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm"))) %>% `colnames<-`(c("Subjects", as.character(Gest_summarystats[,1]))) -->
+
+<!-- # Need to create a loop fix the subject IDs to match -->
+<!-- for (sub in 1:nrow((Gest_QA_pos_ROIs))) {  -->
+<!--  clean_subnum <- str_split(Gest_QA_pos_ROIs$Subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)  -->
+<!--  Gest_QA_pos_ROIs$Subjects[sub] <-  sub("^0+", "", clean_subnum)  -->
+
+<!-- } -->
+
+<!-- # now we cab grab the right subs -->
+<!-- Gest_QA_pos_ROIs <- Gest_QA_pos_ROIs %>% filter(Subjects %in% Gest_subinfo$`new scan name`) %>%  mutate(trimester = factor(Gest_subinfo$Trimester, levels= c('Pre','1st','2nd', '3rd'))) %>% mutate(Gestational = Gest_subinfo$GestWeek) -->
+
+<!--  # change to numeric  -->
+<!--  Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])] <- as.numeric(unlist(Gest_QA_pos_ROIs[,c(Gest_summarystats[,1])]))  -->
+
+<!-- # let's create a check for things  -->
+<!-- TestVars <- sample(c(Gest_summarystats[,1]), size=1) -->
+<!-- if (is.numeric(Gest_QA_pos_ROIs[,c(TestVars)])){ -->
+<!--   print(" Looks good") -->
+<!-- } else { -->
+<!--   print("ERROR") -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r Gestational week QAbox plots Figures,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- ROIcols <- c(Gest_summarystats$`Tract Name`) -->
+
+
+<!-- for (ROI in ROIcols) { -->
+<!--   print(ROI) -->
+<!--   y <- Gest_QA_pos_ROIs %>% -->
+<!--     ggplot( aes(x=trimester, y=.data[[ROI]], group=trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) + -->
+<!--       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390")) + -->
+<!--       scale_y_binned(n.breaks=10, nice.breaks = TRUE) + -->
+<!--       labs(x= "Trimester", y= " QA", title =paste0(ROI) ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_rect(fill = 'white', color='gray'), -->
+<!--             panel.grid.major=element_line(colour='gray96'), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!--    # -->
+<!--    png(file = paste0(Gest_path,"/boxplots/",ROI,"_Gestwks_Pos_QA.png")) -->
+<!--    print(y) -->
+<!--    dev.off() -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r Gestational week QA correlations Figures,echo=FALSE, results='hide',message=FALSE} -->
+<!-- #  -->
+<!-- # ROIcols <- c(Gest_summarystats$`Tract Name`) -->
+<!-- #  -->
+<!-- #    -->
+<!-- # for (ROI in ROIcols) { -->
+<!-- #    -->
+<!-- #      z <- Gest_QA_pos_ROIs %>% ggplot( aes(x = .data[[ROI]], y = Gestational)) + -->
+<!-- #        geom_point(aes(color = trimester), size=5) + -->
+<!-- #        stat_smooth(method = "lm", color= "#6AA390") + -->
+<!-- #        scale_color_manual( -->
+<!-- #          values = c("#CF92BF", "#D1E7E6", "#A8D2C6", "#90A0C9"), -->
+<!-- #          name = "Gestational Week" -->
+<!-- #        ) + -->
+<!-- #        labs(x = paste0(ROI,"_"), -->
+<!-- #             y = "Gestational Week") + -->
+<!-- #        theme( -->
+<!-- #          legend.position = "right", -->
+<!-- #          panel.background = element_blank(), -->
+<!-- #          axis.line = element_line(colour = "black") -->
+<!-- #        ) + -->
+<!-- #        stat_cor(method = "spearman", aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")))+ -->
+<!-- #        xlim(0.5, 40)  +    -->
+<!-- #        scale_x_continuous(n.breaks = 3)  -->
+<!-- #         -->
+<!-- #    png(file = paste0(Gest_path,"/scatterplots/",ROI,"_Gestwks_Pos_QA.png")) -->
+<!-- #    print(z) -->
+<!-- #    dev.off() -->
+<!-- # } -->
+<!-- ``` -->
+
+<!-- ```{r, gestational  stats} -->
+<!-- TableOutput(Gest_summarystats,"QA") -->
+<!-- ``` -->
+<!-- <br><br><br><br> -->
+
+<!-- # <span style="color: pink;"> Tractometry    </span>  {.tabset.tabset-dropdown} -->
+
+<!-- ```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- #Tractography working dir -->
+<!-- #Main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/28andB/Global_QA/" -->
+<!-- Main_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/Global_QA/" -->
+<!-- tract_workdir <-paste0(Main_workdir,"ROI/") -->
+<!-- AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7"))) -->
+
+<!-- AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%02d") -->
+
+<!-- AllScanInfo <- ChangeTrimesterLabels(AllScanInfo) -->
+
+<!-- #  -->
+<!-- #  -->
+<!--  # Below is the combining and merging code. I exported as cvs so i wont re run it again -->
+<!-- subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE) -->
+
+<!-- ROIS_cols <- length(c("Arcuate_Fasciculus_L","Corpus_Callosum","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L")) -->
+<!-- #The ROI ccode below is if we want every single one of the rois in one csv. For my sake i'm only grabbing a few specific ones  -->
+<!-- #ROIS_cols <- length(list.dirs(paste0(tract_workdir,subfiles[1]))) # Changing the ROI -->
+<!-- master_DF <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = length(subfiles))) -->
+
+<!-- for(sub in 1:length(subfiles)){ -->
+
+<!--    print(paste("running subject",subfiles[sub])) -->
+
+<!--   temp_df <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = 1)) -->
+<!--   temp_df[,1] <- subfiles[sub] -->
+<!--   ROIS <- c("Arcuate_Fasciculus_L","Corpus_Callosum","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L") -->
+
+<!--   #ROIS <- list.dirs(paste0(tract_workdir,subfiles[sub]),full.names = TRUE, recursive = FALSE) -->
+
+<!--   for(roi in 1:length(ROIS)){ -->
+
+<!--   print(paste("running ",ROIS[roi])) -->
+<!--   #text_file <- list.files(path = paste0(tract_workdir,subfiles[sub],"/",ROIS[roi]), pattern = "*.txt") -->
+<!--   csv_file <-paste0(tract_workdir,subfiles[sub],"/",ROIS[roi],".stat.csv") -->
+<!--     # Check if CSV exists -->
+
+<!--     if (length(read.csv(csv_file)) == 0){ -->
+<!--         print("no ouput. skipping ROI") -->
+<!--         temp_df[,roi+1] <- NA -->
+<!--         next -->
+<!--       } -->
+
+<!--       # Checking that the text file is not empty. -->
+<!--       if (file.size(csv_file) > 0 ){ -->
+<!--         print("File Exists lets read it in") -->
+<!--         #ROI_txt <- read.delim(paste0(tract_workdir,subfiles[sub],"/",ROIS[roi],"/",text_file), header=FALSE) %>% filter(V1 %in% c("qa")) -->
+<!--         ROI_txt <- read.delim(csv_file, header = FALSE) %>% filter(V1 %in% c("qa")) -->
+<!--         temp_df[,roi+1] <- ROI_txt %>% pull(V2) -->
+<!--         } -->
+<!--       else{ -->
+<!--         print("File does not exist. Add NA instead") -->
+<!--         temp_df[,roi+1] <- NA #KEEP but CHANGE -->
+<!--         } -->
+<!--   } -->
+
+<!--   master_DF[sub,] <- temp_df[1,] -->
+
+<!-- } -->
+
+<!-- # -->
+<!-- colnames(master_DF) <- c("subjects",ROIS) -->
+<!-- # colnames(MD_master_DF) <- c("subjects",ROIS$V1) -->
+<!-- # -->
+<!-- # QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots") -->
+<!-- # -->
+<!-- # MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots") -->
+<!-- # -->
+<!-- write.csv(master_DF, paste0(tract_workdir,"QA_master_DF.csv"), row.names=FALSE) -->
+<!-- # write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE) -->
+
+<!-- ``` -->
+<!-- <br> -->
+
+<!-- <span class="text-center" style="color: black;"> QA </span> -->
+<!-- ```{r QA output} -->
+<!-- QA_master_DF <- read.csv(paste0(tract_workdir,"/QA_master_DF.csv")) %>% filter(!(V1 %in% c("sub-026", "sub-027"))) #had to change to match col names -->
+
+<!-- TableOutput(QA_master_DF,"QA") -->
+<!-- ``` -->
+
+<!-- <br><br> -->
+
+<!-- <span class="text-center" style="color: pink;"> MD </span> -->
+<!-- ```{r MD output} -->
+<!-- MD_master_DF<- read.csv(paste0(tract_workdir,"/MD_master_DF.csv"))%>% filter(!(V1 %in% c("sub-026", "sub-027"))) -->
+
+<!-- TableOutput(MD_master_DF,"MD") -->
+
+<!-- ``` -->
+
+<!-- ```{r Creating QA figs,echo=FALSE, echo=FALSE, results='hide',message=FALSE} -->
+<!-- # Change code as needed especially if you don't need every ROI -->
+
+<!-- # Main data path -->
+<!-- #Main_workdir <-"/Users/danielacossio/Downloads/Updated_gest_figs_082322/" -->
+<!-- # reading in info  -->
+
+<!-- Main_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/Global_QA/" -->
+
+
+<!-- AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("27","26"))) -->
+<!-- AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%02d") -->
+<!-- AllScanInfo <- ChangeTrimesterLabels(AllScanInfo) -->
+<!-- AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week) -->
+
+<!-- # Let's get our entire QA ROI Data frame  -->
+<!-- QA_ROI_master_DF <- read.csv(paste0(tract_workdir,"QA_master_DF.csv")) %>% filter(!(subjects %in% c("sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) -->
+
+
+<!-- ROIS <-c ("Inferior_Fronto_Occipital_Fasciculus_R","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Arcuate_Fasciculus_L") -->
+<!-- #,") -->
+
+
+<!-- #To grab every ROIS -->
+<!-- for (ROI in 1:length(ROIS)) { -->
+<!--   print(ROIS[ROI]) -->
+<!--   roiname <- stringr::str_split_1(ROIS[ROI], '_') %>% paste(collapse=' ') -->
+<!--   y <- ROIS[ROI] -->
+<!-- # -->
+<!--   QAplot <- QA_ROI_master_DF %>% -->
+<!--     ggplot(aes(x = trimester, y = QA_ROI_master_DF[,ROIS[ROI]], fill = trimester)) + -->
+<!--     #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) + -->
+<!--     geom_boxplot(linewidth=0.5) + -->
+<!--     theme_bw() + scale_fill_manual(values = grp_colors)+ -->
+<!--     # scale_y_binned(n.breaks=5, nice.breaks = TRUE) + -->
+<!--     labs(x = "Trimester", y = "Quantitative Anisotropy") + -->
+<!--     theme( -->
+<!--       strip.text.x = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ), -->
+<!--       panel.border = element_rect(linewidth=1, linetype="solid"), -->
+<!--       strip.text.y = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ) -->
+<!--     ) + xlab("Trimester") + ylab("Quantitative Anisotropy") + -->
+<!--      theme(axis.title.x = element_text(size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             axis.title.y = element_text(size = 16))+ theme(legend.position = "none") -->
+
+<!--     #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319) -->
+<!--    # pdf(file = paste0(Main_workdir,y,"_atttempt2QA.pdf"),width=10, height=8) -->
+<!--     print(QAplot) -->
+<!--    # dev.off() -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r MD, echo=FALSE,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- # MD_scans <- MD_master_DF %>%  mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post')))  -->
+<!-- MD_scans <- read.csv("/Users/danielacossio/Downloads/MD_master_DF.csv") %>% filter(!(subjects %in% c("sub-007", "sub-027", "sub-026"))) %>% mutate(trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) -->
+
+<!-- ROIS <-c("Cerebellum_L","Middle_Cerebellar_Peduncle","Corpus_Callosum","Arcuate_Fasciculus_L","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Cortico_Striatal_Pathway_L") -->
+
+<!-- for (ROI in 1:length(ROIS)) { -->
+<!--    print(ROIS[ROI]) -->
+<!--   roiname <- stringr::str_split_1(ROIS[ROI], '_') %>% paste(collapse=' ') -->
+<!--    y <- ROIS[ROI] -->
+
+<!--   MDplot <-ggplot(data= MD_scans, aes(x = trimester, y =.data[[ROIS[ROI]]] , fill = trimester)) +   -->
+<!--     #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) + -->
+<!--     geom_boxplot(linewidth=1)+ -->
+<!--     theme_bw() + scale_fill_manual(values = grp_colors)+ -->
+<!--     labs(x = "Trimester", y = "MD", title = roiname) + -->
+<!--     theme( -->
+<!--       strip.text.x = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ), -->
+<!--       panel.border = element_rect(linewidth=1, linetype="solid"), -->
+<!--       strip.text.y = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ) -->
+<!--     ) + xlab("Trimester") + ylab("MD") + -->
+<!--     theme( -->
+<!--       axis.title.x = element_text(size = 16), -->
+<!--       axis.text.x = element_text(size = 12), -->
+<!--       axis.text.y = element_text(size = 12), -->
+<!--       axis.title.y = element_text(size = 16), -->
+<!--       plot.title = element_text(hjust = 0.5,size=16) -->
+<!--     ) + theme(legend.position = "none") -->
+<!--    # -->
+<!--    pdf(file = paste0("/Users/danielacossio/Downloads/",y,"_attempt2MD.pdf"),width=10, height=8) -->
+<!--    print(MDplot) -->
+<!--    dev.off() -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo=FALSE, results='hide',message=FALSE}  -->
+<!-- #  # Below is the combining and merging code. I exported as cvs so i wont re run it again -->
+<!-- #  -->
+<!-- # main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/tractography" -->
+<!-- #  -->
+<!-- # AllScanInfo <- read.csv(paste0(tract_workdir,"/allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("26", "27"))) -->
+<!-- #  -->
+<!-- # AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d") -->
+<!-- #  -->
+<!-- # AllScanInfo <- ChangeTrimesterLabels(AllScanInfo) -->
+<!-- #  -->
+<!-- #  ROIS <- read.table(paste0(tract_workdir,"/HCp842ROIS.txt")) %>% filter(V1 !="CNX_R") -->
+<!-- #   -->
+<!-- # subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE) -->
+<!-- #  -->
+<!-- # QA_master_DF <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles))) -->
+<!-- # MD_master_DF<- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = length(subfiles))) -->
+<!-- #  -->
+<!-- # for(sub in 1:length(subfiles)){ -->
+<!-- #  -->
+<!-- #    print(paste("running subject",subfiles[sub])) -->
+<!-- #  -->
+<!-- #   md_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1)) -->
+<!-- #   md_df[,1] <- subfiles[sub] -->
+<!-- #  -->
+<!-- #   qa_df <- as.data.frame(matrix(ncol = nrow(ROIS)+1, nrow = 1)) -->
+<!-- #   qa_df[,1] <- subfiles[sub] -->
+<!-- #  -->
+<!-- #   for ( roi in 1:nrow(ROIS)){ -->
+<!-- #  -->
+<!-- #   print(paste("running ",ROIS[roi,1])) -->
+<!-- #  -->
+<!-- #     # Check if CSV exists -->
+<!-- #     CSV_path <- paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv") -->
+<!-- #  -->
+<!-- #     if (file.exists(CSV_path) == TRUE){ -->
+<!-- #  -->
+<!-- #       print("File Exists lets read it in") -->
+<!-- #       ROI_csv <- read.delim(paste0(tract_workdir,"/",subfiles[sub],"/",ROIS[roi,1],".stat.csv"), header=FALSE, sep="\t") %>% filter(V1 %in% c("qa","md")) -->
+<!-- #       qa_df[,roi+1] <- ROI_csv %>% filter(V1 =="qa") %>% pull(V2) -->
+<!-- #       md_df[,roi+1] <- ROI_csv %>% filter(V1 =="md") %>% pull(V2) -->
+<!-- #     } -->
+<!-- #     else{ -->
+<!-- #       print("File does not exist. Add NA instead") -->
+<!-- #  -->
+<!-- #       qa_df[,roi+1] <- NA -->
+<!-- #       md_df[,roi+1] <- NA -->
+<!-- #  -->
+<!-- #     } -->
+<!-- #  -->
+<!-- #   } -->
+<!-- #  -->
+<!-- #   QA_master_DF[sub,] <- qa_df[1,] -->
+<!-- #   MD_master_DF[sub,] <- md_df[1,] -->
+<!-- # } -->
+<!-- #  -->
+<!-- # colnames(QA_master_DF) <- c("subjects",ROIS$V1) -->
+<!-- # colnames(MD_master_DF) <- c("subjects",ROIS$V1) -->
+<!-- #  -->
+<!-- # QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots") -->
+<!-- #  -->
+<!-- # MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots") -->
+<!-- #  -->
+<!-- # write.csv(QA_master_DF, paste0(tract_workdir,"/QA_master_DF.csv"), row.names=FALSE) -->
+<!-- # write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE) -->
+
+<!-- ``` -->
+
+
+<!-- # <span style="color: pink;"> ISO component </span>  -->
+
+<!-- ```{r} -->
+
+<!-- ISO_scans <-read.csv("/Users/danielacossio/Downloads/temp_demo.csv") %>%  ChangeTrimesterLabels() -->
+
+<!-- MeanISO <- read.delim("/Users/danielacossio/Downloads/meanIso.csv", sep ="\t", header = FALSE) %>%  filter(str_detect(V1, c("mean_iso"))) %>% select(-c(3)) -->
+
+<!-- MergedISODF <- MeanISO %>%  mutate(Trimester = factor(ISO_scans$Trimester)) %>% na.omit() -->
+
+
+<!--   ISOplot <- MergedISODF %>% ggplot(aes(x=Trimester, y=V2, group=Trimester)) +  geom_jitter(color="black",size=0.8,alpha=0.9,width = 0.25) + -->
+<!--       geom_boxplot(width=0.5 ,fill= c("#CF92BF", "#A8D2C6", "#6AA390","#90A0C9")) + -->
+<!--       #scale_y_binned(n.breaks=5, nice.breaks = TRUE) + -->
+<!--       labs(x= "Trimester", y= " ISO" ) + -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_rect(fill = 'white', color='gray'), -->
+<!--             panel.grid.major=element_line(colour='gray96'), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!--     #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319) -->
+<!-- #    pdf(file = paste0(tract_workdir,"/boxplots/QA/",y,"_QA.pdf"),width=10, height=8) -->
+<!--     print(ISOplot) -->
+<!--     #dev.off() -->
+
+<!-- ``` -->
+
+
+<!-- # Whole Brain TRactography -->
+<!-- ```{r Data Cleaning for output,echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- # #Tractography working dir -->
+<!-- # tract_workdir <-"/Users/danielacossio/Downloads/Global_QA" -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  # Below is the combining and merging code. I exported as cvs so i wont re run it again -->
+<!-- # subfiles <- list.files(path = tract_workdir, full.names = FALSE,recursive = FALSE, pattern ='.txt') -->
+<!-- #  -->
+<!-- # #  -->
+<!-- #  -->
+<!-- # master_DF <- as.data.frame(matrix(ncol = 4, nrow = length(subfiles))) -->
+<!-- #   -->
+<!-- # for(sub in 1:length(subfiles)){ -->
+<!-- #  -->
+<!-- #    print(paste("running subject",subfiles[sub])) -->
+<!-- #  -->
+<!-- #   df <- as.data.frame(matrix(ncol = 3, nrow = 1)) -->
+<!-- #   df[,1] <- subfiles[sub] -->
+<!-- #    -->
+<!-- #   text <- read.delim(paste0(tract_workdir,"/",subfiles[sub]), header=FALSE) -->
+<!-- #    -->
+<!-- #   df[,2] <- text %>% filter(V1 %in% "qa") %>% select(V2)  #qa -->
+<!-- #   df[,3] <- text %>% filter(V1 %in% "md") %>% select(V2)  -->
+<!-- #   df[,4] <- text %>% filter(V1 %in% "iso") %>% select(V2)  -->
+<!-- #  -->
+<!-- #  -->
+<!-- #   master_DF[sub,] <- df[1,] -->
+<!-- #    -->
+<!-- # } -->
+<!-- #  -->
+<!-- # colnames(master_DF) <- c("subjects","qa","md","iso") -->
+<!-- #  -->
+<!-- # write.csv(master_DF, paste0(tract_workdir,"/global_master_DF.csv"), row.names=FALSE) -->
+<!-- # write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE) -->
+
+<!-- ``` -->
+
+<!-- ```{r Data plot for output,echo=FALSE, results='hide',message=FALSE} -->
+<!-- AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Global_QA/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7"))) -->
+
+<!-- AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d") -->
+
+<!-- AllScanInfo <- ChangeTrimesterLabels(AllScanInfo) -->
+
+
+
+<!-- MergedWholebrain$gestWK <- as.numeric(MergedWholebrain$gestWK) -->
+
+<!-- UCIOnly <- MergedWholebrain[6:21,] -->
+<!-- # -->
+<!-- jpeg(file=paste0(tract_workdir,"/",y,"_globaliso.jpg"), width=449, height=319) -->
+
+<!-- UCIOnly %>% ggplot(aes(x=Trimester, y=qa, fill=Trimester)) + -->
+<!--     geom_boxplot() + -->
+<!--     theme_bw() + scale_fill_manual(values = grp_colors)+ -->
+<!--     theme( -->
+<!--       strip.text.x = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ), -->
+<!--       strip.text.y = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ) -->
+<!--     ) + -->
+<!--      theme(axis.title.x = element_blank(), -->
+<!--             axis.text.x = element_text(), -->
+<!--             axis.text.y = element_text(), -->
+<!--             axis.title.y = element_blank())+ theme(legend.position = "none") -->
+
+<!--     dev.off() -->
+
+
+<!-- # SCatter plot -->
+
+<!--     UCI_gest %>% ggplot(aes(x=gestWK, y=qa)) + -->
+<!--     geom_point(aes(color = grp_colors[3])) + geom_smooth(method=lm)+ -->
+<!--     stat_cor(aes(color = grp_colors[3]),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) +theme_bw() + -->
+<!--     theme( -->
+<!--       strip.text.x = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ), -->
+<!--       strip.text.y = element_text( -->
+<!--         size = 12, -->
+<!--         color = "black", -->
+<!--         face = "bold.italic" -->
+<!--       ) -->
+<!--     ) + -->
+<!--      theme(axis.title.x = element_blank(), -->
+<!--             axis.text.x = element_text(), -->
+<!--             axis.text.y = element_text(), -->
+<!--             axis.title.y = element_blank())+ theme(legend.position = "none") -->
+
+
+<!-- ``` -->
+
+<!-- ```{r, GAM analysis ISO} -->
+
+<!-- # you'll need:  -->
+<!-- library(mgcv) -->
+
+<!-- ##### GAM models -->
+<!-- # linear fit -->
+<!-- mod_lm = gam(iso ~ gestWK, data = MergedWholebrain) -->
+<!-- summary(mod_lm) -->
+
+<!-- # GAM fit -->
+<!-- mod_gam1 = gam(iso ~ s(MergedWholebrain$gestWK, bs = "cr"), data =MergedWholebrain) -->
+<!-- summary(mod_gam1) -->
+
+<!-- # assess model differences -->
+<!-- anova(mod_lm, mod_gam1, test = "Chisq") -->
+
+<!-- #plotting, basic & w/ ggplot -->
+<!-- plot(mod_gam1) -->
+
+<!-- ggplot(data = MergedWholebrain, mapping = aes(x = gestWK, y = iso)) + geom_point(color = "#CF92BF") + geom_smooth(method = "gam", color ="#CF92BF" )+ geom_vline(xintercept=c(40),linetype="dotted") + -->
+<!-- labs(x= "gestational week", y= " Isotropic Diffusion" )  + geom_label(label="birth",  -->
+<!--     x=42, -->
+<!--     y=1.00, # Rectangle size around label -->
+<!--     label.size = NA, -->
+<!--     color = "black") + geom_label(label="deviance explained = 74.7%",  -->
+<!--     x=70, -->
+<!--     y=.98, # Rectangle size around label -->
+<!--     label.size = NA, -->
+<!--     color = "black")+  -->
+<!--       theme(axis.title.x = element_text(vjust=- 4, size = 16), -->
+<!--             axis.title.y = element_text(vjust=8, size = 16), -->
+<!--             axis.text.x = element_text(size = 12), -->
+<!--             axis.text.y = element_text(size = 12), -->
+<!--             panel.background = element_blank(), -->
+<!--             panel.grid.major=element_blank(), -->
+<!--             axis.line = element_line(colour = "black"), -->
+<!--             plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--             plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold")) -->
+<!-- ``` -->
+
+<!-- ```{r, GAM analysis QA} -->
+
+<!-- # you'll need:  -->
+<!-- library(mgcv) -->
+
+<!-- # Sub info  -->
+<!-- AllScanInfo <- read.csv("/Users/danielacossio/Downloads/Updated_gest_figs_082322/allscansInfo.csv") %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7"))) -->
+
+<!-- AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%03d") -->
+
+<!-- AllScanInfo <- ChangeTrimesterLabels(AllScanInfo) -->
+
+<!-- AllScanInfo$gest_week <- as.numeric(AllScanInfo$gest_week) -->
+<!-- # addgest week to scan 26  -->
+<!-- AllScanInfo$gest_week[21] <- 162 -->
+
+
+<!-- #ROIS DF -->
+<!-- QA_df <- read.csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv") %>% filter(!(subjects == "sub-007")) %>% select(c("subjects","Arcuate_Fasciculus_L", "Corpus_Callosum", "Cortico_Striatal_Pathway_L","Cortico_Striatal_Pathway_R","Cortico_Spinal_Tract_L","Cortico_Spinal_Tract_R","Inferior_Fronto_Occipital_Fasciculus_L","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L", "Inferior_Longitudinal_Fasciculus_R")) -->
+
+
+<!-- #Whole brain DF -->
+<!-- MergedWholebrain <- read.csv("/Users/danielacossio/Downloads/Updated_gest_figs_082322/Global_master_DF.csv") %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week) -->
+
+
+
+<!-- ##### Whole BRain #### -->
+<!-- # linear fit -->
+<!-- qa_mod_lm = gam(qa ~ gestWK, data = MergedWholebrain) -->
+<!-- summary(qa_mod_lm) -->
+
+<!-- # GAM fit -->
+<!-- qa_mod_gam1 = gam(qa ~ s(MergedWholebrain$gestWK, bs = "cr"), data =MergedWholebrain) -->
+<!-- summary(qa_mod_gam1) -->
+
+<!-- # assess model differences -->
+<!-- anova(qa_mod_lm, qa_mod_gam1, test = "Chisq") -->
+
+<!-- #plotting,Whole brain GAM -->
+<!-- plot(qa_mod_gam1) -->
+
+<!-- #pdf(file = "/Users/danielacossio/Downloads/WholeBrain_GAM.pdf",width = 10,height = 5) -->
+<!-- x <- ggplot(data = MergedWholebrain, -->
+<!--        mapping = aes(x = gestWK, y = qa)) +  -->
+<!--   geom_point(size = 2, alpha = 0.5,color = "#EBB97B") +  -->
+<!--   geom_smooth(method = "gam", color ="#EBB97B", fill= "#EBB97B", formula= y~s(x, bs = "cs")) +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size =1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- #dev.off() -->
+
+<!-- ## Whole BRain GAM using Laura's code -->
+<!-- GAMwithlabels <-ggplot(MergedWholebrain, aes(x=gestWK, y=qa, label=gestWK)) + geom_point(size = 3, color = "#AD733E") + geom_text()+ theme_bw() + theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) + -->
+<!--   geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic() -->
+
+<!-- L_GAM <- ggplot(MergedWholebrain, aes(x=gestWK, y=qa)) + geom_point(size = 3, color = "#AD733E") + theme_bw()  +  theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) + -->
+<!--   geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic() +  theme(axis.text.x=element_blank(),   axis.text.y=element_blank()) + xlab("") + ylab("") -->
+
+
+
+
+<!-- #I forgot whtat the below code did fml  -->
+
+<!-- QA_df <- QA_df %>%  mutate(Trimester = factor(AllScanInfo$Trimester, levels= c('Pre','1st','2nd', '3rd', 'Post'))) %>% mutate(gestWK = AllScanInfo$gest_week)  -->
+
+<!-- QA_df$gestWK <- as.numeric(QA_df$gestWK) -->
+
+<!-- ### GAM for AF ##### -->
+<!-- AF_mod_gam1 = gam(Arcuate_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(AF_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/AF_GAM.pdf", -->
+<!--     width = 10, -->
+<!--     height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Arcuate_Fasciculus_L)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size =1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+<!-- ### GAM for CC ##### -->
+
+<!-- CC_mod_gam1 = gam(Corpus_Callosum ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(CC_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/CC_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Corpus_Callosum)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+
+<!-- ### GAM for C striatal  L and R ##### -->
+<!-- CSP_mod_gam1 = gam(Cortico_Striatal_Pathway_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(CSP_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Striatal_Pathway_L_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Cortico_Striatal_Pathway_L)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+<!-- CSP_R_mod_gam1 = gam(Cortico_Striatal_Pathway_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(CSP_R_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Striatal_Pathway_R_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Cortico_Striatal_Pathway_R)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+
+<!-- ## Cortico spinal  #### -->
+<!-- Cortico_spinal_mod_gam1 = gam(Cortico_Spinal_Tract_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(Cortico_spinal_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Spinal_Tract_L_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Cortico_Spinal_Tract_L)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF",  fill= "#CF92BF", formula= y~s(x, bs = "cs")) +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+
+<!-- Cortico_spinal_R_mod_gam1 = gam(Cortico_Spinal_Tract_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(Cortico_spinal_R_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Cortico_Spinal_Tract_R_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Cortico_Spinal_Tract_R)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+
+
+
+<!-- ## IFOF #### -->
+
+<!-- IFOF_L_mod_gam1 = gam(Inferior_Fronto_Occipital_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(IFOF_L_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Fronto_Occipital_Fasciculus_L_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Inferior_Fronto_Occipital_Fasciculus_L)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+<!-- IFOF_R_mod_gam1 = gam(Inferior_Fronto_Occipital_Fasciculus_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(IFOF_R_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Fronto_Occipital_Fasciculus_R_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Inferior_Fronto_Occipital_Fasciculus_R)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+<!-- #ILF #### -->
+
+<!-- ILF_L_mod_gam1 = gam(Inferior_Longitudinal_Fasciculus_L ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(ILF_L_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Longitudinal_Fasciculus_L_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Inferior_Longitudinal_Fasciculus_L)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+
+
+<!-- ILF_R_mod_gam1 = gam(Inferior_Longitudinal_Fasciculus_R ~ s(QA_df$gestWK, bs = "cr"), data =QA_df) -->
+<!-- summary(ILF_R_mod_gam1) -->
+
+<!-- pdf(file = "/Users/danielacossio/Downloads/Global_QA/GAM/Inferior_Longitudinal_Fasciculus_R_GAM.pdf",width = 10, height = 5) -->
+<!-- ggplot(data = QA_df, -->
+<!--        mapping = aes(x = gestWK, y = Inferior_Longitudinal_Fasciculus_R)) +  -->
+<!--   geom_point(color = "#CF92BF") +  -->
+<!--   geom_smooth(method = "gam", color ="#CF92BF") +  -->
+<!--   geom_vline(xintercept = c(40), linetype = "dotted", size = 1) + -->
+<!--   labs(x = "gestational week", y = " QA")  +  -->
+<!--   # geom_text(label = "birth", x = 45,y = 0.46, size = 4,check_overlap = TRUE) +  -->
+<!--   # geom_text(label = "deviance explained = 77%",x = 77,y = 0.44, size = 4,check_overlap = TRUE) + -->
+<!--   # geom_text( label = " p < 0.01", x = 70,y = 0.435,size = 4,check_overlap = TRUE) + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -4, size = 16), -->
+<!--     axis.title.y = element_text(vjust = 8, size = 16), -->
+<!--     axis.text.x = element_text(size = 12), -->
+<!--     axis.text.y = element_text(size = 12), -->
+<!--     panel.background = element_blank(), -->
+<!--     panel.grid.major = element_blank(), -->
+<!--     axis.line = element_line(colour = "black"), -->
+<!--     plot.margin = margin(1, 2, 1, 1.5, "cm"), -->
+<!--     plot.title = element_text( -->
+<!--       hjust = 0.5, -->
+<!--       vjust = 2, -->
+<!--       size = 16, -->
+<!--       face = "bold" -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- dev.off() -->
+<!-- ``` -->
+
+
+<!-- ```{r, ICC on sessions 26 and 26} -->
+
+<!-- library(irr) -->
+<!-- # Read in CSV with ROI mean QA information -->
+
+<!-- ICC <- read_csv("/Users/danielacossio/Downloads/Global_QA/ROI_QA_master_DF.csv")  -->
+
+<!-- # Need to create a loop fix the subject IDs to match -->
+<!-- for (sub in 1:nrow((ICC))) {  -->
+<!--  clean_subnum <- str_split(ICC$subjects[sub], "_")[[1]][1]  %>% str_split("-") %>% as.data.frame() %>% `[`(2,)  -->
+<!--  ICC$subjects[sub] <-  sub("^0+", "", clean_subnum)  -->
+<!-- } -->
+
+<!-- # Need to transpose and clean up data -->
+<!-- ICC <- ICC %>% filter(subjects %in% c("26","27"))  -->
+<!-- ICC <- as.data.frame(t(ICC[,-1])) -->
+<!-- colnames(ICC) <- c("26", "27") -->
+
+<!-- ICC_output <- icc(ICC, model = "twoway", -->
+<!--     type = "agreement", unit = "single") -->
+<!-- p <- format(ICC_output[["p.value"]], scientific=FALSE) -->
+
+<!-- ``` -->
+
+<!-- ```{r, ICC on sessions 26 and 26 using the global QA} -->
+
+<!-- library(irr) -->
+<!-- # Read in ICC analysis  -->
+
+<!-- ICC <- read.delim("/Users/danielacossio/Downloads/Global_QA/sub-101_ses-DIFFERENCE.qa.db.fib.gz.tt.gz.stat.txt", header = FALSE) %>%  filter(str_detect(V1, c("mean_qa"))) %>% -->
+<!--   filter(!str_detect(V1, c("mean_qa_post_norm")))  -->
+
+<!-- ICC <- as.data.frame(t(ICC[,-1])) %>% `colnames<-`(c("26","27")) -->
+
+<!-- ICC_output <- icc(ICC, model = "twoway", -->
+<!--     type = "agreement", unit = "single") -->
+<!-- p <- format(ICC_output[["p.value"]], scientific=FALSE) -->
+
+<!-- ``` -->
+
+<!-- ```{r GAM Plots using specific ROIS} -->
+<!-- # REading in df #### -->
+
+
+<!-- ``` -->
 
