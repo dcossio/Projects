@@ -238,7 +238,7 @@ grp_colors <- c("#CF92BF", "#D1E7E6", "#A8D2C6", "#6AA390","#90A0C9")
 
 # REading in subject info for each analysis 
 # Read in main df
-subinfo_DF <- read_csv('/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/28andB/PublicationRerun/QA/Demographics.csv')
+subinfo_DF <- read_csv('/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/OpenNeuro/Updated_Trimester.csv')
 
 # changing all trimester to labels 
 
@@ -464,6 +464,149 @@ TableOutput(Gest_summarystats,"QA")
 ```
 
 <br><br><br><br>
+
+# <span style="color: pink;"> Automatic fiber tracking  </span>  {.tabset .tabset-dropdown}
+```{r, The code below is required to combine all of the subject csvs into one spot}
+
+
+#Tractography working dir
+#Main_workdir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/28andB/Global_QA/"
+Main_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/Global_QA/"
+tract_workdir <-paste0(Main_workdir,"ROI/")
+AllScanInfo <- read.csv(paste0(Main_workdir,"allscansInfo.csv"), header=TRUE) %>% `colnames<-`(c("scans","gest_week","Trimester")) %>%  filter(!(scans %in% c("7")))
+
+AllScanInfo$scans <- lapply(AllScanInfo$scans, sprintf, fmt = "%02d")
+
+AllScanInfo <- ChangeTrimesterLabels(AllScanInfo)
+
+#
+#
+ # Below is the combining and merging code. I exported as cvs so i wont re run it again
+subfiles <- list.dirs(path = tract_workdir, full.names = FALSE,recursive = FALSE)
+
+ROIS_cols <- length(c("Arcuate_Fasciculus_L","Corpus_Callosum","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L"))
+#The ROI ccode below is if we want every single one of the rois in one csv. For my sake i'm only grabbing a few specific ones
+#ROIS_cols <- length(list.dirs(paste0(tract_workdir,subfiles[1]))) # Changing the ROI
+master_DF <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = length(subfiles)))
+
+for(sub in 1:length(subfiles)){
+
+   print(paste("running subject",subfiles[sub]))
+
+  temp_df <- as.data.frame(matrix(ncol = ROIS_cols+1, nrow = 1))
+  temp_df[,1] <- subfiles[sub]
+  ROIS <- c("Arcuate_Fasciculus_L","Corpus_Callosum","Inferior_Fronto_Occipital_Fasciculus_R","Inferior_Longitudinal_Fasciculus_L")
+
+  #ROIS <- list.dirs(paste0(tract_workdir,subfiles[sub]),full.names = TRUE, recursive = FALSE)
+
+  for(roi in 1:length(ROIS)){
+
+  print(paste("running ",ROIS[roi]))
+  #text_file <- list.files(path = paste0(tract_workdir,subfiles[sub],"/",ROIS[roi]), pattern = "*.txt")
+  csv_file <-paste0(tract_workdir,subfiles[sub],"/",ROIS[roi],".stat.csv")
+    # Check if CSV exists
+
+    if (length(read.csv(csv_file)) == 0){
+        print("no ouput. skipping ROI")
+        temp_df[,roi+1] <- NA
+        next
+      }
+
+      # Checking that the text file is not empty.
+      if (file.size(csv_file) > 0 ){
+        print("File Exists lets read it in")
+        #ROI_txt <- read.delim(paste0(tract_workdir,subfiles[sub],"/",ROIS[roi],"/",text_file), header=FALSE) %>% filter(V1 %in% c("qa"))
+        ROI_txt <- read.delim(csv_file, header = FALSE) %>% filter(V1 %in% c("qa"))
+        temp_df[,roi+1] <- ROI_txt %>% pull(V2)
+        }
+      else{
+        print("File does not exist. Add NA instead")
+        temp_df[,roi+1] <- NA #KEEP but CHANGE
+        }
+  }
+
+  master_DF[sub,] <- temp_df[1,]
+
+}
+
+#
+colnames(master_DF) <- c("subjects",ROIS)
+# colnames(MD_master_DF) <- c("subjects",ROIS$V1)
+#
+# QA_master_DF <- QA_master_DF %>% filter(.$subjects != "boxplots")
+#
+# MD_master_DF <- MD_master_DF %>% filter(.$subjects != "boxplots")
+#
+write.csv(master_DF, paste0(tract_workdir,"QA_master_DF.csv"), row.names=FALSE)
+# write.csv(MD_master_DF, paste0(tract_workdir,"/MD_master_DF.csv"), row.names=FALSE)
+
+```
+<br>
+
+
+```{r Creating QA figs,echo=FALSE, echo=FALSE, results='hide',message=FALSE}
+# Change code as needed especially if you don't need every ROI
+
+# Main data path
+#Main_workdir <-"/Users/danielacossio/Downloads/Updated_gest_figs_082322/"
+# reading in info
+
+Main_workdir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/OpenNeuro"
+
+
+AllScanInfo <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/OpenNeuro/Updated_Trimester.csv") %>% select("sessionID", "gestWeek", "trimester") %>% as.data.frame() %>% filter(!(sessionID %in% c("ses-07","ses-09","ses-15")))  
+
+
+AllScanInfo$trimester <- factor(AllScanInfo$trimester,levels=c('Pre','1st','2nd', '3rd', 'Post'))
+
+
+# Let's get our entire QA ROI Data frame
+QA_ROI_master_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/28andB/OpenNeuro/gestional_figures_info.csv") %>% filter(!(subjects %in% c("sub-27", "sub-07"))) %>% mutate(trimester=AllScanInfo$trimester)
+
+
+ROIS <-c ("Inferior_Fronto_Occipital_Fasciculus_R","Corpus_Callosum", "Inferior_Longitudinal_Fasciculus_L", "Arcuate_Fasciculus_L")
+#,")
+
+
+#To grab every ROIS
+for (ROI in 1:length(ROIS)) {
+  print(ROIS[ROI])
+  roiname <- stringr::str_split_1(ROIS[ROI], '_') %>% paste(collapse=' ')
+  y <- ROIS[ROI]
+#
+  QAplot <- QA_ROI_master_DF %>%
+    ggplot(aes(x = trimester, y = QA_ROI_master_DF[,ROIS[ROI]], fill = trimester)) +
+    #geom_jitter(color = "black",size = 0.8, alpha = 0.9,width = 0.25) +
+    geom_boxplot(linewidth=0.5) +
+    theme_bw() + scale_fill_manual(values = grp_colors)+
+    # scale_y_binned(n.breaks=5, nice.breaks = TRUE) +
+    labs(x = "Trimester", y = "Quantitative Anisotropy") +
+    theme(
+      strip.text.x = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      ),
+      panel.border = element_rect(linewidth=1, linetype="solid"),
+      strip.text.y = element_text(
+        size = 12,
+        color = "black",
+        face = "bold.italic"
+      )
+    ) + xlab("Trimester") + ylab("Quantitative Anisotropy") +
+     theme(axis.title.x = element_text(size = 16),
+            axis.text.x = element_text(size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 16))+ theme(legend.position = "none")
+
+    #jpeg(file=paste0(tract_workdir,"/boxplots/QA/",y,"_QA.jpg"), width=449, height=319)
+   # pdf(file = paste0(Main_workdir,y,"_atttempt2QA.pdf"),width=10, height=8)
+    print(QAplot)
+   # dev.off()
+}
+
+```
+
 
 
 
