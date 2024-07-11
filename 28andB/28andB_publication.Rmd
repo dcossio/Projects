@@ -466,7 +466,7 @@ TableOutput(Gest_summarystats,"QA")
 <br><br><br><br>
 
 # <span style="color: pink;"> ROI based fiber tracking  </span>  {.tabset .tabset-dropdown}
-```{r, The code below is required to combine all of the subject csvs into one spot}
+```{r, The code below is required to combine all of the subject csvs into one spot ,echo=FALSE, results='hide',message=FALSE}
 
 # The code here is to loop through the results from the ROI based tracking algorithim from dsi studio 
 
@@ -792,6 +792,17 @@ colnames(Global_QA_DF) <- c("subjects","gestWk","QA")
 write.csv(Global_QA_DF,paste0(Main_workdir,"Global_QA_DF.csv"), row.names=FALSE)
 
 ```
+
+<!-- ## Whole BRain GAM using Laura's code -->
+
+<!-- ```{r} -->
+
+<!-- test <- Global_QA_DF %>% filter(!(subjects %in% c("ses-01", "ses-023"))) -->
+
+
+<!-- GAMwithlabels <-ggplot(test, aes(x=gestWk, y=QA, label=gestWk)) + geom_point(size = 3, color = "#AD733E") + geom_text()+ theme_bw() + theme(text = element_text(family = "Arial"), axis.text = element_text(size=17), axis.title = element_text(size=20)) + -->
+<!--   geom_smooth(method = "gam", color = "#AD733E", fill = "#AD733E") + theme_classic() -->
+<!-- ``` -->
 
 
 
