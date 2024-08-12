@@ -313,32 +313,27 @@ hr {
 <h2><strong>Participants</strong></h2>
 <ul>
 <li><p>Total number of scans = 120 (males and females)</p></li>
-<li><p>Total scans used in analysis= 118<br />
+<li><p>Total scans used in analysis= 72<br />
 </p></li>
-<li><p>Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality control check in DSI</p></li>
-<li><p>Several subjects removed because they did not have rad3 score<br />
-<br><br></p></li>
+<li><p>Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality control check in DSI</p>
+<ul>
+<li>All subjects = 72 <br></li>
+<li>Men = 27 <br></li>
+<li>Women = 45 <br></li>
+<li>Pre = 18 <br></li>
+<li>Peri = 14 <br></li>
+<li>Post = 13 <br></li>
+</ul></li>
 </ul>
-<hr>
-</div>
-<div id="loop" class="section level2">
-<h2><strong>Loop</strong></h2>
-<div style="display: flex;">
-<div class="column" style="width:50%;">
-<p><strong>Average</strong> <br> All subjects = 43 <br> Men = 18 <br> Women = 25 <br> Pre = 11 <br> Peri = 7 <br> Post = 17 <br></p>
-</div>
-<div class="column" style="width:50%;">
-<p><strong>rad3</strong> <br> * All subjects = 39 <br> * Men = 15 <br> * Women = 24 <br> * Pre = 10 <br> * Peri = 7 <br> * Post = 7 <br></p>
-</div>
-</div>
 <br><br>
 <hr>
 </div>
 <div id="scan-parameters" class="section level2">
 <h2><strong>Scan parameters</strong></h2>
 <ul>
-<li>Locations from UCSB and UCI <br><br></li>
+<li>Locations from UCSB and UCI</li>
 </ul>
+<p><br><br></p>
 <hr>
 </div>
 <div id="qsiprep" class="section level2">
@@ -366,20 +361,19 @@ hr {
 <li>Permutation = 4,000</li>
 <li>pruning 4</li>
 <li>non normalized QA</li>
+<li>Covariates: sex, age, and FNAME</li>
 </ul></li>
 </ul>
 <hr>
 <p><br><br><br><br><br></p>
 </div>
 </div>
-<div id="results" class="section level1">
-<h1><strong>Results</strong></h1>
-<div id="solution-index" class="section level2 tabset tabset-dropdown">
-<h2 class="tabset tabset-dropdown"><span style="color: darkorange;"> Solution Index </span></h2>
-<div id="qa" class="section level3 tabset tabset-pills">
-<h3 class="tabset tabset-pills">QA</h3>
-<div id="all-subjects" class="section level4">
-<h4>All subjects</h4>
+<div id="solution-index-results" class="section level1">
+<h1><strong>Solution index results</strong></h1>
+<div id="qa" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">QA</h2>
+<div id="all-subjects" class="section level3">
+<h3>All subjects</h3>
 <p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.186047)</strong> </span></p>
 <p><br><br><br><br></p>
 <p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.024621)</strong> </span></p>
@@ -496,8 +490,8 @@ Inferior_Fronto_Occipital_Fasciculus_L
 <hr>
 <p><br><br><br><br></p>
 </div>
-<div id="females" class="section level4">
-<h4>Females</h4>
+<div id="females" class="section level3">
+<h3>Females</h3>
 <p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.031429)</strong> </span></p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
 <table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
@@ -758,144 +752,9 @@ Corpus_Callosum_Tapetum
 <hr>
 <p><br><br><br><br></p>
 </div>
-<div id="males" class="section level4">
-<h4>Males</h4>
-<hr>
-<p><br><br><br><br></p>
-</div>
-<div id="pre" class="section level4">
-<h4>Pre</h4>
-<hr>
-<p><br><br><br><br></p>
-</div>
-<div id="peri" class="section level4">
-<h4>Peri</h4>
-<hr>
-<p><br><br><br><br></p>
-</div>
-<div id="post" class="section level4">
-<h4>Post</h4>
-<hr>
-<p><br><br><br><br></p>
-</div>
-</div>
-</div>
-<div id="maze-accuracy" class="section level2 tabset tabset-dropdown">
-<h2 class="tabset tabset-dropdown"><span style="color: darkorange;"> Maze Accuracy </span></h2>
-<div id="qa-1" class="section level3 tabset">
-<h3 class="tabset">QA</h3>
-All subjects: FDR= 0.024621 Negatively correlated
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
-<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Tract Name
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-number of tracts
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-mean length(mm)
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-diameter(mm)
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-volume(mm^3)
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Corticospinal_Tract_L
-</td>
-<td style="text-align:left;">
-337
-</td>
-<td style="text-align:left;">
-58.368
-</td>
-<td style="text-align:left;">
-8.36145
-</td>
-<td style="text-align:left;">
-3205
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Corpus_Callosum_Forceps_Minor
-</td>
-<td style="text-align:left;">
-21
-</td>
-<td style="text-align:left;">
-56.5714
-</td>
-<td style="text-align:left;">
-3.67785
-</td>
-<td style="text-align:left;">
-601
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Middle_Cerebellar_Peduncle
-</td>
-<td style="text-align:left;">
-14
-</td>
-<td style="text-align:left;">
-52
-</td>
-<td style="text-align:left;">
-2.9607
-</td>
-<td style="text-align:left;">
-358
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Arcuate_Fasciculus_R
-</td>
-<td style="text-align:left;">
-13
-</td>
-<td style="text-align:left;">
-52.7692
-</td>
-<td style="text-align:left;">
-2.69941
-</td>
-<td style="text-align:left;">
-302
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Inferior_Fronto_Occipital_Fasciculus_L
-</td>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:left;">
-52.8
-</td>
-<td style="text-align:left;">
-2.33449
-</td>
-<td style="text-align:left;">
-226
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-female subjects showed both negative and positive correlations. Positive corrs (FDR=0.031429) and negative corrs (FDR = 0.000398)
+<div id="males" class="section level3">
+<h3>Males</h3>
+<p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.001014)</strong> </span></p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
 <table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -923,33 +782,16 @@ volume(mm^3)
 Corpus_Callosum_Forceps_Minor
 </td>
 <td style="text-align:left;">
-1467
+480
 </td>
 <td style="text-align:left;">
-56.3272
+53.8708
 </td>
 <td style="text-align:left;">
-12.3092
+9.80427
 </td>
 <td style="text-align:left;">
-6703
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Corticospinal_Tract_L
-</td>
-<td style="text-align:left;">
-417
-</td>
-<td style="text-align:left;">
-58.4796
-</td>
-<td style="text-align:left;">
-9.99785
-</td>
-<td style="text-align:left;">
-4591
+4067
 </td>
 </tr>
 <tr>
@@ -957,124 +799,224 @@ Corticospinal_Tract_L
 Corticospinal_Tract_R
 </td>
 <td style="text-align:left;">
-99
+246
 </td>
 <td style="text-align:left;">
-57.9798
+63.2114
 </td>
 <td style="text-align:left;">
-6.77794
+7.58201
 </td>
 <td style="text-align:left;">
-2092
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Arcuate_Fasciculus_R
-</td>
-<td style="text-align:left;">
-56
-</td>
-<td style="text-align:left;">
-52
-</td>
-<td style="text-align:left;">
-4.08345
-</td>
-<td style="text-align:left;">
-681
+2854
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Inferior_Longitudinal_Fasciculus_R
+Corticospinal_Tract_L
 </td>
 <td style="text-align:left;">
-21
+53
 </td>
 <td style="text-align:left;">
-60.1905
+54.7547
 </td>
 <td style="text-align:left;">
-2.59769
+4.57219
 </td>
 <td style="text-align:left;">
-319
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Corticobulbar_Tract_L
-</td>
-<td style="text-align:left;">
-15
-</td>
-<td style="text-align:left;">
-53.8667
-</td>
-<td style="text-align:left;">
-3.265
-</td>
-<td style="text-align:left;">
-451
+899
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Parietal_Aslant_Tract_R
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+52.08
+</td>
+<td style="text-align:left;">
+4.23034
+</td>
+<td style="text-align:left;">
+732
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_R
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+54.3077
+</td>
+<td style="text-align:left;">
+3.284
+</td>
+<td style="text-align:left;">
+460
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_R
 </td>
 <td style="text-align:left;">
 12
 </td>
 <td style="text-align:left;">
-51.6667
+53.6667
 </td>
 <td style="text-align:left;">
-2.9536
+3.23461
 </td>
 <td style="text-align:left;">
-354
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Dentatorubrothalamic_Tract_L
-</td>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:left;">
-56
-</td>
-<td style="text-align:left;">
-2.95094
-</td>
-<td style="text-align:left;">
-383
+441
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Corpus_Callosum_Tapetum
+Corticostriatal_Tract_Superior_L
 </td>
 <td style="text-align:left;">
-10
+11
 </td>
 <td style="text-align:left;">
-56.6
+52.7273
 </td>
 <td style="text-align:left;">
-2.45993
+3.16182
 </td>
 <td style="text-align:left;">
-269
+414
 </td>
 </tr>
 </tbody>
 </table>
 </div>
 <p><br></p>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.000601)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+438
+</td>
+<td style="text-align:left;">
+55.4612
+</td>
+<td style="text-align:left;">
+8.85822
+</td>
+<td style="text-align:left;">
+3418
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+331
+</td>
+<td style="text-align:left;">
+54.3021
+</td>
+<td style="text-align:left;">
+9.64689
+</td>
+<td style="text-align:left;">
+3969
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+23
+</td>
+<td style="text-align:left;">
+52.6957
+</td>
+<td style="text-align:left;">
+4.25411
+</td>
+<td style="text-align:left;">
+749
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_L
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+52.8
+</td>
+<td style="text-align:left;">
+3.2276
+</td>
+<td style="text-align:left;">
+432
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+53.8182
+</td>
+<td style="text-align:left;">
+2.27101
+</td>
+<td style="text-align:left;">
+218
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="pre" class="section level3">
+<h3>Pre</h3>
+<p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000099)</strong> </span></p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
 <table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -1102,33 +1044,16 @@ volume(mm^3)
 Cerebellum_R
 </td>
 <td style="text-align:left;">
-117
+1186
 </td>
 <td style="text-align:left;">
-52.1026
+56.742
 </td>
 <td style="text-align:left;">
-5.48026
+17.0466
 </td>
 <td style="text-align:left;">
-1229
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Fornix_R
-</td>
-<td style="text-align:left;">
-36
-</td>
-<td style="text-align:left;">
-53.8333
-</td>
-<td style="text-align:left;">
-3.77336
-</td>
-<td style="text-align:left;">
-602
+12950
 </td>
 </tr>
 <tr>
@@ -1136,21 +1061,4193 @@ Fornix_R
 Cerebellum_L
 </td>
 <td style="text-align:left;">
+561
+</td>
+<td style="text-align:left;">
+56.1747
+</td>
+<td style="text-align:left;">
+13.9453
+</td>
+<td style="text-align:left;">
+8580
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+428
+</td>
+<td style="text-align:left;">
+58.6589
+</td>
+<td style="text-align:left;">
+8.05204
+</td>
+<td style="text-align:left;">
+2987
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_R
+</td>
+<td style="text-align:left;">
+395
+</td>
+<td style="text-align:left;">
+63.6557
+</td>
+<td style="text-align:left;">
+10.4934
+</td>
+<td style="text-align:left;">
+5505
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+327
+</td>
+<td style="text-align:left;">
+60.9358
+</td>
+<td style="text-align:left;">
+12.3309
+</td>
+<td style="text-align:left;">
+7277
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+268
+</td>
+<td style="text-align:left;">
+59.4179
+</td>
+<td style="text-align:left;">
+9.4936
+</td>
+<td style="text-align:left;">
+4206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+253
+</td>
+<td style="text-align:left;">
+58.3083
+</td>
+<td style="text-align:left;">
+11.5555
+</td>
+<td style="text-align:left;">
+6115
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+145
+</td>
+<td style="text-align:left;">
+57.9724
+</td>
+<td style="text-align:left;">
+5.16999
+</td>
+<td style="text-align:left;">
+1217
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_R
+</td>
+<td style="text-align:left;">
+125
+</td>
+<td style="text-align:left;">
+63.008
+</td>
+<td style="text-align:left;">
+7.696
+</td>
+<td style="text-align:left;">
+2931
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_L
+</td>
+<td style="text-align:left;">
+111
+</td>
+<td style="text-align:left;">
+68.6306
+</td>
+<td style="text-align:left;">
+8.00608
+</td>
+<td style="text-align:left;">
+3455
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arcuate_Fasciculus_L
+</td>
+<td style="text-align:left;">
+93
+</td>
+<td style="text-align:left;">
+56.1505
+</td>
+<td style="text-align:left;">
+6.1721
+</td>
+<td style="text-align:left;">
+1680
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_R
+</td>
+<td style="text-align:left;">
+89
+</td>
+<td style="text-align:left;">
+55.9775
+</td>
+<td style="text-align:left;">
+4.40993
+</td>
+<td style="text-align:left;">
+855
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+84
+</td>
+<td style="text-align:left;">
+57.6429
+</td>
+<td style="text-align:left;">
+6.54948
+</td>
+<td style="text-align:left;">
+1942
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_L
+</td>
+<td style="text-align:left;">
+74
+</td>
+<td style="text-align:left;">
+63.973
+</td>
+<td style="text-align:left;">
+6.10719
+</td>
+<td style="text-align:left;">
+1874
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+66
+</td>
+<td style="text-align:left;">
+56.9394
+</td>
+<td style="text-align:left;">
+5.81082
+</td>
+<td style="text-align:left;">
+1510
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+56
+</td>
+<td style="text-align:left;">
+56.9286
+</td>
+<td style="text-align:left;">
+6.61923
+</td>
+<td style="text-align:left;">
+1959
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus1_L
+</td>
+<td style="text-align:left;">
+48
+</td>
+<td style="text-align:left;">
+56.7083
+</td>
+<td style="text-align:left;">
+4.70511
+</td>
+<td style="text-align:left;">
+986
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+48
+</td>
+<td style="text-align:left;">
+57.2083
+</td>
+<td style="text-align:left;">
+4.21959
+</td>
+<td style="text-align:left;">
+800
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_R
+</td>
+<td style="text-align:left;">
+47
+</td>
+<td style="text-align:left;">
+63.1915
+</td>
+<td style="text-align:left;">
+3.54014
+</td>
+<td style="text-align:left;">
+622
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_R
+</td>
+<td style="text-align:left;">
+46
+</td>
+<td style="text-align:left;">
+63.2174
+</td>
+<td style="text-align:left;">
+5.73144
+</td>
+<td style="text-align:left;">
+1631
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_R
+</td>
+<td style="text-align:left;">
+41
+</td>
+<td style="text-align:left;">
+62.2439
+</td>
+<td style="text-align:left;">
+5.60534
+</td>
+<td style="text-align:left;">
+1536
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_L
+</td>
+<td style="text-align:left;">
+34
+</td>
+<td style="text-align:left;">
+54.0588
+</td>
+<td style="text-align:left;">
+5.09232
+</td>
+<td style="text-align:left;">
+1101
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_L
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+60.3226
+</td>
+<td style="text-align:left;">
+5.30631
+</td>
+<td style="text-align:left;">
+1334
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Uncinate_Fasciculus_R
+</td>
+<td style="text-align:left;">
+29
+</td>
+<td style="text-align:left;">
+57.931
+</td>
+<td style="text-align:left;">
+3.85454
+</td>
+<td style="text-align:left;">
+676
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_R
+</td>
+<td style="text-align:left;">
+26
+</td>
+<td style="text-align:left;">
+58.0769
+</td>
+<td style="text-align:left;">
+4.25027
+</td>
+<td style="text-align:left;">
+824
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+54.24
+</td>
+<td style="text-align:left;">
+3.47695
+</td>
+<td style="text-align:left;">
+515
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parahippocampal_L
+</td>
+<td style="text-align:left;">
 22
 </td>
 <td style="text-align:left;">
-54.1818
+77.9091
 </td>
 <td style="text-align:left;">
-3.09641
+3.82448
 </td>
 <td style="text-align:left;">
-408
+895
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Longitudinal_Fasciculus_L
+</td>
+<td style="text-align:left;">
+22
+</td>
+<td style="text-align:left;">
+54.5455
+</td>
+<td style="text-align:left;">
+2.93487
+</td>
+<td style="text-align:left;">
+369
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_L
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+64.1905
+</td>
+<td style="text-align:left;">
+3.61819
+</td>
+<td style="text-align:left;">
+660
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_R
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+55
+</td>
+<td style="text-align:left;">
+3.9676
+</td>
+<td style="text-align:left;">
+680
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anterior_Commissure
+</td>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+64.5
+</td>
+<td style="text-align:left;">
+4.23601
+</td>
+<td style="text-align:left;">
+909
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+58
+</td>
+<td style="text-align:left;">
+2.98173
+</td>
+<td style="text-align:left;">
+405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_R
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+53.7143
+</td>
+<td style="text-align:left;">
+2.199
+</td>
+<td style="text-align:left;">
+204
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_L
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+54.3077
+</td>
+<td style="text-align:left;">
+3.33008
+</td>
+<td style="text-align:left;">
+473
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parahippocampal_R
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+67.6667
+</td>
+<td style="text-align:left;">
+2.38381
+</td>
+<td style="text-align:left;">
+302
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_R
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+62.3636
+</td>
+<td style="text-align:left;">
+2.84698
+</td>
+<td style="text-align:left;">
+397
 </td>
 </tr>
 </tbody>
 </table>
 </div>
+<p><br></p>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.001429)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_R
+</td>
+<td style="text-align:left;">
+175
+</td>
+<td style="text-align:left;">
+60.4914
+</td>
+<td style="text-align:left;">
+6.71143
+</td>
+<td style="text-align:left;">
+2140
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_L
+</td>
+<td style="text-align:left;">
+97
+</td>
+<td style="text-align:left;">
+62.8247
+</td>
+<td style="text-align:left;">
+6.56713
+</td>
+<td style="text-align:left;">
+2128
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+66
+</td>
+<td style="text-align:left;">
+54.6364
+</td>
+<td style="text-align:left;">
+4.74218
+</td>
+<td style="text-align:left;">
+965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+54
+</td>
+<td style="text-align:left;">
+54.4815
+</td>
+<td style="text-align:left;">
+4.50132
+</td>
+<td style="text-align:left;">
+867
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Minor
+</td>
+<td style="text-align:left;">
+49
+</td>
+<td style="text-align:left;">
+54.8571
+</td>
+<td style="text-align:left;">
+4.16389
+</td>
+<td style="text-align:left;">
+747
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+23
+</td>
+<td style="text-align:left;">
+56.9565
+</td>
+<td style="text-align:left;">
+3.2414
+</td>
+<td style="text-align:left;">
+470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_L
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+56.2857
+</td>
+<td style="text-align:left;">
+3.40323
+</td>
+<td style="text-align:left;">
+512
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="peri" class="section level3">
+<h3>Peri</h3>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.002134)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Minor
+</td>
+<td style="text-align:left;">
+3284
+</td>
+<td style="text-align:left;">
+64.7546
+</td>
+<td style="text-align:left;">
+17.8133
+</td>
+<td style="text-align:left;">
+16138
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_L
+</td>
+<td style="text-align:left;">
+2969
+</td>
+<td style="text-align:left;">
+68.6999
+</td>
+<td style="text-align:left;">
+13.6823
+</td>
+<td style="text-align:left;">
+10101
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+2688
+</td>
+<td style="text-align:left;">
+61.8467
+</td>
+<td style="text-align:left;">
+23.413
+</td>
+<td style="text-align:left;">
+26627
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_R
+</td>
+<td style="text-align:left;">
+2559
+</td>
+<td style="text-align:left;">
+67.3834
+</td>
+<td style="text-align:left;">
+14.1036
+</td>
+<td style="text-align:left;">
+10527
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+2339
+</td>
+<td style="text-align:left;">
+67.6751
+</td>
+<td style="text-align:left;">
+16.2723
+</td>
+<td style="text-align:left;">
+14074
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_R
+</td>
+<td style="text-align:left;">
+1565
+</td>
+<td style="text-align:left;">
+64.8179
+</td>
+<td style="text-align:left;">
+17.1534
+</td>
+<td style="text-align:left;">
+14979
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+1366
+</td>
+<td style="text-align:left;">
+62.7965
+</td>
+<td style="text-align:left;">
+14.9817
+</td>
+<td style="text-align:left;">
+11070
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_R
+</td>
+<td style="text-align:left;">
+1081
+</td>
+<td style="text-align:left;">
+68.4107
+</td>
+<td style="text-align:left;">
+13.4321
+</td>
+<td style="text-align:left;">
+9694
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_L
+</td>
+<td style="text-align:left;">
+928
+</td>
+<td style="text-align:left;">
+61.2629
+</td>
+<td style="text-align:left;">
+14.0898
+</td>
+<td style="text-align:left;">
+9552
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_L
+</td>
+<td style="text-align:left;">
+669
+</td>
+<td style="text-align:left;">
+61.3812
+</td>
+<td style="text-align:left;">
+11.0111
+</td>
+<td style="text-align:left;">
+5845
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arcuate_Fasciculus_R
+</td>
+<td style="text-align:left;">
+606
+</td>
+<td style="text-align:left;">
+61.6931
+</td>
+<td style="text-align:left;">
+10.3953
+</td>
+<td style="text-align:left;">
+5236
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+514
+</td>
+<td style="text-align:left;">
+60.1712
+</td>
+<td style="text-align:left;">
+8.64512
+</td>
+<td style="text-align:left;">
+3532
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+480
+</td>
+<td style="text-align:left;">
+60.2042
+</td>
+<td style="text-align:left;">
+10.9292
+</td>
+<td style="text-align:left;">
+5648
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_R
+</td>
+<td style="text-align:left;">
+403
+</td>
+<td style="text-align:left;">
+62.6849
+</td>
+<td style="text-align:left;">
+7.33525
+</td>
+<td style="text-align:left;">
+2649
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+403
+</td>
+<td style="text-align:left;">
+55.8164
+</td>
+<td style="text-align:left;">
+11.5598
+</td>
+<td style="text-align:left;">
+5858
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reticular_Tract_R
+</td>
+<td style="text-align:left;">
+385
+</td>
+<td style="text-align:left;">
+63.7714
+</td>
+<td style="text-align:left;">
+11.0051
+</td>
+<td style="text-align:left;">
+6066
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_R
+</td>
+<td style="text-align:left;">
+380
+</td>
+<td style="text-align:left;">
+59.0158
+</td>
+<td style="text-align:left;">
+10.7144
+</td>
+<td style="text-align:left;">
+5321
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_L
+</td>
+<td style="text-align:left;">
+378
+</td>
+<td style="text-align:left;">
+62.418
+</td>
+<td style="text-align:left;">
+8.84354
+</td>
+<td style="text-align:left;">
+3834
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Uncinate_Fasciculus_R
+</td>
+<td style="text-align:left;">
+333
+</td>
+<td style="text-align:left;">
+61.0751
+</td>
+<td style="text-align:left;">
+7.86204
+</td>
+<td style="text-align:left;">
+2965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anterior_Commissure
+</td>
+<td style="text-align:left;">
+253
+</td>
+<td style="text-align:left;">
+64.253
+</td>
+<td style="text-align:left;">
+8.89859
+</td>
+<td style="text-align:left;">
+3996
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_L
+</td>
+<td style="text-align:left;">
+249
+</td>
+<td style="text-align:left;">
+58.2329
+</td>
+<td style="text-align:left;">
+8.81514
+</td>
+<td style="text-align:left;">
+3554
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_R
+</td>
+<td style="text-align:left;">
+245
+</td>
+<td style="text-align:left;">
+61.7225
+</td>
+<td style="text-align:left;">
+8.61876
+</td>
+<td style="text-align:left;">
+3601
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus2_R
+</td>
+<td style="text-align:left;">
+231
+</td>
+<td style="text-align:left;">
+59.1688
+</td>
+<td style="text-align:left;">
+8.58998
+</td>
+<td style="text-align:left;">
+3429
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reticular_Tract_L
+</td>
+<td style="text-align:left;">
+225
+</td>
+<td style="text-align:left;">
+65.28
+</td>
+<td style="text-align:left;">
+9.66871
+</td>
+<td style="text-align:left;">
+4793
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Parietal_Aslant_Tract_R
+</td>
+<td style="text-align:left;">
+210
+</td>
+<td style="text-align:left;">
+53.7714
+</td>
+<td style="text-align:left;">
+7.12677
+</td>
+<td style="text-align:left;">
+2145
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_R
+</td>
+<td style="text-align:left;">
+209
+</td>
+<td style="text-align:left;">
+60.2871
+</td>
+<td style="text-align:left;">
+8.56807
+</td>
+<td style="text-align:left;">
+3476
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_L
+</td>
+<td style="text-align:left;">
+208
+</td>
+<td style="text-align:left;">
+64.4519
+</td>
+<td style="text-align:left;">
+8.17017
+</td>
+<td style="text-align:left;">
+3379
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Parolfactory_R
+</td>
+<td style="text-align:left;">
+201
+</td>
+<td style="text-align:left;">
+64.4876
+</td>
+<td style="text-align:left;">
+5.72839
+</td>
+<td style="text-align:left;">
+1662
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_R
+</td>
+<td style="text-align:left;">
+187
+</td>
+<td style="text-align:left;">
+62.5134
+</td>
+<td style="text-align:left;">
+8.56764
+</td>
+<td style="text-align:left;">
+3604
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Extreme_Capsule_L
+</td>
+<td style="text-align:left;">
+186
+</td>
+<td style="text-align:left;">
+59.3333
+</td>
+<td style="text-align:left;">
+8.10868
+</td>
+<td style="text-align:left;">
+3064
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+186
+</td>
+<td style="text-align:left;">
+64.9462
+</td>
+<td style="text-align:left;">
+8.33184
+</td>
+<td style="text-align:left;">
+3541
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_L
+</td>
+<td style="text-align:left;">
+170
+</td>
+<td style="text-align:left;">
+56.1765
+</td>
+<td style="text-align:left;">
+8.93201
+</td>
+<td style="text-align:left;">
+3520
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_R
+</td>
+<td style="text-align:left;">
+162
+</td>
+<td style="text-align:left;">
+60.3086
+</td>
+<td style="text-align:left;">
+8.86567
+</td>
+<td style="text-align:left;">
+3723
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_R
+</td>
+<td style="text-align:left;">
+149
+</td>
+<td style="text-align:left;">
+62.1208
+</td>
+<td style="text-align:left;">
+10.4304
+</td>
+<td style="text-align:left;">
+5308
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Posterior_R
+</td>
+<td style="text-align:left;">
+146
+</td>
+<td style="text-align:left;">
+59.4521
+</td>
+<td style="text-align:left;">
+7.13187
+</td>
+<td style="text-align:left;">
+2375
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+138
+</td>
+<td style="text-align:left;">
+55.6667
+</td>
+<td style="text-align:left;">
+6.43779
+</td>
+<td style="text-align:left;">
+1812
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus1_R
+</td>
+<td style="text-align:left;">
+117
+</td>
+<td style="text-align:left;">
+58.8034
+</td>
+<td style="text-align:left;">
+6.03127
+</td>
+<td style="text-align:left;">
+1680
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parahippocampal_L
+</td>
+<td style="text-align:left;">
+111
+</td>
+<td style="text-align:left;">
+61.8559
+</td>
+<td style="text-align:left;">
+6.67411
+</td>
+<td style="text-align:left;">
+2164
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Extreme_Capsule_R
+</td>
+<td style="text-align:left;">
+98
+</td>
+<td style="text-align:left;">
+59.6327
+</td>
+<td style="text-align:left;">
+6.17351
+</td>
+<td style="text-align:left;">
+1785
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Parahippocampal_Parietal_L
+</td>
+<td style="text-align:left;">
+97
+</td>
+<td style="text-align:left;">
+56.2887
+</td>
+<td style="text-align:left;">
+5.53827
+</td>
+<td style="text-align:left;">
+1356
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Parahippocampal_Parietal_R
+</td>
+<td style="text-align:left;">
+95
+</td>
+<td style="text-align:left;">
+57.4737
+</td>
+<td style="text-align:left;">
+5.41378
+</td>
+<td style="text-align:left;">
+1323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Frontal_R
+</td>
+<td style="text-align:left;">
+95
+</td>
+<td style="text-align:left;">
+59.1579
+</td>
+<td style="text-align:left;">
+7.98977
+</td>
+<td style="text-align:left;">
+2966
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+87
+</td>
+<td style="text-align:left;">
+57.1954
+</td>
+<td style="text-align:left;">
+7.70524
+</td>
+<td style="text-align:left;">
+2667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arcuate_Fasciculus_L
+</td>
+<td style="text-align:left;">
+81
+</td>
+<td style="text-align:left;">
+56.7407
+</td>
+<td style="text-align:left;">
+6.36952
+</td>
+<td style="text-align:left;">
+1808
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frontal_Aslant_Tract_R
+</td>
+<td style="text-align:left;">
+67
+</td>
+<td style="text-align:left;">
+60.597
+</td>
+<td style="text-align:left;">
+6.99693
+</td>
+<td style="text-align:left;">
+2330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticobulbar_Tract_L
+</td>
+<td style="text-align:left;">
+64
+</td>
+<td style="text-align:left;">
+61.7812
+</td>
+<td style="text-align:left;">
+5.32713
+</td>
+<td style="text-align:left;">
+1377
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Anterior_L
+</td>
+<td style="text-align:left;">
+62
+</td>
+<td style="text-align:left;">
+52.1613
+</td>
+<td style="text-align:left;">
+6.43988
+</td>
+<td style="text-align:left;">
+1699
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Uncinate_Fasciculus_L
+</td>
+<td style="text-align:left;">
+59
+</td>
+<td style="text-align:left;">
+58.5085
+</td>
+<td style="text-align:left;">
+5.52751
+</td>
+<td style="text-align:left;">
+1404
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Frontal_L
+</td>
+<td style="text-align:left;">
+58
+</td>
+<td style="text-align:left;">
+63.4138
+</td>
+<td style="text-align:left;">
+6.24597
+</td>
+<td style="text-align:left;">
+1943
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+52
+</td>
+<td style="text-align:left;">
+59.2692
+</td>
+<td style="text-align:left;">
+5.65762
+</td>
+<td style="text-align:left;">
+1490
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus1_L
+</td>
+<td style="text-align:left;">
+51
+</td>
+<td style="text-align:left;">
+56.4706
+</td>
+<td style="text-align:left;">
+4.35454
+</td>
+<td style="text-align:left;">
+841
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+62.96
+</td>
+<td style="text-align:left;">
+4.62339
+</td>
+<td style="text-align:left;">
+1057
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parahippocampal_R
+</td>
+<td style="text-align:left;">
+48
+</td>
+<td style="text-align:left;">
+64.375
+</td>
+<td style="text-align:left;">
+4.79814
+</td>
+<td style="text-align:left;">
+1164
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticobulbar_Tract_R
+</td>
+<td style="text-align:left;">
+42
+</td>
+<td style="text-align:left;">
+58.7619
+</td>
+<td style="text-align:left;">
+5.15199
+</td>
+<td style="text-align:left;">
+1225
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Anterior_R
+</td>
+<td style="text-align:left;">
+42
+</td>
+<td style="text-align:left;">
+52.5238
+</td>
+<td style="text-align:left;">
+5.54636
+</td>
+<td style="text-align:left;">
+1269
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CNIII_L
+</td>
+<td style="text-align:left;">
+39
+</td>
+<td style="text-align:left;">
+59.8974
+</td>
+<td style="text-align:left;">
+4.10052
+</td>
+<td style="text-align:left;">
+791
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Parolfactory_L
+</td>
+<td style="text-align:left;">
+38
+</td>
+<td style="text-align:left;">
+56.0526
+</td>
+<td style="text-align:left;">
+4.98956
+</td>
+<td style="text-align:left;">
+1096
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Occipital_L
+</td>
+<td style="text-align:left;">
+38
+</td>
+<td style="text-align:left;">
+66.4211
+</td>
+<td style="text-align:left;">
+4.55003
+</td>
+<td style="text-align:left;">
+1080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Occipital_R
+</td>
+<td style="text-align:left;">
+37
+</td>
+<td style="text-align:left;">
+62.5946
+</td>
+<td style="text-align:left;">
+4.21399
+</td>
+<td style="text-align:left;">
+873
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Posterior_L
+</td>
+<td style="text-align:left;">
+33
+</td>
+<td style="text-align:left;">
+68.2424
+</td>
+<td style="text-align:left;">
+4.78465
+</td>
+<td style="text-align:left;">
+1227
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CNIII_R
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+58.9032
+</td>
+<td style="text-align:left;">
+3.63418
+</td>
+<td style="text-align:left;">
+611
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+54.3529
+</td>
+<td style="text-align:left;">
+3.50021
+</td>
+<td style="text-align:left;">
+523
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus2_L
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+53.7333
+</td>
+<td style="text-align:left;">
+3.99041
+</td>
+<td style="text-align:left;">
+672
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus3_R
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+58
+</td>
+<td style="text-align:left;">
+3.60497
+</td>
+<td style="text-align:left;">
+592
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+58.3333
+</td>
+<td style="text-align:left;">
+3.79262
+</td>
+<td style="text-align:left;">
+659
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="post" class="section level3">
+<h3>Post</h3>
+<p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.011455)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+556
+</td>
+<td style="text-align:left;">
+62.242
+</td>
+<td style="text-align:left;">
+11.9698
+</td>
+<td style="text-align:left;">
+7004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+389
+</td>
+<td style="text-align:left;">
+62.6271
+</td>
+<td style="text-align:left;">
+5.95794
+</td>
+<td style="text-align:left;">
+1746
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+338
+</td>
+<td style="text-align:left;">
+57.9102
+</td>
+<td style="text-align:left;">
+9.28724
+</td>
+<td style="text-align:left;">
+3923
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+337
+</td>
+<td style="text-align:left;">
+63.1473
+</td>
+<td style="text-align:left;">
+7.12392
+</td>
+<td style="text-align:left;">
+2517
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+267
+</td>
+<td style="text-align:left;">
+57.3666
+</td>
+<td style="text-align:left;">
+10.8847
+</td>
+<td style="text-align:left;">
+5338
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+251
+</td>
+<td style="text-align:left;">
+55.8427
+</td>
+<td style="text-align:left;">
+11.6082
+</td>
+<td style="text-align:left;">
+5910
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_L
+</td>
+<td style="text-align:left;">
+148
+</td>
+<td style="text-align:left;">
+62.4842
+</td>
+<td style="text-align:left;">
+9.15592
+</td>
+<td style="text-align:left;">
+4114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vermis
+</td>
+<td style="text-align:left;">
+118
+</td>
+<td style="text-align:left;">
+56.0742
+</td>
+<td style="text-align:left;">
+7.00812
+</td>
+<td style="text-align:left;">
+2163
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Minor
+</td>
+<td style="text-align:left;">
+93
+</td>
+<td style="text-align:left;">
+55.3265
+</td>
+<td style="text-align:left;">
+6.81474
+</td>
+<td style="text-align:left;">
+2018
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_L
+</td>
+<td style="text-align:left;">
+89
+</td>
+<td style="text-align:left;">
+58.6151
+</td>
+<td style="text-align:left;">
+5.69673
+</td>
+<td style="text-align:left;">
+1494
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+86
+</td>
+<td style="text-align:left;">
+53.4488
+</td>
+<td style="text-align:left;">
+7.0577
+</td>
+<td style="text-align:left;">
+2091
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_L
+</td>
+<td style="text-align:left;">
+55
+</td>
+<td style="text-align:left;">
+54.6296
+</td>
+<td style="text-align:left;">
+5.62796
+</td>
+<td style="text-align:left;">
+1359
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+51
+</td>
+<td style="text-align:left;">
+55.9341
+</td>
+<td style="text-align:left;">
+5.61895
+</td>
+<td style="text-align:left;">
+1387
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+43
+</td>
+<td style="text-align:left;">
+54.7458
+</td>
+<td style="text-align:left;">
+4.19869
+</td>
+<td style="text-align:left;">
+758
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_L
+</td>
+<td style="text-align:left;">
+38
+</td>
+<td style="text-align:left;">
+54.4815
+</td>
+<td style="text-align:left;">
+5.30669
+</td>
+<td style="text-align:left;">
+1205
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+38
+</td>
+<td style="text-align:left;">
+57.0072
+</td>
+<td style="text-align:left;">
+4.11457
+</td>
+<td style="text-align:left;">
+758
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_R
+</td>
+<td style="text-align:left;">
+32
+</td>
+<td style="text-align:left;">
+52.6321
+</td>
+<td style="text-align:left;">
+4.11509
+</td>
+<td style="text-align:left;">
+700
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arcuate_Fasciculus_L
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+58.2159
+</td>
+<td style="text-align:left;">
+4.66728
+</td>
+<td style="text-align:left;">
+996
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_L
+</td>
+<td style="text-align:left;">
+29
+</td>
+<td style="text-align:left;">
+55.3813
+</td>
+<td style="text-align:left;">
+4.77562
+</td>
+<td style="text-align:left;">
+992
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parahippocampal_L
+</td>
+<td style="text-align:left;">
+26
+</td>
+<td style="text-align:left;">
+65.2466
+</td>
+<td style="text-align:left;">
+3.50628
+</td>
+<td style="text-align:left;">
+630
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_R
+</td>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+55.8445
+</td>
+<td style="text-align:left;">
+3.94327
+</td>
+<td style="text-align:left;">
+682
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+54.3374
+</td>
+<td style="text-align:left;">
+4.24491
+</td>
+<td style="text-align:left;">
+769
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_L
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+57.4313
+</td>
+<td style="text-align:left;">
+4.37914
+</td>
+<td style="text-align:left;">
+865
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Anterior_L
+</td>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+53.0036
+</td>
+<td style="text-align:left;">
+3.4483
+</td>
+<td style="text-align:left;">
+495
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_L
+</td>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+63.8837
+</td>
+<td style="text-align:left;">
+3.74847
+</td>
+<td style="text-align:left;">
+705
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_R
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+52.1583
+</td>
+<td style="text-align:left;">
+3.44792
+</td>
+<td style="text-align:left;">
+487
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_L
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+52.8489
+</td>
+<td style="text-align:left;">
+3.00174
+</td>
+<td style="text-align:left;">
+374
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+53.4724
+</td>
+<td style="text-align:left;">
+3.05126
+</td>
+<td style="text-align:left;">
+391
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anterior_Commissure
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+57.4152
+</td>
+<td style="text-align:left;">
+3.64769
+</td>
+<td style="text-align:left;">
+600
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.007131)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_L
+</td>
+<td style="text-align:left;">
+596
+</td>
+<td style="text-align:left;">
+61.9698
+</td>
+<td style="text-align:left;">
+11.0008
+</td>
+<td style="text-align:left;">
+5890
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_L
+</td>
+<td style="text-align:left;">
+365
+</td>
+<td style="text-align:left;">
+68.2192
+</td>
+<td style="text-align:left;">
+6.99816
+</td>
+<td style="text-align:left;">
+2624
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticospinal_Tract_R
+</td>
+<td style="text-align:left;">
+300
+</td>
+<td style="text-align:left;">
+62.4733
+</td>
+<td style="text-align:left;">
+9.20113
+</td>
+<td style="text-align:left;">
+4154
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arcuate_Fasciculus_L
+</td>
+<td style="text-align:left;">
+225
+</td>
+<td style="text-align:left;">
+57.4133
+</td>
+<td style="text-align:left;">
+8.46743
+</td>
+<td style="text-align:left;">
+3233
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+225
+</td>
+<td style="text-align:left;">
+55.4222
+</td>
+<td style="text-align:left;">
+7.70625
+</td>
+<td style="text-align:left;">
+2585
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus2_R
+</td>
+<td style="text-align:left;">
+114
+</td>
+<td style="text-align:left;">
+58.6316
+</td>
+<td style="text-align:left;">
+6.0347
+</td>
+<td style="text-align:left;">
+1677
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_L
+</td>
+<td style="text-align:left;">
+111
+</td>
+<td style="text-align:left;">
+59.5315
+</td>
+<td style="text-align:left;">
+5.54769
+</td>
+<td style="text-align:left;">
+1439
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_L
+</td>
+<td style="text-align:left;">
+108
+</td>
+<td style="text-align:left;">
+60.4074
+</td>
+<td style="text-align:left;">
+6.20554
+</td>
+<td style="text-align:left;">
+1827
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_L
+</td>
+<td style="text-align:left;">
+90
+</td>
+<td style="text-align:left;">
+58.3556
+</td>
+<td style="text-align:left;">
+6.84909
+</td>
+<td style="text-align:left;">
+2150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+88
+</td>
+<td style="text-align:left;">
+53.4318
+</td>
+<td style="text-align:left;">
+7.62986
+</td>
+<td style="text-align:left;">
+2443
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medial_Lemniscus_R
+</td>
+<td style="text-align:left;">
+82
+</td>
+<td style="text-align:left;">
+57.9268
+</td>
+<td style="text-align:left;">
+6.00578
+</td>
+<td style="text-align:left;">
+1641
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+68
+</td>
+<td style="text-align:left;">
+60
+</td>
+<td style="text-align:left;">
+5.14826
+</td>
+<td style="text-align:left;">
+1249
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Superior_R
+</td>
+<td style="text-align:left;">
+42
+</td>
+<td style="text-align:left;">
+54.9048
+</td>
+<td style="text-align:left;">
+4.8778
+</td>
+<td style="text-align:left;">
+1026
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+39
+</td>
+<td style="text-align:left;">
+53.0769
+</td>
+<td style="text-align:left;">
+4.73596
+</td>
+<td style="text-align:left;">
+935
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_L
+</td>
+<td style="text-align:left;">
+38
+</td>
+<td style="text-align:left;">
+54.8421
+</td>
+<td style="text-align:left;">
+5.30237
+</td>
+<td style="text-align:left;">
+1211
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_L
+</td>
+<td style="text-align:left;">
+28
+</td>
+<td style="text-align:left;">
+55.8571
+</td>
+<td style="text-align:left;">
+3.39282
+</td>
+<td style="text-align:left;">
+505
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arcuate_Fasciculus_R
+</td>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+57.6667
+</td>
+<td style="text-align:left;">
+4.62784
+</td>
+<td style="text-align:left;">
+970
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticopontine_Tract_Parietal_R
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+63.0476
+</td>
+<td style="text-align:left;">
+4.02446
+</td>
+<td style="text-align:left;">
+802
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_R
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+55.2
+</td>
+<td style="text-align:left;">
+2.58633
+</td>
+<td style="text-align:left;">
+290
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dentatorubrothalamic_Tract_L
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+55.7333
+</td>
+<td style="text-align:left;">
+3.45329
+</td>
+<td style="text-align:left;">
+522
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus2_L
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+62.4615
+</td>
+<td style="text-align:left;">
+3.4797
+</td>
+<td style="text-align:left;">
+594
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Parolfactory_R
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+54.6667
+</td>
+<td style="text-align:left;">
+2.05887
+</td>
+<td style="text-align:left;">
+182
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Extreme_Capsule_L
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+62.3333
+</td>
+<td style="text-align:left;">
+3.13123
+</td>
+<td style="text-align:left;">
+480
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+55.1667
+</td>
+<td style="text-align:left;">
+2.51932
+</td>
+<td style="text-align:left;">
+275
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_R
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+54.6667
+</td>
+<td style="text-align:left;">
+3.16467
+</td>
+<td style="text-align:left;">
+430
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus3_R
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+53.8182
+</td>
+<td style="text-align:left;">
+3.12961
+</td>
+<td style="text-align:left;">
+414
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+</div>
+<div id="md" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">MD</h2>
+<div id="all-subjects-1" class="section level3">
+<h3>All subjects</h3>
+<p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.085551)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+.
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+46.0765
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5.19326
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+976
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.011940)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+348
+</td>
+<td style="text-align:left;">
+47.6962
+</td>
+<td style="text-align:left;">
+6.45321
+</td>
+<td style="text-align:left;">
+1560
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+182
+</td>
+<td style="text-align:left;">
+45.0501
+</td>
+<td style="text-align:left;">
+5.96276
+</td>
+<td style="text-align:left;">
+1258
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+116
+</td>
+<td style="text-align:left;">
+44.3704
+</td>
+<td style="text-align:left;">
+5.17981
+</td>
+<td style="text-align:left;">
+935
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+63
+</td>
+<td style="text-align:left;">
+46.0693
+</td>
+<td style="text-align:left;">
+2.65472
+</td>
+<td style="text-align:left;">
+255
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+48.7732
+</td>
+<td style="text-align:left;">
+3.11208
+</td>
+<td style="text-align:left;">
+371
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+43.5618
+</td>
+<td style="text-align:left;">
+3.71427
+</td>
+<td style="text-align:left;">
+472
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_R
+</td>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+42.2256
+</td>
+<td style="text-align:left;">
+2.44343
+</td>
+<td style="text-align:left;">
+198
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+43.2846
+</td>
+<td style="text-align:left;">
+1.92519
+</td>
+<td style="text-align:left;">
+126
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="females-1" class="section level3">
+<h3>Females</h3>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.011636)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+1340
+</td>
+<td style="text-align:left;">
+47.7493
+</td>
+<td style="text-align:left;">
+9.22
+</td>
+<td style="text-align:left;">
+3188
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+965
+</td>
+<td style="text-align:left;">
+48.485
+</td>
+<td style="text-align:left;">
+9.77155
+</td>
+<td style="text-align:left;">
+3636
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+624
+</td>
+<td style="text-align:left;">
+45.1987
+</td>
+<td style="text-align:left;">
+9.99592
+</td>
+<td style="text-align:left;">
+3547
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+126
+</td>
+<td style="text-align:left;">
+45.5079
+</td>
+<td style="text-align:left;">
+6.19793
+</td>
+<td style="text-align:left;">
+1373
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_R
+</td>
+<td style="text-align:left;">
+48
+</td>
+<td style="text-align:left;">
+43.0833
+</td>
+<td style="text-align:left;">
+4.4398
+</td>
+<td style="text-align:left;">
+667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+33
+</td>
+<td style="text-align:left;">
+43.9394
+</td>
+<td style="text-align:left;">
+4.2862
+</td>
+<td style="text-align:left;">
+634
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+27
+</td>
+<td style="text-align:left;">
+45.7037
+</td>
+<td style="text-align:left;">
+3.41654
+</td>
+<td style="text-align:left;">
+419
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_R
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+45.2381
+</td>
+<td style="text-align:left;">
+2.41955
+</td>
+<td style="text-align:left;">
+208
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+44
+</td>
+<td style="text-align:left;">
+2.3448
+</td>
+<td style="text-align:left;">
+190
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+47.0667
+</td>
+<td style="text-align:left;">
+3.36671
+</td>
+<td style="text-align:left;">
+419
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="males-1" class="section level3">
+<h3>Males</h3>
+<p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.056582)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+356
+</td>
+<td style="text-align:left;">
+50.8427
+</td>
+<td style="text-align:left;">
+7.40395
+</td>
+<td style="text-align:left;">
+2189
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+230
+</td>
+<td style="text-align:left;">
+45.6696
+</td>
+<td style="text-align:left;">
+5.42335
+</td>
+<td style="text-align:left;">
+1055
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+47
+</td>
+<td style="text-align:left;">
+44
+</td>
+<td style="text-align:left;">
+3.87536
+</td>
+<td style="text-align:left;">
+519
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+49.5
+</td>
+<td style="text-align:left;">
+2.64993
+</td>
+<td style="text-align:left;">
+273
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="pre-1" class="section level3">
+<h3>pre</h3>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.005970)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+957
+</td>
+<td style="text-align:left;">
+51.3666
+</td>
+<td style="text-align:left;">
+9.02914
+</td>
+<td style="text-align:left;">
+3289
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+588
+</td>
+<td style="text-align:left;">
+45.7259
+</td>
+<td style="text-align:left;">
+9.40699
+</td>
+<td style="text-align:left;">
+3178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+364
+</td>
+<td style="text-align:left;">
+49.3
+</td>
+<td style="text-align:left;">
+6.07714
+</td>
+<td style="text-align:left;">
+1430
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+269
+</td>
+<td style="text-align:left;">
+47.3489
+</td>
+<td style="text-align:left;">
+7.2765
+</td>
+<td style="text-align:left;">
+1969
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+206
+</td>
+<td style="text-align:left;">
+51.3828
+</td>
+<td style="text-align:left;">
+5.10811
+</td>
+<td style="text-align:left;">
+1053
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+73
+</td>
+<td style="text-align:left;">
+47.0473
+</td>
+<td style="text-align:left;">
+5.12358
+</td>
+<td style="text-align:left;">
+970
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+47
+</td>
+<td style="text-align:left;">
+46.6879
+</td>
+<td style="text-align:left;">
+4.45878
+</td>
+<td style="text-align:left;">
+729
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_R
+</td>
+<td style="text-align:left;">
+42
+</td>
+<td style="text-align:left;">
+43.0999
+</td>
+<td style="text-align:left;">
+2.932
+</td>
+<td style="text-align:left;">
+291
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+41
+</td>
+<td style="text-align:left;">
+48.5909
+</td>
+<td style="text-align:left;">
+3.01104
+</td>
+<td style="text-align:left;">
+346
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Optic_Radiation_L
+</td>
+<td style="text-align:left;">
+37
+</td>
+<td style="text-align:left;">
+50.1219
+</td>
+<td style="text-align:left;">
+2.81526
+</td>
+<td style="text-align:left;">
+312
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+46.4592
+</td>
+<td style="text-align:left;">
+3.84695
+</td>
+<td style="text-align:left;">
+540
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+43.8115
+</td>
+<td style="text-align:left;">
+1.88296
+</td>
+<td style="text-align:left;">
+122
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_R
+</td>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+47.1773
+</td>
+<td style="text-align:left;">
+2.3693
+</td>
+<td style="text-align:left;">
+208
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Minor
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+43.4117
+</td>
+<td style="text-align:left;">
+2.84
+</td>
+<td style="text-align:left;">
+275
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Optic_Radiation_R
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+41.9882
+</td>
+<td style="text-align:left;">
+1.95468
+</td>
+<td style="text-align:left;">
+126
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="peri-1" class="section level3">
+<h3>peri</h3>
+<p><span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.045612)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+1329
+</td>
+<td style="text-align:left;">
+48.7976
+</td>
+<td style="text-align:left;">
+11.4037
+</td>
+<td style="text-align:left;">
+4984
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+209
+</td>
+<td style="text-align:left;">
+46.0191
+</td>
+<td style="text-align:left;">
+7.4462
+</td>
+<td style="text-align:left;">
+2004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+53
+</td>
+<td style="text-align:left;">
+44.9434
+</td>
+<td style="text-align:left;">
+4.85202
+</td>
+<td style="text-align:left;">
+831
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+51
+</td>
+<td style="text-align:left;">
+48.6275
+</td>
+<td style="text-align:left;">
+3.43258
+</td>
+<td style="text-align:left;">
+450
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+41
+</td>
+<td style="text-align:left;">
+46.878
+</td>
+<td style="text-align:left;">
+3.78334
+</td>
+<td style="text-align:left;">
+527
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+23
+</td>
+<td style="text-align:left;">
+43.6522
+</td>
+<td style="text-align:left;">
+3.33798
+</td>
+<td style="text-align:left;">
+382
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+44.4762
+</td>
+<td style="text-align:left;">
+2.92078
+</td>
+<td style="text-align:left;">
+298
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+43.4
+</td>
+<td style="text-align:left;">
+2.68098
+</td>
+<td style="text-align:left;">
+245
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Fronto_Occipital_Fasciculus_R
+</td>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+43.0526
+</td>
+<td style="text-align:left;">
+3.87221
+</td>
+<td style="text-align:left;">
+507
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_R
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+43
+</td>
+<td style="text-align:left;">
+3.10692
+</td>
+<td style="text-align:left;">
+326
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+42.6
+</td>
+<td style="text-align:left;">
+2.28047
+</td>
+<td style="text-align:left;">
+174
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Superior_Longitudinal_Fasciculus2_L
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+41.6
+</td>
+<td style="text-align:left;">
+2.65898
+</td>
+<td style="text-align:left;">
+231
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
+</div>
+<div id="post-1" class="section level3">
+<h3>post</h3>
+<p><span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative (FDR = 0.011787)</strong> </span></p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:600px; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tract Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+number of tracts
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+mean length(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+diameter(mm)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+volume(mm^3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fornix_L
+</td>
+<td style="text-align:left;">
+1247
+</td>
+<td style="text-align:left;">
+55.6694
+</td>
+<td style="text-align:left;">
+9.44693
+</td>
+<td style="text-align:left;">
+3902
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Tapetum
+</td>
+<td style="text-align:left;">
+549
+</td>
+<td style="text-align:left;">
+51.1144
+</td>
+<td style="text-align:left;">
+10.2782
+</td>
+<td style="text-align:left;">
+4241
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_R
+</td>
+<td style="text-align:left;">
+542
+</td>
+<td style="text-align:left;">
+45.5632
+</td>
+<td style="text-align:left;">
+12.3578
+</td>
+<td style="text-align:left;">
+5465
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fornix_R
+</td>
+<td style="text-align:left;">
+516
+</td>
+<td style="text-align:left;">
+52.8763
+</td>
+<td style="text-align:left;">
+6.62912
+</td>
+<td style="text-align:left;">
+1825
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerebellum_L
+</td>
+<td style="text-align:left;">
+282
+</td>
+<td style="text-align:left;">
+46.798
+</td>
+<td style="text-align:left;">
+8.25718
+</td>
+<td style="text-align:left;">
+2506
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Body
+</td>
+<td style="text-align:left;">
+172
+</td>
+<td style="text-align:left;">
+52.5065
+</td>
+<td style="text-align:left;">
+6.54586
+</td>
+<td style="text-align:left;">
+1767
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Superior_L
+</td>
+<td style="text-align:left;">
+166
+</td>
+<td style="text-align:left;">
+51.585
+</td>
+<td style="text-align:left;">
+5.55232
+</td>
+<td style="text-align:left;">
+1249
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corpus_Callosum_Forceps_Major
+</td>
+<td style="text-align:left;">
+145
+</td>
+<td style="text-align:left;">
+49.665
+</td>
+<td style="text-align:left;">
+6.05901
+</td>
+<td style="text-align:left;">
+1432
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Middle_Cerebellar_Peduncle
+</td>
+<td style="text-align:left;">
+59
+</td>
+<td style="text-align:left;">
+46.2768
+</td>
+<td style="text-align:left;">
+3.78246
+</td>
+<td style="text-align:left;">
+520
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inferior_Longitudinal_Fasciculus_R
+</td>
+<td style="text-align:left;">
+43
+</td>
+<td style="text-align:left;">
+44.2369
+</td>
+<td style="text-align:left;">
+4.77749
+</td>
+<td style="text-align:left;">
+793
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cingulum_Frontal_Parietal_L
+</td>
+<td style="text-align:left;">
+29
+</td>
+<td style="text-align:left;">
+55.4429
+</td>
+<td style="text-align:left;">
+3.07223
+</td>
+<td style="text-align:left;">
+411
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Optic_Radiation_L
+</td>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+51.1942
+</td>
+<td style="text-align:left;">
+2.653
+</td>
+<td style="text-align:left;">
+283
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thalamic_Radiation_Anterior_L
+</td>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+43.5846
+</td>
+<td style="text-align:left;">
+2.26749
+</td>
+<td style="text-align:left;">
+176
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corticostriatal_Tract_Posterior_R
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+43.2076
+</td>
+<td style="text-align:left;">
+2.26438
+</td>
+<td style="text-align:left;">
+174
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anterior_Commissure
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+47.0111
+</td>
+<td style="text-align:left;">
+1.9817
+</td>
+<td style="text-align:left;">
+145
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><br><br><br><br></p>
 </div>
 </div>
 </div>

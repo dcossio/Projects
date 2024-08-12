@@ -197,58 +197,29 @@ This is the analysis of white matter dsi studio connectometry for DSP
 
   * Total number of scans = 120 (males and females)  
   
-  * Total scans used in analysis= 118  
+  * Total scans used in analysis= 72  
   * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 failed quality 
   control check in DSI
-   * Several subjects removed because they did not have rad3 score  
-<br><br>
-
-<hr> 
-
-
-## **Loop**
-
-
-::::::{style="display: flex;"}
-
-:::{.column width="50%"}
-**Average** <br>
-All subjects = 43 <br>
-Men = 18 <br>
-Women = 25 <br>
-Pre = 11 <br>
-Peri = 7 <br>
-Post = 17 <br>
-::: 
   
-:::{ .column width="50%"}
-  **rad3** <br>
-    * All subjects = 39 <br>
-    * Men = 15 <br>
-    * Women = 24 <br>
-    * Pre = 10 <br>
-    * Peri = 7 <br>
-    * Post = 7 <br>
-:::
-::::::
+    * All subjects = 72 <br>
+    * Men = 27 <br>
+    * Women = 45 <br>
+    * Pre = 18 <br>
+    * Peri = 14 <br>
+    * Post = 13 <br>
 
 <br><br>
 <hr> 
 
 
-
-
-  
   
 ## **Scan parameters** 
 
   * Locations from UCSB and UCI
+  
 <br><br>
 
 <hr> 
-
-
-
 
 
 ## **QSIprep** 
@@ -274,19 +245,18 @@ Post = 17 <br>
     * Permutation = 4,000
     * pruning 4
     * non normalized QA
+    * Covariates: sex, age, and FNAME
 
 <hr>
 
 <br><br><br><br><br>
 
-# **Results**  
+# **Solution index results**  
 
 
-## <span style="color: darkorange;"> Solution Index </span>  {.tabset .tabset-dropdown}
+## QA {.tabset .tabset-pills}
 
-### QA {.tabset .tabset-pills}
-
-#### All subjects
+### All subjects
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.186047)</strong> </span>
 
@@ -305,7 +275,7 @@ TableOutput(CleanInput(ReadingCSVFunc("QA/all.DSP.SI.neg.csv")))
 <br><br><br><br>
 
 
-#### Females
+### Females
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.031429)</strong> </span>
 
@@ -326,7 +296,7 @@ TableOutput(CleanInput(ReadingCSVFunc("QA/female.dsp.si.neg.csv")))
 
 <br><br><br><br>
 
-#### Males
+### Males
 
 <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.001014)</strong> </span>
 
@@ -347,61 +317,152 @@ TableOutput(CleanInput(ReadingCSVFunc("QA/males.DSP.QA.neg.csv")))
 
 <br><br><br><br>
 
-#### Pre
+### Pre
 
 
-<hr>
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000099)</strong> </span>
 
-<br><br><br><br>
-
-
-
-#### Peri
-
-
-<hr>
-
-<br><br><br><br>
-
-#### Post
-
-
-<hr>
-
-<br><br><br><br>
-
-
-
-
-
-
-## <span style="color: darkorange;"> Maze Accuracy </span>  {.tabset .tabset-dropdown}  
-
-
-### QA {.tabset}
-
-All subjects: FDR= 0.024621 Negatively correlated
-```{r, echo=FALSE,message=FALSE}
-
-all_QA <- CleanInput(ReadingCSVFunc("QA/all/all.DSP.SI.neg.csv"))
-
-TableOutput(all_QA)
-```
-
-female subjects showed both negative and positive correlations. Positive corrs (FDR=0.031429) and negative corrs (FDR = 0.000398)
-```{r, echo=FALSE,message=FALSE}
-
-female_neg_QA <- CleanInput(ReadingCSVFunc("QA/female/female.dsp.si.neg.csv"))
-
-TableOutput(female_neg_QA)
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("QA/pre.DSP.pos.csv")))
 ```
 
 <br>
 
-```{r, echo=FALSE,message=FALSE}
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.001429)</strong> </span>
 
-female_pos_QA <- CleanInput(ReadingCSVFunc("QA/female/female.dsp.si.pos.csv"))
-
-TableOutput(female_pos_QA)
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("QA/pre.DSP.neg.csv")))
 ```
 
+
+<hr>
+
+<br><br><br><br>
+
+
+
+### Peri
+
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.002134)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("QA/peri.DSP.SI.neg.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
+
+### Post
+
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.011455)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("QA/post.DSP.SI.pos.csv")))
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.007131)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("QA/post.DSP.SI.neg.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
+
+
+
+## MD {.tabset .tabset-pills}
+### All subjects
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.085551)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_all_pos.csv")))
+```
+
+<br>
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.011940)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_all_neg.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
+
+### Females
+
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.011636)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_fem_neg.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
+
+### Males
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.056582)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_male_pos.csv")))
+```
+
+<hr>
+
+<br><br><br><br>
+
+### pre
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.005970)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_pre_neg.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
+
+### peri
+
+<span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.045612)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_peri_pos.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
+
+### post
+
+<span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"> <strong>Negative  (FDR = 0.011787)</strong> </span>
+
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("MD/MD_DSP_si_true_post_neg.csv")))
+```
+
+
+<hr>
+
+<br><br><br><br>
