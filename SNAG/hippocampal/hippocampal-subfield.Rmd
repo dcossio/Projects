@@ -1,8 +1,12 @@
 ---
-title: "Hippocampalsubfield"
+title: "Hippocampal subfield"
 author: "Daniela Cossio"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  html_document:
+    toc: yes
+    toc_depth: '2'
+    df_print: paged
   pdf_document:
     toc: yes
     toc_depth: 2
@@ -140,83 +144,83 @@ df <-
 
 #### Average
 
-<!-- ##### CA1 -->
-<!-- ```{r, Avg CA1 + avg angular error, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE} -->
+##### CA1
+```{r, Avg CA1 + avg angular error, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 
-<!-- c1 <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree", -->
-<!--           add = "reg.line", -->
-<!--           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line -->
-<!--           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor -->
-<!--           conf.int = TRUE,  -->
-<!--           cor.method = "pearson", -->
-<!--           cor.coeff.args = list(label.sep = "\n"), -->
-<!--           xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) + -->
-<!--     theme(legend.position = "top", legend.title=element_blank())  -->
-
-
-<!-- ``` -->
-
-<!-- ```{r, Avg CA1 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE} -->
+c1 <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
 
 
-<!-- c1a <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree", color = "sex", -->
-<!--           add = "reg.line", -->
-<!--           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line -->
-<!--           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor -->
-<!--           conf.int = TRUE,  -->
-<!--           cor.method = "pearson", -->
-<!--           cor.coeff.args = list(label.sep = "\n"), -->
-<!--           xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") + -->
-<!--     facet_wrap(. ~ sex, scale = "free", ncol = 1) + -->
-<!--      theme_bw() + -->
-<!--      theme(legend.position = "none") -->
+```
+
+```{r, Avg CA1 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 
 
-<!-- ``` -->
-
-<!-- ```{r, echo=FALSE, fig.width=10, warning=FALSE} -->
-<!-- library(patchwork) -->
-<!-- c1 + c1a -->
-<!-- ``` -->
-
-<!-- ##### CA2/3 -->
-
-<!-- ```{r, Avg CA2 + avg angular error, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE} -->
-
-<!-- c2 <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_ae_avg_degree", -->
-<!--           add = "reg.line", -->
-<!--           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line -->
-<!--           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor -->
-<!--           conf.int = TRUE,  -->
-<!--           cor.method = "pearson", -->
-<!--           cor.coeff.args = list(label.sep = "\n"), -->
-<!--           xlab = "Averaged CA2 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) + -->
-<!--     theme(legend.position = "top", legend.title=element_blank())  -->
+c1a <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
 
 
-<!-- ``` -->
+```
 
-<!-- ```{r, Avg CA2 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE} -->
+```{r, echo=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+c1 + c1a
+```
+
+##### CA2/3
+
+```{r, Avg CA2 + avg angular error, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+c2 <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA2 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
 
 
-<!-- c23a <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_ae_avg_degree", color = "sex", -->
-<!--           add = "reg.line", -->
-<!--           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line -->
-<!--           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor -->
-<!--           conf.int = TRUE,  -->
-<!--           cor.method = "pearson", -->
-<!--           cor.coeff.args = list(label.sep = "\n"), -->
-<!--           xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") + -->
-<!--     facet_wrap(. ~ sex, scale = "free", ncol = 1) + -->
-<!--      theme_bw() + -->
-<!--      theme(legend.position = "none") -->
+```
+
+```{r, Avg CA2 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 
 
-<!-- ``` -->
+c23a <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
 
-<!-- ```{r, echo=FALSE, fig.width=10, warning=FALSE} -->
-<!-- library(patchwork) -->
-<!-- c2 + c23a -->
-<!-- ``` -->
 
-<!-- #### Rad 3 -->
+```
+
+```{r, echo=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+c2 + c23a
+```
+
+#### Rad 3

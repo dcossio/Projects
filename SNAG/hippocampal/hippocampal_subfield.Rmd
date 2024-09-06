@@ -1,0 +1,466 @@
+---
+title: "Hippocampal subfield"
+author: "Daniela Cossio"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{sectsty} \allsectionsfont{\centering\huge}
+- \usepackage{sectsty} \subsectionfont{\centering\LARGE}
+- \usepackage{sectsty} \subsubsectionfont{\centering\Large}
+- \usepackage{sectsty} \paragraphfont{\large}
+- \usepackage{sectsty} \subparagraphfont{\normalsize}
+- \usepackage{titlesec}
+- \usepackage{lipsum}
+---
+
+\newpage
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+library(patchwork)
+```
+
+```{r reading in our CSVs,echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+working_dir <-getwd()
+  
+# Laptop path
+
+columns2grab <-
+  c(
+    "subject_id",
+    "sex",
+    "age_group",
+    "age_spatial_years",
+    "age_scan_years",
+    "loop_pe_rad1_m",
+    "loop_pe_rad2_m",
+    "loop_pe_rad3_m",
+    "loop_pe_avg_m",
+    "loop_de_rad1_degree",
+    "loop_de_rad2_degree",
+    "loop_de_rad3_degree",
+    "loop_de_avg_degree",
+    "loop_ae_rad1_degree",
+    "loop_ae_rad2_degree",
+    "loop_ae_rad3_degree",
+    "loop_ae_avg_degree",
+    "t2hipp_vol_avg_ca1",
+    "t2hipp_vol_avg_ca23",
+    "t2hipp_vol_avg_dg",
+    "t2hipp_vol_avg_erc",
+    "t2hipp_vol_avg_phc",
+    "t2hipp_vol_avg_prc",
+    "t2hipp_vol_avg_sub",
+    "t2hipp_vol_left_ca1",
+    "t2hipp_vol_left_ca23",
+    "t2hipp_vol_left_dg",
+    "t2hipp_vol_left_erc",
+    "t2hipp_vol_left_phc",
+    "t2hipp_vol_left_prc",
+    "t2hipp_vol_left_sub",
+    "t2hipp_vol_right_ca1",
+    "t2hipp_vol_right_ca23",
+    "t2hipp_vol_right_dg",
+    "t2hipp_vol_right_erc",
+    "t2hipp_vol_right_phc",
+    "t2hipp_vol_right_prc",
+    "t2hipp_vol_right_sub",
+    "estradiol_scan_pg_ml",
+    "progesterone_scan_ng_ml",
+    "fsh_scan_miu_ml",
+    "shbg_scan_nmol_l",
+    "dheas_scan_ug_dl",
+    "testosterone_scan_ng_dl",
+    "estradiol_spatial_pg_ml",
+    "progesterone_spatial_ng_ml",
+    "fsh_spatial_miu_ml",
+    "shbg_spatial_nmol_l",
+    "dheas_spatial_ug_dl",
+    "testosterone_spatial_ng_dl"
+  )
+
+df <- read.csv("hippocampalsubs.csv") %>% select(columns2grab)
+df <- filter(df, df$subject_id != 0)
+
+ #Create T2 total hipp and MTL, averaged and L/R
+df <-
+  df %>%  mutate(
+    avg_total_hipp = t2hipp_vol_avg_ca1 + t2hipp_vol_avg_ca23 + t2hipp_vol_avg_dg + t2hipp_vol_avg_sub,
+    
+    left_total_hipp = t2hipp_vol_left_ca1 + t2hipp_vol_left_ca23 + t2hipp_vol_left_dg + t2hipp_vol_left_sub,
+    
+    right_total_hipp = t2hipp_vol_right_ca1 + t2hipp_vol_right_ca23 + t2hipp_vol_right_dg + t2hipp_vol_right_sub,
+    
+    avg_mtl = t2hipp_vol_avg_ca1 + t2hipp_vol_avg_ca23 + t2hipp_vol_avg_dg + t2hipp_vol_avg_sub + t2hipp_vol_avg_erc + t2hipp_vol_avg_phc + t2hipp_vol_avg_prc,
+    
+    left_mtl = t2hipp_vol_left_ca1 + t2hipp_vol_left_ca23 + t2hipp_vol_left_dg + t2hipp_vol_left_sub + t2hipp_vol_left_erc + t2hipp_vol_left_phc + t2hipp_vol_left_prc , #note that shuyings original code had left sub in this twice 
+    
+    right_mtl = t2hipp_vol_right_ca1 + t2hipp_vol_right_ca23 + t2hipp_vol_right_dg + t2hipp_vol_right_sub + t2hipp_vol_right_erc + t2hipp_vol_right_phc + t2hipp_vol_right_prc
+  )
+
+df$sexbinary <- df$sex
+df$sexbinary[df$sexbinary=="Male"] <- 1
+df$sexbinary[df$sexbinary=="Female"] <- 0
+df$sexbinary <- as.numeric(df$sexbinary)
+
+```
+
+
+\section{Methods}
+
+
+\vspace{1cm}
+\vspace{1cm}
+
+
+
+\section{Results}
+\vspace{1cm}
+\subsection{Angular Error}
+\vspace{1cm}
+\vspace{1cm}
+
+\subsubsection{Average}
+
+
+
+\paragraph{CA1}
+&nbsp;
+\vspace{1cm}
+```{r, Avg CA1 + avg angular error, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+c1 <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg CA1 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+c1a <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, fig.width=10, warning=FALSE,message=FALSE}
+library(patchwork)
+c1 + c1a
+```
+
+\newpage
+\paragraph{CA2/3}
+&nbsp;
+\vspace{1cm}
+```{r, Avg CA2 + avg angular error, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+c2 <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA2 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg CA2 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+c23a <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+c2 + c23a
+```
+
+
+\paragraph{DG}
+&nbsp;
+\vspace{1cm}
+```{r, Avg DG + avg angular error, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+dg1 <- ggscatter(df, x = "t2hipp_vol_avg_dg", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged dg Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg dg + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+dg1a <- ggscatter(df, x = "t2hipp_vol_avg_dg", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged dg Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+dg1 + dg1a
+```
+
+\newpage
+\paragraph{PHC}
+&nbsp;
+\vspace{1cm}
+```{r, Avg PHC + avg angular error, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+phc1 <- ggscatter(df, x = "t2hipp_vol_avg_phc", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged phc Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg phc + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+phc1a <- ggscatter(df, x = "t2hipp_vol_avg_phc", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged phc Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+phc1 + phc1a
+```
+
+\paragraph{PRC}
+&nbsp;
+\vspace{1cm}
+```{r, Avg PRC + avg angular error, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+prc1 <- ggscatter(df, x = "t2hipp_vol_avg_prc", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged PRC Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg PRC + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+prc1a <- ggscatter(df, x = "t2hipp_vol_avg_prc", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged PRC Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+prc1 + prc1a
+```
+
+\newpage
+\paragraph{ERC}
+&nbsp;
+\vspace{1cm}
+```{r, Avg ERC + avg angular error, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+ERC1 <- ggscatter(df, x = "t2hipp_vol_avg_erc", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged ERC Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg ERC + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+ERC1a <- ggscatter(df, x = "t2hipp_vol_avg_erc", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged PRC Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+ERC1 + ERC1a
+```
+
+\paragraph{SUB}
+&nbsp;
+\vspace{1cm}
+```{r, Avg sub + avg angular error, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+sub1 <- ggscatter(df, x = "t2hipp_vol_avg_sub", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged sub Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg sub + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+sub1a <- ggscatter(df, x = "t2hipp_vol_avg_sub", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged sub Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+sub1 + sub1a
+```
+
+\newpage
+\subsubsection{rad3}
+
+```{r}
+```
+
+
