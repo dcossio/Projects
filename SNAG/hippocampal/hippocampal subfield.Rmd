@@ -1,0 +1,240 @@
+---
+title: "Hippocampal subfield"
+author: "Daniela Cossio"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+   pdf_document:
+    toc: true
+    toc_depth: 2
+---
+
+
+<!-- ```{css, echo=FALSE} -->
+<!-- TOC { -->
+<!--   color: #F6B2DB; -->
+<!--   font-family: Times; -->
+<!--   font-size: "16px";  -->
+<!--   border-color: #F6B2DB; -->
+<!-- } -->
+
+<!-- h1.title { -->
+<!--   color: black ; -->
+<!--   font-family: Times; -->
+<!--   font-size: "72px"; -->
+<!--   padding: "10px 0"; -->
+<!--   background-color: #F6B2DB ; -->
+<!--   text-align: center; -->
+<!-- } -->
+
+<!-- h4.date { -->
+<!--   color: black ; -->
+<!--   font-family: Times; -->
+<!--   font-size: "34px"; -->
+<!--   text-align: center; -->
+<!-- } -->
+
+<!-- h4.author { -->
+<!--   color: black; -->
+<!--   font-size: "34px"; -->
+<!--   font-family: Times; -->
+<!--   text-align: center; -->
+<!-- } -->
+
+
+<!-- h2, h3, h4, h5 ,h6 { -->
+<!--   text-align: center; -->
+<!--   font-family: Times; -->
+
+<!-- } -->
+
+<!-- body, p, h2{ -->
+<!--   color: black;  -->
+<!--   font-family: Times; -->
+<!-- } -->
+
+<!-- hr { -->
+<!--   height:5px; -->
+<!--   border-width:0; -->
+<!--   background-color: black ; -->
+<!-- } -->
+
+
+
+<!-- ``` -->
+
+<!-- ```{r set-options, echo=FALSE, cache=FALSE} -->
+<!-- options(width = 100) -->
+<!-- ``` -->
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+# library(dplyr)
+# library(tidyr)
+library(stringr)
+library(kableExtra)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+# library(car)
+library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(nationalparkcolors)
+library(gridExtra)
+library(markdown)
+```
+
+```{r reading in our CSVs,echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+working_dir <-
+  read.csv("/Users/danielacossio/Downloads/hippocampalsubs.csv")
+# Laptop path
+
+columns2grab <-
+  c(
+    "subject_id",
+    "sex",
+    "age_group",
+    "age_spatial_years",
+    "age_scan_years",
+    "loop_pe_rad1_m",
+    "loop_pe_rad2_m",
+    "loop_pe_rad3_m",
+    "loop_pe_avg_m",
+    "loop_de_rad1_degree",
+    "loop_de_rad2_degree",
+    "loop_de_rad3_degree",
+    "loop_de_avg_degree",
+    "loop_ae_rad1_degree",
+    "loop_ae_rad2_degree",
+    "loop_ae_rad3_degree",
+    "loop_ae_avg_degree",
+    "t2hipp_vol_avg_ca1",
+    "t2hipp_vol_avg_ca23",
+    "t2hipp_vol_avg_dg",
+    "t2hipp_vol_avg_erc",
+    "t2hipp_vol_avg_phc",
+    "t2hipp_vol_avg_prc",
+    "t2hipp_vol_avg_sub",
+    "t2hipp_vol_left_ca1",
+    "t2hipp_vol_left_ca23",
+    "t2hipp_vol_left_dg",
+    "t2hipp_vol_left_erc",
+    "t2hipp_vol_left_phc",
+    "t2hipp_vol_left_prc",
+    "t2hipp_vol_left_sub",
+    "t2hipp_vol_right_ca1",
+    "t2hipp_vol_right_ca23",
+    "t2hipp_vol_right_dg",
+    "t2hipp_vol_right_erc",
+    "t2hipp_vol_right_phc",
+    "t2hipp_vol_right_prc",
+    "t2hipp_vol_right_sub",
+    "estradiol_scan_pg_ml",
+    "progesterone_scan_ng_ml",
+    "fsh_scan_miu_ml",
+    "shbg_scan_nmol_l",
+    "dheas_scan_ug_dl",
+    "testosterone_scan_ng_dl",
+    "estradiol_spatial_pg_ml",
+    "progesterone_spatial_ng_ml",
+    "fsh_spatial_miu_ml",
+    "shbg_spatial_nmol_l",
+    "dheas_spatial_ug_dl",
+    "testosterone_spatial_ng_dl"
+  )
+
+df <- working_dir %>% select(columns2grab)
+df <- filter(df, df$subject_id != 0)
+
+ #Create T2 total hipp and MTL, averaged and L/R
+df <-
+  df %>%  mutate(
+    avg_total_hipp = t2hipp_vol_avg_ca1 + t2hipp_vol_avg_ca23 + t2hipp_vol_avg_dg + t2hipp_vol_avg_sub,
+    
+    left_total_hipp = t2hipp_vol_left_ca1 + t2hipp_vol_left_ca23 + t2hipp_vol_left_dg + t2hipp_vol_left_sub,
+    
+    right_total_hipp = t2hipp_vol_right_ca1 + t2hipp_vol_right_ca23 + t2hipp_vol_right_dg + t2hipp_vol_right_sub,
+    
+    avg_mtl = t2hipp_vol_avg_ca1 + t2hipp_vol_avg_ca23 + t2hipp_vol_avg_dg + t2hipp_vol_avg_sub + t2hipp_vol_avg_erc + t2hipp_vol_avg_phc + t2hipp_vol_avg_prc,
+    
+    left_mtl = t2hipp_vol_left_ca1 + t2hipp_vol_left_ca23 + t2hipp_vol_left_dg + t2hipp_vol_left_sub + t2hipp_vol_left_erc + t2hipp_vol_left_phc + t2hipp_vol_left_prc , #note that shuyings original code had left sub in this twice 
+    
+    right_mtl = t2hipp_vol_right_ca1 + t2hipp_vol_right_ca23 + t2hipp_vol_right_dg + t2hipp_vol_right_sub + t2hipp_vol_right_erc + t2hipp_vol_right_phc + t2hipp_vol_right_prc
+  )
+  
+```
+
+
+## Methods {.tabset .tabset-pills} 
+
+## Results {.tabset .tabset-pills} 
+
+### Angular error 
+
+#### Average
+
+```{r, Avg CA1 + avg angular error, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+c1 <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nAngular Error (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+
+```
+
+```{r, Avg CA1 + avg angular error split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+c1a <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_ae_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Averaged \nPosition Error (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+c1 + c1a
+```
+
+
+
+
+#### Rad 3
