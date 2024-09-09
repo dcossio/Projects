@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.6)  6 SEP 2024 13:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.6)  9 SEP 2024 11:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -589,7 +589,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-1-1.pdf, id=19, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 118.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 122.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 
 
@@ -597,12 +597,12 @@ Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-1
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-2-1.pdf, id=34, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 125.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 131.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-3-1.pdf, id=35, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 131.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 137.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 
 
@@ -610,12 +610,12 @@ Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-3
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-4-1.pdf, id=60, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-4-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-4-1.pdf  used on input line 138.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-4-1.pdf  used on input line 144.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-5-1.pdf, id=61, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-5-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-5-1.pdf  used on input line 144.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-5-1.pdf  used on input line 150.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 
 
@@ -623,36 +623,81 @@ Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-5
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-6-1.pdf, id=86, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 151.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 157.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 <hippocampal_subfield_files/figure-latex/unnamed-chunk-7-1.pdf, id=87, 722.7pt x 325.215pt>
 File: hippocampal_subfield_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type pdf)
 <use hippocampal_subfield_files/figure-latex/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 157.
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 163.
 (pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 
 
 [5 <./hippocampal_subfield_files/figure-latex/unnamed-chunk-6-1.pdf> <./hippocampal_subfield_files/figure-latex/unnamed-chunk-7-1.pdf>]
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-8-1.pdf, id=112, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-8-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 172.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
 
-[6] (./hippocampal_subfield.aux)
+
+[6 <./hippocampal_subfield_files/figure-latex/unnamed-chunk-8-1.pdf>]
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-9-1.pdf, id=127, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-9-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 179.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-10-1.pdf, id=128, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-10-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 185.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
+
+
+[7 <./hippocampal_subfield_files/figure-latex/unnamed-chunk-9-1.pdf> <./hippocampal_subfield_files/figure-latex/unnamed-chunk-10-1.pdf>]
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-11-1.pdf, id=155, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 192.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-12-1.pdf, id=156, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-12-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-12-1.pdf  used on input line 198.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
+
+
+[8 <./hippocampal_subfield_files/figure-latex/unnamed-chunk-11-1.pdf> <./hippocampal_subfield_files/figure-latex/unnamed-chunk-12-1.pdf>]
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-13-1.pdf, id=181, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-13-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-13-1.pdf  used on input line 205.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
+<hippocampal_subfield_files/figure-latex/unnamed-chunk-14-1.pdf, id=182, 722.7pt x 325.215pt>
+File: hippocampal_subfield_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
+<use hippocampal_subfield_files/figure-latex/unnamed-chunk-14-1.pdf>
+Package pdftex.def Info: hippocampal_subfield_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 211.
+(pdftex.def)             Requested size: 469.76045pt x 211.3922pt.
+
+
+[9 <./hippocampal_subfield_files/figure-latex/unnamed-chunk-13-1.pdf> <./hippocampal_subfield_files/figure-latex/unnamed-chunk-14-1.pdf>] (./hippocampal_subfield.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-08-16>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 13656 strings out of 475539
- 219238 string characters out of 5776666
+ 13710 strings out of 475539
+ 222824 string characters out of 5776666
  1930957 words of memory out of 5000000
- 36038 multiletter control sequences out of 15000+600000
+ 36089 multiletter control sequences out of 15000+600000
  609456 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,7n,93p,296b,438s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,7n,93p,367b,438s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/danielacossio/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/danielacossio/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/danielacossio/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/danielacossio/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/danielacossio/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb>
-Output written on hippocampal_subfield.pdf (6 pages, 216308 bytes).
+Output written on hippocampal_subfield.pdf (9 pages, 311978 bytes).
 PDF statistics:
- 160 PDF objects out of 1000 (max. 8388607)
- 126 compressed objects within 2 object streams
- 7 named destinations out of 1000 (max. 500000)
- 76 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 200 compressed objects within 2 object streams
+ 10 named destinations out of 1000 (max. 500000)
+ 111 words of extra memory for PDF output out of 10000 (max. 10000000)
 
