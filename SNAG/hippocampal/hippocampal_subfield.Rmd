@@ -170,7 +170,6 @@ df_m <- df %>% filter(df$sex=="Male")
 \vspace{1cm}
 \subsection{Angular Error}
 \vspace{1cm}
-\vspace{1cm}
 
 \subsubsection{Average}
 Total N= 27
@@ -541,7 +540,6 @@ library(patchwork)
 c1_rad3 + c1a_rad3
 ```
 
-\newpage
 \paragraph{CA2/3}
 &nbsp;
 \vspace{1cm}
@@ -583,7 +581,7 @@ library(patchwork)
 c23_rad3 + c23a_rad3
 ```
 
-
+\newpage
 \paragraph{DG}
 &nbsp;
 \vspace{1cm}
@@ -625,7 +623,7 @@ library(patchwork)
 dg1_rad3 + dg1a_rad3
 ```
 
-\newpage
+
 \paragraph{PHC}
 &nbsp;
 \vspace{1cm}
@@ -667,6 +665,7 @@ library(patchwork)
 phc1_rad3 + phc1a_rad3
 ```
 
+\newpage
 \paragraph{PRC}
 &nbsp;
 \vspace{1cm}
@@ -708,7 +707,7 @@ library(patchwork)
 prc1_rad3 + prc1a_rad3
 ```
 
-\newpage
+
 \paragraph{ERC}
 &nbsp;
 \vspace{1cm}
@@ -750,6 +749,7 @@ library(patchwork)
 ERC1_rad3 + ERC1a_rad3
 ```
 
+\newpage
 \paragraph{SUB}
 &nbsp;
 \vspace{1cm}
@@ -790,3 +790,231 @@ sub1a_rad3 <- ggscatter(df, x = "t2hipp_vol_avg_sub", y = "loop_ae_rad3_degree",
 library(patchwork)
 sub1_rad3 + sub1a_rad3
 ```
+
+
+\newpage
+
+\subsection{Degrees Traveled Error}
+\vspace{1cm}
+
+\subsubsection{Average}
+
+
+\paragraph{CA1}
+&nbsp;
+\vspace{1cm}
+```{r, Avg CA1 + AVG Degrees Traveled, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+DT_CA1 <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Avg \nDegrees Traveled (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg CA1 + AVG Degrees Traveled split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+DT_CA1a <- ggscatter(df, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA1 Subfield Volume", ylab = "Avg \nDegrees Traveled (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, fig.width=10, warning=FALSE,message=FALSE}
+library(patchwork)
+DT_CA1 + DT_CA1a
+```
+
+\paragraph{CA2/3}
+&nbsp;
+\vspace{1cm}
+```{r, Avg CA2 + AVG Degrees Traveled, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+DT_CA23 <- ggscatter(df, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA2 Subfield Volume", ylab = "Avg \nDegrees Traveled (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg CA2 + AVG Degrees Traveled split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+DT_CA23w <- ggscatter(df_w, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA2 Subfield Volume", ylab = "Avg \nDegrees Traveled (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+DT_CA23m <- ggscatter(df_m, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged CA2 Subfield Volume", ylab = "Avg \nDegrees Traveled (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+DT_CA23 + (DT_CA23w / DT_CA23m)
+```
+
+\paragraph{DG}
+&nbsp;
+\vspace{1cm}
+```{r, Avg DG + AVG Degrees Traveled, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+DT_DG <- ggscatter(df, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged DG Subfield Volume", ylab = "Avg \nDegrees Traveled (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg DG + AVG Degrees Traveled split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+DT_DGa <- ggscatter(df, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged DG Subfield Volume", ylab = "Avg \nDegrees Traveled (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+DT_DG + DT_DGa
+```
+
+\paragraph{ERC}
+&nbsp;
+\vspace{1cm}
+```{r, Avg ERC + AVG Degrees Traveled, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+DT_ERC <- ggscatter(df, x = "t2hipp_vol_avg_erc", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged ERC Subfield Volume", ylab = "Avg \nDegrees Traveled (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg ERC + AVG Degrees Traveled split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+DT_ERCa <- ggscatter(df, x = "t2hipp_vol_avg_erc", y = "loop_de_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged ERC Subfield Volume", ylab = "Avg \nDegrees Traveled (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+DT_ERC + DT_ERCa
+```
+
+\paragraph{PHC}
+&nbsp;
+\vspace{1cm}
+```{r, Avg PHC + AVG Degrees Traveled, echo=FALSE,message = FALSE,warning=FALSE, error=FALSE}
+
+DT_PHC <- ggscatter(df, x = "t2hipp_vol_avg_phc", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged PHC Subfield Volume", ylab = "Avg \nDegrees Traveled (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank())
+
+
+```
+
+```{r, Avg PHC + AVG Degrees Traveled split by sex, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+
+DT_PHCa <- ggscatter(df, x = "t2hipp_vol_avg_phc", y = "loop_de_avg_degree", color = "sex",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE,
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged PHC Subfield Volume", ylab = "Avg \nDegrees Traveled (m)") +
+    facet_wrap(. ~ sex, scale = "free", ncol = 1) +
+     theme_bw() +
+     theme(legend.position = "none")
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, warning=FALSE}
+library(patchwork)
+DT_PHC + DT_PHCa
+```
+
+\subsubsection{Rad3}
