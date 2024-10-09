@@ -59,6 +59,7 @@ library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
 library(patchwork)
+library(broom)
 ```
 
 ```{r reading in our CSVs,echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
@@ -153,6 +154,7 @@ df_w <- df %>% filter(df$sex=="Female")
 
 df_m <- df %>% filter(df$sex=="Male")
 
+colors <- c("#86b1fe","#27a797","#ffba42","#f04a7a","#ffb80e","#138976","#f07ba5")
 
 ```
 
@@ -222,16 +224,30 @@ c1 + c1a
 
 Running multiple linear regressions to see the effect of age and sex and then plotting results
 
+<!-- ```{r, Avg CA1 + avg angular error MLR, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE} -->
+
+<!-- avgCA1_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_ca1 + age_spatial_years + sex ,data= df ) -->
+
+<!-- summary(avgCA1_fit) -->
+
+<!-- avgCA1_plot <- ggPredict(avgCA1_fit,terms ="t2hipp_vol_avg_ca1", se=TRUE,interactive=FALSE) -->
+
+<!-- avgCA1_plot -->
+<!-- ``` -->
+
 ```{r, Avg CA1 + avg angular error MLR, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 
 avgCA1_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_ca1 + age_spatial_years + sex ,data= df )
 
-summary(avgCA1_fit)
 
-avgCA1_plot <- ggPredict(avgCA1_fit,terms ="t2hipp_vol_avg_ca1", se=TRUE,interactive=FALSE)
+avgCA1_plot <- ggplot(df,aes(y=loop_ae_avg_degree,x=t2hipp_vol_avg_ca1,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) + scale_colour_manual(values = c(colors[4],colors[5]))
+
 
 avgCA1_plot
+  
+                      
 ```
+
 
 
 
@@ -302,10 +318,17 @@ Running multiple linear regressions to see the effect of age and sex and then pl
 avgCA23_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_ca23 + age_spatial_years + sex ,data= df )
 
 summary(avgCA23_fit)
+# 
+# Using GGpredict 
+# avgCA23_plot <- ggPredict(avgCA23_fit,terms ="t2hipp_vol_avg_ca1", se=TRUE,interactive=FALSE)
+# 
 
-avgCA23_plot <- ggPredict(avgCA23_fit, se=TRUE,interactive=FALSE)
+
+avgCA23_plot <- ggplot(df,aes(y=loop_ae_avg_degree,x=t2hipp_vol_avg_ca23,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) + scale_colour_manual(values = c(colors[4],colors[5]))
 
 avgCA23_plot
+  
+
 ```
 
 
@@ -360,7 +383,9 @@ avgDG_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_dg + age_spatial_years + sex
 
 summary(avgDG_fit)
 
-avgDG_plot <- ggPredict(avgDG_fit,terms ="t2hipp_vol_avg_dg", se=TRUE,interactive=FALSE)
+# avgDG_plot <- ggPredict(avgDG_fit,terms ="t2hipp_vol_avg_dg", se=TRUE,interactive=FALSE)
+
+avgDG_plot <- ggplot(df,aes(y=loop_ae_avg_degree,x=t2hipp_vol_avg_dg,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "spearman", label.x.npc = 0.025, label.y.npc = 0.75) +scale_colour_manual(values = c(colors[4],colors[5]))
 
 avgDG_plot
 ```
@@ -417,7 +442,9 @@ avgPHC_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_phc + age_spatial_years + s
 
 summary(avgPHC_fit)
 
-avgPHC_plot <- ggPredict(avgPHC_fit,terms ="t2hipp_vol_avg_phc", se=TRUE,interactive=FALSE)
+# avgPHC_plot <- ggPredict(avgPHC_fit,terms ="t2hipp_vol_avg_phc", se=TRUE,interactive=FALSE)
+
+avgPHC_plot <- ggplot(df,aes(y=loop_ae_avg_degree,x=t2hipp_vol_avg_phc,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "pearson", label.x.npc = 0.025, label.y.npc = 0.75) +scale_colour_manual(values = c(colors[4],colors[5]))
 
 avgPHC_plot
 ```
@@ -475,9 +502,12 @@ avgPRC_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_prc + age_spatial_years + s
 
 summary(avgPRC_fit)
 
-avgPRC_plot <- ggPredict(avgPRC_fit,terms ="t2hipp_vol_avg_prc", se=TRUE,interactive=FALSE)
+# avgPRC_plot <- ggPredict(avgPRC_fit,terms ="t2hipp_vol_avg_prc", se=TRUE,interactive=FALSE)
+
+avgPRC_plot <- ggplot(df,aes(y=loop_ae_avg_degree,x=t2hipp_vol_avg_prc,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "pearson", label.x.npc = 0.025, label.y.npc = 0.75) +scale_colour_manual(values = c(colors[4],colors[5]))
 
 avgPRC_plot
+
 ```
 \vspace{1cm}
 
@@ -603,9 +633,12 @@ avgSUB_fit <- lm(loop_ae_avg_degree ~ t2hipp_vol_avg_sub + age_spatial_years + s
 
 summary(avgSUB_fit)
 
-avgSUB_plot <- ggPredict(avgSUB_fit,terms ="t2hipp_vol_avg_sub", se=TRUE,interactive=FALSE)
+# avgSUB_plot <- ggPredict(avgSUB_fit,terms ="t2hipp_vol_avg_sub", se=TRUE,interactive=FALSE)
+
+avgSUB_plot <-ggplot(df,aes(y=loop_ae_avg_degree,x=t2hipp_vol_avg_sub,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "pearson", label.x.npc = 0.025, label.y.npc = 0.75) +scale_colour_manual(values = c(colors[4],colors[5]))
 
 avgSUB_plot
+
 ```
 \vspace{1cm}
 
@@ -663,7 +696,9 @@ rad3CA1_fit <- lm(loop_ae_rad3_degree ~ t2hipp_vol_avg_ca1 + age_spatial_years +
 
 summary(rad3CA1_fit)
 
-rad3CA1_plot <- ggPredict(rad3CA1_fit,terms ="t2hipp_vol_avg_ca1", se=TRUE,interactive=FALSE)
+# rad3CA1_plot <- ggPredict(rad3CA1_fit,terms ="t2hipp_vol_avg_ca1", se=TRUE,interactive=FALSE)
+
+rad3CA1_plot <- ggplot(df,aes(y=loop_ae_rad3_degree,x=t2hipp_vol_avg_ca1,color=sex)) + theme_bw() + geom_point() + geom_smooth(method = "lm", aes(color = factor(sex))) + stat_cor(aes(color= sex),method = "pearson", label.x.npc = 0.025, label.y.npc = 0.75) +scale_colour_manual(values = c(colors[4],colors[5]))
 
 rad3CA1_plot
 ```
@@ -1079,7 +1114,7 @@ avgCA1_dt_fit <- lm(loop_de_avg_degree ~ t2hipp_vol_avg_ca1 + age_spatial_years 
 
 summary(avgCA1_dt_fit)
 
-avgCA1_dt_plot <- ggPredict(avgCA1_dt_fit,terms ="t2hipp_vol_avg_phc", se=TRUE,interactive=FALSE)
+avgCA1_dt_plot <- ggPredict(avgCA1_dt_fit,terms ="t2hipp_vol_avg_ca1", se=TRUE,interactive=FALSE)
 
 avgCA1_dt_plot
 ```
@@ -1138,6 +1173,23 @@ DT_CA23m <- ggscatter(df_m, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
 library(patchwork)
 DT_CA23 + (DT_CA23w / DT_CA23m)
 ```
+
+\vspace{1cm}
+
+Running multiple linear regressions to see the effect of age and sex and then plotting results
+
+```{r, Avg CA23 + AVG Degrees Traveled MLR, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+
+avgCA23_dt_fit <- lm(loop_de_avg_degree ~ t2hipp_vol_avg_ca23 + age_spatial_years + sex ,data= df )
+
+summary(avgCA23_dt_fit)
+
+avgCA23_dt_plot <- ggPredict(avgCA23_dt_fit,terms ="t2hipp_vol_avg_ca23", se=TRUE,interactive=FALSE)
+
+avgCA23_dt_plot
+```
+\vspace{1cm}
+
 
 \paragraph{DG}
 &nbsp;
