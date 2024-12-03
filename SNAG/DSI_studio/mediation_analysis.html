@@ -14043,6 +14043,134 @@ NA
 </table>
 </div>
 </div>
+<div id="methods-and-approach" class="section level1">
+<h1>Methods and approach</h1>
+</div>
+<div id="thought-process" class="section level1">
+<h1>Thought process</h1>
+<p>I am doing a mediation analysis to understand the relation ship between white matter, hormones, and performance on the dual solution paradigm.</p>
+<p>From shuying’s data, DSP is associated with estradial. Increased solution index is associated with increased solution index.</p>
+<p>MD is negatively associated with Solution Index such that increased MD in the fornix is associated with less shortcuts. Essentially lower white matter integrity in fornix is associated with lower performance.</p>
+<p>Hypothesis for mediation is that greater estradiol is driving the relationship in which greater integrity in the fornix for greater solution index.</p>
+<p>X= Mean diffusivity in fornix<br />
+Y= greater SI on DSP task<br />
+M= Estradiol</p>
+<div id="data-cleaning-and-organizing" class="section level2">
+<h2>Data Cleaning and organizing</h2>
+<div id="step-1-read-in-the-raw-data" class="section level3">
+<h3>Step 1: read in the raw data</h3>
+<pre class="r"><code># This is a data frame which cotains a folder for each subject with 2 text files 
+path2data &lt;- (&quot;/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103&quot;)
+
+# List of all subject directories
+subfiles &lt;- list.dirs(&quot;/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103&quot;, full.names = FALSE,recursive = FALSE)
+
+# create an empty dataframe to loop into
+fornix_output_df &lt;-  data.frame(matrix(ncol = 5, nrow = 0)) %&gt;% `colnames&lt;-`(c(&quot;subjects&quot;,&quot;QA_L_fornix&quot;,&quot;QA_R_fornix&quot;,&quot;MD_L_fornix&quot;,&quot;MD_R_fornix&quot;))
+
+# creating a loop to go into each sub dir. read in each txt file and extract the 
+for(file in 1:length((subfiles))){
+
+  
+  # creating an empty single row dataframe
+  empty_loop_df &lt;- data.frame(matrix(ncol = 5, nrow = 1))  %&gt;% `colnames&lt;-`(c(&quot;subjects&quot;,&quot;QA_L_fornix&quot;,&quot;QA_R_fornix&quot;,&quot;MD_L_fornix&quot;,&quot;MD_R_fornix&quot;))
+  
+  # inputting the subject id
+  empty_loop_df$subjects &lt;- str_remove(subfiles[file],&quot;sub-&quot;)
+  
+  
+  # Let&#39;s do a quick folder check to make sure it&#39;s not empty 
+  
+  
+  if(file.size(paste0(path2data,&quot;/&quot;,subfiles[file])) &lt; 128) next
+  
+  #grabbing all the left and right variables 
+  L_fornix &lt;- read_delim(paste0(path2data,&quot;/&quot;,subfiles[file],&quot;/&quot;,subfiles[file],&quot;_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt&quot;),col_names = FALSE) %&gt;% filter(X1 %in% c(&quot;qa&quot;,&quot;md&quot;))
+  
+  R_fornix &lt;- read_delim(paste0(path2data,&quot;/&quot;,subfiles[file],&quot;/&quot;,subfiles[file],&quot;_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt&quot;),col_names = FALSE) %&gt;% filter(X1 %in% c(&quot;qa&quot;,&quot;md&quot;))
+  
+  # Putting them into out dataframe
+  #Grab all QA values
+  empty_loop_df$QA_L_fornix &lt;- L_fornix$X2[1] # row 1 is QA
+  empty_loop_df$QA_R_fornix &lt;- R_fornix$X2[1]
+    
+    
+  empty_loop_df$MD_L_fornix &lt;- L_fornix$X2[2] # row 2 is MD
+  empty_loop_df$MD_R_fornix &lt;- R_fornix$X2[2]
+  
+  fornix_output_df &lt;- rbind(fornix_output_df,empty_loop_df)
+}
+
+
+# now we have to grab the information from sub info and combine
+
+altered_sub_info &lt;- sub_info %&gt;% filter(subject_id %in% c(fornix_output_df$subjects))
+
+fornix_output_df &lt;- fornix_output_df %&gt;%  filter(subjects %in% c(altered_sub_info$subject_id))
+
+clean_DF &lt;- cbind(altered_sub_info,fornix_output_df)
+
+clean_DF$QA_Whole_Fornix &lt;- rowMeans(clean_DF[,c(&quot;QA_L_fornix&quot;,&quot;QA_R_fornix&quot;)])
+
+clean_DF$MD_Whole_Fornix &lt;- rowMeans(clean_DF[,c(&quot;MD_L_fornix&quot;,&quot;MD_R_fornix&quot;)])</code></pre>
+<p>Step 2:Prepare the mediation by grabbing our final df. Removing any rows that are NA</p>
+<pre class="r"><code>mediation_estradiol_DF &lt;- clean_DF %&gt;% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %&gt;% filter(!is.na(dsp_si_true_pct )) %&gt;% filter(!is.na(estradiol_scan_pg_ml)) %&gt;% filter(sex.1 == 0)</code></pre>
+<pre class="r"><code>mediation_test_DF &lt;- clean_DF %&gt;% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %&gt;% filter(!is.na(dsp_si_true_pct )) %&gt;% filter(!is.na(testosterone_scan_ng_dl)) %&gt;% filter(sex.1 == 0)</code></pre>
+<pre class="r"><code>mediation_FSH_DF &lt;- clean_DF %&gt;% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %&gt;% filter(!is.na(dsp_si_true_pct )) %&gt;% filter(!is.na(fsh_scan_miu_ml)) %&gt;% filter(sex.1 == 0)</code></pre>
+</div>
+</div>
+<div id="mediation" class="section level2">
+<h2>Mediation</h2>
+</div>
+<div id="estradiol" class="section level2">
+<h2>Estradiol</h2>
+<p>Step 1 of mediation is to complete the first correlation in which X= L_fornix and Y = DSP</p>
+<pre class="r"><code>model.1 &lt;- lm(MD_Whole_Fornix ~ dsp_si_true_pct, mediation_estradiol_DF)
+summary(model.1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = MD_Whole_Fornix ~ dsp_si_true_pct, data = mediation_estradiol_DF)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.254021 -0.055193  0.003953  0.071455  0.185933 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      1.14566    0.02901  39.487   &lt;2e-16 ***
+## dsp_si_true_pct -0.21001    0.09770  -2.149    0.038 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.09819 on 38 degrees of freedom
+## Multiple R-squared:  0.1084, Adjusted R-squared:  0.08493 
+## F-statistic:  4.62 on 1 and 38 DF,  p-value: 0.03803</code></pre>
+<p>Step 2 of mediation is to complete the next correlation in which X= hormones and Y = DSP</p>
+<pre class="r"><code>model.2 &lt;- lm(estradiol_scan_pg_ml ~ dsp_si_true_pct, mediation_estradiol_DF)
+summary(model.2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = estradiol_scan_pg_ml ~ dsp_si_true_pct, data = mediation_estradiol_DF)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -92.27 -50.89 -29.71  29.57 246.74 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)        27.09      22.45   1.206   0.2352  
+## dsp_si_true_pct   142.36      75.61   1.883   0.0674 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 75.99 on 38 degrees of freedom
+## Multiple R-squared:  0.08532,    Adjusted R-squared:  0.06125 
+## F-statistic: 3.545 on 1 and 38 DF,  p-value: 0.06741</code></pre>
+</div>
+</div>
+<div id="summarized-results" class="section level1">
+<h1>Summarized Results</h1>
+</div>
 
 
 

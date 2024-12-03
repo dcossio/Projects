@@ -347,6 +347,31 @@ Let's double check for any sex differences in midlife adults here.
 
 No sex differences for PE, or AE. Sex differences for degrees traveled with men undershooting and women overshooting. 
 
+```{r, echo=FALSE,message=FALSE}
+
+# Let's just scatter plot performance
+
+# pdf(file = paste0("/Users/danielacossio/Downloads/","sex_diff_CSTr_QA_PE.pdf"),width=12, height=8)
+ ggplot(sub_info, aes(x=sex,y=loop_ae_avg_degree)) +
+   geom_boxplot() 
+  
+pdf(file = paste0("/Users/danielacossio/Downloads/","loop_DE_behavior.pdf"),width=12, height=8)
+ ggplot(sub_info, aes(x=sex,y=loop_de_avg_degree, fill=factor(sex))) +
+   geom_boxplot() +geom_point(size=4, color = "black") +    labs(x ="sex", y = "Degrees Traveled") + scale_fill_manual(values = c("#E2929D","#502E23"))
+ dev.off()
+ 
+ pdf(file = paste0("/Users/danielacossio/Downloads/","loop_AE_behavior_rank.pdf"),width=12, height=8)
+ test <- sub_info$loop_ae_avg_degree %>% sort() %>% as.data.frame() %>% mutate(rank=1:42)
+ ggplot(test, aes(x=rank,y=.)) + geom_point(size=4, color = "black")
+ dev.off()
+ 
+  
+ pdf(file = paste0("/Users/danielacossio/Downloads/","loop_DE_behavior_rank.pdf"),width=12, height=8)
+ test <- sub_info$loop_de_avg_degree %>% sort() %>% as.data.frame() %>% mutate(rank=1:42)
+ ggplot(test, aes(x=rank,y=.)) + geom_point(size=4, color = "black")
+ dev.off()
+```
+
 ```{r, echo=FALSE, results='hide',message=FALSE}
 
 # creating our separated databases
@@ -421,6 +446,8 @@ t.test(m_subinfo$loop_pe_rad3_m,f_subinfo$loop_pe_rad3_m) %>% broom::tidy() %>% 
 #### Angular Error
 
 Both Avg and Rad3 are normally distributed  
+
+
 
 **Avg**
 ```{r, echo=FALSE,message=FALSE}
@@ -634,7 +661,7 @@ pdf(file = paste0("/Users/danielacossio/Downloads/","CSTr_QA_PE.pdf"),width=12, 
    dev.off()
    
    
-   
+
 # Let's do one with the sex differences
    
    pdf(file = paste0("/Users/danielacossio/Downloads/","sex_diff_CSTr_QA_PE.pdf"),width=12, height=8)

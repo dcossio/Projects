@@ -249,6 +249,19 @@ This is the analysis of white matter dsi studio connectometry for DSP
 
 <hr>
 
+
+```{r}
+pdf(file = paste0("/Users/danielacossio/Downloads/","maze_acc.pdf"),width=12, height=8)
+ ggplot(sub_info, aes(x=sex,y=dsp_si_true_pct, fill=factor(sex))) +
+   geom_boxplot() +geom_point(size=4, color = "black") +    labs(x ="sex", y = "solution index") + scale_fill_manual(values = c("#E2929D","#502E23"))
+ dev.off()
+ 
+ test <- sub_info$dsp_si_true_pct %>% sort() %>% as.data.frame() %>% mutate(rank=1:72)
+ ggplot(test, aes(x=rank,y=.)) + geom_point(size=4, color = "black")
+ 
+ 
+```
+
 <br><br><br><br><br>
 
 # **Solution index results**  
