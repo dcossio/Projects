@@ -187,13 +187,15 @@ working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_re
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
+All_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one useable behavior task (Loop, maze, dsp)
+
+DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv") %>% filter(!is.na(subject_id)) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
 ```
 
 Complete Subject Database
 
 ```{r}
-TableOutput(sub_info)
+TableOutput(All_sub_info)
 
 ```
 
@@ -225,7 +227,7 @@ M= Estradiol
 path2data <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103")
 
 # List of all subject directories
-subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103", full.names = FALSE,recursive = FALSE)
+subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103", full.names = FALSE,recursive = FALSE) # all of the data extracted from dsi 
 
 # create an empty dataframe to loop into
 fornix_output_df <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c("subjects","QA_L_fornix","QA_R_fornix","MD_L_fornix","MD_R_fornix"))
@@ -264,11 +266,12 @@ for(file in 1:length((subfiles))){
 }
 
 
-# now we have to grab the information from sub info and combine
+# now we have to grab the information from sub info and combine but we need to make sure we're grabbing all the correct subjects from each dataframe
 
-altered_sub_info <- sub_info %>% filter(subject_id %in% c(fornix_output_df$subjects))
+altered_sub_info <- DSP_DSI_DF %>% filter(subject_id %in% c(fornix_output_df$subjects)) 
 
-fornix_output_df <- fornix_output_df %>%  filter(subjects %in% c(altered_sub_info$subject_id))
+fornix_output_df <- fornix_output_df %>%  filter(subjects %in% c(DSP_DSI_DF$subject_id))
+
 
 clean_DF <- cbind(altered_sub_info,fornix_output_df)
 
@@ -278,7 +281,119 @@ clean_DF$MD_Whole_Fornix <- rowMeans(clean_DF[,c("MD_L_fornix","MD_R_fornix")])
 ```
 
 
-Step 2:Prepare the mediation by grabbing our final df. Removing any rows that are NA 
+Step 2: Normality check and visualization of data
+
+
+WE can see that the DSP values are not normally distributed when looking at all the subject and when looking at just women only.
+```{r}
+#check visualization and normality of all dsp data not just the scans ones
+
+data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") # dataframe with all subjects that have useable DSP
+
+f_data_dsp <- data_dsp %>% filter(sex == "Female") # Women only
+  
+m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
+  
+ggplot(data_dsp, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(data_dsp$dsp_si_true_pct)
+
+
+ggplot(f_data_dsp, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(f_data_dsp$dsp_si_true_pct)
+
+
+ggplot(m_data_dsp, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(m_data_dsp$dsp_si_true_pct)
+
+
+shapiro.test(f_data_dsp$estradiol_scan_pg_ml)
+shapiro.test(f_data_dsp$fsh_spatial_miu_ml)
+
+
+
+```
+
+```{r}
+
+ggplot(f_data_dsp, aes(x=log(f_data_dsp$dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+shapiro.test(log(f_data_dsp$dsp_si_true_pct))
+
+ggplot(f_data_dsp, aes(x=sqrt(f_data_dsp$dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+shapiro.test(sqrt(f_data_dsp$dsp_si_true_pct))
+
+
+
+ggplot(f_data_dsp, aes(x=log(f_data_dsp$estradiol_scan_pg_ml))) +
+   geom_freqpoly(width = 0.1)
+shapiro.test(log(f_data_dsp$estradiol_scan_pg_ml))
+
+ggplot(f_data_dsp, aes(x=sqrt(f_data_dsp$estradiol_scan_pg_ml))) +
+   geom_freqpoly(width = 0.1)
+shapiro.test(sqrt(f_data_dsp$estradiol_scan_pg_ml))
+
+
+
+shapiro.test(log(f_data_dsp$fsh_spatial_miu_ml))
+
+
+shapiro.test(sqrt(f_data_dsp$fsh_spatial_miu_ml))
+
+
+```
+
+
+
+
+```{r}
+all_women_df <- sub_info %>% filter(sex.1==0)
+
+ggplot(all_women_df, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+
+shapiro.test(all_women_df$dsp_si_true_pct)
+
+
+
+# Let's try a transformation
+
+
+
+```
+
+```{r}
+
+all_women_clean_df <- clean_DF %>% filter(sex.1==0)
+
+ggplot(all_women_clean_df, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+
+shapiro.test(all_women_clean_df$dsp_si_true_pct)
+
+```
+
+step 2.5: Can we replicate shuyings findings?
+
+```{r}
+
+cor.test(all_women_df$estradiol_scan_pg_ml,
+         all_women_df$dsp_si_true_pct,
+         conf.level = 0.95,
+         method = "spearman")
+```
+
+```{r}
+hist(log(all_women_df$dsp_si_true_pct))
+
+shapiro.test(sqrt(all_women_df$dsp_si_true_pct))
+```
+
+
+Step 3: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
 
 ```{r}
 mediation_estradiol_DF <- clean_DF %>% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(estradiol_scan_pg_ml)) %>% filter(sex.1 == 0)
