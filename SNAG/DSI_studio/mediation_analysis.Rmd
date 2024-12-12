@@ -48,6 +48,7 @@ library(moonBook)
 library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
+library(psych)
 ```
 
 
@@ -187,7 +188,7 @@ working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_re
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-All_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one useable behavior task (Loop, maze, dsp)
+All_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp)
 
 DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv") %>% filter(!is.na(subject_id)) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
 ```
@@ -285,18 +286,30 @@ Step 2: Normality check and visualization of data
 
 
 WE can see that the DSP values are not normally distributed when looking at all the subject and when looking at just women only.
+
+Here I am plotting the data for all dsp. There are a total of 74 
+
+```{r}
+data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
+
+ggplot(data_dsp, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(data_dsp$dsp_si_true_pct)
+
+
+TableOutput(describe(data_dsp))
+```
+
 ```{r}
 #check visualization and normality of all dsp data not just the scans ones
 
-data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") # dataframe with all subjects that have useable DSP
+data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") 
 
 f_data_dsp <- data_dsp %>% filter(sex == "Female") # Women only
   
 m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
   
-ggplot(data_dsp, aes(x=dsp_si_true_pct)) +
-   geom_bar(width = 0.1)
-shapiro.test(data_dsp$dsp_si_true_pct)
+
 
 
 ggplot(f_data_dsp, aes(x=dsp_si_true_pct)) +
