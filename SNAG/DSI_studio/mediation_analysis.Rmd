@@ -267,7 +267,7 @@ for(file in 1:length((subfiles))){
 }
 
 
-# now we have to grab the information from sub info and combine but we need to make sure we're grabbing all the correct subjects from each dataframe
+# now we have to grab the information from sub info and combine but we need to make sure we're grabbing all the correct subjects from each dataframe. Something to note is that this final fornix data frame is based off of scans and includes some people who do not have a DSP score
 
 altered_sub_info <- DSP_DSI_DF %>% filter(subject_id %in% c(fornix_output_df$subjects)) 
 
@@ -282,13 +282,15 @@ clean_DF$MD_Whole_Fornix <- rowMeans(clean_DF[,c("MD_L_fornix","MD_R_fornix")])
 ```
 
 
-Step 2: Normality check and visualization of data
+### Step 2: Normality check and visualization of data {.tabset}
 
+#### Using ALl DSP subjects {.tabset}
+
+##### DSP
 
 WE can see that the DSP values are not normally distributed when looking at all the subject and when looking at just women only.
 
-Here I am plotting the data for all dsp. There are a total of 74 
-
+Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76 subjects and idk where the discrepancy is coming from. You can see there is a right hand skew on this data and it does not pass normality test (p-value = 9.242e-05)
 ```{r}
 data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
 
@@ -300,87 +302,187 @@ shapiro.test(data_dsp$dsp_si_true_pct)
 TableOutput(describe(data_dsp))
 ```
 
+
+<br>
+
+Now here i want to look at the skews for males and females separately. There's a bit of a skew and it does not pass normality (p-value = 0.001114)
+
 ```{r}
-#check visualization and normality of all dsp data not just the scans ones
-
-data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") 
-
 f_data_dsp <- data_dsp %>% filter(sex == "Female") # Women only
-  
-m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
-  
-
-
 
 ggplot(f_data_dsp, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(f_data_dsp$dsp_si_true_pct)
 
+```
+
+
+Now let's look at males. Here there is a bit of a skew and it failes normality (p-value = 0.02375)
+
+```{r}
+#check visualization and normality of all dsp data not just the scans ones
+  
+m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
+  
 
 ggplot(m_data_dsp, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(m_data_dsp$dsp_si_true_pct)
 
+```
 
-shapiro.test(f_data_dsp$estradiol_scan_pg_ml)
-shapiro.test(f_data_dsp$fsh_spatial_miu_ml)
 
+So can we then try and normalize the data?
+
+Here let's normaliza using log transform. Log transform does change the skew but also some numbers (0) are now labeled as inf. Meaning we should do something to make those turn into an acutal number  perhaps 0.0001?
+
+```{r}
+
+ggplot(data_dsp, aes(x=log(dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+
+#I think things need to be changed from 0 to 0. 001
+shapiro.test(log(data_dsp$dsp_si_true_pct)) # this comes out as Na but shuyings did not so idk why that's happening.
 
 
 ```
 
+
+LEt's try a square root transform 
+
+The square root transform normalizes it a bit more but it still failed normality test. 
 ```{r}
 
-ggplot(f_data_dsp, aes(x=log(f_data_dsp$dsp_si_true_pct))) +
+ggplot(data_dsp, aes(x=sqrt(dsp_si_true_pct))) +
    geom_bar(width = 0.1)
-shapiro.test(log(f_data_dsp$dsp_si_true_pct))
 
-ggplot(f_data_dsp, aes(x=sqrt(f_data_dsp$dsp_si_true_pct))) +
+shapiro.test(sqrt(data_dsp$dsp_si_true_pct)) # 
+
+```
+
+
+LEt's look at a transformation of all womens data
+
+log transform: again NA for normality test but does appear to fix it a bit
+```{r}
+
+ggplot(f_data_dsp, aes(x=log(dsp_si_true_pct))) +
    geom_bar(width = 0.1)
-shapiro.test(sqrt(f_data_dsp$dsp_si_true_pct))
+
+#I think things need to be changed from 0 to 0. 001
+shapiro.test(log(f_data_dsp$dsp_si_true_pct)) # this comes out as Na but shuyings did not so idk why that's happening.
 
 
+```
 
-ggplot(f_data_dsp, aes(x=log(f_data_dsp$estradiol_scan_pg_ml))) +
-   geom_freqpoly(width = 0.1)
-shapiro.test(log(f_data_dsp$estradiol_scan_pg_ml))
+Square Transform: again still skewefd and fails normality. 
 
-ggplot(f_data_dsp, aes(x=sqrt(f_data_dsp$estradiol_scan_pg_ml))) +
-   geom_freqpoly(width = 0.1)
-shapiro.test(sqrt(f_data_dsp$estradiol_scan_pg_ml))
+```{r}
 
+ggplot(f_data_dsp, aes(x=sqrt(dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
 
 
+shapiro.test(sqrt(f_data_dsp$dsp_si_true_pct)) #
+
+
+```
+
+
+##### Estradiol 
+
+Here let's look at estradial skews for all women who have a dsp score. It does not pass normality 4.352e-07
+```{r}
+
+ggplot(f_data_dsp, aes(x=estradiol_spatial_pg_ml)) +
+   geom_bar(width = 10)
+shapiro.test(f_data_dsp$estradiol_spatial_pg_ml)
+
+
+```
+
+Can we tranform Estradial . This still fails normality but just barely p-value = 0.03153
+```{r}
+
+ggplot(f_data_dsp, aes(x=log(estradiol_spatial_pg_ml))) +
+   geom_freqpoly(width = 10)
+shapiro.test(log(f_data_dsp$estradiol_spatial_pg_ml))
+
+
+```
+
+Square root?This still fails normality but just barely p-value = 0.002019
+```{r}
+
+ggplot(f_data_dsp, aes(x=sqrt(estradiol_spatial_pg_ml))) +
+   geom_freqpoly(width = 10)
+shapiro.test(sqrt(f_data_dsp$estradiol_spatial_pg_ml))
+
+
+```
+
+<br>
+
+##### FSH 
+
+FSh also has a skew and fails normality p-value = 0.0008676
+
+```{r}
+
+ggplot(f_data_dsp, aes(x=fsh_spatial_miu_ml)) +
+   geom_bar(width = 10)
+shapiro.test(f_data_dsp$fsh_spatial_miu_ml)
+
+
+```
+<br> 
+
+Can we tranform FSH . This still fails normality p-value = 0.0008156
+```{r}
+
+ggplot(f_data_dsp, aes(x=log(fsh_spatial_miu_ml))) +
+   geom_freqpoly(width = 10)
 shapiro.test(log(f_data_dsp$fsh_spatial_miu_ml))
 
 
+```
+
+Square root?This still fails normality p-value = 0.003438.
+```{r}
+
+ggplot(f_data_dsp, aes(x=sqrt(fsh_spatial_miu_ml))) +
+   geom_freqpoly(width = 10)
 shapiro.test(sqrt(f_data_dsp$fsh_spatial_miu_ml))
 
 
 ```
 
 
+No good way to normalize this data so far
 
+<br>
+<br>
+
+#### Using ALl subjcts with DSP and a fornix score  {.tabset .tabset-pills}
+
+So just like above, this data set is also right skewed and fails normality 0.005673
 
 ```{r}
-all_women_df <- sub_info %>% filter(sex.1==0)
 
-ggplot(all_women_df, aes(x=dsp_si_true_pct)) +
+ggplot(clean_DF, aes(x=clean_DF$dsp_si_true_pct)) +
    geom_bar(width = 0.1)
-
-shapiro.test(all_women_df$dsp_si_true_pct)
-
-
-
-# Let's try a transformation
+shapiro.test(clean_DF$dsp_si_true_pct)
 
 
 
 ```
 
+<br>
+
+Again, for women there is a skew but barely fails normality p=0.02
 ```{r}
 
-all_women_clean_df <- clean_DF %>% filter(sex.1==0)
+all_women_clean_df <- clean_DF %>% filter(sex=="Female")
 
 ggplot(all_women_clean_df, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
@@ -389,35 +491,77 @@ shapiro.test(all_women_clean_df$dsp_si_true_pct)
 
 ```
 
-step 2.5: Can we replicate shuyings findings?
+So let's try transforming this
+
+Log transform all subjects. This visually looks much less skewed but also has some infinate numbers so we can check normality. Might need to change the inf to 0?
+```{r}
+
+ggplot(clean_DF, aes(x=log(clean_DF$dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+shapiro.test(log(clean_DF$dsp_si_true_pct))
+
+```
+
+Just to check, sqrt. Fails normality because of the 0s P = 0.001583
 
 ```{r}
 
-cor.test(all_women_df$estradiol_scan_pg_ml,
-         all_women_df$dsp_si_true_pct,
+ggplot(clean_DF, aes(x=sqrt(clean_DF$dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+shapiro.test(sqrt(clean_DF$dsp_si_true_pct))
+
+```
+
+
+LEt's look at the females
+
+Log transform all subjects. This visually looks much less skewed but also has some infinate numbers so we can check normality. Might need to change the inf to 0?
+```{r}
+
+ggplot(all_women_clean_df, aes(x=log(all_women_clean_df$dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+shapiro.test(log(all_women_clean_df$dsp_si_true_pct))
+
+```
+
+Just to check, sqrt. Fails normality because of the 0s P = 0.002123
+
+```{r}
+
+ggplot(all_women_clean_df, aes(x=sqrt(all_women_clean_df$dsp_si_true_pct))) +
+   geom_bar(width = 0.1)
+shapiro.test(sqrt(all_women_clean_df$dsp_si_true_pct))
+
+```
+
+### step 2.5: Can we replicate shuyings findings?
+
+Shuying had: 
+We have p=0.014
+
+```{r}
+
+cor.test(all_women_clean_df$estradiol_scan_pg_ml,
+         all_women_clean_df$dsp_si_true_pct,
          conf.level = 0.95,
          method = "spearman")
 ```
 
-```{r}
-hist(log(all_women_df$dsp_si_true_pct))
-
-shapiro.test(sqrt(all_women_df$dsp_si_true_pct))
-```
 
 
-Step 3: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
+### Step 3: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
 
 ```{r}
-mediation_estradiol_DF <- clean_DF %>% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(estradiol_scan_pg_ml)) %>% filter(sex.1 == 0)
+mediation_estradiol_DF <- clean_DF %>% select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(estradiol_scan_pg_ml)) %>% filter(sex== "Female")
 ```
 
 ```{r}
-mediation_test_DF <- clean_DF %>% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(testosterone_scan_ng_dl)) %>% filter(sex.1 == 0)
+mediation_test_DF <- clean_DF %>% select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(testosterone_scan_ng_dl)) %>% filter(sex== "Female")
+
 ```
 
 ```{r}
-mediation_FSH_DF <- clean_DF %>% select(subject_id,sex.1,age_spatial_years,REPO,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(fsh_scan_miu_ml)) %>% filter(sex.1 == 0)
+mediation_FSH_DF <- clean_DF %>% select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(fsh_scan_miu_ml)) %>% filter(sex== "Female")
 ```
 
 
