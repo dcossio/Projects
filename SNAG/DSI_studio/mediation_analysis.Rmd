@@ -49,6 +49,9 @@ library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
 library(psych)
+library(ppcor)
+library(mediation)
+
 ```
 
 
@@ -181,7 +184,7 @@ TableOutput <- function(df){
 
 ```
 
-# Reading in and prepping our data 
+# Reading in and prepping our data {.tabset .tabset-fade}
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/DSP/"
@@ -193,6 +196,18 @@ All_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/S
 DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv") %>% filter(!is.na(subject_id)) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
 ```
 
+Here we are reading in the following folders and paths
+
+- Path to the main dir with all the data "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/DSP/"
+<br>
+
+- Path to the subject sheet that contains every single subject who has useable behavior. "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv"
+<br>
+
+- Path to the subject sheet that hasthe list of subjects that have both a DSP score AND a DSI scan.
+
+<br>
+
 Complete Subject Database
 
 ```{r}
@@ -200,10 +215,14 @@ TableOutput(All_sub_info)
 
 ```
 
+<br>
+<hr>
+<br>
 
-# Methods and approach
 
-# Thought process
+# Methods and approach {.tabset .tabset-fade}
+
+## Thought process
 I am doing a mediation analysis to understand the relation ship between white matter, hormones, and performance on the dual solution paradigm.
 
 From shuying's data, DSP is associated with estradial. Increased solution index is associated with increased solution index.
@@ -216,11 +235,41 @@ Hypothesis for mediation is that greater estradiol is driving the relationship i
 X= Mean diffusivity in fornix  
 Y= greater SI on DSP task  
 M= Estradiol  
+<br>
+<hr>
+<br>
 
+## Subject Numbers for DSP analyses
+
+Shuyings numbers are as follows:  
+Women: 47  
+MEn:29  
+Total:76
+
+Daniela's
+
+Women: 47   
+Men: 27  
+Total: 74  
+
+These are the subject I excluded but she included:  
+352  
+372  
+388  
+
+These were excluded later from hippocampal analyses so i just exlcuded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
+
+
+
+<br>
+<hr>
+<br>
 
 ## Data Cleaning and organizing
 
-### Step 1: read in the raw data
+### Step 1: Read in the raw data
+
+This is going through and reading in the output from dsi studio and then combining it into one dataframe and then combining that with our data frame that contains our subject data. 
 
 ```{r,message=FALSE}
 
@@ -281,16 +330,16 @@ clean_DF$QA_Whole_Fornix <- rowMeans(clean_DF[,c("QA_L_fornix","QA_R_fornix")])
 clean_DF$MD_Whole_Fornix <- rowMeans(clean_DF[,c("MD_L_fornix","MD_R_fornix")])
 ```
 
+<br>
+<hr>
+<br>
 
-### Step 2: Normality check and visualization of data {.tabset}
+### Step 2: Normality check and visualization of data {.tabset .tabset-fade}
 
-#### Using ALl DSP subjects {.tabset}
+#### DSP distribution & Normality (behav only) {.tabset}
 
-##### DSP
+Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76 subjects and i noted the discrpenacy above. You can see there is a right hand skew on this data and it does not pass normality test (p-value = 9.242e-05)
 
-WE can see that the DSP values are not normally distributed when looking at all the subject and when looking at just women only.
-
-Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76 subjects and idk where the discrepancy is coming from. You can see there is a right hand skew on this data and it does not pass normality test (p-value = 9.242e-05)
 ```{r}
 data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
 
@@ -298,43 +347,22 @@ ggplot(data_dsp, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(data_dsp$dsp_si_true_pct)
 
+```
+
+<br>
+<br>
+
+The table below summarizes all of the columns. Each row indicates a column location.
+```{r}
 
 TableOutput(describe(data_dsp))
 ```
 
-
 <br>
-
-Now here i want to look at the skews for males and females separately. There's a bit of a skew and it does not pass normality (p-value = 0.001114)
-
-```{r}
-f_data_dsp <- data_dsp %>% filter(sex == "Female") # Women only
-
-ggplot(f_data_dsp, aes(x=dsp_si_true_pct)) +
-   geom_bar(width = 0.1)
-shapiro.test(f_data_dsp$dsp_si_true_pct)
-
-```
-
-
-Now let's look at males. Here there is a bit of a skew and it failes normality (p-value = 0.02375)
-
-```{r}
-#check visualization and normality of all dsp data not just the scans ones
-  
-m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
-  
-
-ggplot(m_data_dsp, aes(x=dsp_si_true_pct)) +
-   geom_bar(width = 0.1)
-shapiro.test(m_data_dsp$dsp_si_true_pct)
-
-```
-
-
+<br>
 So can we then try and normalize the data?
 
-Here let's normaliza using log transform. Log transform does change the skew but also some numbers (0) are now labeled as inf. Meaning we should do something to make those turn into an acutal number  perhaps 0.0001?
+Here let's normalize using log transform. Log transform does change the skew but also some numbers (0) are now labeled as inf. Meaning we should do something to make those turn into an acutal number  perhaps 0.0001?
 
 ```{r}
 
@@ -348,6 +376,8 @@ shapiro.test(log(data_dsp$dsp_si_true_pct)) # this comes out as Na but shuyings 
 ```
 
 
+<br>
+
 LEt's try a square root transform 
 
 The square root transform normalizes it a bit more but it still failed normality test. 
@@ -360,6 +390,31 @@ shapiro.test(sqrt(data_dsp$dsp_si_true_pct)) #
 
 ```
 
+<br>
+
+
+
+#### Females DSP Distribution & normality (behav only)
+
+Now here i want to look at the skews for males and females separately. There's a bit of a skew and it does not pass normality (p-value = 0.001114)
+
+```{r}
+f_data_dsp <- data_dsp %>% filter(sex == "Female") # Women only
+
+ggplot(f_data_dsp, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(f_data_dsp$dsp_si_true_pct)
+
+```
+
+```{r}
+df_dsp_norm <- f_data_dsp %>% 
+  mutate_at(scale, .vars = vars(estradiol_spatial_pg_ml,
+                                fsh_spatial_miu_ml,
+                                dsp_si_true_pct))
+
+
+```
 
 LEt's look at a transformation of all womens data
 
@@ -388,8 +443,31 @@ shapiro.test(sqrt(f_data_dsp$dsp_si_true_pct)) #
 
 ```
 
+<br>
+<br>
 
-##### Estradiol 
+#### Males DSP Distribution & normality (behav only)
+
+Now let's look at males. Here there is a bit of a skew and it failes normality (p-value = 0.02375)
+
+```{r}
+#check visualization and normality of all dsp data not just the scans ones
+  
+m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
+  
+
+ggplot(m_data_dsp, aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(m_data_dsp$dsp_si_true_pct)
+
+```
+
+
+<br>
+<br>
+
+
+#### Estradiol distribution & normality
 
 Here let's look at estradial skews for all women who have a dsp score. It does not pass normality 4.352e-07
 ```{r}
@@ -423,7 +501,7 @@ shapiro.test(sqrt(f_data_dsp$estradiol_spatial_pg_ml))
 
 <br>
 
-##### FSH 
+#### FSH distribution & normality
 
 FSh also has a skew and fails normality p-value = 0.0008676
 
@@ -463,7 +541,7 @@ No good way to normalize this data so far
 <br>
 <br>
 
-#### Using ALl subjcts with DSP and a fornix score  {.tabset .tabset-pills}
+#### DSP+Scan Distribution  
 
 So just like above, this data set is also right skewed and fails normality 0.005673
 
@@ -534,61 +612,155 @@ shapiro.test(sqrt(all_women_clean_df$dsp_si_true_pct))
 
 ```
 
-### step 2.5: Can we replicate shuyings findings?
-
-Shuying had: 
-We have p=0.014
-
-```{r}
-
-cor.test(all_women_clean_df$estradiol_scan_pg_ml,
-         all_women_clean_df$dsp_si_true_pct,
-         conf.level = 0.95,
-         method = "spearman")
-```
-
+<br>
+<hr>
+<br>
 
 
 ### Step 3: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
 
 ```{r}
-mediation_estradiol_DF <- clean_DF %>% select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(estradiol_scan_pg_ml)) %>% filter(sex== "Female")
+mediation_estradiol_DF <- clean_DF %>% dplyr::select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,estradiol_spatial_pg_ml, progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(estradiol_spatial_pg_ml)) %>% filter(sex== "Female")
 ```
 
 ```{r}
-mediation_test_DF <- clean_DF %>% select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(testosterone_scan_ng_dl)) %>% filter(sex== "Female")
+mediation_test_DF <- clean_DF %>% dplyr::select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(testosterone_scan_ng_dl)) %>% filter(sex== "Female")
 
 ```
 
 ```{r}
-mediation_FSH_DF <- clean_DF %>% select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(fsh_scan_miu_ml)) %>% filter(sex== "Female")
+mediation_FSH_DF <- clean_DF %>% dplyr::select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,fsh_spatial_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix,MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(fsh_scan_miu_ml)) %>% filter(sex== "Female")
 ```
 
 
 
-## Mediation
+
+## Can we replicate shuyings findings? {.tabset .tabset-pills}
+
+### Estradiol
+
+Below is the code that recreates shuyings results in her dissertation. 
+"For the DSP task, women with higher estradiol levels took more shortcuts, such that higher estradiol levels were positively associated with solution index (rs(45) = 0.42, p = 0.002)". She used a one-tail spearman correlation because dsp and estradiol fail normality tests. Additionally she removed two subjects due to outliars. 
+
+Below are the results without removing outliars
+our results p=0.001601
+N=47
+```{r, warning=FALSE}
+
+cor.test(f_data_dsp$estradiol_spatial_pg_ml,
+         f_data_dsp$dsp_si_true_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
+```
+
+
+She also did a partial cor to control for age. here it is still significant even when controlling for age.
+
+```{r, warning=FALSE}
+pcor.test(f_data_dsp$estradiol_spatial_pg_ml,
+          f_data_dsp$dsp_si_true_pct,
+          f_data_dsp$age_spatial_years, 
+          method = "spearman") #p-value=0.02876795
+```
+          
+          
+Here it is if we remove outliars p= 0.0035. REplicates shuyings code and results. 
+
+```{r, warning=FALSE}
+f_data_dsp_outlier_e <- f_data_dsp  %>%  filter(!subject_id %in% c(
+    "415", "355"))
+
+cor.test(f_data_dsp_outlier_e$estradiol_spatial_pg_ml,
+         f_data_dsp_outlier_e$dsp_si_true_pct,
+         alternative = "greater",
+         conf.level = 0.95,
+         method = "spearman") #p-value:0.003529
+
+
+```
+
+
+
+### FSH
+
+Here, its another one tailed correlation test 
+```{r, warning=FALSE}
+fsh <- f_data_dsp %>% filter(is.na(fsh_spatial_miu_ml) != TRUE)
+
+cor.test(fsh$fsh_spatial_miu_ml,
+         fsh$dsp_si_true_pct,
+         conf.level = 0.95,
+          alternative = "less",
+         method = "spearman")
+
+pcor.test(fsh$fsh_spatial_miu_ml,
+          fsh$dsp_si_true_pct,
+          fsh$age_spatial_years, 
+          method = "spearman") 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+# Mediation {.tabset .tabset-fade}
 
 ## Estradiol
-Step 1 of mediation is to complete the first correlation in which X= L_fornix and Y = DSP
+
+X <- White Matter
+Y <- DSP SI
+M <- Hormones /FSH
+
+Step 1 of mediation is to complete the first correlation in which X= L_fornix and Y = DSP. WE need to regress our x and y 
 
 ```{r}
-model.1 <- lm(MD_Whole_Fornix ~ dsp_si_true_pct, mediation_estradiol_DF)
+model.1 <- lm(  dsp_si_true_pct ~  MD_Whole_Fornix , mediation_estradiol_DF) 
 summary(model.1)
 ```
 
-Step 2 of mediation is to complete the next correlation in which X= hormones and Y = DSP
+Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP
 
 ```{r}
-model.2 <- lm(estradiol_scan_pg_ml ~ dsp_si_true_pct, mediation_estradiol_DF)
+model.2 <- lm(estradiol_spatial_pg_ml  ~ MD_Whole_Fornix, mediation_estradiol_DF)
 summary(model.2)
 ```
 
+White matter not significant with estradiol 
+
+
+## FSH
+
+X <- White Matter
+Y <- DSP SI
+M <- Hormones /FSH
+
+
+
+Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y 
 
 ```{r}
-model.2 <- lm(estradiol_scan_pg_ml ~ MD_Whole_Fornix, mediation_estradiol_DF)
+model.1 <- lm(dsp_si_true_pct ~ MD_Whole_Fornix , mediation_FSH_DF) 
+summary(model.1)
+```
+
+Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP
+
+```{r}
+model.2 <- lm(dsp_si_true_pct ~ fsh_spatial_miu_ml, mediation_FSH_DF)
 summary(model.2)
 ```
 
+FSH and DSP not significant
 
 
 
