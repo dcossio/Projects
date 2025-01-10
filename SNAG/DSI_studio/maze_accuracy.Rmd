@@ -107,14 +107,14 @@ library(markdown)
 ```
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/"
+working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
 
 # PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
 
-sub_info <- read.csv(paste0(working_dir,"subject_info.csv"))
+sub_info <- read.csv(paste0(working_dir,"MazeDSI.csv"))
 ```
 
 ```{r functions, echo=FALSE, results='hide',message=FALSE}
@@ -247,13 +247,15 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 
 ## **Maze Accuracy and Path Efficiency**
 
-  * All subjects = 82
-  * Men = 22
-  * Women = 60
+  * All subjects = 80
+  * Men = 21
+  * Women = 59
   * Stage
   * Pre = 23
   * Peri = 20 
-  * Post = 17
+  * Post = 16
+  
+We had 82 last time so i excluded 2 more people from this analysis. one from low quality and then one bc of health issues
   
 <br><br><br><br><br>
  
@@ -283,14 +285,13 @@ This is the analysis of white matter dsi studio connectometry for Maze and Loop
 
 ## **DSI Studio**
 
-  * Version and tags used via singularity container: **chen-2022-07-31**
+  * Version and tags used via singularity container: **chen-2024-05-22**
   
   * **Parameters** 
     * T-threshold = 2.5
     * Length = 25
     * Permutation = 4,000
     * pruning 4
-    * non normalized QA
 
 <br><br><br><br><br>
 
