@@ -349,24 +349,50 @@ Broadly, QA is positively associated with maze accuracy
 
 :::{.column width="50%"}
 **QA FDRs when controlling for FNAME**     
-All: **(<span style="color: MediumOrchid;"> + </span>) XXXXX**     
-Female: **(<span style="color: MediumOrchid;"> + </span>) XXXXX**  
-Male: (<span style="color: LightSeaGreen;"> - </span>) 0.055556 | **(<span style="color: MediumOrchid;"> + </span>) XXXXX**     
-Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.023256** | **(<span style="color: MediumOrchid;"> + </span>) XXXXX**     
-Peri: **(<span style="color: LightSeaGreen;"> - </span>) 0.002994** | **(<span style="color: MediumOrchid;"> + </span>) XXXXX**      
-Post: **(<span style="color: LightSeaGreen;"> - </span>) 0.003425** | **(<span style="color: MediumOrchid;"> + </span>) XXXXX** 
+All: **(<span style="color: LightSeaGreen;"> - </span>) 0.001980**       
+Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.003378**  
+Male: **(<span style="color: LightSeaGreen;"> - </span>) 0.000774**  
+Pre : **(<span style="color: MediumOrchid;"> + </span>) 0.006250** | **(<span style="color: LightSeaGreen;"> - </span>) 0.030870**  
+Peri: **(<span style="color: MediumOrchid;"> + </span>) 0.004310** 
+Post: **(<span style="color: MediumOrchid;"> + </span>) 0.000628** | **(<span style="color: LightSeaGreen;"> - </span>) 0.002725** 
 ::: 
   
 :::{ .column width="50%"}
-  **MD FDRs when controlling for FNAME**  
-  All: (<span style="color: MediumOrchid;"> + </span>) XXXXX   
-  Female: (<span style="color: LightSeaGreen;"> - </span>) XXXXX     
-  Male:  **(<span style="color: MediumOrchid;"> + </span>) XXXXX**    
+  **QA FDRs when NOT controlling for FNAME**  
+  All: **(<span style="color: LightSeaGreen;"> - </span>) 0.002320**    
+  Female:**(<span style="color: LightSeaGreen;"> - </span>) 0.003378**      
+  Male:  **(<span style="color: LightSeaGreen;"> - </span>) 0.000216**    
   Pre : **(<span style="color: LightSeaGreen;"> - </span>) XXXXX**      
   Peri: **(<span style="color: MediumOrchid;"> + </span>) XXXXX**    
   Post: **(<span style="color: LightSeaGreen;"> - </span>) XXXXX** | **(<span style="color: MediumOrchid;"> + </span>) XXXXX**
 :::
 ::::::
+
+<hr>
+
+::::::{style="display: flex;"}
+
+:::{.column width="50%"}
+**MD FDRs when controlling for FNAME**     
+All: 1.000      
+Female: 1.000  
+Male: **(<span style="color: MediumOrchid;"> + </span>) 0.004082** | **(<span style="color: LightSeaGreen;"> - </span>) 0.250000**        
+Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.002024**    
+Peri: **(<span style="color: MediumOrchid;"> + </span>) 0.166667**          
+Post: **(<span style="color: LightSeaGreen;"> - </span>) 0.012987**  
+::: 
+  
+:::{ .column width="50%"}
+  **MD FDRs when NOT controlling for FNAME**  
+  All: 1.000  
+  Female: 1.000     
+  Male:  **(<span style="color: MediumOrchid;"> + </span>) 0.003333** | **(<span style="color: LightSeaGreen;"> - </span>) 0.020000**  
+  Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.002128**      
+  Peri: 1.000  
+  Post: 1.000
+:::
+::::::
+
 
 <br><br><br>
 
@@ -386,12 +412,12 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/all/QA_FNAME_all.csv")))
 
 <br>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong> No FNAME Control/strong> </p> -->
+<p style="text-align:center ; font-size: 24px" > <strong> No FNAME Control </p>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = XXXX)</strong> </span> -->
-<!-- # ```{r,echo=FALSE,message=FALSE} -->
-<!-- # TableOutput(CleanInput(ReadingCSVFunc())) -->
-<!-- # ``` -->
+<span> Increased QA is associated with **Decreased ACC** (FDR = 0.002320)</span>
+```{r,echo=FALSE,message=FALSE}
+ TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/All/QA_NOFNAME_all.csv")))
+```
 
 
 <br><br><br>
@@ -409,16 +435,15 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/female/QA_FNAME_female.csv")))
 
 ```
 
+<br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong> No Control for FNAME </strong> </p>
 <br>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
-<!-- <br><br> -->
-
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positively FDR= XXXXX</strong> </span> -->
-<!-- # ```{r,echo=FALSE,message=FALSE} -->
-<!-- # TableOutput(CleanInput(ReadingCSVFunc(""))) -->
-<!-- #  -->
-<!-- # ``` -->
+<span> Increased QA is associated with **decreased ACC** FDR= 0.005495 </span>
+```{r,echo=FALSE,message=FALSE}
+ TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/female/QA_NOFNAME_female_2.csv")))
+```
 
 <br><br><br>
 
@@ -426,32 +451,27 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/female/QA_FNAME_female.csv")))
 
 ### Males 
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br><br>
+N=21
 
-<span> Increased QA associaated with **Decreased ACC** FDR= 0.000774</strong> </span>
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<br>
+
+<span> Increased QA associated with **Decreased ACC** FDR= 0.000774</strong> </span>
 ```{r,echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/male/QA_FNAME_male.csv")))
 
 ```
-<br><br><br><br>
+<br><br><br>
 
 <p style="text-align:center ; font-size: 24px" > <strong>No FNAME control</strong> </p>
-<br><br>
+<br>
+<span> Increased QA is associated with **decreased ACC** FDR= 0.000216 </span>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positive (FDR = 0.000131)</strong> </span> -->
-<!-- # ```{r, echo=FALSE,message=FALSE} -->
-<!-- # TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/male.maze_accuracy_pct.t2.length25.pos_corr.csv"))) -->
-<!-- #  -->
-<!-- # ``` -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/male/QA_NOFNAME_male.csv")))
 
-<br><br><br><br>
+```
 
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.001658)</strong> </span> -->
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/male.maze_accuracy_pct.t2.length25.neg_corr.csv"))) -->
-
-<!-- ``` -->
 
 <br><br><br>
 
@@ -460,7 +480,7 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/male/QA_FNAME_male.csv")))
 ### Pre
 
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br><br>
+<br>
 
 <span> Increasing QA is associated with **Increased Acc** FDR= 0.006250  </span>
 ```{r,echo=FALSE,message=FALSE}
@@ -474,24 +494,25 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/pre/QA_FNAME_pre.inc.csv")))
 TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/pre/QA_FNAME_pre.dec.csv")))
 
 ```
+<br><br>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
-<!-- <br><br> -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<br>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR=0.002547 </strong> </span> -->
-<!-- ```{r,echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/maze.QA.pre.pos.csv"))) -->
+<span> Increasing QA is associated with **Increased Acc** FDR= 0.005952  </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/pre/QA_NOFNAME_pre_inc.csv")))
 
-<!-- ``` -->
-<!-- <br> -->
+```
+<br>
 
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.021739)</strong> </span> -->
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/maze.QA.pre.neg.csv"))) -->
+<span> Increasing QA is associated with **Decreased Acc** FDR= 0.076101  </span>
 
-<!-- ``` -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/pre/QA_NOFNAME_pre_dec.csv")))
+```
 
-<!-- <hr> -->
+<hr>
 
 
 ### Peri
@@ -507,21 +528,15 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/peri/QA_FNAME_peri.csv")))
 <br>
 <br>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
-<!-- <br><br> -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
+<br><br>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR=0.000286 </strong> </span> -->
-<!-- ```{r,echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/qa.peri.pos.csv"))) -->
+<span> Increased QA associated with **Increased ACC** FDR=0.004202 </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/peri/QA_NOFNAME_peri.csv")))
 
-<!-- ``` -->
-<!-- <br> -->
-
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.049774)</strong> </span> -->
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/qa.peri.neg.csv"))) -->
-
-<!-- ``` -->
+```
+<br>
 
 <hr>
 
@@ -540,174 +555,157 @@ TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/post/QA_FNAME_post.inc.csv")))
 
 <span> Increased QA is associated with **Decreased ACC** FDR=0.002725 </span>
 ```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("/FNAME/QA/post/QA_FNAME_post.dec.csv")))
+TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/post/QA_FNAME_post.dec.csv")))
+
+```
+
+<br><br>
+
+<p style="text-align:center ; font-size: 24px" > <strong>No Control for FNAME</strong> </p>
+<br>
+
+<span> Increased QA is associated with **Increased ACC** FDR=0.000751  </span>
+```{r,echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/post/QA_NOFNAME_post_inc.csv")))
+```
+<br>
+
+<span> Increased QA is associated with **Decreased ACC** FDR=0.001650 </span>
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/post/QA_NOFNAME_post_dec.csv")))
 
 ```
 
 <br>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
-<!-- <br><br> -->
+<hr>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"><strong> Positively FDR=0.006613 </strong> </span> -->
-<!-- ```{r,echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/QA/noFNAME/mAZE.QA.post.pos.csv"))) -->
+## MD {.tabset .tabset-pills}
 
-<!-- ``` -->
-<!-- <br> -->
+### All subject
 
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
+No significant tracts
 
-<!-- ## MD {.tabset .tabset-pills} -->
+<br>
 
-<!-- ### All subject -->
+<p style="text-align:center ; font-size: 24px" > <strong>No Control for FNAME</strong> </p>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+No significant tracts
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.066199)</strong> </span> -->
+<br>
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.all.pos.csv"))) -->
-<!-- ``` -->
+<hr>
 
-<!-- <br> -->
+### Females
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.018490)</strong> </span> -->
+No significant tracts
 
+<br>
 
-<!-- ```{r,echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.all.pos.csv"))) -->
-<!-- ``` -->
+<p style="text-align:center ; font-size: 24px" > <strong>No Control for FNAME</strong> </p>
 
-<!-- <br> -->
+No significant tracts
 
-<!-- <hr> -->
+<br>
 
-<!-- ### Females -->
+<hr>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+### Males
 
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.107527)</strong> </span> -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.female.neg.csv"))) -->
-<!-- ``` -->
+<span> Increased MD is associated with **Increased ACC** FDR=0.004082  </span>
 
-<!-- <br> -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/male/MD_FNAME_male_inc.csv")))
+```
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
+<br>
 
-<!-- No Significant Results  -->
+<p style="text-align:center ; font-size: 24px" > <strong>No control for FNAME</strong> </p>
 
-<!-- ### Males -->
+<span> Increased MD is associated with **Increased ACC** FDR=0.003333  </span>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.009051)</strong> </span> -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/MD/male/MD_NOFNAME_male.inc.csv")))
+```
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.male.pos.csv"))) -->
-<!-- ``` -->
+<br>
 
-<!-- <br> -->
+<span> Increased MD is associated with **Decreased ACC** FDR=0.020000  </span>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.018970)</strong> </span> -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/MD/male/MD_NOFNAME_male.dec.csv")))
+```
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.males.pos.csv"))) -->
-<!-- ``` -->
+<hr>
 
-<!-- <hr> -->
+### Pre
 
-<!-- ### Pre -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+<span> Increased MD is associated with **Decreased ACC** FDR=0.002024  </span>
 
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.000315)</strong> </span> -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/pre/MD_FNAME_pre.csv")))
+```
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.pre.neg.csv"))) -->
-<!-- ``` -->
+<br>
 
-<!-- <br> -->
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME Control</strong> </p>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
 
+<span> Increased MD is associated with **Decreased ACC** FDR=0.002024  </span>
 
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.000313)</strong> </span> -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/MD/pre/MD_NOFNAME_pre.csv")))
+```
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.pre.neg.csv"))) -->
-<!-- ``` -->
+<br>
 
+<hr>
 
+### Peri
 
-<!-- ### Peri -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+<span> Increased MD is associated with **Increased ACC** FDR=0.166667  </span>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.014418)</strong> </span> -->
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/peri/MD_FNAME_peri.csv")))
+```
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.peri.pos.csv"))) -->
-<!-- ``` -->
+<br><br>
 
-<!-- <br> -->
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME Control</strong> </p>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
+no significant TRacts
+<br>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = .000309)</strong> </span> -->
+<hr>
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.peri.pos.csv"))) -->
-<!-- ``` -->
 
-<!-- <br> -->
 
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.014286)</strong> </span> -->
+### Post
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.peri.neg.csv"))) -->
-<!-- ``` -->
+<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
+<span> Increased MD is associated with **Decreased ACC** FDR=0.012987 </span>
 
+```{r, echo=FALSE,message=FALSE}
+TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/post/MD_FNAME_post.csv")))
+```
 
-<!-- ### Post -->
+<br>
 
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p> -->
+<p style="text-align:center ; font-size: 24px" > <strong>No FNAME Control</strong> </p>
 
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.009454)</strong> </span> -->
+no significant TRacts
 
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.post.pos.csv"))) -->
-<!-- ``` -->
-
-<!-- <br> -->
-
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.017658)</strong> </span> -->
-
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/FNAME/maze.MD.post.neg.csv"))) -->
-<!-- ``` -->
-
-<!-- <br><br> -->
-<!-- <p style="text-align:center ; font-size: 24px" > <strong>previous run results</strong> </p> -->
-
-<!-- <span style="color: MediumOrchid;font-size: 18px;background-color: Snow"> <strong>Positive (FDR = 0.000615)</strong> </span> -->
-
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/newversion/maze.MD.post.pos.csv"))) -->
-<!-- ``` -->
-
-<!-- <br> -->
-
-<!-- <span style="color: LightSeaGreen;font-size: 18px;background-color: Snow"><strong>Negative (FDR = 0.017321)</strong> </span> -->
-
-<!-- ```{r, echo=FALSE,message=FALSE} -->
-<!-- TableOutput(CleanInput(ReadingCSVFunc("maze_acc/MD/noFNAME/MD_post_neg.csv"))) -->
-<!-- ``` -->
-
+<br>
