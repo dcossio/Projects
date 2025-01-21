@@ -204,7 +204,7 @@ Here we are reading in the following folders and paths
 - Path to the subject sheet that contains every single subject who has useable behavior. "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv"
 <br>
 
-- Path to the subject sheet that hasthe list of subjects that have both a DSP score AND a DSI scan.
+- Path to the subject sheet that has the list of subjects that have both a DSP score AND a DSI scan.
 
 <br>
 
@@ -652,6 +652,12 @@ cor.test(f_data_dsp$estradiol_spatial_pg_ml,
          conf.level = 0.95,
          alternative = "greater",
          method = "spearman")
+
+cor.test(f_data_dsp$estradiol_scan_pg_ml,
+         f_data_dsp$dsp_si_true_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 ```
 
 
@@ -662,6 +668,8 @@ pcor.test(f_data_dsp$estradiol_spatial_pg_ml,
           f_data_dsp$dsp_si_true_pct,
           f_data_dsp$age_spatial_years, 
           method = "spearman") #p-value=0.02876795
+
+
 ```
           
           
@@ -692,26 +700,70 @@ cor.test(fsh$fsh_spatial_miu_ml,
          fsh$dsp_si_true_pct,
          conf.level = 0.95,
           alternative = "less",
-         method = "spearman")
+         method = "spearman") # Pvalue 0.02903
 
 pcor.test(fsh$fsh_spatial_miu_ml,
           fsh$dsp_si_true_pct,
           fsh$age_spatial_years, 
-          method = "spearman") 
+          method = "spearman")  # Pvalue 0.414744
+
+x <- fsh$fsh_spatial_miu_ml
+y <- fsh$dsp_si_true_pct
+z <- fsh$age_spatial_years
+cor.test(lm(x ~ z)$residuals,
+         lm(y ~ z)$residuals,
+         alternative = "less",
+         conf.level = 0.95,
+         method = "spearman") #0.05638
 ```
 
 
 
-
-
-
-
-
-
-
-
-
 <br>
+
+## Hormone comparison
+
+### estradiol
+
+Average Scan Estradiol `r mean(all_women_clean_df$estradiol_scan_pg_ml)`
+
+Average Spatial Estradiol `r mean(all_women_clean_df$estradiol_spatial_pg_ml)`
+```{r}
+hormones_df <- all_women_clean_df %>% dplyr::select(c("subject_id","estradiol_scan_pg_ml","estradiol_spatial_pg_ml","progesterone_scan_ng_ml","progesterone_spatial_ng_ml","fsh_scan_miu_ml","fsh_spatial_miu_ml"))
+```
+
+```{r}
+
+ggplot(data=all_women_clean_df, aes(x=estradiol_scan_pg_ml)) +
+  geom_density()
+
+ggplot(data=all_women_clean_df, aes(x=estradiol_spatial_pg_ml)) +
+  geom_density()
+
+
+```
+
+### FSH
+
+Average Scan FSH `r mean(all_women_clean_df$fsh_scan_miu_ml)`
+
+Average Spatial FSH `r mean(all_women_clean_df$fsh_spatial_miu_ml)`
+
+
+```{r}
+
+ggplot(data=all_women_clean_df, aes(x=fsh_scan_miu_ml)) +
+  geom_density()
+
+ggplot(data=all_women_clean_df, aes(x=fsh_spatial_miu_ml)) +
+  geom_density()
+
+
+```
+
+<br><br>
+
+<hr>
 
 # Mediation {.tabset .tabset-fade}
 
@@ -721,21 +773,25 @@ X <- White Matter
 Y <- DSP SI
 M <- Hormones /FSH
 
-Step 1 of mediation is to complete the first correlation in which X= L_fornix and Y = DSP. WE need to regress our x and y 
+Step 1 of mediation is to complete the first correlation in which X= fornix and Y = DSP. WE need to regress our x and y. p=0.03803 
 
 ```{r}
-model.1 <- lm(  dsp_si_true_pct ~  MD_Whole_Fornix , mediation_estradiol_DF) 
+model.1 <- lm(dsp_si_true_pct ~  MD_Whole_Fornix , mediation_estradiol_DF) 
 summary(model.1)
 ```
 
-Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP
+Step 2 of mediation is to complete the next correlation in which M= hormones and X = Fornix. p=0.9646 So here the MD  and estradiol are not significant. 
 
 ```{r}
-model.2 <- lm(estradiol_spatial_pg_ml  ~ MD_Whole_Fornix, mediation_estradiol_DF)
+model.2 <- lm(estradiol_spatial_pg_ml  ~ MD_Whole_Fornix , mediation_estradiol_DF)
 summary(model.2)
 ```
 
-White matter not significant with estradiol 
+
+
+
+
+
 
 
 ## FSH
@@ -746,23 +802,32 @@ M <- Hormones /FSH
 
 
 
-Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y 
+Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y, p=0.03803
 
 ```{r}
 model.1 <- lm(dsp_si_true_pct ~ MD_Whole_Fornix , mediation_FSH_DF) 
 summary(model.1)
 ```
 
-Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP
+Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP. p=0.6713 This is where it gets a bit challenging here. because this doesn't replicate with shuyings thing. Probably because this is two-tailed and hers is one tailed. WE might be able to move forward with this tbh. 
 
 ```{r}
-model.2 <- lm(dsp_si_true_pct ~ fsh_spatial_miu_ml, mediation_FSH_DF)
+model.2 <- lm(fsh_spatial_miu_ml ~ MD_Whole_Fornix , mediation_FSH_DF)
 summary(model.2)
 ```
 
-FSH and DSP not significant
 
 
 
 # Summarized Results
+
+- There's really no difference between scan and spatial hormones. FSH is the exact same between spatial and scan. Estradiol is a bit different between them but shouldn't be too much of a difference. Changes a bit of the significance but not overall relationships. 
+
+- I can replicate shuyings one tailed analysies but i don't know if i can do an actual mediation analysis. When i do a linear regression, nothing is significant. 
+
+- For estradiol, solution index is associated with MD. Shuyings results show that estradiol is associated with more shortcuts but estradiol is not associated with MD based on our linear regression here. So white matter contributes to SI performance, and so does estradiol but estradiol does not impact white matter. Therefore they may be influencing SI performance through different mechanisms. 
+
+-similar for FSH. We know that MD and SI are associated. We know FSH and SI are associated. The problem is that MD and FSh are not associated. Therefore they are influencing performance via different mechanisms. 
+
+
 
