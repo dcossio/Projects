@@ -11,6 +11,7 @@ output:
     - twocolumn
 ---
 
+<!-- below is code for generating the markdown html. just basic aesthetics -->
 ```{css, echo=FALSE}
 TOC {
   color: #F6B2DB;
@@ -63,10 +64,13 @@ hr {
 
 ```
 
+<!-- More  basic Aesthetics -->
+
 ```{r set-options, echo=FALSE, cache=FALSE}
 options(width = 100)
 ```
 
+<!-- Loading in libraries  -->
 ```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
 library(ggplot2)
 #(plyr)
@@ -106,6 +110,7 @@ library(gridExtra)
 library(markdown)
 ```
 
+<!-- Reading in the paths and the CSV that contains all of the subject info -->
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
 
@@ -114,20 +119,25 @@ working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maz
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)")
 
 
-sub_info <- read.csv(paste0(working_dir,"MazeDSI.csv"))
+sub_info <- read.csv(paste0(working_dir,"MazeDSI.csv")) # this is a csv that contains all of the important subject information.
 ```
 
+<!-- Below is a bunch of functions that reduce the code throughout the script -->
 ```{r functions, echo=FALSE, results='hide',message=FALSE}
 
+
+
 ReadingCSVFunc <- function(pathname){
-  
+  #README 
+  #Purpose of this code is to read in the CSVs that I extract from the correlational tractography from DSI studio. You simply need to include the path to the CSV from the working directory. We set our working dir above so you just need the rest of the path. 
   read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
-  
 }
 
 CleanInput <- function(DF){
   
-
+#README
+  # The purpose of this function is to take the CSV that I extract from the correlational tractography and that has already been read into the script and made into a dataframe. It is then cleaned to create a clean output that grabs the following rows: "Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)"), and then re organizes the information for each subject into one dataframe. There's an if statement because some CSVs only have one significant tract and it needs a slightly different code to reorganize that. 
+  
   DF <- DF %>% remove_empty("cols") 
   
   if(length(DF) < 3){
@@ -153,57 +163,61 @@ CleanInput <- function(DF){
 }
 
 
-Extract_raw_values <- function(DF,Metric) {
-  # Purpose of this function is to clean the data without me having to copy and paste everything later. 
-  
-  # Data = raw unclean dataframe we want to clean up 
-  # Metric will be either MD or QA
-  # sex is either male or female
- 
-  
-  # Let's read in our data frame 
-  
-     colNames <- DF  %>% remove_empty("cols") %>%
-  filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
-  
-  
-  # grab  ROIcolumn names 
- 
-  
-  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "loop_pe_rad3_m", "loop_de_rad3_degree","REPO")) 
- 
-  # Let's grab our values 
-  if (Metric == "MD"){
-    Values <- DF %>% remove_empty("cols") %>% 
-     filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
-  }
-  else{
-    Values <- DF %>%
-     remove_empty("cols") %>%
-      filter(str_detect(V1, c("mean_qa"))) %>% 
-  `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
-
-  }
-  
-  # now let's put this together 
-  if (length(Values) < 3) {
-    Values[,2] <- as.numeric(Values[,2])
-  }else{
-  ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
-  Values[,2:length(Values)] <- ConvToNum
-  }
-  
-  cleanedDF <- cbind(subinfo,Values) %>% na.omit() %>% select(-c("Subjects"))
-  
-  return (cleanedDF)
-}
 
 
 TableOutput <- function(df){
+  #Purpose of this is to create a clean table that can be shown on the html. Most of this is aesthetics but it's a lot so i created a function to reduce the clutter later. 
+  # The DF that is input is a clean data frame of the correlational tractography. At this point it has gone through the ReadingCSVFunc, and CleanInput
       knitr::kable(df, row.names=F) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "600px", height = "300px")
     
   }
+
+
+# Extract_raw_values <- function(DF,Metric) {
+#   # Purpose of this function is to clean the data without me having to copy and paste everything later. As well as extract 
+#   
+#   # Data = raw unclean dataframe we want to clean up 
+#   # Metric will be either MD or QA
+#   # sex is either male or female
+#  
+#   
+#   # Let's read in our data frame 
+#   
+#      colNames <- DF  %>% remove_empty("cols") %>%
+#   filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
+#   
+#   
+#   # grab  ROIcolumn names 
+#  
+#   
+#   subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "loop_pe_rad3_m", "loop_de_rad3_degree","REPO")) 
+#  
+#   # Let's grab our values 
+#   if (Metric == "MD"){
+#     Values <- DF %>% remove_empty("cols") %>% 
+#      filter(str_detect(V1, c("mean_md"))) %>%
+#    `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
+#   }
+#   else{
+#     Values <- DF %>%
+#      remove_empty("cols") %>%
+#       filter(str_detect(V1, c("mean_qa"))) %>% 
+#   `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
+# 
+#   }
+#   
+#   # now let's put this together 
+#   if (length(Values) < 3) {
+#     Values[,2] <- as.numeric(Values[,2])
+#   }else{
+#   ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
+#   Values[,2:length(Values)] <- ConvToNum
+#   }
+#   
+#   cleanedDF <- cbind(subinfo,Values) %>% na.omit() %>% select(-c("Subjects"))
+#   
+#   return (cleanedDF)
+# }
 
 
 # TableOutput <- function(df, style, width, height, caption){
@@ -319,7 +333,7 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 <!-- ### Behavior -->
 
-
+<!-- This is a visualization of the accuracy performance for the subjects that i have scans for. One creates a bar graph split by sex and the other is a ranked order   -->
 ```{r, echo=FALSE, results='hide',message=FALSE}
 
 # Let's just scatter plot performance
@@ -344,6 +358,8 @@ test <- sub_info$maze_accuracy_pct %>% sort() %>% as.data.frame() %>% mutate(ran
 ## Summary 
 
 Broadly, QA is positively associated with maze accuracy
+
+<!-- The code below is to display the FDR values for the analyses into two columns -->
 
 ::::::{style="display: flex;"}
 
@@ -405,6 +421,8 @@ Post: **(<span style="color: LightSeaGreen;"> - </span>) 0.012987**
 <p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
 
 <span> Increased QA is associated with **Decreased ACC** (FDR = 0.001980) </span>
+
+<!-- This code below repeats and is just a way for me to read in the CSV, Clean it up, and then create an aesthetic table for the html -->
 
 ```{r, echo=FALSE,message=FALSE}
 TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/all/QA_FNAME_all.csv")))

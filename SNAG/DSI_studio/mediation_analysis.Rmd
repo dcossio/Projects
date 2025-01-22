@@ -10,7 +10,7 @@ output:
     classoption:
     - twocolumn
 ---
-
+<!-- Reading in my libraries -->
 ```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
 library(ggplot2)
 #(plyr)
@@ -55,6 +55,7 @@ library(mediation)
 ```
 
 
+<!-- below is code for generating the markdown html. just basic aesthetics -->
 
 ```{css, echo=FALSE}
 TOC {
@@ -109,27 +110,48 @@ hr {
 
 ```
 
-
-
+<!-- Below is a bunch of functions that reduce the code throughout the script -->
 ```{r functions, echo=FALSE, results='hide',message=FALSE}
 
 ReadingCSVFunc <- function(pathname){
   
   read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
   
+   #README
+  #Purpose: to read in the CSVs that I extract from the correlational tractography from DSI studio.  
+  #Inputs: You simply need to include the path to the CSV from the working directory. We set our working dir above so you just need the rest of the path.
+  
 }
 
 CleanInput <- function(DF){
+  #README
+  # The purpose of this function is to take the CSV that I extract from the correlational tractography and that has already been read into the script and made into a dataframe. It is then cleaned to create a clean output that grabs the following rows: "Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)"), and then re organizes the information for each subject into one dataframe. There's an if statement because some CSVs only have one significant tract and it needs a slightly different code to reorganize that. 
   
+  #INPUT: Should take in a DF that was created when you read in the CSV from the correlational tract analysis. The output of the ReadingCSVFunc
 
-  DF <- DF %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
+ DF <- DF %>% remove_empty("cols") 
+  
+  if(length(DF) < 3){
+    DF <- DF %>% 
+            filter(V1 %in% rows2grab) %>% 
+              t() %>% 
+                `colnames<-`(rows2grab) %>% 
+                  as.data.frame() %>% 
+                    `[`(-c(1),)
+    
+  } else{
+    
+    DF <- DF %>% 
+      filter(V1 %in% rows2grab) %>% 
+        t() %>% 
             `colnames<-`(rows2grab) %>% 
                 `[`(-c(1),) %>% 
-                    as.data.frame()
+                    as.data.frame() 
+  }
+ 
+          
   return(DF)
+  
 }
 
 
@@ -186,6 +208,7 @@ TableOutput <- function(df){
 
 # Reading in and prepping our data {.tabset .tabset-fade}
 
+<!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/DSP/"
 
@@ -210,6 +233,7 @@ Here we are reading in the following folders and paths
 
 Complete Subject Database
 
+<!-- This is just to visualize the raw subject data base -->
 ```{r}
 TableOutput(All_sub_info)
 
@@ -316,7 +340,7 @@ for(file in 1:length((subfiles))){
 }
 
 
-# now we have to grab the information from sub info and combine but we need to make sure we're grabbing all the correct subjects from each dataframe. Something to note is that this final fornix data frame is based off of scans and includes some people who do not have a DSP score
+# now we have to grab the information from sub info and combine but we need to make sure we're grabbing all the correct subjects from each dataframe. Something to note is that this final fornix data frame is based off of scans and includes some people who do not have a DSP score. There's probably a way to simplify the code below.
 
 altered_sub_info <- DSP_DSI_DF %>% filter(subject_id %in% c(fornix_output_df$subjects)) 
 
@@ -536,7 +560,7 @@ shapiro.test(sqrt(f_data_dsp$fsh_spatial_miu_ml))
 ```
 
 
-No good way to normalize this data so far
+No good way to normalize this data so far. I will probably leave it as is. 
 
 <br>
 <br>
@@ -618,18 +642,73 @@ shapiro.test(sqrt(all_women_clean_df$dsp_si_true_pct))
 
 
 ### Step 3: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
-
+<!-- Creating a dataframe for just the estradiaol people -->
 ```{r}
-mediation_estradiol_DF <- clean_DF %>% dplyr::select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,estradiol_spatial_pg_ml, progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix, MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(estradiol_spatial_pg_ml)) %>% filter(sex== "Female")
+mediation_estradiol_DF <-
+  clean_DF %>% dplyr::select(
+    subject_id,
+    sex,
+    age_spatial_years,
+    repo_status,
+    dsp_si_true_pct,
+    estradiol_scan_pg_ml,
+    estradiol_spatial_pg_ml,
+    progesterone_scan_ng_ml,
+    testosterone_scan_ng_dl,
+    fsh_scan_miu_ml,
+    QA_L_fornix,
+    QA_R_fornix,
+    MD_L_fornix,
+    MD_R_fornix,
+    MD_Whole_Fornix,
+    QA_Whole_Fornix
+  ) %>% filter(!is.na(dsp_si_true_pct)) %>% filter(!is.na(estradiol_spatial_pg_ml)) %>% filter(sex == "Female")
 ```
 
+<!-- Creating a dataframe for just the Testosterone people -->
+
 ```{r}
-mediation_test_DF <- clean_DF %>% dplyr::select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(testosterone_scan_ng_dl)) %>% filter(sex== "Female")
+mediation_test_DF <-
+  clean_DF %>% dplyr::select(
+    subject_id,
+    sex,
+    age_spatial_years,
+    repo_status,
+    dsp_si_true_pct,
+    estradiol_scan_pg_ml,
+    progesterone_scan_ng_ml,
+    testosterone_scan_ng_dl,
+    fsh_scan_miu_ml,
+    QA_L_fornix,
+    QA_R_fornix,
+    MD_L_fornix,
+    MD_R_fornix
+  ) %>% filter(!is.na(dsp_si_true_pct)) %>% filter(!is.na(testosterone_scan_ng_dl)) %>% filter(sex == "Female")
 
 ```
 
+<!-- Creating a dataframe for just the FSH people -->
+
 ```{r}
-mediation_FSH_DF <- clean_DF %>% dplyr::select(subject_id,sex,age_spatial_years,repo_status,dsp_si_true_pct,estradiol_scan_pg_ml,progesterone_scan_ng_ml,testosterone_scan_ng_dl,fsh_scan_miu_ml,fsh_spatial_miu_ml,QA_L_fornix,QA_R_fornix,MD_L_fornix,MD_R_fornix,MD_Whole_Fornix, QA_Whole_Fornix) %>% filter(!is.na(dsp_si_true_pct )) %>% filter(!is.na(fsh_scan_miu_ml)) %>% filter(sex== "Female")
+mediation_FSH_DF <-
+  clean_DF %>% dplyr::select(
+    subject_id,
+    sex,
+    age_spatial_years,
+    repo_status,
+    dsp_si_true_pct,
+    estradiol_scan_pg_ml,
+    progesterone_scan_ng_ml,
+    testosterone_scan_ng_dl,
+    fsh_scan_miu_ml,
+    fsh_spatial_miu_ml,
+    QA_L_fornix,
+    QA_R_fornix,
+    MD_L_fornix,
+    MD_R_fornix,
+    MD_Whole_Fornix,
+    QA_Whole_Fornix
+  ) %>% filter(!is.na(dsp_si_true_pct)) %>% filter(!is.na(fsh_scan_miu_ml)) %>% filter(sex == "Female")
 ```
 
 
@@ -647,12 +726,14 @@ our results p=0.001601
 N=47
 ```{r, warning=FALSE}
 
+# this one uses spatial hormones
 cor.test(f_data_dsp$estradiol_spatial_pg_ml,
          f_data_dsp$dsp_si_true_pct,
          conf.level = 0.95,
          alternative = "greater",
          method = "spearman")
 
+#This one uses scan hormones
 cor.test(f_data_dsp$estradiol_scan_pg_ml,
          f_data_dsp$dsp_si_true_pct,
          conf.level = 0.95,
@@ -661,14 +742,13 @@ cor.test(f_data_dsp$estradiol_scan_pg_ml,
 ```
 
 
-She also did a partial cor to control for age. here it is still significant even when controlling for age.
+She also did a partial cor to control for age. here it is still significant even when controlling for age. p-value=0.02876795
 
 ```{r, warning=FALSE}
 pcor.test(f_data_dsp$estradiol_spatial_pg_ml,
           f_data_dsp$dsp_si_true_pct,
           f_data_dsp$age_spatial_years, 
           method = "spearman") #p-value=0.02876795
-
 
 ```
           
@@ -692,7 +772,7 @@ cor.test(f_data_dsp_outlier_e$estradiol_spatial_pg_ml,
 
 ### FSH
 
-Here, its another one tailed correlation test 
+Here, its another one tailed correlation test. Pvalue 0.02903
 ```{r, warning=FALSE}
 fsh <- f_data_dsp %>% filter(is.na(fsh_spatial_miu_ml) != TRUE)
 
@@ -701,11 +781,19 @@ cor.test(fsh$fsh_spatial_miu_ml,
          conf.level = 0.95,
           alternative = "less",
          method = "spearman") # Pvalue 0.02903
+```
 
+This is a partial correlation that controls for spatial age and is not significant: Pvalue 0.414744. This replicates some of shuyins code but not what was in the script.
+```{r}
 pcor.test(fsh$fsh_spatial_miu_ml,
           fsh$dsp_si_true_pct,
           fsh$age_spatial_years, 
           method = "spearman")  # Pvalue 0.414744
+```
+
+
+Below is the code that replicated shuyings script for controlling for age.P#0.05638. It' a correlation with the residuals. 
+```{r}
 
 x <- fsh$fsh_spatial_miu_ml
 y <- fsh$dsp_si_true_pct
@@ -729,9 +817,11 @@ Average Scan Estradiol `r mean(all_women_clean_df$estradiol_scan_pg_ml)`
 
 Average Spatial Estradiol `r mean(all_women_clean_df$estradiol_spatial_pg_ml)`
 ```{r}
-hormones_df <- all_women_clean_df %>% dplyr::select(c("subject_id","estradiol_scan_pg_ml","estradiol_spatial_pg_ml","progesterone_scan_ng_ml","progesterone_spatial_ng_ml","fsh_scan_miu_ml","fsh_spatial_miu_ml"))
+hormones_df <- all_women_clean_df %>% dplyr::select(c("subject_id","estradiol_scan_pg_ml","estradiol_spatial_pg_ml","progesterone_scan_ng_ml","progesterone_spatial_ng_ml","fsh_scan_miu_ml","fsh_spatial_miu_ml")) #Creating a df that contains just the hormones so i can visualize them side by side.
 ```
 
+Density plots of the scan and spatial estradiol. 
+<!-- Theres probably a better way to compare them  -->
 ```{r}
 
 ggplot(data=all_women_clean_df, aes(x=estradiol_scan_pg_ml)) +
@@ -739,7 +829,6 @@ ggplot(data=all_women_clean_df, aes(x=estradiol_scan_pg_ml)) +
 
 ggplot(data=all_women_clean_df, aes(x=estradiol_spatial_pg_ml)) +
   geom_density()
-
 
 ```
 
@@ -749,6 +838,7 @@ Average Scan FSH `r mean(all_women_clean_df$fsh_scan_miu_ml)`
 
 Average Spatial FSH `r mean(all_women_clean_df$fsh_spatial_miu_ml)`
 
+Density plots of the scan and spatial FSH. They're basically identical tho so i'll need to check these. 
 
 ```{r}
 
@@ -780,14 +870,12 @@ model.1 <- lm(dsp_si_true_pct ~  MD_Whole_Fornix , mediation_estradiol_DF)
 summary(model.1)
 ```
 
-Step 2 of mediation is to complete the next correlation in which M= hormones and X = Fornix. p=0.9646 So here the MD  and estradiol are not significant. 
+Step 2 of mediation is to complete the next correlation in which M= hormones and X = Fornix. p=0.9646 So here the MD  and estradiol are not significant. Stopping here. 
 
 ```{r}
 model.2 <- lm(estradiol_spatial_pg_ml  ~ MD_Whole_Fornix , mediation_estradiol_DF)
 summary(model.2)
 ```
-
-
 
 
 
