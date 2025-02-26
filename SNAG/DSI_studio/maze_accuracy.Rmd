@@ -331,24 +331,50 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 # **Results** {.tabset .tabset-pills} 
 
-<!-- ### Behavior -->
+### Behavior
+No sex differences between males and females when using wilconox test since normality failed. Do i try and normalize data points?
+```{r,echo=FALSE, results='hide',message=FALSE}
+# Sex differences Ttest
+female_subs <- sub_info %>% filter(SEX==0)
+male_subs <- sub_info %>% filter(SEX==1)
 
-<!-- This is a visualization of the accuracy performance for the subjects that i have scans for. One creates a bar graph split by sex and the other is a ranked order   -->
-```{r, echo=FALSE, results='hide',message=FALSE}
+shapiro.test(female_subs$maze_accuracy_pct) # not normal 
+shapiro.test(male_subs$maze_accuracy_pct) #Not normal 
 
-# Let's just scatter plot performance
-
-pdf(file = paste0(working_dir,"/figures/behavior_maze_acc_barPlot.pdf"),width=12, height=8)
- ggplot(sub_info, aes(x=SEX,y=maze_accuracy_pct, fill=factor(SEX))) +
-   geom_boxplot() +geom_point(size=4, color = "black") +    labs(x ="sex", y = "Maze Accuracy") + scale_fill_manual(values = c("#E2929D","#502E23"))
- dev.off()
- 
- pdf(file = paste0(working_dir,"/figures/behavior_maze_acc_rank.pdf"),width=12, height=8)
-test <- sub_info$maze_accuracy_pct %>% sort() %>% as.data.frame() %>% mutate(rank=1:80)
- ggplot(test, aes(x=rank,y=.)) + geom_point(size=4, color = "black")
- dev.off()
-
+SexTest <- t.test(female_subs$maze_accuracy_pct,male_subs$maze_accuracy_pct)
+SexTest
 ```
+
+```{r,echo=FALSE, results='hide',message=FALSE}
+# Menopause differences Ttest
+pre <- sub_info %>% filter(REPO==1) %>% select(maze_accuracy_pct)
+peri <- sub_info %>% filter(REPO==2)%>% select(maze_accuracy_pct)
+post <- sub_info %>% filter(REPO==3)%>% select(maze_accuracy_pct)
+
+
+MenopauseTest <- aov(maze_accuracy_pct~REPO,sub_info)
+summary(MenopauseTest)
+#Siginifcant effect of REPO on performance 
+```
+
+
+This is a visualization of the accuracy performance for the subjects that i have scans for. One creates a bar graph split by sex and the other is a ranked order
+
+<!-- ```{r, echo=FALSE, results='hide',message=FALSE} -->
+
+<!-- # Let's just scatter plot performance -->
+
+<!-- pdf(file = paste0(working_dir,"/figures/behavior_maze_acc_barPlot.pdf"),width=12, height=8) -->
+<!--  ggplot(sub_info, aes(x=SEX,y=maze_accuracy_pct, fill=factor(SEX))) + -->
+<!--    geom_boxplot() +geom_point(size=4, color = "black") +    labs(x ="sex", y = "Maze Accuracy") + scale_fill_manual(values = c("#E2929D","#502E23")) -->
+<!--  dev.off() -->
+
+<!--  pdf(file = paste0(working_dir,"/figures/behavior_maze_acc_rank.pdf"),width=12, height=8) -->
+<!-- test <- sub_info$maze_accuracy_pct %>% sort() %>% as.data.frame() %>% mutate(rank=1:80) -->
+<!--  ggplot(test, aes(x=rank,y=.)) + geom_point(size=4, color = "black") -->
+<!--  dev.off() -->
+
+<!-- ``` -->
 
 
 
