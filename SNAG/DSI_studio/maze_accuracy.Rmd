@@ -108,13 +108,15 @@ library(moonBook)
 library(nationalparkcolors)
 library(gridExtra)
 library(markdown)
+library(psych)
+library(Rmisc)
 ```
 
 <!-- Reading in the paths and the CSV that contains all of the subject info -->
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
+#working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
 
-# PE_working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/My Drive/White matter tract/MidlifeWM_DSI2023/DSI/maze/Path_eff/"
+working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)")
 
@@ -409,6 +411,92 @@ sub_info %>% ggplot(aes(x = REPO, y = maze_accuracy_pct, fill=REPO)) +
  )
 
 ```
+
+<br>
+Need to see if things are different from chance
+```{r, Chance }
+
+df_maze_fem <- sub_info %>% filter(SEX == "Female")
+t.test(df_maze_fem$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+
+mean(df_maze_fem$maze_accuracy_pct)
+sd(df_maze_fem$maze_accuracy_pct)
+CI(df_maze_fem$maze_accuracy_pct, ci = 0.95)
+
+#Cohen's d: (mean - mu)/sd
+(mean(df_maze_fem$maze_accuracy_pct) - .1111)/sd(df_maze_fem$maze_accuracy_pct)
+
+cohen.d.ci((mean(df_maze_fem$maze_accuracy_pct) - .1111)/sd(df_maze_fem$maze_accuracy_pct),
+            n1=59, alpha = 0.05)
+```
+
+```{r}
+df_maze_male <- sub_info %>% filter(SEX == "Male")
+t.test(df_maze_male$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+
+mean(df_maze_male$maze_accuracy_pct)
+sd(df_maze_male$maze_accuracy_pct)
+CI(df_maze_male$maze_accuracy_pct, ci = 0.95)
+
+#Cohen's d: (mean - mu)/sd
+(mean(df_maze_male$maze_accuracy_pct) - .1111)/sd(df_maze_male$maze_accuracy_pct)
+
+cohen.d.ci((mean(df_maze_male$maze_accuracy_pct) - .1111)/sd(df_maze_male$maze_accuracy_pct),
+            n1=21, alpha = 0.05)
+```
+
+
+```{r}
+df_maze_pre <- sub_info %>% filter(REPO == 1)
+t.test(df_maze_pre$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+
+mean(df_maze_pre$maze_accuracy_pct)
+sd(df_maze_pre$maze_accuracy_pct)
+CI(df_maze_pre$maze_accuracy_pct, ci = 0.95)
+
+#Cohen's d: (mean - mu)/sd
+(mean(df_maze_pre$maze_accuracy_pct) - .1111)/sd(df_maze_pre$maze_accuracy_pct)
+
+cohen.d.ci((mean(df_maze_pre$maze_accuracy_pct) - .1111)/sd(df_maze_pre$maze_accuracy_pct),
+            n1=59, alpha = 0.05)
+```
+
+
+```{r}
+df_maze_peri <- sub_info %>% filter(REPO == 2)
+t.test(df_maze_peri$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+
+mean(df_maze_peri$maze_accuracy_pct)
+sd(df_maze_peri$maze_accuracy_pct)
+CI(df_maze_peri$maze_accuracy_pct, ci = 0.95)
+
+#Cohen's d: (mean - mu)/sd
+(mean(df_maze_peri$maze_accuracy_pct) - .1111)/sd(df_maze_peri$maze_accuracy_pct)
+
+cohen.d.ci((mean(df_maze_peri$maze_accuracy_pct) - .1111)/sd(df_maze_peri$maze_accuracy_pct),
+            n1=59, alpha = 0.05)
+```
+
+
+
+```{r}
+df_maze_post <- sub_info %>% filter(REPO == 2)
+t.test(df_maze_post$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+
+mean(df_maze_post$maze_accuracy_pct)
+sd(df_maze_post$maze_accuracy_pct)
+CI(df_maze_post$maze_accuracy_pct, ci = 0.95)
+
+#Cohen's d: (mean - mu)/sd
+(mean(df_maze_post$maze_accuracy_pct) - .1111)/sd(df_maze_post$maze_accuracy_pct)
+
+cohen.d.ci((mean(df_maze_post$maze_accuracy_pct) - .1111)/sd(df_maze_post$maze_accuracy_pct),
+            n1=59, alpha = 0.05)
+```
+
+
+
+
 
 
 This is a visualization of the accuracy performance for the subjects that i have scans for. One creates a bar graph split by sex and the other is a ranked order
