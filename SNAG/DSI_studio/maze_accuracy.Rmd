@@ -114,9 +114,9 @@ library(Rmisc)
 
 <!-- Reading in the paths and the CSV that contains all of the subject info -->
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
+working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
 
-working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
+#working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)")
 
@@ -340,6 +340,9 @@ sub_info$SEX[sub_info$SEX==1]<-c("Male")
 sub_info$SEX[sub_info$SEX==0]<-c("Female")
 sub_info$SEX <- as.factor(sub_info$SEX)
 
+
+
+
 shapiro.test(female_subs$maze_accuracy_pct) # not normal 
 shapiro.test(male_subs$maze_accuracy_pct) #Not normal 
 
@@ -376,11 +379,7 @@ sub_info$REPO[sub_info$REPO==1]<-c("Pre")
 sub_info$REPO[sub_info$REPO==2]<-c("Peri")
 sub_info$REPO[sub_info$REPO==3]<-c("Post")
 
-group_by(sub_info, REPO) %>%
-+     summarise(
-+         count = n(),
-+         mean = mean(maze_accuracy_pct, na.rm = TRUE),
-+         sd = sd(maze_accuracy_pct, na.rm = TRUE))
+group_by(sub_info, REPO) %>% dplyr::summarise(count = n(), mean = mean(maze_accuracy_pct, na.rm = TRUE), sd = sd(maze_accuracy_pct, na.rm = TRUE))
 
 
 MenopauseTest <- aov(maze_accuracy_pct~REPO,sub_info)
@@ -393,8 +392,9 @@ ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct",
           ylab = "Wayfinding Success", xlab = "Group")
 
 
-sub_info %>% ggplot(aes(x = REPO, y = maze_accuracy_pct, fill=REPO)) +
-  geom_boxplot(width=0.5,fatten = 1) +
+
+sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")), y = maze_accuracy_pct, fill= REPO)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
   geom_point(shape=16, position=position_jitter(0.1)) +
   scale_fill_manual(values=c("#6c6c6e","#7d4c5a", "#CD8A9B","#806d71"))+
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
