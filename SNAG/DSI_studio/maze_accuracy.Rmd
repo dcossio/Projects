@@ -333,22 +333,14 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 # **Results** {.tabset .tabset-pills} 
 
 ### Behavior
+
+#### Maze 
 No sex differences between males and females when using wilconox test since normality failed. Do i try and normalize data points?
 ```{r,echo=FALSE, results='hide',message=FALSE}
 # Sex differences Ttest
 sub_info$SEX[sub_info$SEX==1]<-c("Male")
 sub_info$SEX[sub_info$SEX==0]<-c("Female")
 sub_info$SEX <- as.factor(sub_info$SEX)
-
-
-
-
-shapiro.test(female_subs$maze_accuracy_pct) # not normal 
-shapiro.test(male_subs$maze_accuracy_pct) #Not normal 
-
-SexTest <- wilcox.test(female_subs$maze_accuracy_pct,male_subs$maze_accuracy_pct)
-SexTest
-
 
 sub_info %>% ggplot(aes(x = SEX, y = maze_accuracy_pct, fill=SEX)) +
   geom_boxplot(width=0.5,fatten = 1) +
@@ -371,6 +363,7 @@ sub_info %>% ggplot(aes(x = SEX, y = maze_accuracy_pct, fill=SEX)) +
 
 ```
 
+Needed to do the one way  anova between all groups
 ```{r,echo=FALSE, results='hide',message=FALSE}
 # Menopause differences Ttest
 
@@ -384,7 +377,12 @@ group_by(sub_info, REPO) %>% dplyr::summarise(count = n(), mean = mean(maze_accu
 
 MenopauseTest <- aov(maze_accuracy_pct~REPO,sub_info)
 summary(MenopauseTest)
-#Siginifcant effect of REPO on performance 
+
+# BElow is shuyings code
+# options(contrasts=c("contr.sum", "contr.poly"))
+# interaction_acc <- aov(AvgAccuracy~Group*Sex, data = df_maze)
+# Anova(interaction_acc, type="III")
+
 
 ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
           color = "REPO",
@@ -447,7 +445,7 @@ cohen.d.ci((mean(df_maze_male$maze_accuracy_pct) - .1111)/sd(df_maze_male$maze_a
 
 
 ```{r}
-df_maze_pre <- sub_info %>% filter(REPO == 1)
+df_maze_pre <- sub_info %>% filter(REPO == "Pre")
 t.test(df_maze_pre$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_pre$maze_accuracy_pct)
@@ -463,7 +461,7 @@ cohen.d.ci((mean(df_maze_pre$maze_accuracy_pct) - .1111)/sd(df_maze_pre$maze_acc
 
 
 ```{r}
-df_maze_peri <- sub_info %>% filter(REPO == 2)
+df_maze_peri <- sub_info %>% filter(REPO == "Peri")
 t.test(df_maze_peri$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_peri$maze_accuracy_pct)
@@ -480,7 +478,7 @@ cohen.d.ci((mean(df_maze_peri$maze_accuracy_pct) - .1111)/sd(df_maze_peri$maze_a
 
 
 ```{r}
-df_maze_post <- sub_info %>% filter(REPO == 2)
+df_maze_post <- sub_info %>% filter(REPO == "Post")
 t.test(df_maze_post$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_post$maze_accuracy_pct)
@@ -520,6 +518,62 @@ This is a visualization of the accuracy performance for the subjects that i have
 
 
 <!-- <hr> -->
+
+#### FNAME GRoup comparisons
+
+First we are doing a one- way anova between all groups 
+```{r,echo=FALSE, results='hide',message=FALSE}
+
+group_by(sub_info, REPO) %>% dplyr::summarise(count = n(), mean = mean(FNAME, na.rm = TRUE), sd = sd(FNAME, na.rm = TRUE))
+```
+
+```{r, Check group compairsions between FNAME}
+FNAMEMenopauseTest <- aov(FNAME~REPO,sub_info)
+summary(FNAMEMenopauseTest)
+#There is a Siginifcant effect of REPO on performance 
+```
+
+```{r, have to do follow up post hoc tests}
+TukeyHSD(FNAMEMenopauseTest)
+#Peri menopause and males differ in FNAME performance. Not even sure what that means 
+```
+
+
+```{r, FNAME plot}
+sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")), y = FNAME, fill= REPO)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16, position=position_jitter(0.1)) +
+  scale_fill_manual(values=c("#6c6c6e","#7d4c5a", "#CD8A9B","#806d71"))+
+   xlab("Sex")+
+   ylab("FNAME") +
+  scale_y_continuous(breaks = seq(0, 100, by = 20)) +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+
+```
+
+
+#### Hormones and behavior correlations
+
+I am going to rerun correlation analyses between hormones and maze accuracy. I am basing this off of what shuying has previosly done. Below i will highlight what i plan to do. 
+
+1) Split all groups into separate data frames. should already be done above
+2)Check normality of the groups for hormones
+3) if normal, use partial pearson correlation to control for age if not normal use spearman 
+4) shuying had a priori predictions here so we will use a one tailed analysis for estradiol and FSH
+5) progesterone and testosterone would not have any strong a priori so they are two-tailed for women
+6) for males, testosterone is one tailed in positive direction
+7) Do i do one controlling for age and one not controlling for age?? 
+
+
 
 
 ## Summary 
