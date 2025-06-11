@@ -110,6 +110,8 @@ library(gridExtra)
 library(markdown)
 library(psych)
 library(Rmisc)
+library(ppcor)
+
 ```
 
 <!-- Reading in the paths and the CSV that contains all of the subject info -->
@@ -332,15 +334,51 @@ Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used
 
 # **Results** {.tabset .tabset-pills} 
 
-### Behavior
+```{r, creating and changing variables}
 
-#### Maze 
-No sex differences between males and females when using wilconox test since normality failed. Do i try and normalize data points?
-```{r,echo=FALSE, results='hide',message=FALSE}
-# Sex differences Ttest
 sub_info$SEX[sub_info$SEX==1]<-c("Male")
 sub_info$SEX[sub_info$SEX==0]<-c("Female")
 sub_info$SEX <- as.factor(sub_info$SEX)
+sub_info$REPO[sub_info$REPO==0]<-c("Male")
+sub_info$REPO[sub_info$REPO==1]<-c("Pre")
+sub_info$REPO[sub_info$REPO==2]<-c("Peri")
+sub_info$REPO[sub_info$REPO==3]<-c("Post")
+
+#Creating group DF
+df_maze_fem <- sub_info %>% filter(SEX == "Female")
+df_maze_male <- sub_info %>% filter(SEX == "Male")
+df_maze_pre <- sub_info %>% filter(REPO == "Pre")
+df_maze_peri <- sub_info %>% filter(REPO == "Peri")
+df_maze_post <- sub_info %>% filter(REPO == "Post")
+
+```
+
+### Behavior
+
+#### Maze 
+
+LEt's look at the performance distribution and normality
+
+Womens performance is also not normal p-value = 6.529e-10
+```{r}
+ggplot(df_maze_fem, aes(x=maze_accuracy_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(df_maze_fem$maze_accuracy_pct)
+```
+
+Males performance is also not normal p-value = 3.491e-06
+```{r}
+ggplot(df_maze_male, aes(x=maze_accuracy_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(df_maze_male$maze_accuracy_pct)
+```
+
+
+
+No sex differences between males and females when using wilconox test since normality failed. Do i try and normalize data points?
+```{r,echo=FALSE, results='hide',message=FALSE}
+# Sex differences Ttest
+
 
 sub_info %>% ggplot(aes(x = SEX, y = maze_accuracy_pct, fill=SEX)) +
   geom_boxplot(width=0.5,fatten = 1) +
@@ -363,18 +401,15 @@ sub_info %>% ggplot(aes(x = SEX, y = maze_accuracy_pct, fill=SEX)) +
 
 ```
 
-Needed to do the one way  anova between all groups
-```{r,echo=FALSE, results='hide',message=FALSE}
-# Menopause differences Ttest
-
-sub_info$REPO[sub_info$REPO==0]<-c("Male")
-sub_info$REPO[sub_info$REPO==1]<-c("Pre")
-sub_info$REPO[sub_info$REPO==2]<-c("Peri")
-sub_info$REPO[sub_info$REPO==3]<-c("Post")
-
+```{r, summary stats}
 group_by(sub_info, REPO) %>% dplyr::summarise(count = n(), mean = mean(maze_accuracy_pct, na.rm = TRUE), sd = sd(maze_accuracy_pct, na.rm = TRUE))
 
+```
 
+Needed to do the one way  anova between all groups
+
+```{r,echo=FALSE, results='hide',message=FALSE, one way anova}
+# Menopause differences Ttest
 MenopauseTest <- aov(maze_accuracy_pct~REPO,sub_info)
 summary(MenopauseTest)
 
@@ -382,13 +417,9 @@ summary(MenopauseTest)
 # options(contrasts=c("contr.sum", "contr.poly"))
 # interaction_acc <- aov(AvgAccuracy~Group*Sex, data = df_maze)
 # Anova(interaction_acc, type="III")
+```
 
-
-ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
-          color = "REPO",
-          order = c("Male", "Pre", "Peri", "Post"),
-          ylab = "Wayfinding Success", xlab = "Group")
-
+```{r, group boxplot}
 
 
 sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")), y = maze_accuracy_pct, fill= REPO)) +
@@ -408,15 +439,18 @@ sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")
          plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
  )
 
+# ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
+#           color = "REPO",
+#           order = c("Male", "Pre", "Peri", "Post"),
+#           ylab = "Wayfinding Success", xlab = "Group")
 ```
 
 <br>
 Need to see if things are different from chance
-```{r, Chance }
+Women only
+```{r, df_maze_fem  }
 
-df_maze_fem <- sub_info %>% filter(SEX == "Female")
 t.test(df_maze_fem$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
-
 mean(df_maze_fem$maze_accuracy_pct)
 sd(df_maze_fem$maze_accuracy_pct)
 CI(df_maze_fem$maze_accuracy_pct, ci = 0.95)
@@ -427,9 +461,9 @@ CI(df_maze_fem$maze_accuracy_pct, ci = 0.95)
 cohen.d.ci((mean(df_maze_fem$maze_accuracy_pct) - .1111)/sd(df_maze_fem$maze_accuracy_pct),
             n1=59, alpha = 0.05)
 ```
+Males chance
+```{r, df_maze_male}
 
-```{r}
-df_maze_male <- sub_info %>% filter(SEX == "Male")
 t.test(df_maze_male$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_male$maze_accuracy_pct)
@@ -443,9 +477,9 @@ cohen.d.ci((mean(df_maze_male$maze_accuracy_pct) - .1111)/sd(df_maze_male$maze_a
             n1=21, alpha = 0.05)
 ```
 
+Pre menopausal women chance
+```{r,df_maze_pre}
 
-```{r}
-df_maze_pre <- sub_info %>% filter(REPO == "Pre")
 t.test(df_maze_pre$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_pre$maze_accuracy_pct)
@@ -459,9 +493,9 @@ cohen.d.ci((mean(df_maze_pre$maze_accuracy_pct) - .1111)/sd(df_maze_pre$maze_acc
             n1=59, alpha = 0.05)
 ```
 
+Peri menopausal
+```{r, df_maze_peri}
 
-```{r}
-df_maze_peri <- sub_info %>% filter(REPO == "Peri")
 t.test(df_maze_peri$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_peri$maze_accuracy_pct)
@@ -477,8 +511,8 @@ cohen.d.ci((mean(df_maze_peri$maze_accuracy_pct) - .1111)/sd(df_maze_peri$maze_a
 
 
 
-```{r}
-df_maze_post <- sub_info %>% filter(REPO == "Post")
+```{r, df_maze_post}
+
 t.test(df_maze_post$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
 mean(df_maze_post$maze_accuracy_pct)
@@ -561,7 +595,7 @@ sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")
 ```
 
 
-#### Hormones and behavior correlations
+### Hormones and behavior correlations
 
 I am going to rerun correlation analyses between hormones and maze accuracy. I am basing this off of what shuying has previosly done. Below i will highlight what i plan to do. 
 
@@ -573,378 +607,191 @@ I am going to rerun correlation analyses between hormones and maze accuracy. I a
 6) for males, testosterone is one tailed in positive direction
 7) Do i do one controlling for age and one not controlling for age?? 
 
+#### Estradiol 
 
 
-
-## Summary 
-
-Broadly, QA is positively associated with maze accuracy
-
-<!-- The code below is to display the FDR values for the analyses into two columns -->
-
-::::::{style="display: flex;"}
-
-:::{.column width="50%"}
-**QA FDRs when controlling for FNAME**     
-All: **(<span style="color: LightSeaGreen;"> - </span>) 0.001980**       
-Female: **(<span style="color: LightSeaGreen;"> - </span>) 0.003378**  
-Male: **(<span style="color: LightSeaGreen;"> - </span>) 0.000774**  
-Pre : **(<span style="color: MediumOrchid;"> + </span>) 0.006250** | **(<span style="color: LightSeaGreen;"> - </span>) 0.030870**  
-Peri: **(<span style="color: MediumOrchid;"> + </span>) 0.004310** 
-Post: **(<span style="color: MediumOrchid;"> + </span>) 0.000628** | **(<span style="color: LightSeaGreen;"> - </span>) 0.002725** 
-::: 
-  
-:::{ .column width="50%"}
-  **QA FDRs when NOT controlling for FNAME**  
-  All: **(<span style="color: LightSeaGreen;"> - </span>) 0.002320**    
-  Female:**(<span style="color: LightSeaGreen;"> - </span>) 0.003378**      
-  Male:  **(<span style="color: LightSeaGreen;"> - </span>) 0.000216**    
-  Pre : **(<span style="color: LightSeaGreen;"> - </span>) XXXXX**      
-  Peri: **(<span style="color: MediumOrchid;"> + </span>) XXXXX**    
-  Post: **(<span style="color: LightSeaGreen;"> - </span>) XXXXX** | **(<span style="color: MediumOrchid;"> + </span>) XXXXX**
-:::
-::::::
-
-<hr>
-
-::::::{style="display: flex;"}
-
-:::{.column width="50%"}
-**MD FDRs when controlling for FNAME**     
-All: 1.000      
-Female: 1.000  
-Male: **(<span style="color: MediumOrchid;"> + </span>) 0.004082** | **(<span style="color: LightSeaGreen;"> - </span>) 0.250000**        
-Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.002024**    
-Peri: **(<span style="color: MediumOrchid;"> + </span>) 0.166667**          
-Post: **(<span style="color: LightSeaGreen;"> - </span>) 0.012987**  
-::: 
-  
-:::{ .column width="50%"}
-  **MD FDRs when NOT controlling for FNAME**  
-  All: 1.000  
-  Female: 1.000     
-  Male:  **(<span style="color: MediumOrchid;"> + </span>) 0.003333** | **(<span style="color: LightSeaGreen;"> - </span>) 0.020000**  
-  Pre : **(<span style="color: LightSeaGreen;"> - </span>) 0.002128**      
-  Peri: 1.000  
-  Post: 1.000
-:::
-::::::
-
-
-<br><br><br>
-
-<hr>
-
-## QA {.tabset .tabset-pills}
-
-### All subjects 
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-<span> Increased QA is associated with **Decreased ACC** (FDR = 0.001980) </span>
-
-<!-- This code below repeats and is just a way for me to read in the CSV, Clean it up, and then create an aesthetic table for the html -->
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/all/QA_FNAME_all.csv")))
-```
-
-<br>
-
-<p style="text-align:center ; font-size: 24px" > <strong> No FNAME Control </p>
-
-<span> Increased QA is associated with **Decreased ACC** (FDR = 0.002320)</span>
-```{r,echo=FALSE,message=FALSE}
- TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/All/QA_NOFNAME_all.csv")))
+Here let's look at estradiol skews for all women who have a dsp score. It does not pass normality 1.151e-08
+```{r}
+ggplot(df_maze_fem, aes(x=estradiol_spatial_pg_ml)) +
+   geom_bar(width = 10)
+shapiro.test(df_maze_fem$estradiol_spatial_pg_ml)
 ```
 
 
-<br><br><br>
 
-<hr>
+Correlation between maze and estradiol for scan and spatial. No significant association
+```{r, warning=FALSE}
 
-### Females
+# this one uses spatial hormones
+cor.test(df_maze_fem$estradiol_spatial_pg_ml,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-<span> Increased QA is associated with **decreased ACC** FDR= 0.003378</span>
-
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/female/QA_FNAME_female.csv")))
-
+#This one uses scan hormones
+cor.test(df_maze_fem$estradiol_scan_pg_ml,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 ```
 
-<br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong> No Control for FNAME </strong> </p>
-<br>
-
-<span> Increased QA is associated with **decreased ACC** FDR= 0.005495 </span>
-```{r,echo=FALSE,message=FALSE}
- TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/female/QA_NOFNAME_female_2.csv")))
-```
-
-<br><br><br>
-
-<hr>
-
-### Males 
-
-N=21
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br>
-
-<span> Increased QA associated with **Decreased ACC** FDR= 0.000774</strong> </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/male/QA_FNAME_male.csv")))
-
-```
-<br><br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME control</strong> </p>
-<br>
-<span> Increased QA is associated with **decreased ACC** FDR= 0.000216 </span>
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/male/QA_NOFNAME_male.csv")))
-
+Partial correlation between estradiol spatial and performance while controlling for age. no significant association 
+```{r, warning=FALSE}
+pcor.test(df_maze_fem$estradiol_spatial_pg_ml,
+          df_maze_fem$maze_accuracy_pct,
+          df_maze_fem$age_spatial_years, 
+          method = "spearman")
 ```
 
 
-<br><br><br>
+#### Progesterone
 
-<hr>
-
-### Pre
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br>
-
-<span> Increasing QA is associated with **Increased Acc** FDR= 0.006250  </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/pre/QA_FNAME_pre.inc.csv")))
-
-```
-<br>
-
-<span> Increasing QA is associated with **Decreased Acc**  (FDR = 0.030870) </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/pre/QA_FNAME_pre.dec.csv")))
-
-```
-<br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br>
-
-<span> Increasing QA is associated with **Increased Acc** FDR= 0.005952  </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/pre/QA_NOFNAME_pre_inc.csv")))
-
-```
-<br>
-
-<span> Increasing QA is associated with **Decreased Acc** FDR= 0.076101  </span>
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/pre/QA_NOFNAME_pre_dec.csv")))
+Here let's look at progesterone skews for all women who have a dsp score. It does not pass normality 1.912e-12
+```{r}
+ggplot(df_maze_fem, aes(x=progesterone_spatial_ng_ml)) +
+   geom_bar(width = 1)
+shapiro.test(df_maze_fem$progesterone_spatial_ng_ml)
 ```
 
-<hr>
 
 
-### Peri
+Correlation between maze and progesterone for scan and spatial. No significant association p-value = 0.3366
+```{r, warning=FALSE}
 
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br>
+# this one uses spatial hormones
+cor.test(df_maze_fem$progesterone_spatial_ng_ml,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 
-<span> Increased QA associated with **Increased ACC** FDR=0.004310 </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/peri/QA_FNAME_peri.csv")))
-
-```
-<br>
-<br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br><br>
-
-<span> Increased QA associated with **Increased ACC** FDR=0.004202 </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/peri/QA_NOFNAME_peri.csv")))
-
-```
-<br>
-
-<hr>
-
-
-### Post
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-<br>
-
-<span> Increased QA is associated with **Increased ACC** FDR=0.000628  </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/post/QA_FNAME_post.inc.csv")))
-
-```
-<br>
-
-<span> Increased QA is associated with **Decreased ACC** FDR=0.002725 </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/QA/post/QA_FNAME_post.dec.csv")))
-
+#This one uses scan hormones
+cor.test(df_maze_fem$progesterone_scan_ng_ml,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 ```
 
-<br><br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>No Control for FNAME</strong> </p>
-<br>
-
-<span> Increased QA is associated with **Increased ACC** FDR=0.000751  </span>
-```{r,echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/post/QA_NOFNAME_post_inc.csv")))
-```
-<br>
-
-<span> Increased QA is associated with **Decreased ACC** FDR=0.001650 </span>
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/QA/post/QA_NOFNAME_post_dec.csv")))
-
+Partial correlation between progesterone spatial and performance while controlling for age. no significant association 
+```{r, warning=FALSE}
+pcor.test(df_maze_fem$progesterone_spatial_ng_ml,
+          df_maze_fem$maze_accuracy_pct,
+          df_maze_fem$age_spatial_years, 
+          method = "spearman") 
 ```
 
-<br>
 
-<hr>
 
-## MD {.tabset .tabset-pills}
-
-### All subject
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-No significant tracts
-
-<br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>No Control for FNAME</strong> </p>
-
-No significant tracts
-
-<br>
-
-<hr>
-
-### Females
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-No significant tracts
-
-<br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>No Control for FNAME</strong> </p>
-
-No significant tracts
-
-<br>
-
-<hr>
-
-### Males
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-<span> Increased MD is associated with **Increased ACC** FDR=0.004082  </span>
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/male/MD_FNAME_male_inc.csv")))
+#### FSH
+Here let's look at FSH skews for all women who have a dsp score. It does not pass normality 1.193e-06
+```{r}
+ggplot(df_maze_fem, aes(x=fsh_spatial_miu_ml)) +
+   geom_bar(width = 1)
+shapiro.test(df_maze_fem$fsh_spatial_miu_ml)
 ```
 
-<br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>No control for FNAME</strong> </p>
-
-<span> Increased MD is associated with **Increased ACC** FDR=0.003333  </span>
 
 
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/MD/male/MD_NOFNAME_male.inc.csv")))
+Correlation between maze and progesterone for scan and spatial. No significant association p-value =  0.7945
+```{r, warning=FALSE}
+
+# this one uses spatial hormones
+cor.test(df_maze_fem$fsh_spatial_miu_ml,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
+
+#This one uses scan hormones
+cor.test(df_maze_fem$fsh_scan_miu_ml,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 ```
 
-<br>
-
-<span> Increased MD is associated with **Decreased ACC** FDR=0.020000  </span>
-
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/MD/male/MD_NOFNAME_male.dec.csv")))
+Partial correlation between FSH spatial and performance while controlling for age. no significant association 
+```{r, warning=FALSE}
+pcor.test(df_maze_fem$fsh_spatial_miu_ml,
+          df_maze_fem$maze_accuracy_pct,
+          df_maze_fem$age_spatial_years, 
+          method = "spearman") 
 ```
 
-<hr>
+#### Testosterone (males and females)
 
-### Pre
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-<span> Increased MD is associated with **Decreased ACC** FDR=0.002024  </span>
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/pre/MD_FNAME_pre.csv")))
+##### women
+Here let's look at Testosterone skews for all women who have a dsp score. It does not pass normality p-value = 1.93e-05
+```{r}
+ggplot(df_maze_fem, aes(x=testosterone_spatial_ng_dl)) +
+   geom_bar(width = 1)
+shapiro.test(df_maze_fem$testosterone_spatial_ng_dl)
 ```
 
-<br>
-
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME Control</strong> </p>
 
 
-<span> Increased MD is associated with **Decreased ACC** FDR=0.002024  </span>
+Correlation between maze and Testosterone for scan and spatial. No significant association p-value =  0.9101
+```{r, warning=FALSE}
 
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("NO_FNAME/MD/pre/MD_NOFNAME_pre.csv")))
+# this one uses spatial hormones
+cor.test(df_maze_fem$testosterone_spatial_ng_dl,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
+
+#This one uses scan hormones
+cor.test(df_maze_fem$testosterone_scan_ng_dl,
+         df_maze_fem$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
 ```
 
-<br>
-
-<hr>
-
-### Peri
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-<span> Increased MD is associated with **Increased ACC** FDR=0.166667  </span>
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/peri/MD_FNAME_peri.csv")))
+Partial correlation between Testosterone spatial and performance while controlling for age. no significant association  0.3174194
+```{r, warning=FALSE}
+pcor.test(df_maze_fem$testosterone_scan_ng_dl,
+          df_maze_fem$maze_accuracy_pct,
+          df_maze_fem$age_spatial_years, 
+          method = "spearman") 
 ```
 
-<br><br>
+##### Men
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME Control</strong> </p>
-
-no significant TRacts
-<br>
-
-<hr>
-
-
-
-### Post
-
-<p style="text-align:center ; font-size: 24px" > <strong>Control for FNAME</strong> </p>
-
-<span> Increased MD is associated with **Decreased ACC** FDR=0.012987 </span>
-
-```{r, echo=FALSE,message=FALSE}
-TableOutput(CleanInput(ReadingCSVFunc("FNAME/MD/post/MD_FNAME_post.csv")))
+Here let's look at Testosterone skews for all men who have a maze score. it passes p-value = 0.1295
+```{r}
+ggplot(df_maze_male, aes(x=testosterone_spatial_ng_dl)) +
+   geom_bar(width = 1)
+shapiro.test(df_maze_male$testosterone_spatial_ng_dl)
 ```
 
-<br>
 
-<p style="text-align:center ; font-size: 24px" > <strong>No FNAME Control</strong> </p>
 
-no significant TRacts
+Correlation between maze and Testosterone for scan and spatial. No significant association p-value =  0.4246
+```{r, warning=FALSE}
 
-<br>
+# this one uses spatial hormones
+cor.test(df_maze_male$testosterone_spatial_ng_dl,
+         df_maze_male$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
+
+#This one uses scan hormones
+cor.test(df_maze_male$testosterone_scan_ng_dl,
+         df_maze_male$maze_accuracy_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
+```
+
+Partial correlation between Testosterone spatial and performance while controlling for age. no significant association  0.8558466
+```{r, warning=FALSE}
+pcor.test(df_maze_male$testosterone_scan_ng_dl,
+          df_maze_male$maze_accuracy_pct,
+          df_maze_male$age_spatial_years, 
+          method = "spearman") 
+```

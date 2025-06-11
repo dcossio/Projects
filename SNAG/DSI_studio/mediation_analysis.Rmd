@@ -281,7 +281,7 @@ These are the subject I excluded but she included:
 372  
 388  
 
-These were excluded later from hippocampal analyses so i just exlcuded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
+These were excluded later from hippocampal analyses so i just excluded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
 
 
 
@@ -298,10 +298,10 @@ This is going through and reading in the output from dsi studio and then combini
 ```{r,message=FALSE}
 
 # This is a data frame which cotains a folder for each subject with 2 text files 
-path2data <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103")
+path2data <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output")
 
 # List of all subject directories
-subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103", full.names = FALSE,recursive = FALSE) # all of the data extracted from dsi 
+subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output", full.names = FALSE,recursive = FALSE) # all of the data extracted from dsi 
 
 # create an empty dataframe to loop into
 fornix_output_df <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c("subjects","QA_L_fornix","QA_R_fornix","MD_L_fornix","MD_R_fornix"))
@@ -320,12 +320,23 @@ for(file in 1:length((subfiles))){
   # Let's do a quick folder check to make sure it's not empty 
   
   
-  if(file.size(paste0(path2data,"/",subfiles[file])) < 128) next
+  if(file.size(paste0(path2data,"/",subfiles[file])) < 96) next
   
   #grabbing all the left and right variables 
-  L_fornix <- read_delim(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
+  
+  if (file.exists(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt")) == FALSE) {
+    L_fornix <- data.frame(matrix(ncol = 2, nrow = 2))
+  } else{
+    L_fornix <- read_delim(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
+  }
+  
+  
+  if (file.exists(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt")) == FALSE) {
+    R_fornix <- data.frame(matrix(ncol = 2, nrow = 2))
+  }else{
   
   R_fornix <- read_delim(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
+  }
   
   # Putting them into out dataframe
   #Grab all QA values
@@ -495,11 +506,9 @@ shapiro.test(m_data_dsp$dsp_si_true_pct)
 
 Here let's look at estradial skews for all women who have a dsp score. It does not pass normality 4.352e-07
 ```{r}
-
 ggplot(f_data_dsp, aes(x=estradiol_spatial_pg_ml)) +
    geom_bar(width = 10)
 shapiro.test(f_data_dsp$estradiol_spatial_pg_ml)
-
 
 ```
 
@@ -863,11 +872,21 @@ X <- White Matter
 Y <- DSP SI
 M <- Hormones /FSH
 
-Step 1 of mediation is to complete the first correlation in which X= fornix and Y = DSP. WE need to regress our x and y. p=0.03803 
+Step 1 of mediation is to complete the first correlation in which X= fornix and Y = DSP. WE need to regress our x and y. p= 
 
 ```{r}
 model.1 <- lm(dsp_si_true_pct ~  MD_Whole_Fornix , mediation_estradiol_DF) 
 summary(model.1)
+```
+
+```{r}
+model.1.Left <- lm(dsp_si_true_pct ~  MD_L_fornix , mediation_estradiol_DF) 
+summary(model.1.Left)
+```
+
+```{r}
+model.1.R <- lm(dsp_si_true_pct ~  MD_R_fornix , mediation_estradiol_DF) 
+summary(model.1.R)
 ```
 
 Step 2 of mediation is to complete the next correlation in which M= hormones and X = Fornix. p=0.9646 So here the MD  and estradiol are not significant. Stopping here. 
@@ -890,7 +909,7 @@ M <- Hormones /FSH
 
 
 
-Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y, p=0.03803
+Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y, 
 
 ```{r}
 model.1 <- lm(dsp_si_true_pct ~ MD_Whole_Fornix , mediation_FSH_DF) 
