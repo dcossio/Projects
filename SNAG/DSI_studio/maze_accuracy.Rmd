@@ -417,6 +417,8 @@ summary(MenopauseTest)
 # options(contrasts=c("contr.sum", "contr.poly"))
 # interaction_acc <- aov(AvgAccuracy~Group*Sex, data = df_maze)
 # Anova(interaction_acc, type="III")
+
+test1 <- kruskal.test(maze_accuracy_pct~REPO,sub_info)
 ```
 
 ```{r, group boxplot}
@@ -619,7 +621,11 @@ shapiro.test(df_maze_fem$estradiol_spatial_pg_ml)
 
 
 
-Correlation between maze and estradiol for scan and spatial. No significant association
+Correlation between maze and estradiol for scan and spatial. No significant association.
+
+Why use cor test vs cor ?
+
+Cor test is a correlation for paired samples. paired samples are those that are from the same group but different time points. unapiared would be two different groups.
 ```{r, warning=FALSE}
 
 # this one uses spatial hormones

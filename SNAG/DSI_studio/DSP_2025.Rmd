@@ -1,14 +1,14 @@
 ---
-title: "Mediation Analysis"
-author: "Daniela Cossio"
+title: "DSP Analysis and summary 2025"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-    html_document:
+   html_document:
     toc: true
     toc_float: true
-    toc_depth: 2
-    classoption:
-    - twocolumn
+    toc_depth: 6
+    theme: flatly
+editor_options: 
+  chunk_output_type: inline
 ---
 <!-- Reading in my libraries -->
 ```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
@@ -51,7 +51,6 @@ library(markdown)
 library(psych)
 library(ppcor)
 library(mediation)
-
 ```
 
 
@@ -202,54 +201,78 @@ TableOutput <- function(df){
   scroll_box(width = "800px", height = "300px") 
 }
 
-
-
 ```
 
 
+# Overview of experiment and analyses
 
+This is the complete analysis of the DSP task using white matter and bevaior and hormones. 
 
-# Reading in and prepping our data {.tabset .tabset-fade}
+<br><br><br>
 
-<!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
-```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/DSP/"
-
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
-
-All_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp)
-
-DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv") %>% filter(!is.na(subject_id)) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
-```
-
-Here we are reading in the following folders and paths
-
-- Path to the main dir with all the data "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/DSP/"
-<br>
-
-- Path to the subject sheet that contains every single subject who has useable behavior. "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv"
-<br>
-
-- Path to the subject sheet that has the list of subjects that have both a DSP score AND a DSI scan.
-
-<br>
-
-Complete Subject Database
-
-<!-- This is just to visualize the raw subject data base -->
-```{r}
-TableOutput(All_sub_info)
-
-```
-
-<br>
 <hr>
-<br>
+
+# Methods {.tabset .tabset-pills} 
+
+## **Participants** 
+
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 69  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 and 424 failed quality 
+  control check in DSI
+  
+    * All subjects = 69 <br>
+    * Men = 24 <br>
+    * Women = 45 <br>
+    * Pre = 18 <br>
+    * Peri = 14 <br>
+    * Post = 13 <br>
+
+<br><br>
+<hr> 
 
 
-# Methods and approach {.tabset .tabset-fade}
+  
+## **Scan parameters** 
 
-## Thought process
+  * Locations from UCSB and UCI
+  
+<br><br>
+
+<hr> 
+
+
+## **QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br><br>
+
+<hr> 
+
+## **DSI Studio**
+
+  * Version and tags used via singularity container: **chen-2024-05-03**
+  
+  * **Parameters** 
+    * T-threshold = 2.5
+    * Length = 25
+    * Permutation = 4,000
+    * pruning 4
+    * QA
+    * Covariates: sex, age, and FNAME
+
+<hr>
+
+
+## **Hormones and behavior**
+
 I am doing a mediation analysis to understand the relation ship between white matter, hormones, and performance on the dual solution paradigm.
 
 From shuying's data, DSP is associated with estradial. Increased solution index is associated with increased solution index.
@@ -266,7 +289,7 @@ M= Estradiol
 <hr>
 <br>
 
-## Subject Numbers for DSP analyses
+**Subject Numbers for DSP analyses**
 
 Shuyings numbers are as follows:  
 Women: 47  
@@ -287,58 +310,65 @@ These are the subject I excluded but she included:
 These were excluded later from hippocampal analyses so i just excluded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
 
 
+# Reading in and prepping our data {.tabset .tabset-fade}
 
-<br>
-<hr>
-<br>
+<!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
+```{r reading in our CSVs, results='hide',message=FALSE}
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
-## Data Cleaning and organizing
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
 
-### Step 1: Read in the raw data
+behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp)
 
-This is going through and reading in the output from dsi studio and then combining it into one dataframe and then combining that with our data frame that contains our subject data. 
+DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv") %>% filter(!is.na(subject_id)) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
 
-```{r,message=FALSE}
+path2tractometry <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output")
 
-# This is a data frame which cotains a folder for each subject with 2 text files 
-path2data <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output")
+sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/subject_info.csv")
 
 # List of all subject directories
-subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output", full.names = FALSE,recursive = FALSE) # all of the data extracted from dsi 
+tractometry_subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output", full.names = FALSE,recursive = FALSE)
+
+data_dsp <- behavior_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
+f_data_dsp <- data_dsp %>% filter(sex == "Female")
+m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
+
+
+#This is going through and reading in the output from dsi studio and then combining it into one dataframe and then combining that with our data frame that contains our subject data. 
 
 # create an empty dataframe to loop into
 fornix_output_df <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c("subjects","QA_L_fornix","QA_R_fornix","MD_L_fornix","MD_R_fornix"))
 
 # creating a loop to go into each sub dir. read in each txt file and extract the 
-for(file in 1:length((subfiles))){
+for(file in 1:length((tractometry_subfiles))){
 
   
   # creating an empty single row dataframe
   empty_loop_df <- data.frame(matrix(ncol = 5, nrow = 1))  %>% `colnames<-`(c("subjects","QA_L_fornix","QA_R_fornix","MD_L_fornix","MD_R_fornix"))
   
   # inputting the subject id
-  empty_loop_df$subjects <- str_remove(subfiles[file],"sub-")
+  empty_loop_df$subjects <- str_remove(tractometry_subfiles[file],"sub-")
   
   
   # Let's do a quick folder check to make sure it's not empty 
   
   
-  if(file.size(paste0(path2data,"/",subfiles[file])) < 96) next
+  if(file.size(paste0(path2tractometry,"/",tractometry_subfiles[file])) < 96) next
   
   #grabbing all the left and right variables 
   
-  if (file.exists(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt")) == FALSE) {
+  if (file.exists(paste0(path2tractometry,"/",tractometry_subfiles[file],"/",tractometry_subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt")) == FALSE) {
     L_fornix <- data.frame(matrix(ncol = 2, nrow = 2))
   } else{
-    L_fornix <- read_delim(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
+    L_fornix <- read_delim(paste0(path2tractometry,"/",tractometry_subfiles[file],"/",tractometry_subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixL.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
   }
   
   
-  if (file.exists(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt")) == FALSE) {
+  if (file.exists(paste0(path2tractometry,"/",tractometry_subfiles[file],"/",tractometry_subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt")) == FALSE) {
     R_fornix <- data.frame(matrix(ncol = 2, nrow = 2))
   }else{
   
-  R_fornix <- read_delim(paste0(path2data,"/",subfiles[file],"/",subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
+  R_fornix <- read_delim(paste0(path2tractometry,"/",tractometry_subfiles[file],"/",tractometry_subfiles[file],"_space-T1w_desc-preproc_dwi.ProjectionBasalGanglia_FornixR.stat.txt"),col_names = FALSE) %>% filter(X1 %in% c("qa","md"))
   }
   
   # Putting them into out dataframe
@@ -366,53 +396,64 @@ clean_DF <- cbind(altered_sub_info,fornix_output_df)
 clean_DF$QA_Whole_Fornix <- rowMeans(clean_DF[,c("QA_L_fornix","QA_R_fornix")])
 
 clean_DF$MD_Whole_Fornix <- rowMeans(clean_DF[,c("MD_L_fornix","MD_R_fornix")])
+
+
+all_women_clean_df <- clean_DF %>% filter(sex=="Female")
+
 ```
 
-<br>
+Below is a list of important variables:    
+* working_dir  
+* rows2grab  
+* behavior_sub_info  
+* DSP_DSI_DF  
+* path2tractometry  
+* sub_info  
+* tractometry_subfiles  
+* clean_DF  
+* data_dsp  
+
+<br><br>
+
 <hr>
-<br>
 
-### Step 2: Normality check and visualization of data {.tabset .tabset-fade}
+# Behavior and Hormones {.tabset .tabset-pills}
 
-#### DSP distribution & Normality (behav only) {.tabset}
+## Step 1: Normality check and visualization of data 
+
+### DSP distribution & Normality (behav only) {.tabset}
 
 Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76 subjects and i noted the discrpenacy above. You can see there is a right hand skew on this data and it does not pass normality test (p-value = 9.242e-05)
 
 ```{r}
-data_dsp <- All_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
-
 ggplot(data_dsp, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(data_dsp$dsp_si_true_pct)
-
 ```
+
 
 <br>
 <br>
 
 The table below summarizes all of the columns. Each row indicates a column location.
 ```{r}
-
 TableOutput(describe(data_dsp))
 ```
 
 <br>
 <br>
+
 So can we then try and normalize the data?
 
 Here let's normalize using log transform. Log transform does change the skew but also some numbers (0) are now labeled as inf. Meaning we should do something to make those turn into an acutal number  perhaps 0.0001?
 
 ```{r}
-
 ggplot(data_dsp, aes(x=log(dsp_si_true_pct))) +
    geom_bar(width = 0.1)
 
 #I think things need to be changed from 0 to 0. 001
 shapiro.test(log(data_dsp$dsp_si_true_pct)) # this comes out as Na but shuyings did not so idk why that's happening.
-
-
 ```
-
 
 <br>
 
@@ -430,19 +471,14 @@ shapiro.test(sqrt(data_dsp$dsp_si_true_pct)) #
 
 <br>
 
-
-
 #### Females DSP Distribution & normality (behav only)
 
 Now here i want to look at the skews for males and females separately. There's a bit of a skew and it does not pass normality (p-value = 0.001114)
 
 ```{r}
-f_data_dsp <- data_dsp %>% filter(sex == "Female") # Women only
-
 ggplot(f_data_dsp, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(f_data_dsp$dsp_si_true_pct)
-
 ```
 
 ```{r}
@@ -450,8 +486,6 @@ df_dsp_norm <- f_data_dsp %>%
   mutate_at(scale, .vars = vars(estradiol_spatial_pg_ml,
                                 fsh_spatial_miu_ml,
                                 dsp_si_true_pct))
-
-
 ```
 
 LEt's look at a transformation of all womens data
@@ -489,21 +523,14 @@ shapiro.test(sqrt(f_data_dsp$dsp_si_true_pct)) #
 Now let's look at males. Here there is a bit of a skew and it failes normality (p-value = 0.02375)
 
 ```{r}
-#check visualization and normality of all dsp data not just the scans ones
-  
-m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
-  
-
 ggplot(m_data_dsp, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(m_data_dsp$dsp_si_true_pct)
-
 ```
 
 
 <br>
 <br>
-
 
 #### Estradiol distribution & normality
 
@@ -521,8 +548,6 @@ Can we tranform Estradial . This still fails normality but just barely p-value =
 ggplot(f_data_dsp, aes(x=log(estradiol_spatial_pg_ml))) +
    geom_freqpoly(width = 10)
 shapiro.test(log(f_data_dsp$estradiol_spatial_pg_ml))
-
-
 ```
 
 Square root?This still fails normality but just barely p-value = 0.002019
@@ -531,8 +556,6 @@ Square root?This still fails normality but just barely p-value = 0.002019
 ggplot(f_data_dsp, aes(x=sqrt(estradiol_spatial_pg_ml))) +
    geom_freqpoly(width = 10)
 shapiro.test(sqrt(f_data_dsp$estradiol_spatial_pg_ml))
-
-
 ```
 
 <br>
@@ -546,8 +569,6 @@ FSh also has a skew and fails normality p-value = 0.0008676
 ggplot(f_data_dsp, aes(x=fsh_spatial_miu_ml)) +
    geom_bar(width = 10)
 shapiro.test(f_data_dsp$fsh_spatial_miu_ml)
-
-
 ```
 <br> 
 
@@ -557,8 +578,6 @@ Can we tranform FSH . This still fails normality p-value = 0.0008156
 ggplot(f_data_dsp, aes(x=log(fsh_spatial_miu_ml))) +
    geom_freqpoly(width = 10)
 shapiro.test(log(f_data_dsp$fsh_spatial_miu_ml))
-
-
 ```
 
 Square root?This still fails normality p-value = 0.003438.
@@ -567,8 +586,6 @@ Square root?This still fails normality p-value = 0.003438.
 ggplot(f_data_dsp, aes(x=sqrt(fsh_spatial_miu_ml))) +
    geom_freqpoly(width = 10)
 shapiro.test(sqrt(f_data_dsp$fsh_spatial_miu_ml))
-
-
 ```
 
 
@@ -582,27 +599,19 @@ No good way to normalize this data so far. I will probably leave it as is.
 So just like above, this data set is also right skewed and fails normality 0.005673
 
 ```{r}
-
 ggplot(clean_DF, aes(x=clean_DF$dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 shapiro.test(clean_DF$dsp_si_true_pct)
-
-
-
 ```
 
 <br>
 
 Again, for women there is a skew but barely fails normality p=0.02
 ```{r}
-
-all_women_clean_df <- clean_DF %>% filter(sex=="Female")
-
 ggplot(all_women_clean_df, aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
 
 shapiro.test(all_women_clean_df$dsp_si_true_pct)
-
 ```
 
 So let's try transforming this
@@ -652,8 +661,8 @@ shapiro.test(sqrt(all_women_clean_df$dsp_si_true_pct))
 <hr>
 <br>
 
+## Step 2: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
 
-### Step 3: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
 <!-- Creating a dataframe for just the estradiaol people -->
 ```{r}
 mediation_estradiol_DF <-
@@ -725,10 +734,13 @@ mediation_FSH_DF <-
 
 
 
+<br><br>
 
-## Can we replicate shuyings findings? {.tabset .tabset-pills}
+<hr>
 
-### Estradiol
+# Can we replicate shuyings findings? {.tabset .tabset-pills}
+
+## Estradiol
 
 Below is the code that recreates shuyings results in her dissertation. 
 "For the DSP task, women with higher estradiol levels took more shortcuts, such that higher estradiol levels were positively associated with solution index (rs(45) = 0.42, p = 0.002)". She used a one-tail spearman correlation because dsp and estradiol fail normality tests. Additionally she removed two subjects due to outliars. 
@@ -867,6 +879,11 @@ ggplot(data=all_women_clean_df, aes(x=fsh_spatial_miu_ml)) +
 
 <hr>
 
+
+<br><br>
+
+<hr>
+
 # Mediation {.tabset .tabset-fade}
 
 ## Estradiol
@@ -935,9 +952,11 @@ summary(model.2)
 
 - I can replicate shuyings one tailed analysies but i don't know if i can do an actual mediation analysis. When i do a linear regression, nothing is significant. 
 
-- For estradiol, solution index is associated with MD. Shuyings results show that estradiol is associated with more shortcuts but estradiol is not associated with MD based on our linear regression here. So white matter contributes to SI performance, and so does estradiol but estradiol does not impact white matter. Therefore they may be influencing SI performance through different mechanisms. 
+- 
+CANNOT REPLICATE THIS WITH NEW TRACTOMETRY VERSION: For estradiol, solution index is associated with MD. Shuyings results show that estradiol is associated with more shortcuts but estradiol is not associated with MD based on our linear regression here. So white matter contributes to SI performance, and so does estradiol but estradiol does not impact white matter. Therefore they may be influencing SI performance through different mechanisms. 
 
 -similar for FSH. We know that MD and SI are associated. We know FSH and SI are associated. The problem is that MD and FSh are not associated. Therefore they are influencing performance via different mechanisms. 
 
 
 
+# Correlational tractography results 
