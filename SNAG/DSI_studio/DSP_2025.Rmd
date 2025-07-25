@@ -109,100 +109,6 @@ hr {
 
 ```
 
-<!-- Below is a bunch of functions that reduce the code throughout the script -->
-```{r functions, echo=FALSE, results='hide',message=FALSE}
-
-ReadingCSVFunc <- function(pathname){
-  
-  read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
-  
-   #README
-  #Purpose: to read in the CSVs that I extract from the correlational tractography from DSI studio.  
-  #Inputs: You simply need to include the path to the CSV from the working directory. We set our working dir above so you just need the rest of the path.
-  
-}
-
-CleanInput <- function(DF){
-  #README
-  # The purpose of this function is to take the CSV that I extract from the correlational tractography and that has already been read into the script and made into a dataframe. It is then cleaned to create a clean output that grabs the following rows: "Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)"), and then re organizes the information for each subject into one dataframe. There's an if statement because some CSVs only have one significant tract and it needs a slightly different code to reorganize that. 
-  
-  #INPUT: Should take in a DF that was created when you read in the CSV from the correlational tract analysis. The output of the ReadingCSVFunc
-
- DF <- DF %>% remove_empty("cols") 
-  
-  if(length(DF) < 3){
-    DF <- DF %>% 
-            filter(V1 %in% rows2grab) %>% 
-              t() %>% 
-                `colnames<-`(rows2grab) %>% 
-                  as.data.frame() %>% 
-                    `[`(-c(1),)
-    
-  } else{
-    
-    DF <- DF %>% 
-      filter(V1 %in% rows2grab) %>% 
-        t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame() 
-  }
- 
-          
-  return(DF)
-  
-}
-
-
-Extract_raw_values <- function(DF,Metric) {
-  # Purpose of this function is to clean the data without me having to copy and paste everything later. 
-  
-  # Data = raw unclean dataframe we want to clean up 
-  # Metric will be either MD or QA
-  # sex is either male or female
- 
-  
-  # Let's read in our data frame 
-  
-  # grab  ROIcolumn names 
-  colNames <- DF  %>% remove_empty("cols") %>%
-  filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
-  
-  
-  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct")) 
- 
-  # Let's grab our values 
-  if (Metric == "MD"){
-    Values <- DF %>% remove_empty("cols") %>% 
-     filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(c("Subjects",colNames)) 
-  }
-  else{
-    Values <- DF %>%
-     remove_empty("cols") %>%
-      filter(str_detect(V1, c("mean_qa"))) %>% 
-  `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
-
-  }
-  
-  # now let's put this together 
-  ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
-  Values[,2:length(Values)] <- ConvToNum
-  
-  cleanedDF <- cbind(subinfo,Values) %>% na.omit() %>% select(-c("Subjects"))
-  
-  return (cleanedDF)
-}
-
-
-TableOutput <- function(df){
-  knitr::kable(df, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "300px") 
-}
-
-```
-
 
 # Overview of experiment and analyses
 
@@ -290,22 +196,30 @@ M= Estradiol
 <br>
 
 **Subject Numbers for DSP analyses**
+Total SNAG numbers: 137  
+    * 60 removed
+Total participants with DSP: 77
+Total participants with DSI scans: 73
+Total participants used in analyses: 69
 
-Shuyings numbers are as follows:  
+
+Shuyings numbers are as follows from her behavioral task, idk who she excluded:  
 Women: 47  
-MEn:29  
-Total:76
+MEn:28  
+Total:75
 
 Daniela's
 
-Women: 47   
-Men: 27  
-Total: 74  
+Women: 45   
+Men: 23  
+Total: 68  
 
-These are the subject I excluded but she included:  
-352  
-372  
-388  
+Subjects I excluded 
+347 for Low quality outliar
+424 for low quality outliar
+372 for neurochistosomaisis
+388 for cyst in cerebellum
+352 for depression
 
 These were excluded later from hippocampal analyses so i just excluded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
 
@@ -316,22 +230,26 @@ These were excluded later from hippocampal analyses so i just excluded their beh
 ```{r reading in our CSVs, results='hide',message=FALSE}
 working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
-rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)", "volume(mm^3)")
+rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","span(mm)", "total volume(mm^3)")
 
-behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp)
+behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
 
-DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_DSP_scans.csv") %>% filter(!is.na(subject_id)) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
+DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
+
 
 path2tractometry <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output")
 
-sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/subject_info.csv")
+# sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/subject_info.csv") # I dont think this one is necessary
 
 # List of all subject directories
 tractometry_subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output", full.names = FALSE,recursive = FALSE)
 
-data_dsp <- behavior_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
-f_data_dsp <- data_dsp %>% filter(sex == "Female")
-m_data_dsp<- data_dsp %>% filter(sex=="Male") # Men only
+f_data_dsp <- DSP_DSI_DF %>% filter(sex == "Female")
+m_data_dsp<- DSP_DSI_DF %>% filter(sex=="Male")
+
+Behavioronly_data_dsp <- behavior_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
+
+Behavioronly_Female_data_dsp <- behavior_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) %>%  filter(sex=="Female")
 
 
 #This is going through and reading in the output from dsi studio and then combining it into one dataframe and then combining that with our data frame that contains our subject data. 
@@ -399,20 +317,114 @@ clean_DF$MD_Whole_Fornix <- rowMeans(clean_DF[,c("MD_L_fornix","MD_R_fornix")])
 
 
 all_women_clean_df <- clean_DF %>% filter(sex=="Female")
+all_men_clean_df <- clean_DF %>% filter(sex=="Male")
 
 ```
 
-Below is a list of important variables:    
-* working_dir  
-* rows2grab  
-* behavior_sub_info  
-* DSP_DSI_DF  
+<!-- Below is a bunch of functions that reduce the code throughout the script -->
+```{r functions, echo=FALSE, results='hide',message=FALSE}
+
+ReadingCSVFunc <- function(pathname){
+  
+  read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
+  
+   #README
+  #Purpose: to read in the CSVs that I extract from the correlational tractography from DSI studio.  
+  #Inputs: You simply need to include the path to the CSV from the working directory. We set our working dir above so you just need the rest of the path.
+  
+}
+
+CleanInput <- function(DF){
+  #README
+  # The purpose of this function is to take the CSV that I extract from the correlational tractography and that has already been read into the script and made into a dataframe. It is then cleaned to create a clean output that grabs the following rows: "Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)"), and then re organizes the information for each subject into one dataframe. There's an if statement because some CSVs only have one significant tract and it needs a slightly different code to reorganize that. 
+  
+  #INPUT: Should take in a DF that was created when you read in the CSV from the correlational tract analysis. The output of the ReadingCSVFunc
+
+ DF <- DF %>% remove_empty("cols") 
+  
+  if(length(DF) < 3){
+    DF <- DF %>% 
+            filter(V1 %in% rows2grab) %>% 
+              t() %>% 
+                `colnames<-`(rows2grab) %>% 
+                  as.data.frame() %>% 
+                    `[`(-c(1),)
+    
+  } else{
+    
+    DF <- DF %>% 
+      filter(V1 %in% rows2grab) %>% 
+        t() %>%  `colnames<-`(rows2grab) %>% as.data.frame(x = .) %>% 
+              `[`(-c(1),) 
+  }
+ 
+          
+  return(DF)
+  
+}
+
+
+Extract_raw_values <- function(DF,Metric) {
+  # Purpose of this function is to clean the data without me having to copy and paste everything later. 
+  
+  # Data = raw unclean dataframe we want to clean up 
+  # Metric will be either MD or QA
+  # sex is either male or female
+ 
+  
+  # Let's read in our data frame 
+  
+  # grab  ROIcolumn names 
+  colNames <- DF  %>% remove_empty("cols") %>%
+  filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
+  
+  
+  subinfo <- DSP_DSI_DF  %>% dplyr::select(c("subject_id", "sex", "age_scan_years", "dsp_si_true_pct", "estradiol_spatial_pg_ml","estradiol_scan_pg_ml","testosterone_spatial_ng_dl", "fsh_spatial_miu_ml","fsh_spatial_miu_ml","progesterone_scan_ng_ml","progesterone_spatial_ng_ml")) 
+ 
+  # Let's grab our values 
+  if (Metric == "MD"){
+    Values <- DF %>% remove_empty("cols") %>% 
+     filter(str_detect(V1, c("mean_md"))) %>%
+   `colnames<-`(c("Subjects",colNames)) 
+  }
+  else{
+    Values <- DF %>%
+     remove_empty("cols") %>%
+      filter(str_detect(V1, c("mean_qa"))) %>% 
+  `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
+
+  }
+  
+  # now let's put this together 
+  ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
+  Values[,2:length(Values)] <- ConvToNum
+  
+  cleanedDF <- cbind(subinfo,Values) %>% na.omit() %>% dplyr::select(-c("Subjects"))
+  
+  return (cleanedDF)
+}
+
+
+TableOutput <- function(df){
+  knitr::kable(df, row.names=F) %>% 
+  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "800px", height = "300px") 
+}
+
+```
+
+Below is a list of important variables:      
+* working_dir : path directory to main working directory   
+* rows2grab : information to grab from tables  
+* behavior_sub_info : All SNAG subjects including those that do not have DSP score. this is straight raw data 
+* DSP_DSI_DF : CSV that specifically have DSP score and a scan with them
+* f_data_dsp: female only from DSP_DSIDF frame. scan and DSP
 * path2tractometry  
 * sub_info  
 * tractometry_subfiles  
-* clean_DF  
-* data_dsp  
-
+* clean_DF : this is a data frame with all the tractometry results. only 54 of subjects were able to have tractometry performed but I might manually run things to see if i can extract.  
+* Behavioronly_data_dsp : behavior scans removing 372,388,352
+* Behavioronly_Female_data_dsp: behavior scans for women only. Shuyings analyses number
 <br><br>
 
 <hr>
@@ -423,36 +435,63 @@ Below is a list of important variables:
 
 ### DSP distribution & Normality (behav only) {.tabset}
 
-Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76 subjects and i noted the discrpenacy above. You can see there is a right hand skew on this data and it does not pass normality test (p-value = 9.242e-05)
+Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76/77  subjects and i noted the Discrepancy above. I removed 372,388, 352. Shuying probably did not exclude 388. 
 
-```{r}
-ggplot(data_dsp, aes(x=dsp_si_true_pct)) +
+<br>
+
+You can see there is a right hand skew on this data and it does not pass normality test (p-value = 0.0004688). The dataset below is the 74 subjects that include 3 males excluded due to issues above. 
+
+```{r,Normality check and distribution using Behavioronly_data_dsp }
+ggplot(Behavioronly_data_dsp,aes(x=dsp_si_true_pct)) +
    geom_bar(width = 0.1)
-shapiro.test(data_dsp$dsp_si_true_pct)
+shapiro.test(DSP_DSI_DF$dsp_si_true_pct)
 ```
 
+<br>
+
+Here, I am checking skew using the dataframe that lists all subjects with a scan and DSP score. This brings us to 68 subjects. You can see there is a right hand skew on this data and it does not pass normality test (p-value = 0.0002913). 
+
+
+```{r, Normality check and distribution using DSP_DSI_DF }
+ggplot(DSP_DSI_DF,aes(x=dsp_si_true_pct)) +
+   geom_bar(width = 0.1)
+shapiro.test(DSP_DSI_DF$dsp_si_true_pct)
+```
+
+<br>
+
+```{r, Visualization plots for DSP_DSI_DF}
+ ggplot(DSP_DSI_DF, aes(x=subject_id,y=dsp_si_true_pct)) +
+ geom_point(size=4, color = "black") +    labs(x ="SI", y = "solution index") + scale_fill_manual(values = c("#E2929D","#502E23"))
+ 
+ test <- DSP_DSI_DF$dsp_si_true_pct %>% sort() %>% as.data.frame() %>% mutate(rank=1:68)
+ ggplot(test, aes(x=rank,y=.)) + geom_point(size=4, color = "black")
+ 
+ 
+```
 
 <br>
 <br>
 
 The table below summarizes all of the columns. Each row indicates a column location.
 ```{r}
-TableOutput(describe(data_dsp))
+TableOutput(describe(DSP_DSI_DF))
 ```
 
 <br>
 <br>
 
-So can we then try and normalize the data?
+### So can we then try and normalize the data?{.tabset}
+
 
 Here let's normalize using log transform. Log transform does change the skew but also some numbers (0) are now labeled as inf. Meaning we should do something to make those turn into an acutal number  perhaps 0.0001?
 
 ```{r}
-ggplot(data_dsp, aes(x=log(dsp_si_true_pct))) +
+ggplot(DSP_DSI_DF, aes(x=log(dsp_si_true_pct))) +
    geom_bar(width = 0.1)
 
 #I think things need to be changed from 0 to 0. 001
-shapiro.test(log(data_dsp$dsp_si_true_pct)) # this comes out as Na but shuyings did not so idk why that's happening.
+shapiro.test(log(DSP_DSI_DF$dsp_si_true_pct)) # this comes out as Na but shuyings did not so idk why that's happening.
 ```
 
 <br>
@@ -462,10 +501,10 @@ LEt's try a square root transform
 The square root transform normalizes it a bit more but it still failed normality test. 
 ```{r}
 
-ggplot(data_dsp, aes(x=sqrt(dsp_si_true_pct))) +
+ggplot(DSP_DSI_DF, aes(x=sqrt(dsp_si_true_pct))) +
    geom_bar(width = 0.1)
 
-shapiro.test(sqrt(data_dsp$dsp_si_true_pct)) # 
+shapiro.test(sqrt(DSP_DSI_DF$dsp_si_true_pct)) # 
 
 ```
 
@@ -560,7 +599,7 @@ shapiro.test(sqrt(f_data_dsp$estradiol_spatial_pg_ml))
 
 <br>
 
-#### FSH distribution & normality
+### FSH distribution & normality
 
 FSh also has a skew and fails normality p-value = 0.0008676
 
@@ -594,7 +633,7 @@ No good way to normalize this data so far. I will probably leave it as is.
 <br>
 <br>
 
-#### DSP+Scan Distribution  
+### TRactometry results DF
 
 So just like above, this data set is also right skewed and fails normality 0.005673
 
@@ -738,17 +777,91 @@ mediation_FSH_DF <-
 
 <hr>
 
-# Can we replicate shuyings findings? {.tabset .tabset-pills}
+# Step 3: Can we replicate shuyings findings? {.tabset .tabset-pills}
 
-## Estradiol
+## Estradiol {.tabset .tabset-pills}
 
 Below is the code that recreates shuyings results in her dissertation. 
 "For the DSP task, women with higher estradiol levels took more shortcuts, such that higher estradiol levels were positively associated with solution index (rs(45) = 0.42, p = 0.002)". She used a one-tail spearman correlation because dsp and estradiol fail normality tests. Additionally she removed two subjects due to outliars. 
 
-Below are the results without removing outliars
-our results p=0.001601
-N=47
+### Estradiol and Solution Index
+I reran these but with my final subset of people because i was able to replicate shuyings findings with her dataset.
+
+**One-tailed correlation using all females**
+
+- Here he have code for both spatial and scan. I'm going to comment the scan ones and just use spatial. Results are as follows: **Estradiol is positively correlated with SI (n=47, r(45)=0.42, p=value=0.002).** This is what shuying originally found.
+
+```{r, warning=FALSE,"qEst_SI correlation using Behavioronly_data_dsp"}
+
+# this one uses spatial hormones
+cor.test(Behavioronly_Female_data_dsp$estradiol_spatial_pg_ml,
+         Behavioronly_Female_data_dsp$dsp_si_true_pct,
+         conf.level = 0.95,
+         alternative = "greater",
+         method = "spearman")
+
+# #This one uses scan hormones
+# cor.test(Behavioronly_Female_data_dsp$estradiol_scan_pg_ml,
+#          Behavioronly_Female_data_dsp$dsp_si_true_pct,
+#          conf.level = 0.95,
+#          alternative = "greater",
+#          method = "spearman")
+```
+
+<br>
+
+**removing outliar** 
+Here it is if we remove outliars p= 0.0035. REplicates shuyings code and results. 
+probably not adding this tho. so 
 ```{r, warning=FALSE}
+f_beh_data_outlier_e <- Behavioronly_Female_data_dsp  %>%  filter(!subject_id %in% c("415", "355"))
+
+cor.test(f_beh_data_outlier_e$estradiol_spatial_pg_ml,
+         f_beh_data_outlier_e$dsp_si_true_pct,
+         alternative = "greater",
+         conf.level = 0.95,
+         method = "spearman") 
+
+
+```
+
+<br>
+
+**One-tailed correlation controlling for AGE using all females**
+
+Here we want to control for age. I saw shuying use two different approaches. Here is the first one she used. it allows for a one-railed hypothesis. **Estradiol is significantly associated with SI when controlling for age (n=47, r(45)=0.28, p=0.029).** This replicated Shuyings results 
+```{r, warning=FALSE,"1 tailed Est and SI correlation controlling age using Behavioronly_data_dsp"}
+
+x <- Behavioronly_Female_data_dsp$estradiol_spatial_pg_ml
+y <- Behavioronly_Female_data_dsp$dsp_si_true_pct
+z <- Behavioronly_Female_data_dsp$age_spatial_years
+cor.test(lm(x ~ z)$residuals,
+         lm(y ~ z)$residuals,
+         alternative = "greater",
+         conf.level = 0.95,
+         method = "spearman") 
+```
+
+<br>
+
+**Two-tailed correlation controlling for AGE using all females**
+This is not what we want but i'm leaving it in here in case i forget that i already did this. 
+```{r, warning=FALSE, "2 tailed Est and SI correlation controlling age using Behavioronly_data_dsp"}
+pcor.test(Behavioronly_Female_data_dsp$estradiol_spatial_pg_ml,
+          Behavioronly_Female_data_dsp$dsp_si_true_pct,
+          Behavioronly_Female_data_dsp$age_spatial_years, 
+          method = "spearman") #p-value=0.02876795
+
+```
+
+<br>
+
+
+**One-tailed correlation using excluding 2 females missing DSI scan**
+- This is excluding two women who do not have scans. originally did this but we wanted to try and get as many Ns as possible so manuscript will include those 2. See code and results above. 
+
+- Here we have code for both spatial and scan. I'm going to comment the scan ones and just use spatial. Results are as follows: **Estradiol is positively correlated with SI (n=45, r(43)=0.46, p=value=0.0008).** 
+```{r, warning=FALSE, "1 tailed Est and SI correlation using DSP_SI_DF"}
 
 # this one uses spatial hormones
 cor.test(f_data_dsp$estradiol_spatial_pg_ml,
@@ -757,78 +870,127 @@ cor.test(f_data_dsp$estradiol_spatial_pg_ml,
          alternative = "greater",
          method = "spearman")
 
-#This one uses scan hormones
-cor.test(f_data_dsp$estradiol_scan_pg_ml,
-         f_data_dsp$dsp_si_true_pct,
-         conf.level = 0.95,
-         alternative = "greater",
-         method = "spearman")
+# #This one uses scan hormones
+# cor.test(f_data_dsp$estradiol_scan_pg_ml,
+#          f_data_dsp$dsp_si_true_pct,
+#          conf.level = 0.95,
+#          alternative = "greater",
+#          method = "spearman")
 ```
 
+**One-tailed correlation using excluding 2 females missing DSI scan controlling for AGE**
 
-She also did a partial cor to control for age. here it is still significant even when controlling for age. p-value=0.02876795
+Here we want to control for age. I saw shuying use two different approaches. Here is the first one she used. it allows for a one-railed hypothesis. **Estradiol is significantly associated with SI when controlling for age (n=45, r(43)=0.32, p=0.02).** 
+```{r,warning=FALSE, "1 tailed Est and SI correlation controlling for age using DSP_SI_DF"}
 
-```{r, warning=FALSE}
+x <- f_data_dsp$estradiol_spatial_pg_ml
+y <- f_data_dsp$dsp_si_true_pct
+z <- f_data_dsp$age_spatial_years
+cor.test(lm(x ~ z)$residuals,
+         lm(y ~ z)$residuals,
+         alternative = "greater",
+         conf.level = 0.95,
+         method = "spearman") 
+```
+
+**two-tailed correlation using excluding 2 females missing DSI scan controlling for AGE**
+Here is a two tailed version but this is wrong. 
+```{r, warning=FALSE, "2 tailed Est and SI correlation controlling for age using DSP_SI_DF"}
 pcor.test(f_data_dsp$estradiol_spatial_pg_ml,
           f_data_dsp$dsp_si_true_pct,
           f_data_dsp$age_spatial_years, 
           method = "spearman") #p-value=0.02876795
-
 ```
           
+
+
           
-Here it is if we remove outliars p= 0.0035. REplicates shuyings code and results. 
+```{r, "Estradiol VS DSP scatter plot using Behavioronly_Female_data_dsp DF" }
 
-```{r, warning=FALSE}
-f_data_dsp_outlier_e <- f_data_dsp  %>%  filter(!subject_id %in% c(
-    "415", "355"))
+# Using 
+#PDF 9 X 6
+ggplot(data = Behavioronly_Female_data_dsp, aes(x = estradiol_spatial_pg_ml,
+                               y = dsp_si_true_pct, color=repo_status)) +
+  geom_point(aes(color = factor(repo_status)), size=4) +
+  scale_color_manual(values=c("#7d4c5a", "#CD8A9B","#806d71")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE)+
+  theme(panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  
 
-cor.test(f_data_dsp_outlier_e$estradiol_spatial_pg_ml,
-         f_data_dsp_outlier_e$dsp_si_true_pct,
-         alternative = "greater",
+```
+
+
+## FSH
+
+**One-tailed correlation using all females**
+
+
+- Here he have code for both spatial and scan. I'm going to comment the scan ones and just use spatial. Results are as follows: **FSH is negatively correlated with SI (n=46, r(44)=-0.28, p=value=0.029).** This is what shuying originally found.
+
+
+```{r, warning=FALSE, "FSH and SI correlation using Behavioronly_data_dsp"}
+# we need to make a new DF for FSH specifc people 
+
+FSH__Female_data_dsp <- Behavioronly_Female_data_dsp %>% filter(!is.na(fsh_spatial_miu_ml)) 
+
+# this one uses spatial hormones
+cor.test(FSH__Female_data_dsp$fsh_spatial_miu_ml,
+         FSH__Female_data_dsp$dsp_si_true_pct,
          conf.level = 0.95,
-         method = "spearman") #p-value:0.003529
+         alternative = "less",
+         method = "spearman")
 
-
+# #This one uses scan hormones
+# cor.test(Behavioronly_Female_data_dsp$fsh_spatial_miu_ml,
+#          Behavioronly_Female_data_dsp$dsp_si_true_pct,
+#          conf.level = 0.95,
+#          alternative = "less",
+#          method = "spearman")
 ```
 
-
-
-### FSH
-
-Here, its another one tailed correlation test. Pvalue 0.02903
-```{r, warning=FALSE}
-fsh <- f_data_dsp %>% filter(is.na(fsh_spatial_miu_ml) != TRUE)
-
-cor.test(fsh$fsh_spatial_miu_ml,
-         fsh$dsp_si_true_pct,
-         conf.level = 0.95,
-          alternative = "less",
-         method = "spearman") # Pvalue 0.02903
-```
-
-This is a partial correlation that controls for spatial age and is not significant: Pvalue 0.414744. This replicates some of shuyins code but not what was in the script.
-```{r}
-pcor.test(fsh$fsh_spatial_miu_ml,
-          fsh$dsp_si_true_pct,
-          fsh$age_spatial_years, 
-          method = "spearman")  # Pvalue 0.414744
-```
-
+**One-tailed correlation controlling for AGE using all females**
+Here we want to control for age. I saw shuying use two different approaches. Here is the first one she used. it allows for a one-railed hypothesis. **FSH is not significantly associated with SI when controlling for age (n=46, r(44)= -0.24, p=0.06).** This replicated Shuyings results 
 
 Below is the code that replicated shuyings script for controlling for age.P#0.05638. It' a correlation with the residuals. 
 ```{r}
 
-x <- fsh$fsh_spatial_miu_ml
-y <- fsh$dsp_si_true_pct
-z <- fsh$age_spatial_years
+x <- FSH__Female_data_dsp$fsh_spatial_miu_ml
+y <- FSH__Female_data_dsp$dsp_si_true_pct
+z <- FSH__Female_data_dsp$age_spatial_years
 cor.test(lm(x ~ z)$residuals,
          lm(y ~ z)$residuals,
          alternative = "less",
          conf.level = 0.95,
-         method = "spearman") #0.05638
+         method = "spearman")
 ```
 
+
+
+```{r, FSH VS DSP scatter plot }
+
+ggplot(data = FSH__Female_data_dsp, aes(x = fsh_spatial_miu_ml,
+                               y = dsp_si_true_pct)) +
+  geom_point(aes(color = factor(repo_status)), size=4) +
+  scale_color_manual(values=c("#7d4c5a", "#CD8A9B","#806d71")) +
+ stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE) +
+  theme(panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold"))
+  
+
+```
 
 
 <br>
@@ -884,7 +1046,7 @@ ggplot(data=all_women_clean_df, aes(x=fsh_spatial_miu_ml)) +
 
 <hr>
 
-# Mediation {.tabset .tabset-fade}
+# Step 4: Mediation {.tabset .tabset-fade}
 
 ## Estradiol
 
@@ -921,6 +1083,8 @@ summary(model.2)
 
 
 
+
+
 ## FSH
 
 X <- White Matter
@@ -945,6 +1109,112 @@ summary(model.2)
 
 
 
+
+# Step 4B Mediation using  values from dsi studio correlational tractography
+
+Okay first thing is that i need a new database with the scores 
+
+```{r}
+
+DSP_mediationB_analyses_DF <-Extract_raw_values(ReadingCSVFunc("/MD_DSP_female_nofname_dec.csv"), "MD")
+
+
+```
+
+
+
+
+## Estradiol
+
+X <- White Matter
+Y <- DSP SI
+M <- Hormones /FSH
+
+Step 1 of mediation is to complete the first correlation in which X= fornix and Y = DSP. WE need to regress our x and y. nothing signgificant 
+
+```{r}
+model.1 <- lm(dsp_si_true_pct ~  ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF) 
+summary(model.1)
+```
+
+
+
+Step 2 of mediation is to complete the next correlation in which M= hormones and X = Fornix. nothing significant
+
+```{r}
+model.2 <- lm(estradiol_spatial_pg_ml  ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF)
+summary(model.2)
+```
+
+## FSH
+
+X <- White Matter
+Y <- DSP SI
+M <- Hormones /FSH
+
+
+
+Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y, 
+
+```{r}
+model.1 <- lm(dsp_si_true_pct ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF) 
+summary(model.1)
+```
+
+Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP. p=0.6713 This is where it gets a bit challenging here. because this doesn't replicate with shuyings thing. Probably because this is two-tailed and hers is one tailed. WE might be able to move forward with this tbh. 
+
+```{r}
+model.2 <- lm(fsh_spatial_miu_ml ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF)
+summary(model.2)
+```
+
+
+
+#Step 5: ANOVA / Kruskal wallis
+
+First we are doing a one- way anova between all groups for DSP and FNAME
+```{r,echo=FALSE, results='hide',message=FALSE}
+
+group_by(DSP_DSI_DF, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(FNAME, na.rm = TRUE))
+```
+
+
+
+```{r, Check group compairsions between DSP}
+kruskal.test(dsp_si_true_pct ~ repo_status, data = DSP_DSI_DF)
+#There is a Siginifcant effect of REPO on performance 
+```
+
+```{r, Check group compairsions between FNAME}
+kruskal.test(FNAME ~ repo_status, data = DSP_DSI_DF)
+#There is a Siginifcant effect of REPO on performance 
+```
+
+```{r, group boxplot}
+
+
+DSP_DSI_DF %>% ggplot(aes(x = factor(repo_status, levels=c("Men", "Pre", "Peri", "Post")), y = dsp_si_true_pct, fill= repo_status)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16, position=position_jitter(0.1)) +
+  scale_fill_manual(values=c("#6c6c6e","#7d4c5a", "#CD8A9B","#806d71"))+
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Solution Index") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+# ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
+#           color = "REPO",
+#           order = c("Male", "Pre", "Peri", "Post"),
+#           ylab = "Wayfinding Success", xlab = "Group")
+```
 
 # Summarized Results
 
