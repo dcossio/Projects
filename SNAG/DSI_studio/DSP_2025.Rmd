@@ -5,8 +5,8 @@ output:
    html_document:
     toc: true
     toc_float: true
-    toc_depth: 6
-    theme: flatly
+    toc_depth: 3
+    theme: flat
 editor_options: 
   chunk_output_type: inline
 ---
@@ -110,7 +110,7 @@ hr {
 ```
 
 
-# Overview of experiment and analyses
+# Overview of experiment and analyses {.tabset .tabset-fade}
 
 This is the complete analysis of the DSP task using white matter and bevaior and hormones. 
 
@@ -1116,7 +1116,7 @@ Okay first thing is that i need a new database with the scores
 
 ```{r}
 
-DSP_mediationB_analyses_DF <-Extract_raw_values(ReadingCSVFunc("/MD_DSP_female_nofname_dec.csv"), "MD")
+# DSP_mediationB_analyses_DF <-Extract_raw_values(ReadingCSVFunc("/MD_DSP_female_nofname_dec.csv"), "MD")
 
 
 ```
@@ -1133,8 +1133,8 @@ M <- Hormones /FSH
 Step 1 of mediation is to complete the first correlation in which X= fornix and Y = DSP. WE need to regress our x and y. nothing signgificant 
 
 ```{r}
-model.1 <- lm(dsp_si_true_pct ~  ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF) 
-summary(model.1)
+# model.1 <- lm(dsp_si_true_pct ~  ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF) 
+# summary(model.1)
 ```
 
 
@@ -1142,8 +1142,8 @@ summary(model.1)
 Step 2 of mediation is to complete the next correlation in which M= hormones and X = Fornix. nothing significant
 
 ```{r}
-model.2 <- lm(estradiol_spatial_pg_ml  ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF)
-summary(model.2)
+# model.2 <- lm(estradiol_spatial_pg_ml  ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF)
+# summary(model.2)
 ```
 
 ## FSH
@@ -1157,20 +1157,20 @@ M <- Hormones /FSH
 Step 1 of mediation is to complete the first correlation in which X= MD whole fornix and Y = DSP. WE need to regress our x and y, 
 
 ```{r}
-model.1 <- lm(dsp_si_true_pct ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF) 
-summary(model.1)
+# model.1 <- lm(dsp_si_true_pct ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF) 
+# summary(model.1)
 ```
 
 Step 2 of mediation is to complete the next correlation in which M= hormones and Y = DSP. p=0.6713 This is where it gets a bit challenging here. because this doesn't replicate with shuyings thing. Probably because this is two-tailed and hers is one tailed. WE might be able to move forward with this tbh. 
 
 ```{r}
-model.2 <- lm(fsh_spatial_miu_ml ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF)
-summary(model.2)
+# model.2 <- lm(fsh_spatial_miu_ml ~ ProjectionBasalGanglia_FornixR , DSP_mediationB_analyses_DF)
+# summary(model.2)
 ```
 
 
 
-#Step 5: ANOVA / Kruskal wallis
+# Step 5: ANOVA / Kruskal wallis
 
 First we are doing a one- way anova between all groups for DSP and FNAME
 ```{r,echo=FALSE, results='hide',message=FALSE}
