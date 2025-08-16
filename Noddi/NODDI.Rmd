@@ -1,0 +1,227 @@
+---
+title: "NODDI_2025"
+author: "Daniela Cossio"
+date: "8/15/2025"
+output: html_document
+---
+
+```{css, echo=FALSE}
+TOC {
+  color: #F6B2DB;
+  font-family: Times;
+  font-size: "16px"; 
+  border-color: #F6B2DB;
+}
+
+h1.title {
+  color: black ;
+  font-family: Times;
+  font-size: "72px";
+  padding: "10px 0";
+  background-color: #F6B2DB ;
+  text-align: center;
+}
+
+h4.date {
+  color: black ;
+  font-family: Times;
+  font-size: "34px";
+  text-align: center;
+}
+
+h4.author {
+  color: black;
+  font-size: "34px";
+  font-family: Times;
+  text-align: center;
+}
+
+
+h1,h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Times;
+  
+}
+
+body, p, h2{
+  color: black; 
+  font-family: Times;
+}
+
+hr {
+  height:5px;
+  border-width:0;
+  background-color: black ;
+}
+
+
+
+```
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 100)
+```
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+#(plyr)
+library(tidyverse)
+library(stringr)
+library(kableExtra)
+library(markdown)
+```
+
+```{r, Functions}
+clean_noddi_csvs <- function(df,atlas)
+  # Purpose of this function is to clean up the CSV that we are reading into here so that we have a nice and clean daata frame to work with 
+
+  HC50_wd <- "/Users/danielacossio/Desktop/Scripts/Projects/Noddi/harvardcort50/"
+
+HC50_gm_ICVF <- read_csv(paste0(HC50_wd,"all_ICVF_gmNODDI.csv"))
+
+# need to create a loop to go into DF and edit each column name 
+num_cols <- ncol(HC50_gm_ICVF)
+
+for (col in 1:num_cols) {
+  
+  print(col)
+  
+  oldcolname <- colnames(HC50_gm_ICVF[,col])
+  colname_split <- str_split(oldcolname," ")
+  newcolname <- paste0("harvardcort50_",colname_split[[1]][1])
+  
+  colnames(HC50_gm_ICVF)[col] <- newcolname
+  
+}
+
+col_order <- c("harvardcort50_0","harvardcort50_1","harvardcort50_2","harvardcort50_3","harvardcort50_4","harvardcort50_5","harvardcort50_6","harvardcort50_7","harvardcort50_8","harvardcort50_9","harvardcort50_10","harvardcort50_11","harvardcort50_12","harvardcort50_13","harvardcort50_14","harvardcort50_15","harvardcort50_16", "harvardcort50_17","harvardcort50_18","harvardcort50_19","harvardcort50_20","harvardcort50_21", "harvardcort50_22","harvardcort50_23","harvardcort50_24","harvardcort50_25","harvardcort50_26","harvardcort50_27","harvardcort50_28","harvardcort50_29","harvardcort50_30","harvardcort50_31", "harvardcort50_32","harvardcort50_33","harvardcort50_34","harvardcort50_35","harvardcort50_36","harvardcort50_37","harvardcort50_38","harvardcort50_39","harvardcort50_40","harvardcort50_41", "harvardcort50_42","harvardcort50_43","harvardcort50_44","harvardcort50_45","harvardcort50_46","harvardcort50_47")
+
+
+HC50_gm_ICVF <- HC50_gm_ICVF[, col_order]
+
+  
+  
+  
+```
+
+# Methods {.tabset .tabset-dropdown} 
+## Participants 
+
+•	Liz's data shows that we have 79 subjects but my code has 78. I realized that subject 064 failed preproc
+  - August 15: Trying to re preprocess abd reconstruct this subject 
+  
+## Preprocessing
+
+•	All bids data is located here /mnt/chrastil/data/mlindiv
+  - converted to bids using heudiconv. Thanks Mike. See scripts in bids folder
+  
+•	Preprocessing was run using qsiprep 0.16.1. via singularity container
+    • For specific output info, see logs
+
+Preproc data was output here          
+  “/mnt/chrastil/users/cossio/MLINDIV_young/QSI/qsiprep”
+  
+•	The scripts to run are located here and contain all of the parameters
+  /mnt/chrastil/lab/users/cossio/MLINDIV_young/QSI/
+      o	AMICO_QSI_batch_slurm.sh 
+      o	AMICO__sbatchscript
+
+- Processing failed for subject 064 but i'm not sure why. Re processing on August 15th 
+
+
+## Reconstruction
+  •	 We used AMICO Noddi to reconstruct the data and extract noddi metrics
+      o	First, I created a config file based on Hamsi’s advice to be able to             customize the diffusivity metrics from NODDI
+            	File name here:  qsiprep_amico_wm_2025.json
+            	Here, we wanted to change the parameter settings for noddi to custom settings
+            	Original parameter settings had 1.7E for gray and white matter diffusivity.
+            	New settings changed to 
+                  •	GM: 1.3E-3
+                  •	WM: 1.7E-3
+      o	Then I created two separate scripts to be able to run things on Kirby
+            	AMICO_QSI_batch_slurm_2025:  Has the recon commands
+            	AMICO_sbatchscript: used to send things in batch processes 
+      o	output path 
+            	qsiprep output: /mnt/chrastil/lab/users/cossio/MLINDIV_young/QSI/qsiprep
+            	qsirecon /mnt/chrastil/lab/users/cossio/MLINDIV_young/QSI/qsirecon
+
+
+## Converting to same space
+
+All of the noddi images and data need to be put into the same space as the atlases. I will be converting the NODDI files to match the atlas.
+    1.	Let’s create the register brain     (https://dataportal.brainminds.jp/ants-tutorial)
+        a.	Registering brain thing did not work. Couldn’t get this command to work. So ignore this
+    1B.	Based on my previous code, I assumed that my atlases were already in MNI space so then I just converted all the subjects’ images into the same space 
+        a.  Based on FSL the Harvard cort and sub are in MNI space but I don’t think the dsi stuff is. 
+        b.	Starting with Harvard Cort 50 
+            i.	Code: Step1.Convert2HarvardCort50.sh
+            ii.	Did this in a few batches via slurm processing
+            iii.	It looks like it matches to the atlas on FSL but FSL doesn’t recognize it as in MNI space
+        c.	Harvard sub 50
+            i.	Code: Step1_B.Convert2HarvardSub50.sh
+        d.	Model ROIs
+            i.	Step1_C.Convert2ModelROIs
+    3.	Extracting the Data
+        a.	Harvard Cort
+            i.	2A.harvardcort_extract
+            ii.	There are a bunch of warnings at first about labels being out of bound which is concerning me a bit 
+            iii.	Created a script to go through the GM and WM values and extract using AFNI 3d mask
+4.	Aug 15: relized that I extracted some subjects that need to be excluded
+
+
+
+# Reading in subject data
+
+```{r}
+
+#Using liz's old version of the noddi data set so that i also have a template for what i want.
+
+old_df <- read.csv("/Users/danielacossio/Desktop/Scripts/Projects/Noddi/noddi_data.csv")
+
+columns <- c("Brain_Area","Value","SubjectID","Metric"     ,"Score","Age","Gender", "Tissue")    
+
+
+clean_NODDI_DF <- data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+
+sub_info <- old_df %>% select("SubjectID","Age","Gender") %>% unique()
+  
+  
+```
+
+
+# Reading in raw data
+
+```{r, harvard cortical 50}
+
+HC50_wd <- "/Users/danielacossio/Desktop/Scripts/Projects/Noddi/harvardcort50/"
+
+HC50_gm_ICVF <- read_csv(paste0(HC50_wd,"all_ICVF_gmNODDI.csv"))
+
+# need to create a loop to go into DF and edit each column name 
+num_cols <- ncol(HC50_gm_ICVF)
+
+for (col in 1:num_cols) {
+  
+  print(col)
+  
+  oldcolname <- colnames(HC50_gm_ICVF[,col])
+  colname_split <- str_split(oldcolname," ")
+  newcolname <- paste0("harvardcort50_",colname_split[[1]][1])
+  
+  colnames(HC50_gm_ICVF)[col] <- newcolname
+  
+}
+
+col_order <- c("harvardcort50_0","harvardcort50_1","harvardcort50_2","harvardcort50_3","harvardcort50_4","harvardcort50_5","harvardcort50_6","harvardcort50_7","harvardcort50_8","harvardcort50_9","harvardcort50_10","harvardcort50_11","harvardcort50_12","harvardcort50_13","harvardcort50_14","harvardcort50_15","harvardcort50_16", "harvardcort50_17","harvardcort50_18","harvardcort50_19","harvardcort50_20","harvardcort50_21", "harvardcort50_22","harvardcort50_23","harvardcort50_24","harvardcort50_25","harvardcort50_26","harvardcort50_27","harvardcort50_28","harvardcort50_29","harvardcort50_30","harvardcort50_31", "harvardcort50_32","harvardcort50_33","harvardcort50_34","harvardcort50_35","harvardcort50_36","harvardcort50_37","harvardcort50_38","harvardcort50_39","harvardcort50_40","harvardcort50_41", "harvardcort50_42","harvardcort50_43","harvardcort50_44","harvardcort50_45","harvardcort50_46","harvardcort50_47")
+
+
+HC50_gm_ICVF <- HC50_gm_ICVF[, col_order]
+
+HC50_wm_ICVF <-
+HC50_gm_OD <-
+HC50_wm_OD <-
+HC50_gm_ISOVF <-
+HC50_wm_ISOVF <-
+  
+```
+
