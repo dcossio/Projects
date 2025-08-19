@@ -72,35 +72,194 @@ library(markdown)
 ```
 
 ```{r, Functions}
-clean_noddi_csvs <- function(df,atlas)
-  # Purpose of this function is to clean up the CSV that we are reading into here so that we have a nice and clean daata frame to work with 
 
-  HC50_wd <- "/Users/danielacossio/Desktop/Scripts/Projects/Noddi/harvardcort50/"
 
-HC50_gm_ICVF <- read_csv(paste0(HC50_wd,"all_ICVF_gmNODDI.csv"))
+clean_noddi_csv <- function(atlas) {
+  #' @description: Purpose of this function is to clean up the CSV that we are reading into here so that we have a nice and clean data frame to work with
+  
+  #' @input: atlas names such as : "HarvardCort50", "HarvardSub50", "ModelRois"
+  
+  #' @return: DF
+  
+  #
+  # Inputs
+  df <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+  temp_df <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+  
+  metrics <- c("ICVF", "OD", "ISOVF")
+  
+  tissues <- c("gm", "wm")
+  
+  # LEt's create an if statement for Harvard Cort
+  
+  if (atlas == "HarvardCort50") {
+    atlas_dir <- paste0(main_dir, "Data/harvardcort50")
+    
+    # First we need to go thorugh each CSV
+    for (M in metrics) {
+      for (t in tissues) {
+        CSV <- read_csv(paste0(atlas_dir, "/all_", M, "_", t, "NODDI.csv")) #REad in the correct CSV
+        
+        # Get number of rows and cols for later
+          num_cols <- ncol(CSV)
+          num_rows <- nrow(CSV)
+        
+        # Let's get rid of those subject numbers we actually don't need rn
+          
+        evenrows <- seq(2,num_rows,2)
+        CSV_subnums_removed <- CSV[evenrows,] # also removing an empty row.. should be 78 subs
+        
+          
+        for (col in 1:num_cols) {
+          print(col)
+          
+          # Create new label for Brain area by cleaning column na,es
+          colname_split <- colnames(CSV_subnums_removed[, col]) %>%  str_split( " ")
+          newcolname <- paste0("harvardcort50_", colname_split[[1]][1])
+          colnames(CSV_subnums_removed)[col] <- newcolname
+          
+          
+          # Let's do some cleaning of the  voxel info out of there
+          Rawvalue <- as.character(unlist(CSV_subnums_removed[, col]))
+          x <- str_split(Rawvalue, " ")
+          
+          for (row in 1:nrow(CSV_subnums_removed)) {
+            CSV_subnums_removed[row, col] <- x[[row]][1] 
+            as.numeric(CSV[row, col])
+          }
+          
+          temp_df$Brain_Area <- newcolname
+          temp_df$Value <- CSV_subnums_removed[, col]
+          temp_df$Metric <- M
+          temp_df$Tissue <- t
+          temp_df$SubjectID <- sub_info$SubjectID
+          temp_df$Age <- sub_info$Age
+          temp_df$Score <- sub_info$Score
+          temp_df$Gender <- sub_info$Gender
+          # Need to make sure subject info get's added here
+          df <- rbind(temp_df, df)
+        }
+        
+      }
+      
+      cleaned_df <- df %>% arrange(Brain_Area)
+    }
+    colnames(cleaned_df[2]) <- "Value"
+    
+    
+    
+    
+  } else if (atlas == "HarvardSub50") {
+    atlas_dir <- paste0(main_dir, "Data/harvardsub50")
+    
+    # First we need to go thorugh each CSV
+    for (M in metrics) {
+      for (t in tissues) {
+        CSV <- read_csv(paste0(atlas_dir, "/all_", M, "_", t, "NODDI.csv"))
+        
+        num_cols <- ncol(CSV)
+        num_rows <- nrow(CSV)
+         
+        # Let's get rid of those subject numbers we actually don't need rn
+          
+        evenrows <- seq(2,num_rows,2)
+        CSV_subnums_removed <- CSV[evenrows,] %>% head(-1) # also removing an empty row.. should be 78 subs
+                                   
+        for (col in 1:num_cols) {
+          print(col)
+          
+          # Create new label for Brain area by cleaning column na,es
+          colname_split <- colnames(CSV_subnums_removed[, col]) %>%  str_split(" ")
+          newcolname <- paste0("harvardsub50_", colname_split[[1]][1])
+          colnames(CSV_subnums_removed)[col] <- newcolname
+          
+          
+          # Let's do some cleaning of the  voxel info out of there
+          Rawvalue <- as.character(unlist(CSV_subnums_removed[, col]))
+          x <- str_split(Rawvalue, " ")
+          
+            for (row in 1:nrow(CSV_subnums_removed)) {
+              CSV_subnums_removed[row, col] <- x[[row]][1] 
+              as.numeric(CSV_subnums_removed[row, col])
+            }
+          
+          temp_df$Brain_Area <- newcolname
+          temp_df$Value <- CSV_subnums_removed[, col]
+          temp_df$Metric <- M
+          temp_df$Tissue <- t
+           temp_df$SubjectID <- sub_info$SubjectID
+          temp_df$Age <- sub_info$Age
+          temp_df$Score <- sub_info$Score
+          temp_df$Gender <- sub_info$Gender
+          # Need to make sure subject info get's added here
+          df <- rbind(temp_df, df)
+        }
+        
+      }
+      
+      cleaned_df <- df %>% arrange(Brain_Area)
+    }
+    colnames(cleaned_df[2]) <- "Value"
+    
+    
+  } else if (atlas == "ModelRois") {
+    atlas_dir <- paste0(main_dir, "Data/modelROIs")
+    # First we need to go thorugh each CSV
+    for (M in metrics) {
+      for (t in tissues) {
+        CSV <- read_csv(paste0(atlas_dir, "/all_", M, "_", t, "NODDI.csv"))
+        
+        num_cols <- ncol(CSV)
+        num_rows <- nrow(CSV)
+        
+          evenrows <- seq(2,num_rows,2)
+        CSV_subnums_removed <- CSV[evenrows,] %>% head(-1) # also removing an empty row.. should be 78 subs
+        
+        for (col in 1:num_cols) {
+          print(col)
+          
+          # Create new label for Brain area by cleaning column na,es
+          colname_split <- colnames(CSV_subnums_removed[, col]) %>%  str_split(" ")
+          newcolname <- paste0("ModelROIs", colname_split[[1]][1])
+          colnames(CSV)[col] <- newcolname
+          
+          
+          # Let's do some cleaning of the  voxel info out of there
+          Rawvalue <- as.character(unlist(CSV_subnums_removed[, col]))
+          x <- str_split(Rawvalue, " ")
+          
+            for (row in 1:nrow(CSV_subnums_removed)) {
+              CSV_subnums_removed[row, col] <- x[[row]][1] 
+              as.numeric(CSV[row, col])
+            }
+          
+          
+          temp_df$Brain_Area <- newcolname
+          temp_df$Value <- CSV_subnums_removed[, col]
+          temp_df$Metric <- M
+          temp_df$Tissue <- t
+          temp_df$SubjectID <- sub_info$SubjectID
+          temp_df$Age <- sub_info$Age
+          temp_df$Score <- sub_info$Score
+          temp_df$Gender <- sub_info$Gender
 
-# need to create a loop to go into DF and edit each column name 
-num_cols <- ncol(HC50_gm_ICVF)
-
-for (col in 1:num_cols) {
+          # Need to make sure subject info get's added here
+          df <- rbind(temp_df, df)
+        }
+        
+      }
+      
+      cleaned_df <- df %>% arrange(Brain_Area)
+    }
+    colnames(cleaned_df[2]) <- "Value"
+  }
   
-  print(col)
-  
-  oldcolname <- colnames(HC50_gm_ICVF[,col])
-  colname_split <- str_split(oldcolname," ")
-  newcolname <- paste0("harvardcort50_",colname_split[[1]][1])
-  
-  colnames(HC50_gm_ICVF)[col] <- newcolname
-  
+  return (cleaned_df)
 }
 
-col_order <- c("harvardcort50_0","harvardcort50_1","harvardcort50_2","harvardcort50_3","harvardcort50_4","harvardcort50_5","harvardcort50_6","harvardcort50_7","harvardcort50_8","harvardcort50_9","harvardcort50_10","harvardcort50_11","harvardcort50_12","harvardcort50_13","harvardcort50_14","harvardcort50_15","harvardcort50_16", "harvardcort50_17","harvardcort50_18","harvardcort50_19","harvardcort50_20","harvardcort50_21", "harvardcort50_22","harvardcort50_23","harvardcort50_24","harvardcort50_25","harvardcort50_26","harvardcort50_27","harvardcort50_28","harvardcort50_29","harvardcort50_30","harvardcort50_31", "harvardcort50_32","harvardcort50_33","harvardcort50_34","harvardcort50_35","harvardcort50_36","harvardcort50_37","harvardcort50_38","harvardcort50_39","harvardcort50_40","harvardcort50_41", "harvardcort50_42","harvardcort50_43","harvardcort50_44","harvardcort50_45","harvardcort50_46","harvardcort50_47")
 
-
-HC50_gm_ICVF <- HC50_gm_ICVF[, col_order]
-
-  
-  
   
 ```
 
@@ -168,6 +327,10 @@ All of the noddi images and data need to be put into the same space as the atlas
             iii.	Created a script to go through the GM and WM values and extract using AFNI 3d mask
 4.	Aug 15: relized that I extracted some subjects that need to be excluded
 
+REalized subjects 064 and 092 were not actually processed nor were they reconned
+
+Manually did some data cleaning including removing subject numbers from empty NA columns of CSVs and removing subjects 064 and 092 from harvard cort analyses. I fixed the original code to just avoid those so that step wont be necessary again.
+
 
 
 # Reading in subject data
@@ -175,53 +338,746 @@ All of the noddi images and data need to be put into the same space as the atlas
 ```{r}
 
 #Using liz's old version of the noddi data set so that i also have a template for what i want.
+main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2025/"
 
-old_df <- read.csv("/Users/danielacossio/Desktop/Scripts/Projects/Noddi/noddi_data.csv")
 
-columns <- c("Brain_Area","Value","SubjectID","Metric"     ,"Score","Age","Gender", "Tissue")    
+old_df <- read.csv(paste0(main_dir,"noddi_data.csv"))
+
+columns <- c("Brain_Area","Value","SubjectID","Metric","Score","Age","Gender", "Tissue")    
 
 
 clean_NODDI_DF <- data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 
-sub_info <- old_df %>% select("SubjectID","Age","Gender") %>% unique()
+sub_info <- old_df %>% select("SubjectID","Age","Gender","Score") %>% unique() %>% filter(SubjectID != 64)
   
   
 ```
 
 
-# Reading in raw data
+# Harvard Cort 50 
+I have this as a function up top but it's such a big job that i'm splitting in case i need to re run things seprately 
 
-```{r, harvard cortical 50}
+## ICVF
+```{r, harvard cortical 50 ICVF}
 
-HC50_wd <- "/Users/danielacossio/Desktop/Scripts/Projects/Noddi/harvardcort50/"
+# First thing is to read in our first CSV
 
-HC50_gm_ICVF <- read_csv(paste0(HC50_wd,"all_ICVF_gmNODDI.csv"))
+HC50_ICVF_gm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ICVF_gmNODDI.csv"))
 
-# need to create a loop to go into DF and edit each column name 
-num_cols <- ncol(HC50_gm_ICVF)
+HC50_ICVF_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ICVF_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(HC50_ICVF_gm)
+num_rows <- nrow(HC50_ICVF_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+HC50_ICVF_gm_subsremoved <- HC50_ICVF_gm[evenrows,]
+HC50_ICVF_wm_subsremoved <- HC50_ICVF_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(HC50_ICVF_gm_subsremoved)
+num_rows <- nrow(HC50_ICVF_gm_subsremoved)
+
+HC50_ICVF_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+HC50_ICVF_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
 
 for (col in 1:num_cols) {
-  
   print(col)
+  colname_split <- colnames(HC50_ICVF_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardcort50_", colname_split[[1]][1])
+  colnames(HC50_ICVF_gm_subsremoved)[col] <- newcolname
+  colnames(HC50_ICVF_wm_subsremoved)[col] <- newcolname
   
-  oldcolname <- colnames(HC50_gm_ICVF[,col])
-  colname_split <- str_split(oldcolname," ")
-  newcolname <- paste0("harvardcort50_",colname_split[[1]][1])
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(HC50_ICVF_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HC50_ICVF_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- HC50_ICVF_gm_subsremoved[, col]
+  temp_gm$Metric <- "ICVF"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
   
-  colnames(HC50_gm_ICVF)[col] <- newcolname
   
+  #now white matter
+  raw_value <- as.character(unlist(HC50_ICVF_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HC50_ICVF_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- HC50_ICVF_wm_subsremoved[, col]
+  temp_wm$Metric <- "ICVF"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  HC50_ICVF_gm_CLEANED <- rbind(HC50_ICVF_gm_CLEANED,temp_gm)
+  HC50_ICVF_wm_CLEANED <- rbind(HC50_ICVF_wm_CLEANED,temp_wm)
 }
 
-col_order <- c("harvardcort50_0","harvardcort50_1","harvardcort50_2","harvardcort50_3","harvardcort50_4","harvardcort50_5","harvardcort50_6","harvardcort50_7","harvardcort50_8","harvardcort50_9","harvardcort50_10","harvardcort50_11","harvardcort50_12","harvardcort50_13","harvardcort50_14","harvardcort50_15","harvardcort50_16", "harvardcort50_17","harvardcort50_18","harvardcort50_19","harvardcort50_20","harvardcort50_21", "harvardcort50_22","harvardcort50_23","harvardcort50_24","harvardcort50_25","harvardcort50_26","harvardcort50_27","harvardcort50_28","harvardcort50_29","harvardcort50_30","harvardcort50_31", "harvardcort50_32","harvardcort50_33","harvardcort50_34","harvardcort50_35","harvardcort50_36","harvardcort50_37","harvardcort50_38","harvardcort50_39","harvardcort50_40","harvardcort50_41", "harvardcort50_42","harvardcort50_43","harvardcort50_44","harvardcort50_45","harvardcort50_46","harvardcort50_47")
+#Small cleaning things 
+
+HC50_ICVF_gm_CLEANED$Value <- as.numeric(unlist(HC50_ICVF_gm_CLEANED$Value)) #make sure this is numeric
+HC50_ICVF_gm_CLEANED <- HC50_ICVF_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(HC50_ICVF_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+HC50_ICVF_wm_CLEANED$Value <- as.numeric(unlist(HC50_ICVF_wm_CLEANED$Value)) #make sure this is numeric
+HC50_ICVF_wm_CLEANED <- HC50_ICVF_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(HC50_ICVF_wm_CLEANED[2]) <- "Value"
+
+HC50_ICVF_allNODDI <- rbind(HC50_ICVF_wm_CLEANED,HC50_ICVF_gm_CLEANED)
+# Export
+
+write.csv(HC50_ICVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_ICVF_NODDI.csv"), row.names = FALSE)
 
 
-HC50_gm_ICVF <- HC50_gm_ICVF[, col_order]
-
-HC50_wm_ICVF <-
-HC50_gm_OD <-
-HC50_wm_OD <-
-HC50_gm_ISOVF <-
-HC50_wm_ISOVF <-
-  
 ```
 
+## OD
+```{r, harvard cortical OD}
+
+# First thing is to read in our first CSV
+
+HC50_OD_gm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_OD_gmNODDI.csv"))
+
+HC50_OD_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_OD_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(HC50_OD_gm)
+num_rows <- nrow(HC50_OD_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+HC50_OD_gm_subsremoved <- HC50_OD_gm[evenrows,]
+HC50_OD_wm_subsremoved <- HC50_OD_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(HC50_OD_gm_subsremoved)
+num_rows <- nrow(HC50_OD_gm_subsremoved)
+
+HC50_OD_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+HC50_OD_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
+
+for (col in 1:num_cols) {
+  print(col)
+  colname_split <- colnames(HC50_OD_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardcort50_", colname_split[[1]][1])
+  colnames(HC50_OD_gm_subsremoved)[col] <- newcolname
+  colnames(HC50_OD_wm_subsremoved)[col] <- newcolname
+  
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(HC50_OD_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HC50_OD_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- HC50_OD_gm_subsremoved[, col]
+  temp_gm$Metric <- "OD"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
+  
+  
+  #now white matter
+  raw_value <- as.character(unlist(HC50_OD_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HC50_OD_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- HC50_OD_wm_subsremoved[, col]
+  temp_wm$Metric <- "OD"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  HC50_OD_gm_CLEANED <- rbind(HC50_OD_gm_CLEANED,temp_gm)
+  HC50_OD_wm_CLEANED <- rbind(HC50_OD_wm_CLEANED,temp_wm)
+}
+
+#Small cleaning things 
+
+HC50_OD_gm_CLEANED$Value <- as.numeric(unlist(HC50_OD_gm_CLEANED$Value)) #make sure this is numeric
+HC50_OD_gm_CLEANED <- HC50_OD_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(HC50_OD_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+HC50_OD_wm_CLEANED$Value <- as.numeric(unlist(HC50_OD_wm_CLEANED$Value)) #make sure this is numeric
+HC50_OD_wm_CLEANED <- HC50_OD_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(HC50_OD_wm_CLEANED[2]) <- "Value"
+
+HC50_OD_allNODDI <- rbind(HC50_OD_gm_CLEANED,HC50_OD_wm_CLEANED)
+# Export
+
+write.csv(HC50_OD_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_OD_NODDI.csv"), row.names = FALSE)
+
+
+```
+
+## ISOVF
+
+```{r, harvard cortical ISOVF}
+
+# First thing is to read in our first CSV
+
+HC50_ISOVF_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_gmNODDI.csv"))
+
+HC50_ISOVF_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(HC50_ISOVF_gm)
+num_rows <- nrow(HC50_ISOVF_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+HC50_ISOVF_gm_subsremoved <- HC50_ISOVF_gm[evenrows,]
+HC50_ISOVF_wm_subsremoved <- HC50_ISOVF_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(HC50_ISOVF_gm_subsremoved)
+num_rows <- nrow(HC50_ISOVF_gm_subsremoved)
+
+HC50_ISOVF_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+HC50_ISOVF_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
+
+for (col in 1:num_cols) {
+  print(col)
+  colname_split <- colnames(HC50_ISOVF_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardcort50_", colname_split[[1]][1])
+  colnames(HC50_ISOVF_gm_subsremoved)[col] <- newcolname
+  colnames(HC50_ISOVF_wm_subsremoved)[col] <- newcolname
+  
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(HC50_ISOVF_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HC50_ISOVF_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- HC50_ISOVF_gm_subsremoved[, col]
+  temp_gm$Metric <- "ISOVF"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
+  
+  
+  #now white matter
+  raw_value <- as.character(unlist(HC50_ISOVF_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HC50_ISOVF_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- HC50_ISOVF_wm_subsremoved[, col]
+  temp_wm$Metric <- "ISOVF"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  HC50_ISOVF_gm_CLEANED <- rbind(HC50_ISOVF_gm_CLEANED,temp_gm)
+  HC50_ISOVF_wm_CLEANED <- rbind(HC50_ISOVF_wm_CLEANED,temp_wm)
+}
+
+#Small cleaning things 
+
+HC50_ISOVF_gm_CLEANED$Value <- as.numeric(unlist(HC50_ISOVF_gm_CLEANED$Value)) #make sure this is numeric
+HC50_ISOVF_gm_CLEANED <- HC50_ISOVF_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(HC50_ISOVF_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+HC50_ISOVF_wm_CLEANED$Value <- as.numeric(unlist(HC50_ISOVF_wm_CLEANED$Value)) #make sure this is numeric
+HC50_ISOVF_wm_CLEANED <- HC50_ISOVF_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(HC50_ISOVF_wm_CLEANED[2]) <- "Value"
+
+HC50_ISOVF_allNODDI <- rbind(HC50_ISOVF_gm_CLEANED,HC50_ISOVF_wm_CLEANED)
+# Export
+
+write.csv(HC50_ISOVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_ISOVF_NODDI.csv"), row.names = FALSE)
+
+
+```
+
+
+```{r}
+
+ModelROIs <- clean_noddi_csv("ModelRois")
+
+
+```
+```{r}
+
+
+#trying to split cell
+
+value <- as.character(unlist(CSV[,col]))
+x <- str_split(value, " ")
+x[[1]][1]
+
+atlas_dir <- read_csv(paste0(main_dir, "Data/harvardcort50","/all_", M, "_", t, "NODDI.csv")) 
+
+odd_rows <- CSV[seq_len(num_rows) %% 2,]
+
+df <- seq(2,num_rows,2)
+df1 <- CSV[df,] %>% head(-1)
+
+
+dfclean <- CSV %>% filter(df) 
+
+
+```
+
+
+
+# Harvard sub
+
+## ICVF
+```{r}
+# First thing is to read in our first CSV
+
+HS50_ICVF_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ICVF_gmNODDI.csv"))
+
+HS50_ICVF_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ICVF_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(HS50_ICVF_gm)
+num_rows <- nrow(HS50_ICVF_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+HS50_ICVF_gm_subsremoved <- HS50_ICVF_gm[evenrows,]
+HS50_ICVF_wm_subsremoved <- HS50_ICVF_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(HS50_ICVF_gm_subsremoved)
+num_rows <- nrow(HS50_ICVF_gm_subsremoved)
+
+HS50_ICVF_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+HS50_ICVF_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
+
+for (col in 1:num_cols) {
+  print(col)
+  colname_split <- colnames(HS50_ICVF_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardsub50_", colname_split[[1]][1])
+  colnames(HS50_ICVF_gm_subsremoved)[col] <- newcolname
+  colnames(HS50_ICVF_wm_subsremoved)[col] <- newcolname
+  
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(HS50_ICVF_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HS50_ICVF_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- HS50_ICVF_gm_subsremoved[, col]
+  temp_gm$Metric <- "ICVF"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
+  
+  
+  #now white matter
+  raw_value <- as.character(unlist(HS50_ICVF_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HS50_ICVF_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- HS50_ICVF_wm_subsremoved[, col]
+  temp_wm$Metric <- "ICVF"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  HS50_ICVF_gm_CLEANED <- rbind(HS50_ICVF_gm_CLEANED,temp_gm)
+  HS50_ICVF_wm_CLEANED <- rbind(HS50_ICVF_wm_CLEANED,temp_wm)
+}
+
+#Small cleaning things 
+
+HS50_ICVF_gm_CLEANED$Value <- as.numeric(unlist(HS50_ICVF_gm_CLEANED$Value)) #make sure this is numeric
+HS50_ICVF_gm_CLEANED <- HS50_ICVF_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(HS50_ICVF_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+HS50_ICVF_wm_CLEANED$Value <- as.numeric(unlist(HS50_ICVF_wm_CLEANED$Value)) #make sure this is numeric
+HS50_ICVF_wm_CLEANED <- HS50_ICVF_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(HS50_ICVF_wm_CLEANED[2]) <- "Value"
+
+HS50_ICVF_allNODDI <- rbind(HS50_ICVF_wm_CLEANED,HS50_ICVF_gm_CLEANED)
+# Export
+
+write.csv(HS50_ICVF_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_ICVF_NODDI.csv"), row.names = FALSE)
+
+
+```
+
+## OD
+
+```{r, harvard cortical OD}
+
+# First thing is to read in our first CSV
+
+HS50_OD_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_OD_gmNODDI.csv"))
+
+HS50_OD_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_OD_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(HS50_OD_gm)
+num_rows <- nrow(HS50_OD_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+HS50_OD_gm_subsremoved <- HS50_OD_gm[evenrows,]
+HS50_OD_wm_subsremoved <- HS50_OD_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(HS50_OD_gm_subsremoved)
+num_rows <- nrow(HS50_OD_gm_subsremoved)
+
+HS50_OD_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+HS50_OD_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
+
+for (col in 1:num_cols) {
+  print(col)
+  colname_split <- colnames(HS50_OD_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardsub50_", colname_split[[1]][1])
+  colnames(HS50_OD_gm_subsremoved)[col] <- newcolname
+  colnames(HS50_OD_wm_subsremoved)[col] <- newcolname
+  
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(HS50_OD_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HS50_OD_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- HS50_OD_gm_subsremoved[, col]
+  temp_gm$Metric <- "OD"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
+  
+  
+  #now white matter
+  raw_value <- as.character(unlist(HS50_OD_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HS50_OD_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- HS50_OD_wm_subsremoved[, col]
+  temp_wm$Metric <- "OD"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  HS50_OD_gm_CLEANED <- rbind(HS50_OD_gm_CLEANED,temp_gm)
+  HS50_OD_wm_CLEANED <- rbind(HS50_OD_wm_CLEANED,temp_wm)
+}
+
+#Small cleaning things 
+
+HS50_OD_gm_CLEANED$Value <- as.numeric(unlist(HS50_OD_gm_CLEANED$Value)) #make sure this is numeric
+HS50_OD_gm_CLEANED <- HS50_OD_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(HS50_OD_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+HS50_OD_wm_CLEANED$Value <- as.numeric(unlist(HS50_OD_wm_CLEANED$Value)) #make sure this is numeric
+HS50_OD_wm_CLEANED <- HS50_OD_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(HS50_OD_wm_CLEANED[2]) <- "Value"
+
+HS50_OD_allNODDI <- rbind(HS50_OD_gm_CLEANED,HS50_OD_wm_CLEANED)
+# Export
+
+write.csv(HS50_OD_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_OD_NODDI.csv"), row.names = FALSE)
+
+
+```
+
+## ISOVF
+
+
+```{r, harvard cortical ISOVF}
+
+# First thing is to read in our first CSV
+
+HS50_ISOVF_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_gmNODDI.csv"))
+
+HS50_ISOVF_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(HS50_ISOVF_gm)
+num_rows <- nrow(HS50_ISOVF_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+HS50_ISOVF_gm_subsremoved <- HS50_ISOVF_gm[evenrows,]
+HS50_ISOVF_wm_subsremoved <- HS50_ISOVF_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(HS50_ISOVF_gm_subsremoved)
+num_rows <- nrow(HS50_ISOVF_gm_subsremoved)
+
+HS50_ISOVF_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+HS50_ISOVF_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
+
+for (col in 1:num_cols) {
+  print(col)
+  colname_split <- colnames(HS50_ISOVF_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardsub50_", colname_split[[1]][1])
+  colnames(HS50_ISOVF_gm_subsremoved)[col] <- newcolname
+  colnames(HS50_ISOVF_wm_subsremoved)[col] <- newcolname
+  
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(HS50_ISOVF_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HS50_ISOVF_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- HS50_ISOVF_gm_subsremoved[, col]
+  temp_gm$Metric <- "ISOVF"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
+  
+  
+  #now white matter
+  raw_value <- as.character(unlist(HS50_ISOVF_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            HS50_ISOVF_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- HS50_ISOVF_wm_subsremoved[, col]
+  temp_wm$Metric <- "ISOVF"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  HS50_ISOVF_gm_CLEANED <- rbind(HS50_ISOVF_gm_CLEANED,temp_gm)
+  HS50_ISOVF_wm_CLEANED <- rbind(HS50_ISOVF_wm_CLEANED,temp_wm)
+}
+
+#Small cleaning things 
+
+HS50_ISOVF_gm_CLEANED$Value <- as.numeric(unlist(HS50_ISOVF_gm_CLEANED$Value)) #make sure this is numeric
+HS50_ISOVF_gm_CLEANED <- HS50_ISOVF_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(HS50_ISOVF_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+HS50_ISOVF_wm_CLEANED$Value <- as.numeric(unlist(HS50_ISOVF_wm_CLEANED$Value)) #make sure this is numeric
+HS50_ISOVF_wm_CLEANED <- HS50_ISOVF_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(HS50_ISOVF_wm_CLEANED[2]) <- "Value"
+
+HS50_ISOVF_allNODDI <- rbind(HS50_ISOVF_gm_CLEANED,HS50_ISOVF_wm_CLEANED)
+# Export
+
+write.csv(HS50_ISOVF_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_ISOVF_NODDI.csv"), row.names = FALSE)
+
+
+```
+
+#  Model ROIS
+
+# forgot to print out subject number when running this one so we are cutting down on some wrnagling code
+## ICVF
+```{r, modelROIs ICVF}
+
+# First thing is to read in our first CSV
+
+ModelROIs_ICVF_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_ICVF_gmNODDI.csv"))
+
+ModelROIs_ICVF_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ICVF_wmNODDI.csv"))
+
+# Get number of rows and cols for later. Same for both so just using one
+num_cols <- ncol(ModelROIs_ICVF_gm)
+num_rows <- nrow(ModelROIs_ICVF_gm)
+
+# Let's get rid of those subject numbers we actually don't need rn
+evenrows <- seq(2,num_rows,2)
+
+ModelROIs_ICVF_gm_subsremoved <- ModelROIs_ICVF_gm[evenrows,]
+ModelROIs_ICVF_wm_subsremoved <- ModelROIs_ICVF_wm[evenrows,]
+
+#Updated number of cols
+
+num_cols <- ncol(ModelROIs_ICVF_gm_subsremoved)
+num_rows <- nrow(ModelROIs_ICVF_gm_subsremoved)
+
+ModelROIs_ICVF_gm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+ModelROIs_ICVF_wm_CLEANED <-
+    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+temp_gm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+temp_wm <-
+    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+
+ # Create new label for Brain area by cleaning column names. again same for each database so just using one 
+
+for (col in 1:num_cols) {
+  print(col)
+  colname_split <- colnames(ModelROIs_ICVF_gm_subsremoved[, col]) %>%  str_split( " ")
+  newcolname <- paste0("harvardcort50_", colname_split[[1]][1])
+  colnames(ModelROIs_ICVF_gm_subsremoved)[col] <- newcolname
+  colnames(ModelROIs_ICVF_wm_subsremoved)[col] <- newcolname
+  
+  # Let's do some cleaning of the  voxel info out of there first with GM
+  raw_value <- as.character(unlist(ModelROIs_ICVF_gm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            ModelROIs_ICVF_gm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_gm$Brain_Area <- newcolname
+  temp_gm$Value <- ModelROIs_ICVF_gm_subsremoved[, col]
+  temp_gm$Metric <- "ICVF"
+  temp_gm$Tissue <- "gm"
+  temp_gm$SubjectID <- sub_info$SubjectID
+  temp_gm$Age <- sub_info$Age
+  temp_gm$Score <- sub_info$Score
+  temp_gm$Gender <- sub_info$Gender
+  
+  
+  #now white matter
+  raw_value <- as.character(unlist(ModelROIs_ICVF_wm_subsremoved[, col]))
+  raw_value_split <- str_split(raw_value, " ")
+          for (row in 1:num_rows) {
+            ModelROIs_ICVF_wm_subsremoved[row, col] <- raw_value_split[[row]][1] 
+          }
+  temp_wm$Brain_Area <- newcolname
+  temp_wm$Value <- ModelROIs_ICVF_wm_subsremoved[, col]
+  temp_wm$Metric <- "ICVF"
+  temp_wm$Tissue <- "wm"
+  temp_wm$SubjectID <- sub_info$SubjectID
+  temp_wm$Age <- sub_info$Age
+  temp_wm$Score <- sub_info$Score
+  temp_wm$Gender <- sub_info$Gender
+  
+  # Let's bind everything together 
+  ModelROIs_ICVF_gm_CLEANED <- rbind(ModelROIs_ICVF_gm_CLEANED,temp_gm)
+  ModelROIs_ICVF_wm_CLEANED <- rbind(ModelROIs_ICVF_wm_CLEANED,temp_wm)
+}
+
+#Small cleaning things 
+
+ModelROIs_ICVF_gm_CLEANED$Value <- as.numeric(unlist(ModelROIs_ICVF_gm_CLEANED$Value)) #make sure this is numeric
+ModelROIs_ICVF_gm_CLEANED <- ModelROIs_ICVF_gm_CLEANED %>% arrange(Brain_Area) 
+colnames(ModelROIs_ICVF_gm_CLEANED[2]) <- "Value"
+
+##WM
+
+ModelROIs_ICVF_wm_CLEANED$Value <- as.numeric(unlist(ModelROIs_ICVF_wm_CLEANED$Value)) #make sure this is numeric
+ModelROIs_ICVF_wm_CLEANED <- ModelROIs_ICVF_wm_CLEANED %>% arrange(Brain_Area) 
+colnames(ModelROIs_ICVF_wm_CLEANED[2]) <- "Value"
+
+ModelROIs_ICVF_allNODDI <- rbind(ModelROIs_ICVF_wm_CLEANED,ModelROIs_ICVF_gm_CLEANED)
+# Export
+
+write.csv(ModelROIs_ICVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/ModelROIs_ICVF_NODDI.csv"), row.names = FALSE)
+
+
+```
