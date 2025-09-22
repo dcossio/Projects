@@ -242,7 +242,7 @@ TableOutput <- function(df){
 <br>
 
 # Overview 
-This is the analysis of white matter dsi studio connectometry for Maze and Loop 
+This is the analysis of white matter dsi studio connectometry for Maze
 
 <br>
 

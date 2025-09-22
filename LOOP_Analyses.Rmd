@@ -1,0 +1,147 @@
+---
+title: "LOOP Notes and Analyses"
+author: "Daniela Cossio"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+    html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    classoption:
+    - twocolumn
+---
+
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(stringr)
+library(kableExtra)
+# library(tidygraph)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+library(ggpubr)
+library(knitr)
+library(janitor)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
+library(moonBook)
+library(gridExtra)
+library(markdown)
+library(psych)
+library(ppcor)
+```
+
+
+
+```{css, echo=FALSE}
+TOC {
+  color: #F6B2DB;
+  font-family: Arial;
+  font-size: "16px"; 
+  border-color: #F6B2DB;
+}
+
+h1.title {
+  color: black ;
+  font-family: Arial;
+  font-size: "72px";
+  padding: "10px 0";
+  background-color: #F6B2DB ;
+  text-align: center;
+}
+
+h4.date {
+  color: black ;
+  font-family: Arial;
+  font-size: "34px";
+  text-align: center;
+}
+
+h4.author {
+  color: black;
+  font-size: "34px";
+  font-family: Arial;
+  text-align: center;
+}
+
+
+h1,h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Arial;
+  
+}
+
+body, p, h2{
+  color: black; 
+  font-family: Arial;
+}
+
+hr {
+  height:5px;
+  border-width:0;
+  background-color: black ;
+}
+
+
+
+```
+
+# **Overview** 
+
+This is a combination of these analyses used for loop. Code is a combination of Daniela and Shuyings code. Might add Nicks later
+
+Below is a list of sections included here. Including summaries of the white matter analyses and completed figures. 
+
+* Behavior
+* Hormones Analyses
+* Hippocampal Subfield 
+* Cortical Thickness  
+    * My general hypothesis is going to be focused on general somatosensory regions and the dorsal attention network. General approach : for the Schaefar atlas is to take the average for each ROI network and not do each individual parcellation.Do correlation between each parcellation and variable and then average by network. 
+    
+<br>
+
+* Diffusion Summary (no analyses)
+
+<br>
+
+<hr>
+
+# Methods {.tabset .tabset-pills}
+## Behavior 
+* group differences?
+
+## Hormones
+
+Shapiro-Wilk normality tests were conducted to assess violations of normality of the independent and dependent variables before conducting correlations between spatial navigation dependent variables and sex hormones. To control for chronological age while assessing the relationship between sex steroid hormones and navigational strategy, partial Spearman rank correlations were conducted if the Shapiro-Wilk normality tests were statistically significant (p < 0.05); otherwise, Pearson correlations were conducted. Based on existing evidence of sex hormones’ influence on navigation from the animal literature and strong a priori predictions that estradiol would be positively associated with navigation performance, and follicle-stimulating hormone would show an opposing effect, we conducted one-tailed analyses for these tests, controlling for chronological age. Two-tailed analyses were used for hormones without a strong a priori hypothesis (progesterone, testosterone). Men and women were analyzed separately. For men, we conducted a one-tailed correlation for testosterone to be in the positive direction, while we conducted a two-tailed correlation for testosterone for women. 
+
+## Hippocampal Subfields
+
+Total hippocampus (from T1-weighted whole brain scans) and hippocampal subfield volumes were corrected using participant’s total intracranial volume (TIV) to remove size
+Figure 4.1. Investigating volumetric differences using segmentation of the medial temporal lobe and total hippocampus region. (A) Sample slice of the medial temporal lobe cortex and hippocampus segmented into hippocampal subfields using the Automatic Segmentation of Hippocampal Subfields software. Labeled subfields include: CA1 (cornu ammonis), CA2/3, DG (dentate gyrus), SUB (subiculum), ERC (entorhinal cortex), PRC (perirhinal cortex), and PHC (parahippocampal cortex). Total hippocampus is computed by aggregating subfields CA1, CA2/3, DG, and SUB. Medial temporal lobe is computed by aggregating all the subfields. (B) Women (n = 74, M = 0.56) tend to have larger T1 total hippocampal volume than men (n = 32, M = 0.48; t(68) = 9.72, p < 0.001). Boxplot endpoints indicate the 25th and 75th percentile, and the black line within the boxplot indicates the median value while the black point within the boxplot indicates the mean value. p-values: *** p < 0.001.
+<br> 
+
+bias in comparisons. In addition to the total hippocampal volume from the T1-weighted scans, another measure of total hippocampal volume from the T2-weighted hippocampal subfield scans was calculated by taking the sum of the CA1, CA2/3, dentate gyrus, and subiculum subfield volumes after adjusted for TIV. These structures make up the hippocampus region based on the anatomical components of the medial temporal lobe system (Squire et al., 2004; Squire & Zola-Morgan, 1991). An average of the left and right grey matter volume (mm3) for the total hippocampus and the individual subfields was used for analysis. For all the statistical tests mentioned, corrections for multiple comparisons were performed using Benjamini, Hochberg, and Yekutieli p-adjustments to control the false discovery rate.
+
+<hr>
+
+
+## Cortical Thickness
+
+* Conduct Spearman correlations
+* Benjamini Hotchkins control
+* Going to try Q value control
+
+
+## Diffusion
+
+
+
+# Reading in and prepping our data 
+
+** Reading in our main LOOP CSV
+
+```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
+
+```

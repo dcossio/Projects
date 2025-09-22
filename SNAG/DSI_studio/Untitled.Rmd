@@ -1,5 +1,5 @@
 ---
-title: "Mediation Analysis"
+title: "LOOP Notes and Analyses"
 author: "Daniela Cossio"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -107,77 +107,6 @@ hr {
 
 
 
-```{r functions, echo=FALSE, results='hide',message=FALSE}
-
-ReadingCSVFunc <- function(pathname){
-  
-  read.delim(paste0(working_dir, pathname), header=FALSE,sep = "\t")
-  
-}
-
-CleanInput <- function(DF){
-  
-
-  DF <- DF %>% 
-      remove_empty("cols") %>% 
-        filter(V1 %in% rows2grab) %>% 
-          t() %>% 
-            `colnames<-`(rows2grab) %>% 
-                `[`(-c(1),) %>% 
-                    as.data.frame()
-  return(DF)
-}
-
-
-Extract_raw_values <- function(DF,Metric) {
-  # Purpose of this function is to clean the data without me having to copy and paste everything later. 
-  
-  # Data = raw unclean dataframe we want to clean up 
-  # Metric will be either MD or QA
-  # sex is either male or female
- 
-  
-  # Let's read in our data frame 
-  
-  # grab  ROIcolumn names 
-  colNames <- DF  %>% remove_empty("cols") %>%
-  filter(V1 == "Tract Name") %>% t() %>% `[`(-1) 
-  
-  
-  subinfo <- sub_info  %>% select(c("subject_id", "sex", "age_scan_years", "maze_accuracy_pct")) 
- 
-  # Let's grab our values 
-  if (Metric == "MD"){
-    Values <- DF %>% remove_empty("cols") %>% 
-     filter(str_detect(V1, c("mean_md"))) %>%
-   `colnames<-`(c("Subjects",colNames)) 
-  }
-  else{
-    Values <- DF %>%
-     remove_empty("cols") %>%
-      filter(str_detect(V1, c("mean_qa"))) %>% 
-  `colnames<-`(c("Subjects",colNames)) %>% filter(!str_detect(Subjects, c("sub-369"))) 
-
-  }
-  
-  # now let's put this together 
-  ConvToNum <-  apply(Values[,2:length(Values)],2, as.numeric)
-  Values[,2:length(Values)] <- ConvToNum
-  
-  cleanedDF <- cbind(subinfo,Values) %>% na.omit() %>% select(-c("Subjects"))
-  
-  return (cleanedDF)
-}
-
-
-TableOutput <- function(df){
-  knitr::kable(df, row.names=F) %>% 
-  kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% 
-  scroll_box(width = "800px", height = "300px") 
-}
-
-```
-
 # Reading in and prepping our data 
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
@@ -187,47 +116,3 @@ rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","diameter(mm)"
 
 sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI_rerun_data/subject_info.csv")
 ```
-
-Complete Subject Database
-
-```{r}
-TableOutput(sub_info)
-
-```
-
-
-# Methods and approach
-
-#Thought process
-I am doing a mediation analysis to understand the relation ship between white matter, hormones, and performance on the dual solution paradigm.
-
-From shuying's data, DSP is associated with estradial. Increased solution index is associated with increased solution index.
-
-MD is negatively associated with Solution Index such that increased MD in the fornix is associated with less shortcuts. Essentially lower white matter integrity in fornix is associated with lower performance.
-
-Hypothesis for mediation is that greater estradiol is driving the relationship in which greater integrity in the fornix for greater solution index. 
-
-
-X= Mean diffusivity in fornix
-Y= greater SI on DSP task
-M= Estradiol
-
-
-## Data Cleaning and organizing
-
-### Step 1: read in the raw data
-
-```{r}
-path2data <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103")
-
-subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/mediation_test_data/data_from_Midlife_20230103")
-
-
-```
-
-
-Prepare the mediation by grabbin
-
-
-# Summarized Results
-
