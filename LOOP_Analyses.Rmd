@@ -118,6 +118,10 @@ Shapiro-Wilk normality tests were conducted to assess violations of normality of
 
 ## Hippocampal Subfields
 
+** notes as of 2025 **
+- T1 HP volume extracted using freesurfer recon all.
+- Corrected using TIV from free surfer 
+
 Total hippocampus (from T1-weighted whole brain scans) and hippocampal subfield volumes were corrected using participant’s total intracranial volume (TIV) to remove size
 Figure 4.1. Investigating volumetric differences using segmentation of the medial temporal lobe and total hippocampus region. (A) Sample slice of the medial temporal lobe cortex and hippocampus segmented into hippocampal subfields using the Automatic Segmentation of Hippocampal Subfields software. Labeled subfields include: CA1 (cornu ammonis), CA2/3, DG (dentate gyrus), SUB (subiculum), ERC (entorhinal cortex), PRC (perirhinal cortex), and PHC (parahippocampal cortex). Total hippocampus is computed by aggregating subfields CA1, CA2/3, DG, and SUB. Medial temporal lobe is computed by aggregating all the subfields. (B) Women (n = 74, M = 0.56) tend to have larger T1 total hippocampal volume than men (n = 32, M = 0.48; t(68) = 9.72, p < 0.001). Boxplot endpoints indicate the 25th and 75th percentile, and the black line within the boxplot indicates the median value while the black point within the boxplot indicates the mean value. p-values: *** p < 0.001.
 <br> 
@@ -138,6 +142,7 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 
 
 
+
 # Reading in and prepping our data 
 
 ** Reading in our main LOOP CSV
@@ -145,3 +150,7 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 
 ```
+
+
+
+# Hippocampal 
