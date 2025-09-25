@@ -145,12 +145,184 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 
 # Reading in and prepping our data 
 
-** Reading in our main LOOP CSV
+** Reading in our main LOOP CSV and creating large dataframes for midlife and young 
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
+workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+
+LOOP_raw_df <- read_csv(paste0(workingdir,"/LOOP_all_data.csv"))
+
+midlife_raw_df <- LOOP_raw_df %>% filter(age_group=="Midlife")  %>% filter(subject_id != 372) # Excluding these 372 because they had a brain worm or something  #53
+
+midlife_female_raw_df <- midlife_raw_df %>% filter(sex=="Female")
+
+midlife_male_raw_df <- midlife_raw_df %>% filter(sex=="Male")
+  
+young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") %>% filter(completed_scan == "Yes") # Making sure we only use scan subjects N= 32 
 
 ```
 
 
 
-# Hippocampal 
+# Hippocampal Analyses
+
+# Midlife 
+
+## List of columns  
+
+The list below are from shuyings original raw data. We will ignore the old T1.
+The T2 here are already corrected for TIV. 
+
+```{r,echo=FALSE,message=FALSE,collapse = TRUE}
+data.frame(c(
+    "t1_vbm_tiv",
+    "t1_vbm_gmv",
+    "t1_vbm_wmv",
+    "t1_vbm_csf",
+    "t1_vol_left_hipp_aal_2d_d1_r",
+    "t1_vol_right_hipp_aal_2d_d1_r",
+    "t1_vol_left_hipp_aal_3d_d1_s",
+    "t1_vol_right_hipp_aal_3d_d1_s",
+    "t2hipp_vol_avg_ca1",
+    "t2hipp_vol_avg_ca23",
+    "t2hipp_vol_avg_dg",
+    "t2hipp_vol_avg_erc",
+    "t2hipp_vol_avg_phc",
+    "t2hipp_vol_avg_prc",
+    "t2hipp_vol_avg_sub",
+    "t2hipp_vol_left_ca1" ,
+    "t2hipp_vol_left_ca23",
+    "t2hipp_vol_left_dg",
+    "t2hipp_vol_left_erc",
+    "t2hipp_vol_left_phc",
+    "t2hipp_vol_left_prc",
+    "t2hipp_vol_left_sub"  ,
+    "t2hipp_vol_right_ca1",
+    "t2hipp_vol_right_ca23",
+    "t2hipp_vol_right_dg",
+    "t2hipp_vol_right_prc",
+    "t2hipp_vol_right_sub")) %>% `colnames<-`("columns") %>% kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "600px", height = "300px")
+
+```
+
+## Creating HP specific Dataframe : midlife_HP_df
+
+Total N - 43 
+    
+    
+```{r,collapse = TRUE}
+# Let's create a clean df to work with here and include only the columns we want 
+
+midlife_HP_df <-
+  midlife_raw_df %>%  dplyr::select(
+    "subject_id",
+    "sex",
+    "age_spatial_years",
+    "repo_status",
+    "loop_pe_rad3_m",
+    "loop_pe_avg_m",
+    "loop_de_rad3_degree",
+    "loop_de_avg_degree",
+    "loop_ae_rad3_degree",
+    "loop_ae_avg_degree",
+    "t1_vbm_tiv",
+    "t1_vbm_gmv",
+    "t1_vbm_wmv",
+    "t1_vbm_csf",
+    "t1_vol_left_hipp_aal_2d_d1_r",
+    "t1_vol_right_hipp_aal_2d_d1_r",
+    "t1_vol_left_hipp_aal_3d_d1_s",
+    "t1_vol_right_hipp_aal_3d_d1_s",
+    "t2hipp_vol_avg_ca1",
+    "t2hipp_vol_avg_ca23",
+    "t2hipp_vol_avg_dg",
+    "t2hipp_vol_avg_erc",
+    "t2hipp_vol_avg_phc",
+    "t2hipp_vol_avg_prc",
+    "t2hipp_vol_avg_sub",
+    "t2hipp_vol_left_ca1" ,
+    "t2hipp_vol_left_ca23",
+    "t2hipp_vol_left_dg",
+    "t2hipp_vol_left_erc",
+    "t2hipp_vol_left_phc",
+    "t2hipp_vol_left_prc",
+    "t2hipp_vol_left_sub"  ,
+    "t2hipp_vol_right_ca1",
+    "t2hipp_vol_right_ca23",
+    "t2hipp_vol_right_dg",
+    "t2hipp_vol_right_prc",
+    "t2hipp_vol_right_sub",
+    "Left-Hippocampus",
+    "Right-Hippocampus",
+    "eTIV"
+  ) %>% mutate(avg_t1_hipp = (.$`Left-Hippocampus` + .$`Right-Hippocampus`) /
+                 2) %>% filter(!is.na(eTIV)) # Need to make sure we remove subj without scan # N=43
+  
+midlife_HP_female_df <- midlife_HP_df %>% filter(sex=="Female")
+
+midlife_HP_male_df <- midlife_HP_df %>%  filter(sex== "Male")
+ 
+```
+
+## Checking normality
+
+```{r}
+#LOOP: position error
+shapiro.test(data_loop$loop_pe_rad3_m) #no
+shapiro.test(data_loop_women$loop_pe_rad3_m) #no
+shapiro.test(data_loop_men$loop_pe_rad3_m) #no
+
+
+#LOOP: degrees traveled
+shapiro.test(data_loop$loop_de_rad3_degree) #no
+shapiro.test(data_loop_women$loop_de_rad3_degree) #no
+shapiro.test(data_loop_men$loop_de_rad3_degree) #yes
+
+shapiro.test(data_loop$loop_de_avg_degree) #no
+shapiro.test(data_loop_women$loop_de_avg_degree) #no
+shapiro.test(data_loop_men$loop_de_avg_degree) #no
+
+
+#LOOP: angular error
+shapiro.test(data_loop$loop_ae_rad3_degree) #no
+shapiro.test(data_loop_women$loop_ae_rad3_degree) #no
+shapiro.test(data_loop_men$loop_ae_rad3_degree) #no
+
+shapiro.test(data_loop$loop_ae_avg_degree) #yes
+shapiro.test(data_loop_women$loop_ae_avg_degree) #yes
+shapiro.test(data_loop_men$loop_ae_avg_degree) #no
+```
+
+
+## T1 Correlations
+
+## Shuyings code
+
+Shuying originally did an adjustment. so that's waht we're doing below. First we need to correct the T1 hippocampal volumes for TIV. T1 volumes and TIV are coming from freesurfers recon all. 
+```{r, Correct for T1v}
+
+# 1 Create function for apply to variables
+dividebyTIV <- function(x, na.rm = FALSE) (x/midlife_HP_df$eTIV)
+
+# 2 Let's correct by mutating the columns using the TIV from freesurfer
+
+midlife_HP_df <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
+            dividebyTIV) %>% 
+  
+  # multiplying to get proportions 
+   mutate(avg_t1_hipp = avg_t1_hipp*1000,
+         `Left-Hippocampus` = `Left-Hippocampus`*1000,
+         `Right-Hippocampus` = `Right-Hippocampus`*1000)
+
+```
+
+Moving forward we will use T1v as a co variate
+
+
+```{r, running correlations but using T1v as a covariate}
+
+
+
+```
+
+# Young
