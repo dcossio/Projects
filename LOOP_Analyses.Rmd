@@ -266,33 +266,77 @@ midlife_HP_male_df <- midlife_HP_df %>%  filter(sex== "Male")
 
 ## Checking normality
 
-```{r}
-#LOOP: position error
-shapiro.test(data_loop$loop_pe_rad3_m) #no
-shapiro.test(data_loop_women$loop_pe_rad3_m) #no
-shapiro.test(data_loop_men$loop_pe_rad3_m) #no
+- Degrees traveled for all midlife is not normally distributed (p=0.04) and degrees traveled for men only ( p = 0.0001979)
+- Position error was normally distributed for all groups 
+- Angular error rad3 was normally distributed for alll groups
+-  Angular error average for midlife was not normally distributed (p = 0.0007472) and it was not normally distributed for women only ( p-value = 0.004246)
+```{r, echo=FALSE,message=FALSE}
 
+
+#Creating an empty table to put everything in
+normality_midlife_HP <- data.frame(matrix(ncol = 4, nrow = 0)) %>% `colnames<-`(c("statistic", "pvalue", "method", "variable"))
+
+#LOOP: position error
+normality_midlife_HP[1,] <- unlist(shapiro.test(midlife_HP_df$loop_pe_rad3_m)) #normal
+normality_midlife_HP[2,] <- unlist(shapiro.test(midlife_HP_female_df$loop_pe_rad3_m)) #normal
+normality_midlife_HP[3,] <- unlist(shapiro.test(midlife_HP_male_df$loop_pe_rad3_m)) #normal
+
+#LOOP: position error average
+normality_midlife_HP[4,] <-unlist(shapiro.test(midlife_HP_df$loop_pe_avg_m)) #normal
+normality_midlife_HP[5,] <-unlist(shapiro.test(midlife_HP_female_df$loop_pe_avg_m)) #normal
+normality_midlife_HP[6,] <-unlist(shapiro.test(midlife_HP_male_df$loop_pe_avg_m)) #normal
 
 #LOOP: degrees traveled
-shapiro.test(data_loop$loop_de_rad3_degree) #no
-shapiro.test(data_loop_women$loop_de_rad3_degree) #no
-shapiro.test(data_loop_men$loop_de_rad3_degree) #yes
+normality_midlife_HP[7,] <-unlist(shapiro.test(midlife_HP_df$loop_de_rad3_degree))  #notnormal
+normality_midlife_HP[8,] <-unlist(shapiro.test(midlife_HP_female_df$loop_de_rad3_degree))  #normal
+normality_midlife_HP[9,] <-unlist(shapiro.test(midlife_HP_male_df$loop_de_rad3_degree) ) #notnormal
 
-shapiro.test(data_loop$loop_de_avg_degree) #no
-shapiro.test(data_loop_women$loop_de_avg_degree) #no
-shapiro.test(data_loop_men$loop_de_avg_degree) #no
+normality_midlife_HP[10,] <-unlist(shapiro.test(midlife_HP_df$loop_de_avg_degree))  #normal 
+normality_midlife_HP[11,] <-unlist(shapiro.test(midlife_HP_female_df$loop_de_avg_degree))  #normal
+normality_midlife_HP[12,] <-unlist(shapiro.test(midlife_HP_male_df$loop_de_avg_degree))  #normal
 
 
 #LOOP: angular error
-shapiro.test(data_loop$loop_ae_rad3_degree) #no
-shapiro.test(data_loop_women$loop_ae_rad3_degree) #no
-shapiro.test(data_loop_men$loop_ae_rad3_degree) #no
+normality_midlife_HP[13,] <-unlist(shapiro.test(midlife_HP_df$loop_ae_rad3_degree))  #normal
+normality_midlife_HP[14,] <-unlist(shapiro.test(midlife_HP_female_df$loop_ae_rad3_degree))  #normal
+normality_midlife_HP[15,] <-unlist(shapiro.test(midlife_HP_male_df$loop_ae_rad3_degree))  #normal
 
-shapiro.test(data_loop$loop_ae_avg_degree) #yes
-shapiro.test(data_loop_women$loop_ae_avg_degree) #yes
-shapiro.test(data_loop_men$loop_ae_avg_degree) #no
+normality_midlife_HP[16,] <-unlist(shapiro.test(midlife_HP_df$loop_ae_avg_degree))  # notnormal
+normality_midlife_HP[17,] <-unlist(shapiro.test(midlife_HP_female_df$loop_ae_avg_degree))  #notnormal
+normality_midlife_HP[18,] <-unlist(shapiro.test(midlife_HP_male_df$loop_ae_avg_degree))  #no
+
+
 ```
 
+```{r}
+knitr::kable(normality_midlife_HP) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px")
+```
+
+
+<br>
+<br>
+
+## Behavior summarized
+
+
+```{r}
+loop_summarystats <- midlife_HP_df  %>% 
+  group_by(sex) %>% 
+  summarize(n_subject = n(),
+            age_mean = mean(age_spatial_years),
+            age_Sd = sd(age_spatial_years),
+            AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+            AE_avg = mean(loop_ae_avg_degree ,na.rm=TRUE),
+            PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
+            PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
+            DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
+            DT_avg = mean(loop_de_avg_degree,na.rm=TRUE)) %>% as.data.frame() 
+```
+
+```{r}
+knitr::kable(loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+```
 
 ## T1 Correlations
 
@@ -301,12 +345,13 @@ shapiro.test(data_loop_men$loop_ae_avg_degree) #no
 Shuying originally did an adjustment. so that's waht we're doing below. First we need to correct the T1 hippocampal volumes for TIV. T1 volumes and TIV are coming from freesurfers recon all. 
 ```{r, Correct for T1v}
 
+#v contains adjusted hip
 # 1 Create function for apply to variables
 dividebyTIV <- function(x, na.rm = FALSE) (x/midlife_HP_df$eTIV)
 
 # 2 Let's correct by mutating the columns using the TIV from freesurfer
 
-midlife_HP_df <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
+midlife_HP_df_adj <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
             dividebyTIV) %>% 
   
   # multiplying to get proportions 
@@ -316,13 +361,249 @@ midlife_HP_df <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus
 
 ```
 
-Moving forward we will use T1v as a co variate
+
+Now that things have been adjusted I need to do correlations
+### Total HP
+
+** position Error **
+
+- Position error avg is not significantly associated with t1 total hippocampus R=0.22, p=0.15
+```{r, average t1 adjusts and position error average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_avg_m",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- Position error rad3 is not significantly associated with t1 total hippocampus R=0.11, p=0.152
+
+```{r, average t1 adjusts and position error rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_rad3_m",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+<bhr>
+
+** Angular Error**
+
+- Angular error is not significantly associated with t1 total hippocampus R=0.29, p=0.058
+
+```{r, average t1 adjusts and angular error average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- Angular error is not significantly associated with t1 total hippocampus R=0.1, p=0.054
+
+```{r, average t1 adjusts and angular error rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+** Degrees Traveled **
+
+- Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.17, p=0.28
+
+```{r, average t1 adjusts and DT average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- degrees traveled is not significantly associated with t1 total hippocampus R=-0.079, p=0.63
+
+```{r, average t1 adjusts and degrees traveled error rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
 
 
-```{r, running correlations but using T1v as a covariate}
 
+## Partial correlations using TIV as covariate
 
+## Total hp
+
+** Position Error **
+- Position error is not significantly associated with t1 total hippocampus R=-0.63, p=0.53
+```{r, average t1 covariate and position error average}
+# Use hp data frame adjusted 
+pcor.test(midlife_HP_df$loop_pe_avg_m, midlife_HP_df$avg_t1_hipp, midlife_HP_df$eTIV)
+
+```
+
+- Position error rad3  is not significantly associated with t1 total hippocampus R=-0.87, p=0.39
+```{r, average t1 covariate and position error rad3}
+# Use hp data frame adjusted 
+midlife_hp_rad3 <- midlife_HP_df %>% filter(!is.na(loop_pe_rad3_m))
+pcor.test(midlife_hp_rad3$loop_pe_rad3_m, midlife_hp_rad3$avg_t1_hipp, midlife_hp_rad3$eTIV)
+
+```
+
+<br>
+
+** Angular Error **
+
+- Angular error is not significantly associated with t1 total hippocampus R=-0.36, p=0.72
+```{r, average t1 covariate and angular error average}
+# Use hp data frame adjusted 
+pcor.test(midlife_HP_df$loop_ae_avg_degree, midlife_HP_df$avg_t1_hipp, midlife_HP_df$eTIV)
+
+```
+
+- angular error rad3  is not significantly associated with t1 total hippocampus R=-0.9, p=0.37
+```{r, average t1 covariate and angular error rad3}
+# Use hp data frame adjusted 
+midlife_hp_rad3 <- midlife_HP_df %>% filter(!is.na(loop_ae_rad3_degree))
+pcor.test(midlife_hp_rad3$loop_ae_rad3_degree, midlife_hp_rad3$avg_t1_hipp, midlife_hp_rad3$eTIV)
+
+```
+
+** Degrees Traveled  **
+
+- Degrees Traveled is not significantly associated with t1 total hippocampus R=-0.94, p=0.35
+```{r, average t1 covariate and Degrees Traveled average}
+# Use hp data frame adjusted 
+pcor.test(midlife_HP_df$loop_de_avg_degree, midlife_HP_df$avg_t1_hipp, midlife_HP_df$eTIV)
+
+```
+
+-Degrees Traveled rad3  is not significantly associated with t1 total hippocampus R= -0.96, p=0.34
+```{r, average t1 covariate and Degrees Traveled rad3}
+# Use hp data frame adjusted 
+midlife_hp_rad3 <- midlife_HP_df %>% filter(!is.na(loop_de_rad3_degree))
+pcor.test(midlife_hp_rad3$loop_de_rad3_degree, midlife_hp_rad3$avg_t1_hipp, midlife_hp_rad3$eTIV)
 
 ```
 
 # Young
+
+## Creating HP specific Dataframe : midlife_HP_df
+
+Total N - 43 
+    
+    
+```{r,collapse = TRUE}
+# Let's create a clean df to work with here and include only the columns we want 
+
+young_HP_df <-
+ young_raw_df %>%  dplyr::select(
+    "subject_id",
+    "sex",
+    "age_spatial_years",
+    "loop_pe_rad3_m",
+    "loop_pe_avg_m",
+    "loop_de_rad3_degree",
+    "loop_de_avg_degree",
+    "loop_ae_rad3_degree",
+    "loop_ae_avg_degree",
+    "Left-Hippocampus",
+    "Right-Hippocampus",
+    "eTIV"
+  ) %>% mutate(avg_t1_hipp = (.$`Left-Hippocampus` + .$`Right-Hippocampus`) /
+                 2) %>% filter(!is.na(eTIV)) # Need to make sure we remove subj without scan # N=43
+  
+young_HP_female_df <- young_HP_df %>% filter(sex=="Female")
+
+young_HP_male_df <- young_HP_df %>%  filter(sex== "Male")
+ 
+```
+
+## Checking normality
+
+
+```{r, echo=FALSE,message=FALSE}
+
+
+#Creating an empty table to put everything in
+normality_young_HP <- data.frame(matrix(ncol = 4, nrow = 0)) %>% `colnames<-`(c("statistic", "pvalue", "method", "variable"))
+
+#LOOP: position error
+normality_young_HP[1,] <- unlist(shapiro.test(young_HP_df$loop_pe_rad3_m)) #normal
+normality_young_HP[2,] <- unlist(shapiro.test(young_HP_female_df$loop_pe_rad3_m)) #normal
+normality_young_HP[3,] <- unlist(shapiro.test(young_HP_male_df$loop_pe_rad3_m)) #normal
+
+#LOOP: position error average
+normality_young_HP[4,] <-unlist(shapiro.test(young_HP_df$loop_pe_avg_m)) #normal
+normality_young_HP[5,] <-unlist(shapiro.test(young_HP_female_df$loop_pe_avg_m)) #normal
+normality_young_HP[6,] <-unlist(shapiro.test(young_HP_male_df$loop_pe_avg_m)) #normal
+
+#LOOP: degrees traveled
+normality_young_HP[7,] <-unlist(shapiro.test(young_HP_df$loop_de_rad3_degree))  #notnormal
+normality_young_HP[8,] <-unlist(shapiro.test(young_HP_female_df$loop_de_rad3_degree))  #normal
+normality_young_HP[9,] <-unlist(shapiro.test(young_HP_male_df$loop_de_rad3_degree) ) #notnormal
+
+normality_young_HP[10,] <-unlist(shapiro.test(young_HP_df$loop_de_avg_degree))  #normal 
+normality_young_HP[11,] <-unlist(shapiro.test(young_HP_female_df$loop_de_avg_degree))  #normal
+normality_young_HP[12,] <-unlist(shapiro.test(young_HP_male_df$loop_de_avg_degree))  #normal
+
+
+#LOOP: angular error
+normality_young_HP[13,] <-unlist(shapiro.test(young_HP_df$loop_ae_rad3_degree))  #normal
+normality_young_HP[14,] <-unlist(shapiro.test(young_HP_female_df$loop_ae_rad3_degree))  #normal
+normality_young_HP[15,] <-unlist(shapiro.test(young_HP_male_df$loop_ae_rad3_degree))  #normal
+
+normality_young_HP[16,] <-unlist(shapiro.test(young_HP_df$loop_ae_avg_degree))  # notnormal
+normality_young_HP[17,] <-unlist(shapiro.test(young_HP_female_df$loop_ae_avg_degree))  #notnormal
+normality_young_HP[18,] <-unlist(shapiro.test(young_HP_male_df$loop_ae_avg_degree))  #no
+
+
+```
+
+```{r}
+knitr::kable(normality_young_HP) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px")
+```
+
+
+<br>
+<br>
