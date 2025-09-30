@@ -143,9 +143,15 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 
 
 
-# Reading in and prepping our data 
 
-** Reading in our main LOOP CSV and creating large dataframes for midlife and young 
+<hr>
+<br>
+
+# Results {.tabset .tabset-pills}
+
+## Reading in and prepping our data 
+
+Reading in our main LOOP CSV and creating large dataframes for midlife and young
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
@@ -163,12 +169,17 @@ young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") %>% filter(completed_
 ```
 
 
+<br>
+<br>
+<br>
 
-# Hippocampal Analyses
+## Hippocampal Volume {.tabset .tabset-pills}
 
-# Midlife 
+-  Need to figure out how many comparisons are included to use the BY correction
 
-## List of columns  
+### Midlife {.tabset .tabset-pills}
+
+#### List of columns  
 
 The list below are from shuyings original raw data. We will ignore the old T1.
 The T2 here are already corrected for TIV. 
@@ -205,13 +216,14 @@ data.frame(c(
 
 ```
 
-## Creating HP specific Dataframe : midlife_HP_df
+#### Creating HP specific Dataframe : midlife_HP_df
 
 Total N - 43 
     
     
 ```{r,collapse = TRUE}
 # Let's create a clean df to work with here and include only the columns we want 
+
 
 midlife_HP_df <-
   midlife_raw_df %>%  dplyr::select(
@@ -254,17 +266,33 @@ midlife_HP_df <-
     "t2hipp_vol_right_sub",
     "Left-Hippocampus",
     "Right-Hippocampus",
-    "eTIV"
+    "eTIV",
+    "estradiol_scan_pg_ml",
+    "progesterone_scan_ng_ml",
+    "fsh_scan_miu_ml",
+    "shbg_scan_nmol_l",
+    "dheas_scan_ug_dl",
+    "testosterone_scan_ng_dl",
+    "estradiol_spatial_pg_ml",
+    "progesterone_spatial_ng_ml",
+    "fsh_spatial_miu_ml",
+    "shbg_spatial_nmol_l",
+    "dheas_spatial_ug_dl",
+    "testosterone_spatial_ng_dl"
   ) %>% mutate(avg_t1_hipp = (.$`Left-Hippocampus` + .$`Right-Hippocampus`) /
-                 2) %>% filter(!is.na(eTIV)) # Need to make sure we remove subj without scan # N=43
-  
+                 2) %>% filter(!is.na(eTIV)) %>% mutate(
+                   avg_t2_total_hipp = t2hipp_vol_avg_ca1 + t2hipp_vol_avg_ca23 + t2hipp_vol_avg_dg + t2hipp_vol_avg_sub,
+                   left_t2_total_hipp = t2hipp_vol_left_ca1 + t2hipp_vol_left_ca23 + t2hipp_vol_left_dg + t2hipp_vol_left_sub,
+                   right_t2_total_hipp = t2hipp_vol_right_ca1 + t2hipp_vol_right_ca23 + t2hipp_vol_right_dg + t2hipp_vol_right_sub
+                 )  # N=43
+
 midlife_HP_female_df <- midlife_HP_df %>% filter(sex=="Female")
 
 midlife_HP_male_df <- midlife_HP_df %>%  filter(sex== "Male")
  
 ```
 
-## Checking normality
+#### Checking normality
 
 - Degrees traveled for all midlife is not normally distributed (p=0.04) and degrees traveled for men only ( p = 0.0001979)
 - Position error was normally distributed for all groups 
@@ -316,7 +344,7 @@ knitr::kable(normality_midlife_HP) %>% kable_styling(bootstrap_options =  c("str
 <br>
 <br>
 
-## Behavior summarized
+#### Behavior summarized
 
 
 ```{r}
@@ -339,16 +367,16 @@ knitr::kable(loop_summarystats) %>% kable_styling(bootstrap_options =  c("stripe
 ```
 
 
-## T1 adjust correlations
+#### T1 adjust correlations
 Shuying originally did an adjustment. so that's waht we're doing below. First we need to correct the T1 hippocampal volumes for TIV. T1 volumes are coming form freesurfer but TIV is coming from VBM
 
-The reason i am using VBM from shuying and not freesurfer is because the freesurfer metrics are different and i'm not sure that the function/math shuying used previosly works for the free surfer metric. 
+Below i am using the freesurfer TIV not VBM so it matches with all of the other freesurfer info. need to check on this
 
 ```{r, Correct for T1v}
 
 #v contains adjusted hip
 # 1 Create function for apply to variables
-dividebyTIV <- function(x, na.rm = FALSE) (x/midlife_HP_df$t1_vbm_tiv)
+dividebyTIV <- function(x, na.rm = FALSE) (x/midlife_HP_df$eTIV)
 
 # 2 Let's correct by mutating the columns using the TIV from freesurfer
 
@@ -356,23 +384,42 @@ midlife_HP_df_adj <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippoca
             dividebyTIV) %>% 
   
   # multiplying to get proportions 
-   mutate(avg_t1_hipp = avg_t1_hipp*1000,
-         `Left-Hippocampus` = `Left-Hippocampus`*1000,
-         `Right-Hippocampus` = `Right-Hippocampus`*1000)
+   mutate(avg_t1_hipp = avg_t1_hipp*100,
+         `Left-Hippocampus` = `Left-Hippocampus`*100,
+         `Right-Hippocampus` = `Right-Hippocampus`*100)
+
+
+midlife_HP_female_df_adj <- midlife_HP_df_adj %>% filter(sex=="Female")
+
+midlife_HP_male_df_adj <- midlife_HP_df_adj %>%  filter(sex== "Male")
 
 ```
 
+- I need to create a correlation matrix to house all of the results from the correlations
+
+```{r, create empty data frame }
+midlife_HP_correlations <- data.frame(matrix(ncol=9, nrow=0)) 
+```
 
 Now that things have been adjusted I need to do correlations
 
 
-### total HP
+##### total T1 HP
 
 
-** position Error **
+**position Error**
 
-- Position error avg is not significantly associated with t1 total hippocampus R=0.019, p=0.91
+- Position error avg is not significantly associated with t1 total hippocampus R=0.22, p=0.15
+
 ```{r, midlife total hippocampus aadjusted and position error average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_pe_avg_m)) %>% mutate(analysis = "Avg_PE_T1total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, olot midlife total hippocampus aadjusted and position error average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_avg_m",
           add = "reg.line",
@@ -386,9 +433,16 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_avg_m",
 
 ```
 
-- Position error rad3 is not significantly associated with t1 total hippocampus R=-0.04, p=0.81
+- Position error rad3 is not significantly associated with t1 total hippocampus R=0.11, p=0.52
 
 ```{r, midlife total hippocampus aadjusted and  position error rad3}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_pe_rad3_m)) %>% mutate(analysis = "rad3_PE_T1total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+```{r, plot midlife total hippocampus aadjusted and  position error rad3}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_rad3_m",
           add = "reg.line",
@@ -406,23 +460,37 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_rad3_m",
 
 ** Angular Error**
 
-- Angular error is not significantly associated with t1 total hippocampus R=0.095, p=0.55
+- Angular error is not significantly associated with t1 total hippocampus R=0.066, p=0.67
 
 ```{r, midlife total hippocampus adjusted and angular error average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_ae_avg_degree)) %>% mutate(analysis = "avg_AE_T1total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+```{r, plot midlife total hippocampus adjusted and angular error average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_avg_degree",
           add = "reg.line",
           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
           conf.int = TRUE, 
-          cor.method = "pearson",
+          cor.method = "spearman",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
-- Angular error is not significantly associated with t1 total hippocampus R=-0.06, p=0.72
+- Angular error is not significantly associated with t1 total hippocampus R=0.1, p=0.54
+
+```{r, midlife total hippocampus adjusted and angular error rad3}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_ae_rad3_degree)) %>% mutate(analysis = "rad3_AE_T1total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
 
 ```{r, midlife total hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
@@ -438,11 +506,18 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_rad3_degree",
 
 ```
 
-** Degrees Traveled **
+**Degrees Traveled**
 
-- Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.083, p=0.6
-
+- Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.017, p=0.28
 ```{r, midlife total hippocampus adjusted and DT average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_avg_degree)) %>% mutate(analysis = "Avg_DT_T1total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, plot midlife total hippocampus adjusted and DT average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_avg_degree",
           add = "reg.line",
@@ -456,9 +531,17 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_avg_degree",
 
 ```
 
-- degrees traveled is not significantly associated with t1 total hippocampus R=-0.067, p=0.68
+- degrees traveled is not significantly associated with t1 total hippocampus R=-0.079, p=0.63
 
-```{r, midlife total hippocampus adjusted and degrees traveled error rad3}
+```{r,midlife total hippocampus adjusted and degrees traveled error rad3}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_T1total") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
+x <- x[,c(1,2,3,7,8,9,4,5,6)]
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+```{r, plot midlife total hippocampus adjusted and degrees traveled error rad3}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
           add = "reg.line",
@@ -474,11 +557,11 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
 
 
 
-### Left HP
+##### Left HP
 
 ** position Error **
 
-- Position error avg is not significantly associated with t1 left hippocampus R=0.018, p=0.91
+- Position error avg is not significantly associated with t1 left hippocampus R=0.22, p=0.16
 ```{r, midlife left hippocampus adjusted and position error average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
@@ -493,7 +576,7 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
 
 ```
 
-- Position error rad3 is not significantly associated with t1 left hippocampus R=-0.01, p=0.95
+- Position error rad3 is not significantly associated with t1 left hippocampus R=0.012, p=0.48
 
 ```{r, midlife left hippocampus adjusted and position error rad3}
 # Use hp data frame adjusted 
@@ -514,7 +597,7 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
 
 ** Angular Error**
 
-- Angular error is not significantly associated with t1 left hippocampus R=0.098, p=0.53
+- Angular error is not significantly associated with t1 left hippocampus R=0.029, p=0.057
 
 ```{r, midlife left hippocampus adjusted and angular error average}
 # Use hp data frame adjusted 
@@ -530,7 +613,7 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
 
 ```
 
-- Angular error is not significantly associated with t1 total hippocampus R=-0.37, p=0.82
+- Angular error is not significantly associated with t1 total hippocampus R=0.11, p=0.52
 
 ```{r, midlife left hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
@@ -548,7 +631,7 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
 
 ** Degrees Traveled **
 
-- Degrees Traveled  is not significantly associated with t1 Left-Hippocampus R=-0.069, p=0.66
+- Degrees Traveled  is not significantly associated with t1 Left-Hippocampus R=-0.015, p=0.32
 
 ```{r, midlife left hippocampus adjusted and DT average}
 # Use hp data frame adjusted 
@@ -564,7 +647,7 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
 
 ```
 
-- degrees traveled is not significantly associated with t1 Left-Hippocampus R=-0.045, p=0.79
+- degrees traveled is not significantly associated with t1 Left-Hippocampus R=-0.051, p=0.76
 
 ```{r, midlife left hippocampus adjusted and degrees traveled rad3}
 # Use hp data frame adjusted 
@@ -582,12 +665,12 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
 
 
 
-### Right HP
+##### Right HP
 
 
 ** position Error **
 
-- Position error avg is not significantly associated with t1 Right hippocampus R=0.017, p=0.91
+- Position error avg is not significantly associated with t1 Right hippocampus R=0.22, p=0.15
 ```{r, midlife right hippocampus adjusted and position error average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
@@ -602,7 +685,7 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
 
 ```
 
-- Position error rad3 is not significantly associated with t1 right hippocampus R=-0.071, p=0.67
+- Position error rad3 is not significantly associated with t1 right hippocampus R=0.0941, p=0.57
 
 ```{r, midlife right hippocampus adjusted and position error rad3}
 # Use hp data frame adjusted 
@@ -623,7 +706,7 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
 
 ** Angular Error**
 
-- Angular error is not significantly associated with t1 right hippocampus R=0.084, p=0.59
+- Angular error is not significantly associated with t1 right hippocampus R=0.029, p=0.062
 
 ```{r, midlife right hippocampus adjusted and angular error average}
 # Use hp data frame adjusted 
@@ -639,7 +722,7 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
 
 ```
 
-- Angular error is not significantly associated with t1 right hippocampus R=-0.082, p=0.62
+- Angular error is not significantly associated with t1 right hippocampus R=-0.093, p=0.58
 
 ```{r, midlife right hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
@@ -657,7 +740,7 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
 
 ** Degrees Traveled **
 
-- Degrees Traveled  is not significantly associated with t1 Right-Hippocampus R=-0.092, p=0.56
+- Degrees Traveled  is not significantly associated with t1 Right-Hippocampus R=-0.0182, p=0.26
 
 ```{r, midlife right hippocampus adjustedand DT average}
 # Use hp data frame adjusted 
@@ -673,7 +756,7 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
 
 ```
 
-- degrees traveled is not significantly associated with t1 Right-Hippocampus R=-0.074, p=0.65
+- degrees traveled is not significantly associated with t1 Right-Hippocampus R=-0.09, p=0.58
 
 ```{r, midlife right hippocampus adjusted and degrees traveled error rad3}
 # Use hp data frame adjusted 
@@ -690,9 +773,288 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
 ```
 
 
-## Partial correlations using TIV as covariate
+##### total T2 HP
 
-## Total hp
+**position Error**
+
+- Position error avg is not significantly associated with t2 total hippocampus R=0.048, p=0.82
+
+```{r,midlife total t2 hippocampus adjusted and position error average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_pe_avg_m)) %>% mutate(analysis = "avg_PE_T2total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, Plot midlife total t2 hippocampus adjusted and position error average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_pe_avg_m",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- Position error rad3 is not significantly associated with t2 total hippocampus R=-0.11, p=0.61
+
+```{r, midlife total t2 hippocampus adjusted and position error rad3}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_pe_rad3_m)) %>% mutate(analysis = "rad3_PE_T2total")
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, plot midlife total t2 hippocampus adjusted and  position error rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_pe_rad3_m",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+<br>
+
+**Angular Error**
+
+- Angular error is not significantly associated with t2 total hippocampus R=0.12, p=0.56
+
+
+```{r, midlife t2 total hippocampus adjusted and angular error average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_ae_avg_degree)) %>% mutate(analysis = "avg_AE_T2total" )
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+```{r, plot midlife t2 total hippocampus adjusted and angular error average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_ae_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- Angular error is not significantly associated with t2 total hippocampus R=-0.11, p=0.62
+
+```{r, midlife t2 total hippocampus adjusted and angular error rad3}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_ae_rad3_degree)) %>% mutate(analysis = "rad3_AE_T2total" )
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+```{r, plot midlife t2 total hippocampus adjusted and angular error rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_ae_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+**Degrees Traveled**
+
+
+- Degrees Traveled  is significantly associated with t2 total hippocampus R=-0.053, p=0.0049
+
+```{r,  midlife t2 total hippocampus adjusted and DT average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_avg_degree)) %>% mutate(analysis = "avg_DT_T2total" )
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, midlife t2 total hippocampus adjusted and DT average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- degrees traveled is not significantly associated with t2 total hippocampus R=-0.67, p=0.00061
+
+```{r, midlife t2 total hippocampus adjusted and degrees traveled error rad3}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_T2total" )  %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
+
+x <- x[,c(1,2,3,7,8,9,4,5,6)]
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, plot midlife t2 total hippocampus adjusted and degrees traveled error rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+##### CA1
+
+**Degrees Traveled**
+
+- Degrees Traveled  is significantly associated with ca1 R=-0.53, p=0.0058
+
+```{r, midlife CA1 and DT average}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$t2hipp_vol_avg_ca1,midlife_HP_df_adj$loop_de_avg_degree)) %>% mutate(analysis = "avg_DT_T2CA1" )  
+
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, plot midlife CA1 and DT average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+- Degrees Traveled rad3 is significantly associated with ca1 R=-0.7, p=0.00032
+
+
+```{r,  midlife CA1 and DT rad3}
+
+x <- broom::tidy(cor.test(midlife_HP_df_adj$t2hipp_vol_avg_ca1,midlife_HP_df_adj$loop_de_rad3_degree)) %>% mutate(analysis = "rad3_DT_T2CA1" )  
+
+
+midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
+
+```
+
+
+```{r, plot midlife CA1 and DT rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+##### CA23
+
+- Degrees Traveled  is significantly associated with ca23 R=-0.54, p=0.0047
+
+```{r, midlife CA23 and DT average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+- Degrees Traveled rad3 is significantly associated with ca23 hippocampus R=-0.64, p=0.0014
+```{r, midlife CA1 and DT rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+
+##### DG
+
+ Degrees Traveled  is significantly associated with DG R=-0.46, p=0.017
+```{r, midlife dg and DT average}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "pearson",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+- Degrees Traveled rad3 is significantly associated with t2 total hippocampus R=-0.64, p=0.0014
+```{r, midlife CA1 and DT rad3}
+# Use hp data frame adjusted 
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_rad3_degree",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+
+```
+
+##### sub
+
+#### Partial correlations using TIV as covariate
+
+
+##### Total hp
 
 ** Position Error **
 - Position error is not significantly associated with t1 total hippocampus R=-0.63, p=0.53
@@ -746,11 +1108,152 @@ pcor.test(midlife_hp_rad3$loop_de_rad3_degree, midlife_hp_rad3$avg_t1_hipp, midl
 
 ```
 
-# Young
+
+#### Hormone Correlations
+##### Estradiol
+
+Here I am looking at hormones but only for the LOOP group and not all women with a T1 Scan. SO instead of n =74 like shuying, its n = 26
+
+
+**T1 total hippocampus**
+
+Estradiol was not significantly associated with total T1 hippocampal volume ( rs(24) = 0.065, p = 0.75)
+
+```{r, estradiol and T1 adjusted}
+ggscatter(midlife_HP_female_df_adj, x = "avg_t1_hipp", y = "estradiol_spatial_pg_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Estradiol", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+<br>
+
+**T2 total hippocampus**
+
+estradiol was not significantly associated with T2 total hippocampal volume r  = -0.29, p=0.29
+```{r, estradiol and T2 adjusted}
+ggscatter(midlife_HP_female_df_adj, x = "avg_t2_total_hipp", y = "estradiol_spatial_pg_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "Estradiol", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+
+
+<br>
+
+##### FSH
+
+FSH was not significantly associated with total T1 hippocampal volume ( rs(24) = -0.16, p = 0.44)
+```{r, FSH }
+ggscatter(midlife_HP_female_df_adj, x = "avg_t1_hipp", y = "fsh_spatial_miu_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "FSH", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+**T2 total hippocampus**
+
+FSH was not significantly associated with T2 total hippocampal volume 
+```{r, FSH and T2 adjusted}
+ggscatter(midlife_HP_female_df_adj, x = "avg_t2_total_hipp", y = "fsh_spatial_miu_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "FSH", ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+
+##### Progesterone
+
+**T1 total hippocampus**
+Progesterone was not significantly associated with total T1 hippocampal volume ( rs(24) = 0.2, p = 0.32)
+
+```{r, progesterone }
+ggscatter(midlife_HP_female_df_adj, x = "avg_t1_hipp", y = "progesterone_spatial_ng_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "progesterone" ) +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+<br>
+
+**T2 total hippocampus**
+
+progesterone was not significantly associated with T2 total hippocampal volume r = -0.21 p=045
+```{r, progesterone and T2 adjusted}
+ggscatter(midlife_HP_female_df_adj, x = "avg_t2_total_hipp", y = "progesterone_spatial_ng_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "prog") +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+
+<br>
+
+**avg ca1**
+
+progesterone was not significantly associated with T2 total hippocampal volume r = -0.21 p=045
+```{r, progesterone and T2 ca1 adjusted}
+ggscatter(midlife_HP_female_df_adj, x = "t2hipp_vol_avg_ca1", y = "progesterone_spatial_ng_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "prog") +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+
+**avg ca23**
+
+**avg DG**
+```{r, progesterone and T2 DG adjusted}
+
+ggscatter(midlife_HP_female_df_adj, x = "t2hipp_vol_avg_dg", y = "progesterone_spatial_ng_ml",
+          add = "reg.line",
+          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          conf.int = TRUE, 
+          cor.method = "spearman",
+          cor.coeff.args = list(label.sep = "\n"),
+          xlab = "Averaged GMV Volume", ylab = "prog") +
+    theme(legend.position = "top", legend.title=element_blank()) 
+```
+
+
+
+
+
+### Young
 
 For young adults hippocampal., we will use freesurfer and VBM. We need to put things into scale with the midlife 
 
-## Creating HP specific Dataframe : young
+#### Creating HP specific Dataframe : young
 
 Total N - 31
     
@@ -782,7 +1285,7 @@ young_HP_male_df <- young_HP_df %>%  filter(sex== "Male")
  
 ```
 
-## Checking normality
+#### Checking normality
 
 
 ```{r, echo=FALSE,message=FALSE}
@@ -850,7 +1353,7 @@ knitr::kable(young_loop_summarystats) %>% kable_styling(bootstrap_options =  c("
 
 ```
 
-## Adjust TIV correlations
+#### Adjust TIV correlations
 
 Shuying originally did an adjustment. so that's waht we're doing below. First we need to correct the T1 hippocampal volumes for TIV. T1 volumes and TIV are coming from freesurfers recon all. 
 ```{r, young Correct for T1v}
@@ -877,7 +1380,7 @@ young_HP_df_adj <- young_HP_df_adj %>% mutate_at(vars(avg_t1_hipp, `Left-Hippoca
 ```
 
 
-### Total HP
+##### Total HP
 
 ** position Error **
 
@@ -984,7 +1487,7 @@ ggscatter(young_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
 
 ```
 
-### Right  
+##### Right  
 
 ** position Error **
 
@@ -1093,7 +1596,7 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
 
 <br>
 
-### Left
+##### Left
 
 ** position Error **
 
