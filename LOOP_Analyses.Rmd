@@ -2104,7 +2104,76 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
 ```{r, creating cortical thickness data frames}
 # now there's a lot of columns to select here so I'm going to try and make a few list of them so then we can grab by names 
 
-cols2grab <- 
+# precentral, postcentral, superoir parietal, superior frontal, caudate and putamen 
+
+lh_apriori <- c("lh_postcentral_thickness","lh_precentral_thickness","lh_superiorparietal_thickness","lh_superiorfrontal_thickness", "lh_cuneus_thickness","lh_medialorbitofrontal_thickness","lh_entorhinal_thickness","lh_parahippocampal_thickness","lh_precuneus_thickness","lh_lateraloccipital_thickness","lh_posteriorcingulate_thickness")
+
+rh_apriori <- c("rh_postcentral_thickness","rh_precentral_thickness","rh_superiorparietal_thickness","rh_superiorfrontal_thickness", "rh_cuneus_thickness","rh_medialorbitofrontal_thickness","rh_entorhinal_thickness","rh_parahippocampal_thickness","rh_precuneus_thickness","rh_lateraloccipital_thickness","rh_posteriorcingulate_thickness")
+
+sub_apriori <- c("Left-Caudate","Right-Caudate","Left-Putamen","Right-Putamen","Left-Hippocampus","Right-Hippocampus")
+
+avg_apriori <- c("avg_t1_hipp","avg_postcentral", "avg_precentral",
+  "avg_superior_parietal", "avg_superior_frontal", "avg_caudate", "avg_putamen")
+  
+all_apriori <- c(lh_apriori,rh_apriori,sub_apriori)
+
+#creating dataframe with all apriori regions
+midlife_CT_df <- midlife_raw_df %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol",
+  all_apriori
+) %>% mutate(
+  avg_t1_hipp = (.$`Left-Hippocampus` + .$`Right-Hippocampus`) / 2,
+  avg_postcentral = lh_postcentral_thickness + rh_postcentral_thickness /
+    2,
+  avg_precentral = lh_precentral_thickness + rh_precentral_thickness / 2,
+  avg_superior_parietal = lh_superiorparietal_thickness + rh_superiorparietal_thickness / 2,
+  avg_superior_frontal = rh_superiorfrontal_thickness + lh_superiorfrontal_thickness / 2 , avg_caudate = `Left-Caudate` + `Right-Caudate` /2, avg_putamen = `Left-Putamen`,`Right-Putamen`
+) %>% filter(EstimatedTotalIntraCranialVol != "NA")
+```
+
+
+```{r, All DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+midlife_CT_df_Avg <- midlife_CT_df %>% filter(loop_de_avg_degree != "NA")
+
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = midlife_CT_df_Avg[["loop_de_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")])
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BY", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
 
 ```
 
+```{r,echo=FALSE,message=FALSE}
+TableOutput(cor_results)
+```
