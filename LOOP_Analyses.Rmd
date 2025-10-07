@@ -2100,6 +2100,7 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
 <br>
 ## Cortical Thickness {.tabset .tabset-pills}
 
+
 - First i need to create a few cortical thickness data frames
 ```{r, creating cortical thickness data frames}
 # now there's a lot of columns to select here so I'm going to try and make a few list of them so then we can grab by names 
@@ -2142,11 +2143,59 @@ midlife_CT_df <- midlife_raw_df %>%  dplyr::select(
 ```
 
 
+### Degrees traveled
+
+#### all
 ```{r, All DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
 midlife_CT_df_Avg <- midlife_CT_df %>% filter(loop_de_avg_degree != "NA")
+midlife_CT_df_Avg$sex[midlife_CT_df_Avg$sex=="Male"] <- 1 
+midlife_CT_df_Avg$sex[midlife_CT_df_Avg$sex=="Female"] <- 0
+midlife_CT_df_Avg$sex <- as.numeric(midlife_CT_df_Avg$sex)
 
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in all_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = midlife_CT_df_Avg[["loop_de_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,echo=FALSE,message=FALSE}
+
+qvals <- qvalue::qvalue(cor_results$p.value)
+cor_results$adj.pval <- qvals[["qvalues"]]
+cor_results <- arrange(cor_results,p.value)
+```
+
+
+
+```{r, All DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+midlife_CT_df_rad3 <- midlife_CT_df %>% filter(loop_de_rad3_degree != "NA")
+midlife_CT_df_rad3$sex[midlife_CT_df_rad3$sex=="Male"] <- 1 
+midlife_CT_df_rad3$sex[midlife_CT_df_rad3$sex=="Female"] <- 0
+midlife_CT_df_rad3$sex <- as.numeric(midlife_CT_df_rad3$sex)
 
 cor_results <-
   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
@@ -2156,24 +2205,29 @@ pcorlist <- list()
 for (ROI in avg_apriori) {
   
   print(ROI)
-  if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
+  if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
 
     pcorlist[[ROI]] <- NA
 
   }else{
   pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_Avg[["loop_de_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")])
+    pcor.test(x = midlife_CT_df_rad3[["loop_de_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
   temp <- cbind(ROI, pcorlist[[ROI]])
   cor_results <- rbind(cor_results, temp)
   }
 }
 
-cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BY", n = length(cor_results$p.value))
-cor_results <- arrange(cor_results,p.value)
+# cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+# cor_results <- arrange(cor_results,p.value)
 
 
 ```
 
 ```{r,echo=FALSE,message=FALSE}
-TableOutput(cor_results)
+
+qvals <- qvalue::qvalue(cor_results$p.value)
+cor_results$adj.pval <- qvals[["qvalues"]]
+cor_results <- arrange(cor_results,p.value)
 ```
+#### Male
+#### female
