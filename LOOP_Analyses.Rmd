@@ -31,6 +31,7 @@ library(gridExtra)
 library(markdown)
 library(psych)
 library(ppcor)
+#library(Bio)
 ```
 
 
@@ -165,7 +166,9 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 Reading in our main LOOP CSV and creating large dataframes for midlife and young
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+#workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+
+workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
 
 LOOP_raw_df <- read_csv(paste0(workingdir,"/LOOP_all_data.csv"))
 
@@ -596,16 +599,16 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
 
 - Position error avg is not significantly associated with t1 left hippocampus R=0.22, p=0.16
 ```{r, midlife left hippocampus adjusted and position error average}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# # Use hp data frame adjusted 
+# ggscatter(midlife_HP_df_adj, x = `Left-Hippocampus`, y = "loop_pe_avg_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -613,15 +616,15 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
 
 ```{r, midlife left hippocampus adjusted and position error rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -634,15 +637,15 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
 
 ```{r, midlife left hippocampus adjusted and angular error average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -650,15 +653,15 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
 
 ```{r, midlife left hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -668,15 +671,15 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
 
 ```{r, midlife left hippocampus adjusted and DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -684,15 +687,15 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
 
 ```{r, midlife left hippocampus adjusted and degrees traveled rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -706,15 +709,15 @@ ggscatter(midlife_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
 - Position error avg is not significantly associated with t1 Right hippocampus R=0.22, p=0.15
 ```{r, midlife right hippocampus adjusted and position error average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -722,15 +725,15 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
 
 ```{r, midlife right hippocampus adjusted and position error rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -743,15 +746,15 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
 
 ```{r, midlife right hippocampus adjusted and angular error average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -759,15 +762,15 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
 
 ```{r, midlife right hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -777,15 +780,15 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
 
 ```{r, midlife right hippocampus adjustedand DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -793,15 +796,15 @@ ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
 
 ```{r, midlife right hippocampus adjusted and degrees traveled error rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -943,11 +946,11 @@ x
 ```{r,plot midlife t2 total hippocampus adjusted and DT average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          add = "reg.line", color = "#7d4c5a",
+          add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
+          #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
           conf.int = TRUE, 
-          cor.method = "pearson",
+          #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
     theme(legend.position = "top", legend.title=element_blank()) 
@@ -1001,11 +1004,11 @@ x
 ```{r, plot midlife CA1 and DT average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          add = "reg.line", color = "#7d4c5a",
+          add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
+          #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
           conf.int = TRUE, 
-          cor.method = "pearson",
+          #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
     theme(legend.position = "top", legend.title=element_blank()) 
@@ -1057,11 +1060,11 @@ x
 ```{r, midlife CA23 and DT average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+          add = "reg.line", color = "#7d4c5a",
+          add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
+          #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
           conf.int = TRUE, 
-          cor.method = "pearson",
+          #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
     theme(legend.position = "top", legend.title=element_blank()) 
@@ -1115,11 +1118,11 @@ x
 ```{r, plot midlife dg and DT average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+       add = "reg.line", color = "#7d4c5a",
+          add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
+          #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
           conf.int = TRUE, 
-          cor.method = "pearson",
+          #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
     theme(legend.position = "top", legend.title=element_blank()) 
@@ -1176,11 +1179,11 @@ Degrees Traveled  is significantly associated with DG R=-0.41, p=0.038
 ```{r, plot midlife sub and DT average}
 # Use hp data frame adjusted 
 ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_sub", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+         add = "reg.line", color = "#7d4c5a",
+          add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
+          #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
           conf.int = TRUE, 
-          cor.method = "pearson",
+          #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
     theme(legend.position = "top", legend.title=element_blank()) 
