@@ -31,7 +31,6 @@ library(gridExtra)
 library(markdown)
 library(psych)
 library(ppcor)
-#library(Bio)
 ```
 
 
@@ -166,11 +165,11 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 Reading in our main LOOP CSV and creating large dataframes for midlife and young
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
 
-workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
+#workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
 
-LOOP_raw_df <- read_csv(paste0(workingdir,"/LOOP_all_data.csv"))
+LOOP_raw_df <- read_csv(paste0(workingdir,"/LOOP_all_data.csv")) %>%  filter(loop_useable=="Yes")
 
 midlife_raw_df <- LOOP_raw_df %>% filter(age_group=="Midlife")  %>% filter(subject_id != 372) # Excluding these 372 because they had a brain worm or something  #53
 
@@ -187,6 +186,54 @@ young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") %>% filter(completed_
 <br>
 <br>
 
+## Behavior 
+
+
+```{r}
+ALL_loop_summarystats <- LOOP_raw_df  %>% 
+  group_by(age_group) %>% 
+  summarize(n_subject = n(),
+            age_mean = mean(age_spatial_years),
+            age_Sd = sd(age_spatial_years),
+            AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+            AE_avg = mean(loop_ae_avg_degree ,na.rm=TRUE),
+            PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
+            PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
+            DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
+            DT_avg = mean(loop_de_avg_degree,na.rm=TRUE)) %>% as.data.frame() 
+```
+
+```{r}
+knitr::kable(ALL_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+```
+
+### ANOVA
+
+SO no age effect but there is a sex effect essentially replicating what shuying found in her original analysis 
+```{r, degrees traveled average }
+
+DT_aov <- aov(loop_de_avg_degree ~ age_group + sex, data =LOOP_raw_df )
+
+summary(DT_aov)
+```
+
+```{r}
+ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_de_avg_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+```{r, angular error average }
+
+AE_aov <- aov(loop_ae_avg_degree ~ age_group + sex, data =LOOP_raw_df )
+
+summary(AE_aov)
+```
+
+```{r, AE boxplot}
+ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_ae_avg_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
 ## Hippocampal Volume {.tabset .tabset-pills}
 
 -  Need to figure out how many comparisons are included to use the BY correction
@@ -945,7 +992,7 @@ x
 
 ```{r,plot midlife t2 total hippocampus adjusted and DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree",
+ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree",  size=4,
           add = "reg.line", color = "#7d4c5a",
           add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
           #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
@@ -953,6 +1000,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree",
           #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+     geom_hline(yintercept=360, linetype="dashed", color = "#414143", size=1) +
     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
@@ -1003,7 +1051,7 @@ x
 
 ```{r, plot midlife CA1 and DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree",
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree", size=4,
           add = "reg.line", color = "#7d4c5a",
           add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
           #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
@@ -1011,6 +1059,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_avg_degree",
           #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+   geom_hline(yintercept=360, linetype="dashed", color = "#414143", size=1) +
     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
@@ -1059,7 +1108,7 @@ x
 
 ```{r, midlife CA23 and DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree",size=4,
           add = "reg.line", color = "#7d4c5a",
           add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
           #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
@@ -1067,6 +1116,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_avg_degree"
           #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+  geom_hline(yintercept=360, linetype="dashed", color = "#414143", size=1)+
     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
@@ -1117,7 +1167,7 @@ x
 
 ```{r, plot midlife dg and DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree",
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree", size=4,
        add = "reg.line", color = "#7d4c5a",
           add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
           #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
@@ -1125,6 +1175,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree",
           #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+  geom_hline(yintercept=360, linetype="dashed", color = "#414143", size=1) +
     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
@@ -1150,7 +1201,7 @@ x
 
 ```{r, plot midlife dg and DT rad3}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_rad3_degree",
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_rad3_degree",size=4,
           add = "reg.line",
           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
@@ -1158,6 +1209,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_rad3_degree",
           cor.method = "spearman",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+  ca23_DEavg +
     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
@@ -1175,10 +1227,10 @@ x
 
 ```
 
-Degrees Traveled  is significantly associated with DG R=-0.41, p=0.038
+Degrees Traveled  is significantly associated with sub R=-0.41, p=0.038
 ```{r, plot midlife sub and DT average}
 # Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_sub", y = "loop_de_avg_degree",
+ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_sub", y = "loop_de_avg_degree",size = 4,
          add = "reg.line", color = "#7d4c5a",
           add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
           #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
@@ -1186,13 +1238,14 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_sub", y = "loop_de_avg_degree",
           #cor.method = "pearson",
           cor.coeff.args = list(label.sep = "\n"),
           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
+  geom_hline(yintercept=360, linetype="dashed", color = "#414143", size=1) +
     theme(legend.position = "top", legend.title=element_blank()) 
 
 
 ```
 
 
-- Degrees Traveled rad3 is significantly associated with t2 total hippocampus R=-0.69, p=0.00043
+- Degrees Traveled rad3 is significantly associated with sub R=-0.69, p=0.00043
 
 ```{r,  midlife sub and DT rad3}
 
@@ -1691,11 +1744,11 @@ Shuying originally did an adjustment. so that's waht we're doing below. First we
 #v contains adjusted hip
 # now we create the function for adjusting by TIV
 # 1 Create function for apply to variables
-Young_dividebyTIV <- function(x, na.rm = FALSE) (x/young_HP_df_adj$eTIV)
+Young_dividebyTIV <- function(x, na.rm = FALSE) (x/young_HP_df$eTIV)
 
 # 2 Let's correct by mutating the columns using the TIV from freesurfer
 
-young_HP_df_adj <- young_HP_df_adj %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
+young_HP_df_adj <- young_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
             Young_dividebyTIV) %>% 
   
   # multiplying to get proportions 
@@ -1710,7 +1763,7 @@ young_HP_df_adj <- young_HP_df_adj %>% mutate_at(vars(avg_t1_hipp, `Left-Hippoca
 
 **position Error**
 
-- position error is not associated with T1 hippocampal volume in young adults R=0.253, p=0.177
+- position error is not associated with T1 hippocampal volume in young adults R=-0.07, p=0.6916
 -not normal using spearman 
 
 
