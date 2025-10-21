@@ -177,7 +177,7 @@ midlife_female_raw_df <- midlife_raw_df %>% filter(sex=="Female")
 
 midlife_male_raw_df <- midlife_raw_df %>% filter(sex=="Male")
   
-young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") %>% filter(completed_scan == "Yes") # Making sure we only use scan subjects N= 32 
+young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") 
 
 ```
 
@@ -188,52 +188,110 @@ young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") %>% filter(completed_
 
 ## Behavior 
 
-
-```{r}
-ALL_loop_summarystats <- LOOP_raw_df  %>% 
-  group_by(age_group) %>% 
-  summarize(n_subject = n(),
-            age_mean = mean(age_spatial_years),
-            age_Sd = sd(age_spatial_years),
-            AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
-            AE_avg = mean(loop_ae_avg_degree ,na.rm=TRUE),
-            PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
-            PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
-            DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
-            DT_avg = mean(loop_de_avg_degree,na.rm=TRUE)) %>% as.data.frame() 
+### YOung and midlife 
+```{r, summary stats for all participants with useable behavior  }
+loop_summarystats <- LOOP_raw_df  %>% 
+  group_by(sex) %>% 
+  summarize(
+    n = n(),
+    `Mean Age` = round(mean(age_spatial_years), digits = 2),
+    SD = round(sd(age_spatial_years), digits = 2),
+    #AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+    `Angular Error` = round(mean(loop_ae_avg_degree , na.rm = TRUE), digits = 2),
+    AE_SD = round(sd(loop_ae_avg_degree), digits = 2),
+    #PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
+    #PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
+    #DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
+    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2),
+    DT_SD = round(sd(loop_ae_avg_degree), digits = 2)) %>% as.data.frame() 
 ```
 
-```{r}
-knitr::kable(ALL_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```{r, table for young adults with useable behavior}
+
+knitr::kable(loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+```
+
+### Young adult behavior summarized 
+- Below are the summary stats for young adults with useable behavior 
+
+
+```{r, summary stats for young adults with useable behavior  }
+yng_loop_summarystats <- young_raw_df  %>% 
+  group_by(sex) %>% 
+summarize(
+    n = n(),
+    `Mean Age` = round(mean(age_spatial_years), digits = 2),
+    SD = round(sd(age_spatial_years), digits = 2),
+    #AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+    `Angular Error` = round(mean(loop_ae_avg_degree , na.rm = TRUE), digits = 2),
+    #PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
+    #PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
+    #DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
+    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() 
+```
+
+```{r, table for young adults with useable behavior}
+
+knitr::kable(yng_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+```
+
+
+### Midlife 
+
+- Below are the summary stats for midlife adults with useable behavior 
+
+```{r, summary stats for mid adults with useable behavior}
+mid_loop_summarystats <- midlife_raw_df  %>% 
+  group_by(sex) %>% 
+summarize(
+    n = n(),
+    `Mean Age` = round(mean(age_spatial_years), digits = 2),
+    SD = round(sd(age_spatial_years), digits = 2),
+    #AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+    `Angular Error` = round(mean(loop_ae_avg_degree , na.rm = TRUE), digits = 2),
+    #PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
+    #PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
+    #DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
+    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() 
+```
+
+```{r, table for mid adults with useable behavior}
+knitr::kable(mid_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
 
 ```
 
 ### ANOVA
 
-SO no age effect but there is a sex effect essentially replicating what shuying found in her original analysis 
-```{r, degrees traveled average }
+SO no age effect but there is a sex effect essentially replicating what shuying found in her original analysis. 
 
-DT_aov <- aov(loop_de_avg_degree ~ age_group + sex, data =LOOP_raw_df )
+HEre only sex is signifacnlty associated
+```{r, 2X2 ANOVA sex,age, DT }
+
+DT_aov <- aov(loop_de_avg_degree ~ age_group * sex, data =LOOP_raw_df )
 
 summary(DT_aov)
 ```
 
-```{r}
+```{r, plot for 2X2 ANOVA sex,age, DT }
 ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_de_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
 
-```{r, angular error average }
+```{r, 2X2 ANOVA sex,age, AE }
 
-AE_aov <- aov(loop_ae_avg_degree ~ age_group + sex, data =LOOP_raw_df )
+AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =LOOP_raw_df )
 
 summary(AE_aov)
 ```
 
-```{r, AE boxplot}
+```{r, plot for 2X2 ANOVA sex,age, AE}
 ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_ae_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
+
+
 ## Hippocampal Volume {.tabset .tabset-pills}
 
 -  Need to figure out how many comparisons are included to use the BY correction
@@ -359,7 +417,7 @@ midlife_HP_male_df <- midlife_HP_df %>%  filter(sex== "Male")
 - Position error was normally distributed for all groups 
 - Angular error rad3 was normally distributed for alll groups
 -  Angular error average for midlife was not normally distributed (p = 0.0007472) and it was not normally distributed for women only ( p-value = 0.004246)
-```{r, echo=FALSE,message=FALSE}
+```{r, checkin midlife normality, echo=FALSE,message=FALSE}
 
 
 #Creating an empty table to put everything in
@@ -397,7 +455,7 @@ normality_midlife_HP[18,] <-unlist(shapiro.test(midlife_HP_male_df$loop_ae_avg_d
 
 ```
 
-```{r}
+```{r, normality table}
 knitr::kable(normality_midlife_HP) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px")
 ```
 
@@ -408,8 +466,8 @@ knitr::kable(normality_midlife_HP) %>% kable_styling(bootstrap_options =  c("str
 #### Behavior summarized
 
 
-```{r}
-loop_summarystats <- midlife_HP_df  %>% 
+```{r, summarizing hp df}
+hp_loop_summarystats <- midlife_HP_df  %>% 
   group_by(sex) %>% 
   summarize(n_subject = n(),
             age_mean = mean(age_spatial_years),
@@ -422,7 +480,7 @@ loop_summarystats <- midlife_HP_df  %>%
             DT_avg = mean(loop_de_avg_degree,na.rm=TRUE)) %>% as.data.frame() 
 ```
 
-```{r}
+```{r, hp df summary table}
 knitr::kable(loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
 
 ```
@@ -438,7 +496,7 @@ Due to that, I am correcting using Freesurfer TIV
 
 
 
-```{r, Correct for T1v}
+```{r, midlife Correct for T1v}
 
 #v contains adjusted hip
 # 1 Create function for apply to variables
@@ -463,7 +521,7 @@ midlife_HP_male_df_adj <- midlife_HP_df_adj %>%  filter(sex== "Male")
 
 - I need to create a correlation matrix to house all of the results from the correlations so I can correct p values later
 
-```{r, create empty data frame }
+```{r, create empty data frame for correlations }
 midlife_HP_correlations <- data.frame(matrix(ncol=9, nrow=0)) 
 ```
 
@@ -473,7 +531,7 @@ Now that things have been adjusted I need to do correlations
 ##### total T1 HP
 
 
-**position Error**
+###### position Error
 
 - Position error avg is not significantly associated with t1 total hippocampus R=0.22, p=0.15
 
@@ -528,7 +586,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_rad3_m",
 
 <br>
 
-**Angular Error**
+###### **Angular Error**
 
 - Angular error is not significantly associated with t1 total hippocampus R=0.066, p=0.67
 
@@ -584,7 +642,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_rad3_degree",
 ```
 
 
-**Degrees Traveled**
+###### **Degrees Traveled**
 
 - Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.17, p=0.28
 ```{r, midlife total hippocampus adjusted and DT average}
@@ -858,7 +916,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
 
 ##### total T2 HP
 
-**position Error**
+###### **position Error**
 
 - Position error avg is not significantly associated with t2 total hippocampus R=0.048, p=0.82
 
@@ -918,7 +976,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_pe_rad3_m",
 <br>
 <hr>
 
-**Angular Error**
+###### **Angular Error**
 
 - Angular error is not significantly associated with t2 total hippocampus R=0.14, p=0.49
 
@@ -975,7 +1033,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_ae_rad3_degree",
 <br>
 <hr>
 
-**Degrees Traveled**
+###### **Degrees Traveled**
 
 
 - Degrees Traveled  is significantly associated with t2 total hippocampus R=-0.053, p=0.0049
@@ -1006,7 +1064,7 @@ ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree", 
 ```
 <br>
 
-- degrees traveled is not significantly associated with t2 total hippocampus R=-0.67, p=0.00061
+- degrees traveled is  significantly associated with t2 total hippocampus R=-0.67, p=0.00061
 
 ```{r, midlife t2 total hippocampus adjusted and degrees traveled error rad3}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_T2total" )  %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
@@ -1182,7 +1240,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_dg", y = "loop_de_avg_degree", 
 
 <br>
 
-- Degrees Traveled rad3 is significantly associated with t2 total hippocampus R=-0.64, p=0.0014
+- Degrees Traveled rad3 is significantly associated with t2 total hippocampus R=-0.54, p=0.009
 
 ```{r,  midlife dg and DT rad3}
 
