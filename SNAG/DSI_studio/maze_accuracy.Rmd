@@ -111,6 +111,7 @@ library(markdown)
 library(psych)
 library(Rmisc)
 library(ppcor)
+library(outliers)
 
 ```
 
@@ -354,6 +355,40 @@ df_maze_post <- sub_info %>% filter(REPO == "Post")
 ```
 
 ### Behavior
+#### outliers test
+
+##### hormones
+
+Subject 355 is an outliar for estradiol 
+```{r, hormones}
+test <- grubbs.test(df_maze_fem$estradiol_spatial_pg_ml)
+test
+```
+subject 389 is fsh outliar
+```{r, fsh}
+test <- grubbs.test(df_maze_fem$fsh_spatial_miu_ml)
+test
+```
+
+##### Behavior
+
+things with 1 are outliers : 
+```{r, all behavior}
+test <- grubbs.test(sub_info$maze_accuracy_pct)
+test
+```
+things with 1 are outliers for women 
+```{r, behavior women}
+test <- grubbs.test(df_maze_fem$maze_accuracy_pct)
+test
+```
+no outliers for men only women 
+```{r, hormones}
+test <- grubbs.test(df_maze_male$maze_accuracy_pct)
+test
+```
+
+
 
 #### Maze 
 
