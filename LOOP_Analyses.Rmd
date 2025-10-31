@@ -2216,17 +2216,10 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
 
 ### DK atlas
 
-```{r}
-
-```
-
-
-### Schaefar
+The DKT atlas is used with freesurfer 
 - First i need to create a few cortical thickness data frames
-```{r, creating cortical thickness data frames}
-
-# first, let's create a dataframe with a fiew beh vars we'll need 
-
+```{r}
+# just a data frame to work with
 midlife_CT_df <- midlife_raw_df %>%  dplyr::select(
   "subject_id",
   "sex",
@@ -2240,37 +2233,13 @@ midlife_CT_df <- midlife_raw_df %>%  dplyr::select(
   "loop_ae_avg_degree",
   "EstimatedTotalIntraCranialVol")
 
-
-
-
-# now lets do some data wrangling to rename all of the schaefar columns by creating a variable with the master DF col names as rows, and then filtering by 17 networks. finally convert to a variable list of chars
-schaefar_colnames <- as.data.frame(colnames(midlife_raw_df)) %>% `colnames<-`("schaefar_rois") %>% filter(grepl("17Networks", schaefar_rois))
-schaefar_colnames <- as.character(schaefar_colnames[,1])
-
-# now creating a temp df to select just the data for schaefar 
-temp_ct_df <- midlife_raw_df %>%  dplyr::select(schaefar_colnames)
-
-
-
-# creating a new var with updated names removing the 17 netowrks 
-new_schaefar_colnames <- str_remove(schaefar_colnames,"17Networks_")
-
-
-# replacing cols
-temp_ct_df <- temp_ct_df %>% `colnames<-`(new_schaefar_colnames)
-
-# adding to updated df 
-midlife_CT_df <- cbind(midlife_CT_df,temp_ct_df)
-
-# now let's work on the cortical thickness cleaning 
-
 freesurfer_colnames <- as.data.frame(colnames(midlife_raw_df)) %>% `colnames<-`("freesurfer_rois") %>% filter(grepl("thickness", freesurfer_rois))
 freesurfer_colnames <- as.character(freesurfer_colnames[,1])
 
-# now creating a temp df to select just the data for schaefar 
+# now creating a temp df to select just the data for freesurfer
 temp_ct_df <- midlife_raw_df %>%  dplyr::select(freesurfer_colnames)
 
-# creating a new var with updated names removing the 17 netowrks 
+# creating a new var with updated names removing the thickness
 new_freesurfer_colnames <- str_remove(freesurfer_colnames,"_thickness")
 
 # replacing cols
@@ -2280,6 +2249,7 @@ temp_ct_df <- temp_ct_df %>% `colnames<-`(new_freesurfer_colnames)
 midlife_CT_df <- cbind(midlife_CT_df,temp_ct_df)
 
 temp_ct_df <- midlife_raw_df %>%  dplyr::select( "Left-Caudate","Right-Caudate","Left-Putamen","Right-Putamen","Left-Hippocampus","Right-Hippocampus")
+
 #creating dataframe with all apriori regions
 midlife_CT_df <- cbind(midlife_CT_df, temp_ct_df) %>% mutate(
   avg_t1_hipp = (.$`Left-Hippocampus` + .$`Right-Hippocampus`) / 2,
@@ -2288,88 +2258,7 @@ midlife_CT_df <- cbind(midlife_CT_df, temp_ct_df) %>% mutate(
   avg_precentral = lh_precentral + rh_precentral / 2,
   avg_superior_parietal = lh_superiorparietal + rh_superiorparietal / 2,
   avg_superior_frontal = rh_superiorfrontal + lh_superiorfrontal / 2 , avg_caudate = `Left-Caudate` + `Right-Caudate` /2, avg_putamen = `Left-Putamen`,`Right-Putamen`
-) %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_ContA_Cingm_1 != "NA")
-
-```
-
-```{r, apriori lists}
-
-#Scahefer Aprioris
-
-schaefar_apriori_labelnames <-
-  c(
-    "LH_SomMotA",
-    "LH_SomMotB_Cent",
-    "LH_SomMotB_S2",
-    "LH_SomMotB_Ins",
-    "LH_SomMotB_Aud",
-    "LH_DorsAttnA_TempOcc",
-    "LH_DorsAttnA_ParOcc",
-    "LH_DorsAttnA_SPL",
-    "LH_DorsAttnB_PostC",
-    "LH_DorsAttnB_FEF",
-    "LH_DorsAttnB_PrCv",
-    "LH_ContA_Temp",
-    "LH_ContA_IPS",
-    "LH_ContA_PFCd",
-    "LH_ContA_PFCl",
-    "LH_ContA_PFClv",
-    "LH_ContA_Cingm",
-    "LH_ContC_pCun",
-    "LH_ContC_Cingp",
-    "LH_DefaultA_IPL",
-    "LH_DefaultA_PFCd",
-    "LH_DefaultA_pCunPCC",
-    "LH_DefaultA_PFCm",
-    "LH_DefaultC_IPL",
-    "LH_DefaultC_Rsp",
-    "LH_DefaultC_PHC",
-    "RH_SomMotA",
-    "RH_SomMotB_Cent",
-    "RH_SomMotB_S2",
-    "RH_SomMotB_Ins",
-    "RH_SomMotB_Aud",
-    "RH_DorsAttnA_TempOcc",
-    "RH_DorsAttnA_ParOcc",
-    "RH_DorsAttnA_SPL",
-    "RH_DorsAttnB_TempOcc",
-    "RH_DorsAttnB_PostC",
-    "RH_DorsAttnB_FEF",
-    "RH_ContA_Temp" ,
-    "RH_ContA_IPS",
-    "RH_ContA_PFCd",
-    "RH_ContA_PFCl",
-    "RH_ContA_Cingm",
-    "RH_ContC_pCun",
-    "RH_ContC_Cingp",
-    "RH_DefaultA_Temp",
-    "RH_DefaultA_IPL",
-    "RH_DefaultA_PFCd",
-    "RH_DefaultA_pCunPCC",
-    "RH_DefaultA_PFCm",
-    "RH_DefaultC_Rsp",
-    "RH_DefaultC_PHC"
-  )
-
-schaefar_apriori_networknames <-
-  c(
-    "LH_SomMotA",
-    "LH_SomMotB",
-    "LH_DorsAttnA",
-    "LH_DorsAttnB",
-    "LH_ContA",
-    "LH_ContC",
-    "LH_DefaultA",
-    "LH_DefaultC",
-    "RH_SomMotA",
-    "RH_SomMotB",
-    "RH_DorsAttnA",
-    "RH_DorsAttnB",
-    "RH_ContA",
-    "RH_ContC",
-    "RH_DefaultA",
-    "RH_DefaultC"
-  )
+) %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(lh_postcentral != "NA")
 
 
 # now there's a lot of columns to select here so I'm going to try and make a few list of them so then we can grab by names 
@@ -2380,34 +2269,7 @@ FS_all_apriori <- c("lh_postcentral","lh_precentral","lh_superiorparietal","lh_s
 
 FS_avg_apriori <- c("avg_t1_hipp","avg_postcentral", "avg_precentral",
   "avg_superior_parietal", "avg_superior_frontal", "avg_caudate", "avg_putamen")
-  
-
 ```
-
-```{r}
-#creating a schaefar df specifically 
-
-midlife_schaefar_df <- midlife_CT_df  %>%  dplyr::select(
-  "subject_id",
-  "sex",
-  "age_spatial_years",
-  "repo_status",
-  "loop_pe_rad3_m",
-  "loop_pe_avg_m",
-  "loop_de_rad3_degree",
-  "loop_de_avg_degree",
-  "loop_ae_rad3_degree",
-  "loop_ae_avg_degree",
-  "EstimatedTotalIntraCranialVol")
-for (label in schaefar_apriori_labelnames) {
-        temp <-
-          midlife_CT_df %>% dplyr::select(matches(label)) %>% rowMeans() %>% as.data.frame() %>% `colnames<-`(label)
-        
-        midlife_schaefar_df <- cbind(midlife_schaefar_df, temp)
-      }
-```
-
-### Degrees traveled
 
 ```{r, set up DT dataframes}
 
@@ -2433,12 +2295,11 @@ midlife_CT_df_female_rad3 <-midlife_CT_df_rad3 %>% filter(sex==0)
 
 ```
 
-#### Freesurfer
-##### all
+#### all
 
+##### degrees traveled
 **Average**
-```{r, All DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
-
+```{r, All DT Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 cor_results <-
   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
@@ -2666,7 +2527,159 @@ cor_results <- arrange(cor_results,p.value)
 cor_results
 ```
 
-#### Schaefar
+
+
+### Schaefar
+- First i need to create a few cortical thickness data frames
+```{r, creating cortical thickness data frames}
+
+# first, let's create a dataframe with a fiew beh vars we'll need 
+
+midlife_CT_df <- midlife_raw_df %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol")
+
+
+
+
+# now lets do some data wrangling to rename all of the schaefar columns by creating a variable with the master DF col names as rows, and then filtering by 17 networks. finally convert to a variable list of chars
+schaefar_colnames <- as.data.frame(colnames(midlife_raw_df)) %>% `colnames<-`("schaefar_rois") %>% filter(grepl("17Networks", schaefar_rois))
+schaefar_colnames <- as.character(schaefar_colnames[,1])
+
+# now creating a temp df to select just the data for schaefar 
+temp_ct_df <- midlife_raw_df %>%  dplyr::select(schaefar_colnames)
+
+
+
+# creating a new var with updated names removing the 17 netowrks 
+new_schaefar_colnames <- str_remove(schaefar_colnames,"17Networks_")
+
+
+# replacing cols
+temp_ct_df <- temp_ct_df %>% `colnames<-`(new_schaefar_colnames)
+
+# adding to updated df 
+midlife_CT_df <- cbind(midlife_CT_df,temp_ct_df)
+
+```
+
+```{r, apriori lists}
+
+#Scahefer Aprioris
+
+schaefar_apriori_labelnames <-
+  c(
+    "LH_SomMotA",
+    "LH_SomMotB_Cent",
+    "LH_SomMotB_S2",
+    "LH_SomMotB_Ins",
+    "LH_SomMotB_Aud",
+    "LH_DorsAttnA_TempOcc",
+    "LH_DorsAttnA_ParOcc",
+    "LH_DorsAttnA_SPL",
+    "LH_DorsAttnB_PostC",
+    "LH_DorsAttnB_FEF",
+    "LH_DorsAttnB_PrCv",
+    "LH_ContA_Temp",
+    "LH_ContA_IPS",
+    "LH_ContA_PFCd",
+    "LH_ContA_PFCl",
+    "LH_ContA_PFClv",
+    "LH_ContA_Cingm",
+    "LH_ContC_pCun",
+    "LH_ContC_Cingp",
+    "LH_DefaultA_IPL",
+    "LH_DefaultA_PFCd",
+    "LH_DefaultA_pCunPCC",
+    "LH_DefaultA_PFCm",
+    "LH_DefaultC_IPL",
+    "LH_DefaultC_Rsp",
+    "LH_DefaultC_PHC",
+    "RH_SomMotA",
+    "RH_SomMotB_Cent",
+    "RH_SomMotB_S2",
+    "RH_SomMotB_Ins",
+    "RH_SomMotB_Aud",
+    "RH_DorsAttnA_TempOcc",
+    "RH_DorsAttnA_ParOcc",
+    "RH_DorsAttnA_SPL",
+    "RH_DorsAttnB_TempOcc",
+    "RH_DorsAttnB_PostC",
+    "RH_DorsAttnB_FEF",
+    "RH_ContA_Temp" ,
+    "RH_ContA_IPS",
+    "RH_ContA_PFCd",
+    "RH_ContA_PFCl",
+    "RH_ContA_Cingm",
+    "RH_ContC_pCun",
+    "RH_ContC_Cingp",
+    "RH_DefaultA_Temp",
+    "RH_DefaultA_IPL",
+    "RH_DefaultA_PFCd",
+    "RH_DefaultA_pCunPCC",
+    "RH_DefaultA_PFCm",
+    "RH_DefaultC_Rsp",
+    "RH_DefaultC_PHC"
+  )
+
+schaefar_apriori_networknames <-
+  c(
+    "LH_SomMotA",
+    "LH_SomMotB",
+    "LH_DorsAttnA",
+    "LH_DorsAttnB",
+    "LH_ContA",
+    "LH_ContC",
+    "LH_DefaultA",
+    "LH_DefaultC",
+    "RH_SomMotA",
+    "RH_SomMotB",
+    "RH_DorsAttnA",
+    "RH_DorsAttnB",
+    "RH_ContA",
+    "RH_ContC",
+    "RH_DefaultA",
+    "RH_DefaultC"
+  )
+
+
+
+```
+
+```{r}
+#creating a schaefar df specifically 
+
+midlife_schaefar_df <- midlife_CT_df  %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol")
+for (label in schaefar_apriori_labelnames) {
+        temp <-
+          midlife_CT_df %>% dplyr::select(matches(label)) %>% rowMeans() %>% as.data.frame() %>% `colnames<-`(label)
+        
+        midlife_schaefar_df <- cbind(midlife_schaefar_df, temp)
+      }
+```
+
+### Degrees traveled
+
 ```{r, set up scahefer dataframes}
 
 # Average
@@ -2765,29 +2778,6 @@ for (ROI in FS_all_apriori) {
 
 ### Angular error 
 
-```{r, set up AE dataframes}
-
-# Average
-midlife_CT_df_Avg <- midlife_CT_df %>% filter(loop_ae_avg_degree != "NA")
-midlife_CT_df_Avg$sex[midlife_CT_df_Avg$sex=="Male"] <- 1 
-midlife_CT_df_Avg$sex[midlife_CT_df_Avg$sex=="Female"] <- 0
-midlife_CT_df_Avg$sex <- as.numeric(midlife_CT_df_Avg$sex)
-
-midlife_CT_df_male_Avg <- midlife_CT_df_Avg %>% filter(sex==1)
-midlife_CT_df_female_Avg <-midlife_CT_df_Avg %>% filter(sex==0)
-
-#Rad3
-  
-midlife_CT_df_rad3 <- midlife_CT_df %>% filter(loop_ae_rad3_degree != "NA")
-midlife_CT_df_rad3$sex[midlife_CT_df_rad3$sex=="Male"] <- 1 
-midlife_CT_df_rad3$sex[midlife_CT_df_rad3$sex=="Female"] <- 0
-midlife_CT_df_rad3$sex <- as.numeric(midlife_CT_df_rad3$sex)
-
-midlife_CT_df_male_rad3 <- midlife_CT_df_rad3 %>% filter(sex==1)
-midlife_CT_df_female_rad3 <-midlife_CT_df_rad3 %>% filter(sex==0)
-
-
-```
 
 #### Freesurfer
 ##### all
