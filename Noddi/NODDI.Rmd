@@ -354,7 +354,9 @@ REalized subjects 064 and 092 were not actually processed nor were they reconstr
 ```{r}
 
 #Using liz's old version of the noddi data set so that i also have a template for what i want.
-main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2025/"
+#main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2025/"
+
+main_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/NODDI_2025/"
 
 
 old_df <- read_csv(paste0(main_dir,"noddi_data.csv"))
@@ -1005,9 +1007,8 @@ forgot to print out subject number when running this one so we are cutting down 
 # LEt's get all of our labels and vars ready. I know i mispelled temporal but i'm dumb and mispelled it during the extraction so i'm leaving it here like this for now.
 label_names <- c("hippocampus_whole","temproal-polar_PRC","PRC","ERC","PHC","DG_CA3","CA1","Subiculum")
 
-
-
 # These are the labels i had when extracting but using the reordered ones above ot match the order of the columns bc i'm too lazy to reorder the actual columns 
+
 # left_labels <- c(1,5,7,9,11,13,15,17)
 # right_labels <- c(2,6,8,10,12,14,16,18)
 
@@ -1021,94 +1022,134 @@ label_names <- c("hippocampus_whole","temproal-polar_PRC","PRC","ERC","PHC","DG_
 # CA1 : 15 and 16
 # Subiculum 17 and 18
 
+##################     1      ######################
 
 # First thing is to read in our first CSV. WE need to also make sure the columns are rordered 
-ModelROIs_L_ICVF_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_L_ICVF_gmNODDI.csv"))
-ModelROIs_R_ICVF_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_R_ICVF_gmNODDI.csv"))
-ModelROIs_R_ICVF_wm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_R_ICVF_wmNODDI.csv"))
-ModelROIs_L_ICVF_wm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_L_ICVF_wmNODDI.csv"))
 
+ModelROIs_ICVF_gm <- read_csv("/Users/danielacossio/Desktop/Projects/Noddi/Noddi_modelROIs/all_ICVF_gmNODDI.csv")
 
+ModelROIs_ICVF_wm <- read_csv("/Users/danielacossio/Desktop/Projects/Noddi/Noddi_modelROIs/all_ICVF_wmNODDI.csv")
+
+##################     2      ######################
 # LEt's set our  labels based on the order the columns are being read in  
+# left_labels <- c(15,13,9,1,11,7,17,5)
+# right_labels <- c(16,14,10,2,12,8,18,6)
 
-left_labels <- c(15,13,9,1,11,7,17,5)
-right_labels <- c(16,14,10,2,12,8,18,6)
+ModelROISlabels <-c(1,5,7,9,11,13,15,17,2,6,8,10,12,14,16,18)
 
-#Getting number of columns 
-num_cols <- ncol(ModelROIs_R_ICVF_wm)
-num_rows <- nrow(ModelROIs_L_ICVF_wm)
+#Getting number of columns  
+num_cols <- ncol(ModelROIs_ICVF_gm)
+num_rows <- nrow(ModelROIs_ICVF_wm)
 
- 
+##################     3      ######################
+
+ # creating an empty dataframe to put our stuff in later
 ModelROIs_ICVF_gm_CLEANED <-
-    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 0, ncol = length(ModelROISlabels))) %>% `colnames<-`(columns)
+
 ModelROIs_ICVF_wm_CLEANED <-
-    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 0, ncol = length(ModelROISlabels))) %>% `colnames<-`(columns)
 temp_gm <-
     data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
     data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
 
- # CNeed to go ahead and create new column names for these databses and then combine them as well. Let's go back to ROI numbers
+
+##################     4      ######################
+
+# need to get rid of the rows iwth subject numbers since we don't need this anymore. We should be left with just voxel rows.
+
+evenrows <- seq(2,num_rows,2)
+ModelROIs_ICVF_gm <- ModelROIs_ICVF_gm[evenrows,]
+ModelROIs_ICVF_wm <- ModelROIs_ICVF_wm[evenrows,]
+
+
+##################     5      ######################
+
+ # Need to go ahead and create new column names for these databses and then combine them as well. Let's go back to ROI numbers
 
 for (col in 1:num_cols) {
   print(col)
   
   # Splitting up the column names for each csv
-  colname_split_L_gm <-
-    colnames(ModelROIs_L_ICVF_gm[, col]) %>%  str_split(" ")
-  colname_split_R_gm <-
-    colnames(ModelROIs_R_ICVF_gm[, col]) %>%  str_split(" ")
-  colname_split_L_wm <-
-    colnames(ModelROIs_L_ICVF_wm[, col]) %>%  str_split(" ")
-  colname_split_R_wm <-
-    colnames(ModelROIs_R_ICVF_wm[, col]) %>%  str_split(" ")
+  # colname_split_L_gm <-
+  #   colnames(ModelROIs_L_ICVF_gm[, col]) %>%  str_split(" ")
+  # colname_split_R_gm <-
+  #   colnames(ModelROIs_R_ICVF_gm[, col]) %>%  str_split(" ")
+  # colname_split_L_wm <-
+  #   colnames(ModelROIs_L_ICVF_wm[, col]) %>%  str_split(" ")
+  # colname_split_R_wm <-
+  #   colnames(ModelROIs_R_ICVF_wm[, col]) %>%  str_split(" ")
   
+    colname_split_gm <- colnames(ModelROIs_ICVF_gm[, col]) %>%  str_split(" ")
+  colname_split_wm <-
+    colnames(ModelROIs_ICVF_wm[, col]) %>%  str_split(" ")
+
   # Replacing the column names for each CSV
-  colnames(ModelROIs_L_ICVF_gm)[col] <-
-    paste0("ModelROIs_", colname_split_L_gm[[1]][1], "_", left_labels[col])
-  colnames(ModelROIs_R_ICVF_gm)[col] <-
-    paste0("ModelROIs_", colname_split_R_gm[[1]][1], "_", right_labels[col])
-  colnames(ModelROIs_L_ICVF_wm)[col] <-
-    paste0("ModelROIs_", colname_split_L_wm[[1]][1], "_", left_labels[col])
-  colnames(ModelROIs_R_ICVF_wm)[col] <-
-    paste0("ModelROIs_", colname_split_R_wm[[1]][1], "_", right_labels[col])
+  # colnames(ModelROIs_L_ICVF_gm)[col] <-
+  #   paste0("ModelROIs_", colname_split_L_gm[[1]][1], "_", left_labels[col])
+  # colnames(ModelROIs_R_ICVF_gm)[col] <-
+  #   paste0("ModelROIs_", colname_split_R_gm[[1]][1], "_", right_labels[col])
+  # colnames(ModelROIs_L_ICVF_wm)[col] <-
+  #   paste0("ModelROIs_", colname_split_L_wm[[1]][1], "_", left_labels[col])
+  # colnames(ModelROIs_R_ICVF_wm)[col] <-
+  #   paste0("ModelROIs_", colname_split_R_wm[[1]][1], "_", right_labels[col])
   
-  # Let's combine the columns now and also reorder
-  ModelROIs_ICVF_gm <-
-    cbind(ModelROIs_L_ICVF_gm, ModelROIs_R_ICVF_gm)
-  ModelROIs_ICVF_wm <-
-    cbind(ModelROIs_L_ICVF_wm, ModelROIs_R_ICVF_wm)
+  colnames(ModelROIs_ICVF_gm)[col] <-
+    paste0("ModelROIs_", colname_split_gm[[1]][1]) 
+  colnames(ModelROIs_ICVF_wm)[col] <-
+    paste0("ModelROIs_", colname_split_wm[[1]][1])
+  
+  # # Let's combine the columns now and also reorder
+  # ModelROIs_ICVF_gm <-
+  #   cbind(ModelROIs_L_ICVF_gm, ModelROIs_R_ICVF_gm)
+  # ModelROIs_ICVF_wm <-
+  #   cbind(ModelROIs_L_ICVF_wm, ModelROIs_R_ICVF_wm)
 }
 
+##################     6      ######################
 
-  # LEt's reorganize the columns so things are in order
+# LEt's reorganize the columns so things are in order
   
   newColOrder <-
     c(
-      "ModelROIs_hippocampus_whole_1",
-      "ModelROIs_hippocampus_whole_2",
-      "ModelROIs_temproal-polar_PRC_5",
-      "ModelROIs_temproal-polar_PRC_6",
-      "ModelROIs_PRC_7",
-      "ModelROIs_PRC_8" ,
-      "ModelROIs_ERC_9",
-      "ModelROIs_ERC_10",
-      "ModelROIs_PHC_11",
-      "ModelROIs_PHC_12",
-      "ModelROIs_DG_CA3_13",
-      "ModelROIs_DG_CA3_14",
-      "ModelROIs_CA1_15",
-      "ModelROIs_CA1_16",
-      "ModelROIs_Subiculum_17",
-      "ModelROIs_Subiculum_18"
+      "ModelROIs_1",
+      "ModelROIs_2",
+      "ModelROIs_5",
+      "ModelROIs_6",
+      "ModelROIs_7",
+      "ModelROIs_8" ,
+      "ModelROIs_9",
+      "ModelROIs_10",
+      "ModelROIs_11",
+      "ModelROIs_12",
+      "ModelROIs_13",
+      "ModelROIs_14",
+      "ModelROIs_15",
+      "ModelROIs_16",
+      "ModelROIs_17",
+      "ModelROIs_18"
     )
   
   ModelROIs_ICVF_gm_reorganized <- ModelROIs_ICVF_gm[, newColOrder]
   ModelROIs_ICVF_wm_reorganized <- ModelROIs_ICVF_wm[, newColOrder]
     
-  num_cols <- ncol(ModelROIs_ICVF_gm_reorganized)
-  num_rows <- nrow(ModelROIs_ICVF_gm_reorganized)
+##################     7       ######################
+
+# Cleaning up ROI 1 and 2 
+
+ModelROIs_ICVF_gm_reorganized$ModelROIs_1 <- NA
+ModelROIs_ICVF_gm_reorganized$ModelROIs_2 <- NA
+ModelROIs_ICVF_wm_reorganized$ModelROIs_1 <- NA
+ModelROIs_ICVF_wm_reorganized$ModelROIs_2 <- NA
+
+
+# overwriting previous number of cols and rows befor elooping and cleaning up our voxel information. Splitting cells so it's just the noddi score and not thenumber of voxels 
   
+num_cols <- ncol(ModelROIs_ICVF_gm_reorganized)
+num_rows <- nrow(ModelROIs_ICVF_gm_reorganized)
+
+#
 for (col in 1:num_cols) {
   print(col)
   
@@ -1155,6 +1196,8 @@ for (col in 1:num_cols) {
   
 }  
 
+##################     8       ######################
+
 
 #Small cleaning things 
 
@@ -1166,6 +1209,9 @@ ModelROIs_ICVF_gm_CLEANED <- ModelROIs_ICVF_gm_CLEANED %>% arrange(Brain_Area)
 
 ModelROIs_ICVF_wm_CLEANED$Value <- as.numeric(unlist(ModelROIs_ICVF_wm_CLEANED$Value)) #make sure this is numeric
 ModelROIs_ICVF_wm_CLEANED <- ModelROIs_ICVF_wm_CLEANED %>% arrange(Brain_Area) 
+
+##################     9       ######################
+
 
 ModelROIs_ICVF_allNODDI <- rbind(ModelROIs_ICVF_wm_CLEANED,ModelROIs_ICVF_gm_CLEANED)
 
@@ -1197,93 +1243,113 @@ label_names <- c("hippocampus_whole","temproal-polar_PRC","PRC","ERC","PHC","DG_
 # Subiculum 17 and 18
 
 
+##################     1      ######################
+
 # First thing is to read in our first CSV. WE need to also make sure the columns are rordered 
-ModelROIs_L_OD_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_L_OD_gmNODDI.csv"))
-ModelROIs_R_OD_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_R_OD_gmNODDI.csv"))
-ModelROIs_R_OD_wm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_R_OD_wmNODDI.csv"))
-ModelROIs_L_OD_wm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_L_OD_wmNODDI.csv"))
 
+ModelROIs_OD_gm <- read_csv("/Users/danielacossio/Desktop/Projects/Noddi/Noddi_modelROIs/all_OD_gmNODDI.csv")
 
+ModelROIs_OD_wm <- read_csv("/Users/danielacossio/Desktop/Projects/Noddi/Noddi_modelROIs/all_OD_wmNODDI.csv")
+
+##################     2      ######################
 # LEt's set our  labels based on the order the columns are being read in  
+# left_labels <- c(15,13,9,1,11,7,17,5)
+# right_labels <- c(16,14,10,2,12,8,18,6)
 
-left_labels <- c(15,13,9,1,11,7,17,5)
-right_labels <- c(16,14,10,2,12,8,18,6)
+ModelROISlabels <-c(1,5,7,9,11,13,15,17,2,6,8,10,12,14,16,18)
 
-#Getting number of columns 
-num_cols <- ncol(ModelROIs_R_OD_wm)
-num_rows <- nrow(ModelROIs_L_OD_wm)
+#Getting number of columns  
+num_cols <- ncol(ModelROIs_OD_gm)
+num_rows <- nrow(ModelROIs_OD_wm)
 
- 
+##################     3      ######################
+
+ # creating an empty dataframe to put our stuff in later
 ModelROIs_OD_gm_CLEANED <-
-    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 0, ncol = length(ModelROISlabels))) %>% `colnames<-`(columns)
+
 ModelROIs_OD_wm_CLEANED <-
-    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 0, ncol = length(ModelROISlabels))) %>% `colnames<-`(columns)
 temp_gm <-
     data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
     data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
 
- # CNeed to go ahead and create new column names for these databses and then combine them as well. Let's go back to ROI numbers
+
+##################     4      ######################
+
+# need to get rid of the rows iwth subject numbers since we don't need this anymore. We should be left with just voxel rows.
+
+evenrows <- seq(2,num_rows,2)
+ModelROIs_OD_gm <- ModelROIs_OD_gm[evenrows,]
+ModelROIs_OD_wm <- ModelROIs_OD_wm[evenrows,]
+
+##################     5      ######################
+
+ # Need to go ahead and create new column names for these databses and then combine them as well. Let's go back to ROI numbers
 
 for (col in 1:num_cols) {
   print(col)
   
   # Splitting up the column names for each csv
-  colname_split_L_gm <-
-    colnames(ModelROIs_L_OD_gm[, col]) %>%  str_split(" ")
-  colname_split_R_gm <-
-    colnames(ModelROIs_R_OD_gm[, col]) %>%  str_split(" ")
-  colname_split_L_wm <-
-    colnames(ModelROIs_L_OD_wm[, col]) %>%  str_split(" ")
-  colname_split_R_wm <-
-    colnames(ModelROIs_R_OD_wm[, col]) %>%  str_split(" ")
-  
+    colname_split_gm <- colnames(ModelROIs_OD_gm[, col]) %>%  str_split(" ")
+  colname_split_wm <-
+    colnames(ModelROIs_OD_wm[, col]) %>%  str_split(" ")
+
   # Replacing the column names for each CSV
-  colnames(ModelROIs_L_OD_gm)[col] <-
-    paste0("ModelROIs_", colname_split_L_gm[[1]][1], "_", left_labels[col])
-  colnames(ModelROIs_R_OD_gm)[col] <-
-    paste0("ModelROIs_", colname_split_R_gm[[1]][1], "_", right_labels[col])
-  colnames(ModelROIs_L_OD_wm)[col] <-
-    paste0("ModelROIs_", colname_split_L_wm[[1]][1], "_", left_labels[col])
-  colnames(ModelROIs_R_OD_wm)[col] <-
-    paste0("ModelROIs_", colname_split_R_wm[[1]][1], "_", right_labels[col])
+  #
   
-  # Let's combine the columns now and also reorder
-  ModelROIs_OD_gm <-
-    cbind(ModelROIs_L_OD_gm, ModelROIs_R_OD_gm)
-  ModelROIs_OD_wm <-
-    cbind(ModelROIs_L_OD_wm, ModelROIs_R_OD_wm)
+  colnames(ModelROIs_OD_gm)[col] <-
+    paste0("ModelROIs_", colname_split_gm[[1]][1]) 
+  colnames(ModelROIs_OD_wm)[col] <-
+    paste0("ModelROIs_", colname_split_wm[[1]][1])
+  
+  
 }
 
+##################     6      ######################
 
-  # LEt's reorganize the columns so things are in order
+# LEt's reorganize the columns so things are in order
   
   newColOrder <-
     c(
-      "ModelROIs_hippocampus_whole_1",
-      "ModelROIs_hippocampus_whole_2",
-      "ModelROIs_temproal-polar_PRC_5",
-      "ModelROIs_temproal-polar_PRC_6",
-      "ModelROIs_PRC_7",
-      "ModelROIs_PRC_8" ,
-      "ModelROIs_ERC_9",
-      "ModelROIs_ERC_10",
-      "ModelROIs_PHC_11",
-      "ModelROIs_PHC_12",
-      "ModelROIs_DG_CA3_13",
-      "ModelROIs_DG_CA3_14",
-      "ModelROIs_CA1_15",
-      "ModelROIs_CA1_16",
-      "ModelROIs_Subiculum_17",
-      "ModelROIs_Subiculum_18"
+      "ModelROIs_1",
+      "ModelROIs_2",
+      "ModelROIs_5",
+      "ModelROIs_6",
+      "ModelROIs_7",
+      "ModelROIs_8" ,
+      "ModelROIs_9",
+      "ModelROIs_10",
+      "ModelROIs_11",
+      "ModelROIs_12",
+      "ModelROIs_13",
+      "ModelROIs_14",
+      "ModelROIs_15",
+      "ModelROIs_16",
+      "ModelROIs_17",
+      "ModelROIs_18"
     )
   
   ModelROIs_OD_gm_reorganized <- ModelROIs_OD_gm[, newColOrder]
   ModelROIs_OD_wm_reorganized <- ModelROIs_OD_wm[, newColOrder]
-    
-  num_cols <- ncol(ModelROIs_OD_gm_reorganized)
-  num_rows <- nrow(ModelROIs_OD_gm_reorganized)
   
+##################     7       ######################
+
+# Cleaning up ROI 1 and 2 
+
+ModelROIs_OD_gm_reorganized$ModelROIs_1 <- NA
+ModelROIs_OD_gm_reorganized$ModelROIs_2 <- NA
+ModelROIs_OD_wm_reorganized$ModelROIs_1 <- NA
+ModelROIs_OD_wm_reorganized$ModelROIs_2 <- NA
+
+
+# overwriting previous number of cols and rows befor elooping and cleaning up our voxel information. Splitting cells so it's just the noddi score and not thenumber of voxels 
+  
+num_cols <- ncol(ModelROIs_OD_gm_reorganized)
+num_rows <- nrow(ModelROIs_OD_gm_reorganized)
+
+#
 for (col in 1:num_cols) {
   print(col)
   
@@ -1330,6 +1396,8 @@ for (col in 1:num_cols) {
   
 }  
 
+##################     8       ######################
+
 
 #Small cleaning things 
 
@@ -1342,13 +1410,14 @@ ModelROIs_OD_gm_CLEANED <- ModelROIs_OD_gm_CLEANED %>% arrange(Brain_Area)
 ModelROIs_OD_wm_CLEANED$Value <- as.numeric(unlist(ModelROIs_OD_wm_CLEANED$Value)) #make sure this is numeric
 ModelROIs_OD_wm_CLEANED <- ModelROIs_OD_wm_CLEANED %>% arrange(Brain_Area) 
 
+##################     9       ######################
+
+
 ModelROIs_OD_allNODDI <- rbind(ModelROIs_OD_wm_CLEANED,ModelROIs_OD_gm_CLEANED)
 
 # Export
 
 write.csv(ModelROIs_OD_allNODDI,paste0(main_dir,"/Data/modelROIs/Clean/ModelROIs_OD_NODDI.csv"), row.names = FALSE)
-
-
 ```
 
 ## ISOVF
@@ -1372,93 +1441,113 @@ label_names <- c("hippocampus_whole","temproal-polar_PRC","PRC","ERC","PHC","DG_
 # Subiculum 17 and 18
 
 
+##################     1      ######################
+
 # First thing is to read in our first CSV. WE need to also make sure the columns are rordered 
-ModelROIs_L_ISOVF_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_L_ISOVF_gmNODDI.csv"))
-ModelROIs_R_ISOVF_gm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_R_ISOVF_gmNODDI.csv"))
-ModelROIs_R_ISOVF_wm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_R_ISOVF_wmNODDI.csv"))
-ModelROIs_L_ISOVF_wm <- read_csv(paste0(main_dir,"Data/modelROIs/Raw/all_L_ISOVF_wmNODDI.csv"))
 
+ModelROIs_ISOVF_gm <- read_csv("/Users/danielacossio/Desktop/Projects/Noddi/Noddi_modelROIs/all_ISOVF_gmNODDI.csv")
 
+ModelROIs_ISOVF_wm <- read_csv("/Users/danielacossio/Desktop/Projects/Noddi/Noddi_modelROIs/all_ISOVF_wmNODDI.csv")
+
+##################     2      ######################
 # LEt's set our  labels based on the order the columns are being read in  
+# left_labels <- c(15,13,9,1,11,7,17,5)
+# right_labels <- c(16,14,10,2,12,8,18,6)
 
-left_labels <- c(15,13,9,1,11,7,17,5)
-right_labels <- c(16,14,10,2,12,8,18,6)
+ModelROISlabels <-c(1,5,7,9,11,13,15,17,2,6,8,10,12,14,16,18)
 
-#Getting number of columns 
-num_cols <- ncol(ModelROIs_R_ISOVF_wm)
-num_rows <- nrow(ModelROIs_L_ISOVF_wm)
+#Getting number of columns  
+num_cols <- ncol(ModelROIs_ISOVF_gm)
+num_rows <- nrow(ModelROIs_ISOVF_wm)
 
- 
+##################     3      ######################
+
+ # creating an empty dataframe to put our stuff in later
 ModelROIs_ISOVF_gm_CLEANED <-
-    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 0, ncol = length(ModelROISlabels))) %>% `colnames<-`(columns)
+
 ModelROIs_ISOVF_wm_CLEANED <-
-    data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 0, ncol = length(ModelROISlabels))) %>% `colnames<-`(columns)
 temp_gm <-
     data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
     data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
 
- # CNeed to go ahead and create new column names for these databses and then combine them as well. Let's go back to ROI numbers
+
+##################     4      ######################
+
+# need to get rid of the rows iwth subject numbers since we don't need this anymore. We should be left with just voxel rows.
+
+evenrows <- seq(2,num_rows,2)
+ModelROIs_ISOVF_gm <- ModelROIs_ISOVF_gm[evenrows,]
+ModelROIs_ISOVF_wm <- ModelROIs_ISOVF_wm[evenrows,]
+
+##################     5      ######################
+
+ # Need to go ahead and create new column names for these databses and then combine them as well. Let's go back to ROI numbers
 
 for (col in 1:num_cols) {
   print(col)
   
   # Splitting up the column names for each csv
-  colname_split_L_gm <-
-    colnames(ModelROIs_L_ISOVF_gm[, col]) %>%  str_split(" ")
-  colname_split_R_gm <-
-    colnames(ModelROIs_R_ISOVF_gm[, col]) %>%  str_split(" ")
-  colname_split_L_wm <-
-    colnames(ModelROIs_L_ISOVF_wm[, col]) %>%  str_split(" ")
-  colname_split_R_wm <-
-    colnames(ModelROIs_R_ISOVF_wm[, col]) %>%  str_split(" ")
-  
+    colname_split_gm <- colnames(ModelROIs_ISOVF_gm[, col]) %>%  str_split(" ")
+  colname_split_wm <-
+    colnames(ModelROIs_ISOVF_wm[, col]) %>%  str_split(" ")
+
   # Replacing the column names for each CSV
-  colnames(ModelROIs_L_ISOVF_gm)[col] <-
-    paste0("ModelROIs_", colname_split_L_gm[[1]][1], "_", left_labels[col])
-  colnames(ModelROIs_R_ISOVF_gm)[col] <-
-    paste0("ModelROIs_", colname_split_R_gm[[1]][1], "_", right_labels[col])
-  colnames(ModelROIs_L_ISOVF_wm)[col] <-
-    paste0("ModelROIs_", colname_split_L_wm[[1]][1], "_", left_labels[col])
-  colnames(ModelROIs_R_ISOVF_wm)[col] <-
-    paste0("ModelROIs_", colname_split_R_wm[[1]][1], "_", right_labels[col])
+  #
   
-  # Let's combine the columns now and also reorder
-  ModelROIs_ISOVF_gm <-
-    cbind(ModelROIs_L_ISOVF_gm, ModelROIs_R_ISOVF_gm)
-  ModelROIs_ISOVF_wm <-
-    cbind(ModelROIs_L_ISOVF_wm, ModelROIs_R_ISOVF_wm)
+  colnames(ModelROIs_ISOVF_gm)[col] <-
+    paste0("ModelROIs_", colname_split_gm[[1]][1]) 
+  colnames(ModelROIs_ISOVF_wm)[col] <-
+    paste0("ModelROIs_", colname_split_wm[[1]][1])
+  
+  
 }
 
+##################     6      ######################
 
-  # LEt's reorganize the columns so things are in order
+# LEt's reorganize the columns so things are in order
   
   newColOrder <-
     c(
-      "ModelROIs_hippocampus_whole_1",
-      "ModelROIs_hippocampus_whole_2",
-      "ModelROIs_temproal-polar_PRC_5",
-      "ModelROIs_temproal-polar_PRC_6",
-      "ModelROIs_PRC_7",
-      "ModelROIs_PRC_8" ,
-      "ModelROIs_ERC_9",
-      "ModelROIs_ERC_10",
-      "ModelROIs_PHC_11",
-      "ModelROIs_PHC_12",
-      "ModelROIs_DG_CA3_13",
-      "ModelROIs_DG_CA3_14",
-      "ModelROIs_CA1_15",
-      "ModelROIs_CA1_16",
-      "ModelROIs_Subiculum_17",
-      "ModelROIs_Subiculum_18"
+      "ModelROIs_1",
+      "ModelROIs_2",
+      "ModelROIs_5",
+      "ModelROIs_6",
+      "ModelROIs_7",
+      "ModelROIs_8" ,
+      "ModelROIs_9",
+      "ModelROIs_10",
+      "ModelROIs_11",
+      "ModelROIs_12",
+      "ModelROIs_13",
+      "ModelROIs_14",
+      "ModelROIs_15",
+      "ModelROIs_16",
+      "ModelROIs_17",
+      "ModelROIs_18"
     )
   
   ModelROIs_ISOVF_gm_reorganized <- ModelROIs_ISOVF_gm[, newColOrder]
   ModelROIs_ISOVF_wm_reorganized <- ModelROIs_ISOVF_wm[, newColOrder]
-    
-  num_cols <- ncol(ModelROIs_ISOVF_gm_reorganized)
-  num_rows <- nrow(ModelROIs_ISOVF_gm_reorganized)
   
+##################     7       ######################
+
+# Cleaning up ROI 1 and 2 
+
+ModelROIs_ISOVF_gm_reorganized$ModelROIs_1 <- NA
+ModelROIs_ISOVF_gm_reorganized$ModelROIs_2 <- NA
+ModelROIs_ISOVF_wm_reorganized$ModelROIs_1 <- NA
+ModelROIs_ISOVF_wm_reorganized$ModelROIs_2 <- NA
+
+
+# overwriting previous number of cols and rows befor elooping and cleaning up our voxel information. Splitting cells so it's just the noddi score and not thenumber of voxels 
+  
+num_cols <- ncol(ModelROIs_ISOVF_gm_reorganized)
+num_rows <- nrow(ModelROIs_ISOVF_gm_reorganized)
+
+#
 for (col in 1:num_cols) {
   print(col)
   
@@ -1505,6 +1594,8 @@ for (col in 1:num_cols) {
   
 }  
 
+##################     8       ######################
+
 
 #Small cleaning things 
 
@@ -1517,11 +1608,13 @@ ModelROIs_ISOVF_gm_CLEANED <- ModelROIs_ISOVF_gm_CLEANED %>% arrange(Brain_Area)
 ModelROIs_ISOVF_wm_CLEANED$Value <- as.numeric(unlist(ModelROIs_ISOVF_wm_CLEANED$Value)) #make sure this is numeric
 ModelROIs_ISOVF_wm_CLEANED <- ModelROIs_ISOVF_wm_CLEANED %>% arrange(Brain_Area) 
 
+##################     9       ######################
+
+
 ModelROIs_ISOVF_allNODDI <- rbind(ModelROIs_ISOVF_wm_CLEANED,ModelROIs_ISOVF_gm_CLEANED)
 
 # Export
 
 write.csv(ModelROIs_ISOVF_allNODDI,paste0(main_dir,"/Data/modelROIs/Clean/ModelROIs_ISOVF_NODDI.csv"), row.names = FALSE)
-
 
 ```
