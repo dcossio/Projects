@@ -342,8 +342,10 @@ sub_info$SEX[sub_info$SEX==0]<-c("Female")
 sub_info$SEX <- as.factor(sub_info$SEX)
 sub_info$REPO[sub_info$REPO==0]<-c("Male")
 sub_info$REPO[sub_info$REPO==1]<-c("Pre")
-sub_info$REPO[sub_info$REPO==2]<-c("Peri")
-sub_info$REPO[sub_info$REPO==3]<-c("Post")
+# sub_info$REPO[sub_info$REPO==2]<-c("Peri") # commenting these out bc i want to make a new combined label
+# sub_info$REPO[sub_info$REPO==3]<-c("Post")
+sub_info$REPO[sub_info$REPO==2]<-c("Peri_Post")
+sub_info$REPO[sub_info$REPO==3]<-c("Peri_Post")
 
 #Creating group DF
 df_maze_fem <- sub_info %>% filter(SEX == "Female")
@@ -351,6 +353,7 @@ df_maze_male <- sub_info %>% filter(SEX == "Male")
 df_maze_pre <- sub_info %>% filter(REPO == "Pre")
 df_maze_peri <- sub_info %>% filter(REPO == "Peri")
 df_maze_post <- sub_info %>% filter(REPO == "Post")
+df_maze_peri_post <- sub_info %>% filter(REPO != "Pre") %>% filter(REPO != "Male")
 
 ```
 
@@ -459,10 +462,10 @@ test1 <- kruskal.test(maze_accuracy_pct~REPO,sub_info)
 ```{r, group boxplot}
 
 
-sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")), y = maze_accuracy_pct, fill= REPO)) +
+sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri_Post")), y = maze_accuracy_pct, fill= REPO)) +
   geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
   geom_point(shape=16, position=position_jitter(0.1)) +
-  scale_fill_manual(values=c("#6c6c6e","#7d4c5a", "#CD8A9B","#806d71"))+
+  scale_fill_manual(values=c("#6c6c6e","#7d4c5a", "#CD8A9B"))+
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
    xlab("Sex")+
    ylab("Wayfinding Success") +
@@ -475,7 +478,7 @@ sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri", "Post")
          plot.margin = margin(1, 2, 1, 1.5, "cm"),
          plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
  )
-
+#"#806d71"
 # ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
 #           color = "REPO",
 #           order = c("Male", "Pre", "Peri", "Post"),
@@ -686,6 +689,45 @@ pcor.test(df_maze_fem$estradiol_spatial_pg_ml,
           method = "spearman")
 ```
 
+
+
+##### Group comparison figure
+```{r, ttest}
+ #estradiol not normal 
+wilcox.test(df_maze_pre$estradiol_spatial_pg_ml, df_maze_peri_post$estradiol_spatial_pg_ml)
+
+mean(df_maze_post$maze_accuracy_pct)
+sd(df_maze_post$maze_accuracy_pct)
+
+
+
+```
+
+```{r, group boxplot}
+
+
+df_maze_fem %>% ggplot(aes(x = factor(REPO, levels=c("Pre", "Peri_Post")), y = estradiol_spatial_pg_ml, fill= REPO)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16, position=position_jitter(0.1)) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Wayfinding Success") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+#"#806d71"
+# ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
+#           color = "REPO",
+#           order = c("Male", "Pre", "Peri", "Post"),
+#           ylab = "Wayfinding Success", xlab = "Group")
+```
 
 
 #### Progesterone
