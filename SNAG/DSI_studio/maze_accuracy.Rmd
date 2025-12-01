@@ -117,9 +117,9 @@ library(outliers)
 
 <!-- Reading in the paths and the CSV that contains all of the subject info -->
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
+#working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
 
-#working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
+working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)")
 
@@ -351,8 +351,8 @@ sub_info$REPO[sub_info$REPO==3]<-c("Peri_Post")
 df_maze_fem <- sub_info %>% filter(SEX == "Female")
 df_maze_male <- sub_info %>% filter(SEX == "Male")
 df_maze_pre <- sub_info %>% filter(REPO == "Pre")
-df_maze_peri <- sub_info %>% filter(REPO == "Peri")
-df_maze_post <- sub_info %>% filter(REPO == "Post")
+#df_maze_peri <- sub_info %>% filter(REPO == "Peri")
+#df_maze_post <- sub_info %>% filter(REPO == "Post")
 df_maze_peri_post <- sub_info %>% filter(REPO != "Pre") %>% filter(REPO != "Male")
 
 ```
@@ -464,7 +464,7 @@ test1 <- kruskal.test(maze_accuracy_pct~REPO,sub_info)
 
 sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri_Post")), y = maze_accuracy_pct, fill= REPO)) +
   geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
-  geom_point(shape=16, position=position_jitter(0.1)) +
+  geom_point(shape=16) +
   scale_fill_manual(values=c("#6c6c6e","#7d4c5a", "#CD8A9B"))+
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
    xlab("Sex")+
@@ -536,35 +536,35 @@ cohen.d.ci((mean(df_maze_pre$maze_accuracy_pct) - .1111)/sd(df_maze_pre$maze_acc
 Peri menopausal
 ```{r, df_maze_peri}
 
-t.test(df_maze_peri$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+t.test(df_maze_peri_post$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
 
-mean(df_maze_peri$maze_accuracy_pct)
-sd(df_maze_peri$maze_accuracy_pct)
-CI(df_maze_peri$maze_accuracy_pct, ci = 0.95)
+mean(df_maze_peri_post$maze_accuracy_pct)
+sd(df_maze_peri_post$maze_accuracy_pct)
+CI(df_maze_peri_post$maze_accuracy_pct, ci = 0.95)
 
 #Cohen's d: (mean - mu)/sd
-(mean(df_maze_peri$maze_accuracy_pct) - .1111)/sd(df_maze_peri$maze_accuracy_pct)
+(mean(df_maze_peri_post$maze_accuracy_pct) - .1111)/sd(df_maze_peri_post$maze_accuracy_pct)
 
-cohen.d.ci((mean(df_maze_peri$maze_accuracy_pct) - .1111)/sd(df_maze_peri$maze_accuracy_pct),
+cohen.d.ci((mean(df_maze_peri_post$maze_accuracy_pct) - .1111)/sd(df_maze_peri_post$maze_accuracy_pct),
             n1=59, alpha = 0.05)
 ```
 
 
 
-```{r, df_maze_post}
+<!-- ```{r, df_maze_post} -->
 
-t.test(df_maze_post$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95)
+<!-- t.test(df_maze_post$maze_accuracy_pct, mu=.1111, alternative="greater", conf.level=0.95) -->
 
-mean(df_maze_post$maze_accuracy_pct)
-sd(df_maze_post$maze_accuracy_pct)
-CI(df_maze_post$maze_accuracy_pct, ci = 0.95)
+<!-- mean(df_maze_post$maze_accuracy_pct) -->
+<!-- sd(df_maze_post$maze_accuracy_pct) -->
+<!-- CI(df_maze_post$maze_accuracy_pct, ci = 0.95) -->
 
-#Cohen's d: (mean - mu)/sd
-(mean(df_maze_post$maze_accuracy_pct) - .1111)/sd(df_maze_post$maze_accuracy_pct)
+<!-- #Cohen's d: (mean - mu)/sd -->
+<!-- (mean(df_maze_post$maze_accuracy_pct) - .1111)/sd(df_maze_post$maze_accuracy_pct) -->
 
-cohen.d.ci((mean(df_maze_post$maze_accuracy_pct) - .1111)/sd(df_maze_post$maze_accuracy_pct),
-            n1=59, alpha = 0.05)
-```
+<!-- cohen.d.ci((mean(df_maze_post$maze_accuracy_pct) - .1111)/sd(df_maze_post$maze_accuracy_pct), -->
+<!--             n1=59, alpha = 0.05) -->
+<!-- ``` -->
 
 
 
@@ -692,14 +692,16 @@ pcor.test(df_maze_fem$estradiol_spatial_pg_ml,
 
 
 ##### Group comparison figure
+pvalu=<0.001
 ```{r, ttest}
  #estradiol not normal 
 wilcox.test(df_maze_pre$estradiol_spatial_pg_ml, df_maze_peri_post$estradiol_spatial_pg_ml)
 
-mean(df_maze_post$maze_accuracy_pct)
-sd(df_maze_post$maze_accuracy_pct)
+mean(df_maze_pre$estradiol_spatial_pg_ml)
+sd(df_maze_pre$estradiol_spatial_pg_ml)
 
-
+mean(df_maze_peri_post$estradiol_spatial_pg_ml)
+sd(df_maze_peri_post$estradiol_spatial_pg_ml)
 
 ```
 
@@ -708,11 +710,11 @@ sd(df_maze_post$maze_accuracy_pct)
 
 df_maze_fem %>% ggplot(aes(x = factor(REPO, levels=c("Pre", "Peri_Post")), y = estradiol_spatial_pg_ml, fill= REPO)) +
   geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
-  geom_point(shape=16, position=position_jitter(0.1)) +
+  geom_point(shape=16) +
   scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
-  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
    xlab("Sex")+
-   ylab("Wayfinding Success") +
+   ylab("Estradiol") +
   theme(axis.title.x = element_text(vjust=- 4, size = 16),
          axis.title.y = element_text(vjust=8, size = 16),
          axis.text.x = element_text(size = 12),
@@ -732,7 +734,7 @@ df_maze_fem %>% ggplot(aes(x = factor(REPO, levels=c("Pre", "Peri_Post")), y = e
 
 #### Progesterone
 
-Here let's look at progesterone skews for all women who have a dsp score. It does not pass normality 1.912e-12
+Here let's look at progesterone skews for all women who have a maze score. It does not pass normality 1.912e-12
 ```{r}
 ggplot(df_maze_fem, aes(x=progesterone_spatial_ng_ml)) +
    geom_bar(width = 1)
@@ -767,7 +769,45 @@ pcor.test(df_maze_fem$progesterone_spatial_ng_ml,
           method = "spearman") 
 ```
 
+##### grouo comparison
 
+pvalue =0.388
+```{r, ttest}
+ #Prog not normal 
+wilcox.test(df_maze_pre$progesterone_spatial_ng_ml, df_maze_peri_post$progesterone_spatial_ng_ml)
+
+mean(df_maze_pre$maze_accuracy_pct)
+sd(df_maze_post$maze_accuracy_pct)
+
+
+
+```
+
+```{r, group boxplot}
+
+
+df_maze_fem %>% ggplot(aes(x = factor(REPO, levels=c("Pre", "Peri_Post")), y = progesterone_spatial_ng_ml, fill= REPO)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Progesterone") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+#"#806d71"
+# ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
+#           color = "REPO",
+#           order = c("Male", "Pre", "Peri", "Post"),
+#           ylab = "Wayfinding Success", xlab = "Group")
+```
 
 #### FSH
 Here let's look at FSH skews for all women who have a dsp score. It does not pass normality 1.193e-06
@@ -804,6 +844,48 @@ pcor.test(df_maze_fem$fsh_spatial_miu_ml,
           df_maze_fem$age_spatial_years, 
           method = "spearman") 
 ```
+
+##### grouo comparison
+
+pvalue< 0.001
+```{r, ttest}
+ #Prog not normal 
+wilcox.test(df_maze_pre$fsh_spatial_miu_ml, df_maze_peri_post$fsh_spatial_miu_ml)
+
+mean(df_maze_pre$fsh_spatial_miu_ml)
+sd(df_maze_pre$fsh_spatial_miu_ml)
+
+mean(df_maze_peri_post$fsh_spatial_miu_ml)
+sd(df_maze_peri_post$fsh_spatial_miu_ml)
+
+```
+
+```{r, group boxplot}
+
+
+df_maze_fem %>% ggplot(aes(x = factor(REPO, levels=c("Pre", "Peri_Post")), y = fsh_spatial_miu_ml, fill= REPO)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("FSH") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+#"#806d71"
+# ggboxplot(sub_info, x = "REPO", y = "maze_accuracy_pct", 
+#           color = "REPO",
+#           order = c("Male", "Pre", "Peri", "Post"),
+#           ylab = "Wayfinding Success", xlab = "Group")
+```
+
 
 #### Testosterone (males and females)
 
@@ -842,6 +924,7 @@ pcor.test(df_maze_fem$testosterone_scan_ng_dl,
           df_maze_fem$age_spatial_years, 
           method = "spearman") 
 ```
+
 
 ##### Men
 
