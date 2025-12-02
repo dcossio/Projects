@@ -228,21 +228,31 @@ These were excluded later from hippocampal analyses so i just excluded their beh
 
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+##### Mac Desktop path
+# working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+
+# behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
+
+# DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
+
+###### Laptop path
+
+
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+
+behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
+
+# combining peri and post into one group
+behavior_sub_info$repo_status[behavior_sub_info$repo_status =="Peri"]<-c("Peri_Post")
+behavior_sub_info$repo_status[behavior_sub_info$repo_status =="Post"]<-c("Peri_Post")
+
+DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352) 
+
+DSP_DSI_DF$repo_status[DSP_DSI_DF$repo_status =="Peri"]<-c("Peri_Post")
+DSP_DSI_DF$repo_status[DSP_DSI_DF$repo_status =="Post"]<-c("Peri_Post")
+
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)","span(mm)", "total volume(mm^3)")
-
-behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
-
-DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
-
-
-path2tractometry <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output")
-
-# sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/subject_info.csv") # I dont think this one is necessary
-
-# List of all subject directories
-tractometry_subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output", full.names = FALSE,recursive = FALSE)
 
 f_data_dsp <- DSP_DSI_DF %>% filter(sex == "Female")
 m_data_dsp<- DSP_DSI_DF %>% filter(sex=="Male")
@@ -250,6 +260,24 @@ m_data_dsp<- DSP_DSI_DF %>% filter(sex=="Male")
 Behavioronly_data_dsp <- behavior_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) # dataframe with all subjects that have usable DSP
 
 Behavioronly_Female_data_dsp <- behavior_sub_info %>% filter(dsp_useable == "Yes") %>% filter(subject_id < 500) %>%  filter(sex=="Female")
+
+# Creating seperate databases for groups
+
+#Creating group DF
+df_DSP_fem <- Behavioronly_data_dsp %>% filter(sex == "Female")
+df_DSP_male <- Behavioronly_data_dsp %>% filter(sex == "Male")
+df_DSP_pre <- Behavioronly_data_dsp %>% filter(repo_status == "Pre")
+df_DSP_peri_post <- Behavioronly_data_dsp %>% filter(repo_status != "Pre") %>% filter(repo_status != "Men")
+```
+
+```{r, tractometry code }
+
+path2tractometry <- ("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output")
+
+# sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/subject_info.csv") # I dont think this one is necessary
+
+# List of all subject directories
+tractometry_subfiles <- list.dirs("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Tractometry/output", full.names = FALSE,recursive = FALSE)
 
 
 #This is going through and reading in the output from dsi studio and then combining it into one dataframe and then combining that with our data frame that contains our subject data. 
@@ -429,11 +457,130 @@ Below is a list of important variables:
 
 <hr>
 
-# Behavior and Hormones {.tabset .tabset-pills}
+# Extracting summary stats
 
-## Step 1: Normality check and visualization of data 
+```{r, summary stats for behavior by sex }
 
-### DSP distribution & Normality (behav only) {.tabset}
+Behavioronly_data_dsp %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE))
+
+```
+
+```{r, summary stats for behavior by sex }
+
+group_by(Behavioronly_data_dsp, sex) %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE))
+
+```
+
+```{r, summary stats for scan + behavior by sex }
+
+DSP_DSI_DF %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE))
+
+```
+
+```{r, summary stats for + behavior by sex }
+
+group_by(DSP_DSI_DF, sex) %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE))
+
+```
+
+# Group hormone comparisons
+## Estradiol between pre and peri_post
+
+Significantly different P < 0.001
+```{r}
+est_wilx_test <- wilcox.test(df_DSP_pre$estradiol_spatial_pg_ml, df_DSP_peri_post$estradiol_spatial_pg_ml)
+
+est_wilx_test
+
+df_DSP_pre %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+df_DSP_peri_post %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+```
+
+```{r, estradiol comparison boxplot}
+
+df_DSP_fem %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")), y = estradiol_spatial_pg_ml, fill= repo_status)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Estradiol") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+```
+
+## Progesterone
+
+```{r}
+prog_wilx_test <- wilcox.test(df_DSP_pre$progesterone_spatial_ng_ml, df_DSP_peri_post$progesterone_spatial_ng_ml)
+
+prog_wilx_test
+
+df_DSP_pre %>% dplyr::summarise(count = n(), mean = mean(progesterone_spatial_ng_ml, na.rm = TRUE), sd = sd(progesterone_spatial_ng_ml, na.rm = TRUE))
+
+df_DSP_peri_post %>% dplyr::summarise(count = n(), mean = mean(progesterone_spatial_ng_ml, na.rm = TRUE), sd = sd(progesterone_spatial_ng_ml, na.rm = TRUE))
+
+```
+
+```{r, Progesterine comparison boxplot}
+
+df_DSP_fem %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")), y = progesterone_spatial_ng_ml, fill= repo_status)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Progesterone") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+```
+
+## FSH
+```{r, FSH comparison boxplot}
+
+df_DSP_fem %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")), y = fsh_spatial_miu_ml, fill= repo_status)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("FSH") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+```
+
+
+
+
+# Step 1: Normality check and visualization of data  {.tabset .tabset-pills}
+
+## DSP distribution & Normality (behav only) {.tabset}
 
 Here I am plotting the data for all dsp(regardless of scan). There are a total of 74 subjects here. Shuying had about 76/77  subjects and i noted the Discrepancy above. I removed 372,388, 352. Shuying probably did not exclude 388. 
 
@@ -481,7 +628,7 @@ TableOutput(describe(DSP_DSI_DF))
 <br>
 <br>
 
-### So can we then try and normalize the data?{.tabset}
+## So can we then try and normalize the data?{.tabset}
 
 
 Here let's normalize using log transform. Log transform does change the skew but also some numbers (0) are now labeled as inf. Meaning we should do something to make those turn into an acutal number  perhaps 0.0001?
@@ -599,7 +746,7 @@ shapiro.test(sqrt(f_data_dsp$estradiol_spatial_pg_ml))
 
 <br>
 
-### FSH distribution & normality
+## FSH distribution & normality
 
 FSh also has a skew and fails normality p-value = 0.0008676
 
@@ -633,7 +780,7 @@ No good way to normalize this data so far. I will probably leave it as is.
 <br>
 <br>
 
-### TRactometry results DF
+## TRactometry results DF
 
 So just like above, this data set is also right skewed and fails normality 0.005673
 
@@ -700,7 +847,7 @@ shapiro.test(sqrt(all_women_clean_df$dsp_si_true_pct))
 <hr>
 <br>
 
-## Step 2: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
+# Step 2: Prepare the mediation by grabbing our final df. Removing any rows that are NA 
 
 <!-- Creating a dataframe for just the estradiaol people -->
 ```{r}
@@ -1181,7 +1328,7 @@ summary(model.2)
 
 
 
-# Step 4B Mediation using  values from dsi studio correlational tractography
+## Step 4B Mediation using  values from dsi studio correlational tractography
 
 Okay first thing is that i need a new database with the scores 
 
@@ -1195,7 +1342,7 @@ Okay first thing is that i need a new database with the scores
 
 
 
-## Estradiol
+### Estradiol
 
 X <- White Matter
 Y <- DSP SI
@@ -1217,7 +1364,7 @@ Step 2 of mediation is to complete the next correlation in which M= hormones and
 # summary(model.2)
 ```
 
-## FSH
+### FSH
 
 X <- White Matter
 Y <- DSP SI
