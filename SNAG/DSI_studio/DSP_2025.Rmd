@@ -229,21 +229,21 @@ These were excluded later from hippocampal analyses so i just excluded their beh
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
 ##### Mac Desktop path
-# working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-# 
-# behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
-# 
-# DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
+working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+
+behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
+
+DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
 
 ###### Laptop path
 
-
-working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-
-behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
-
-
-DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
+# 
+# working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+# 
+# behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
+# 
+# 
+# DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
 
 
 # combining peri and post into one group
@@ -510,6 +510,7 @@ df_DSP_peri_post %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial
 ```
 
 ```{r, estradiol comparison boxplot}
+# Extract 9 x 6 portrait
 
 df_DSP_fem %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")), y = estradiol_spatial_pg_ml, fill= repo_status)) +
   geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
@@ -518,14 +519,15 @@ df_DSP_fem %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")),
   #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
    xlab("Sex")+
    ylab("Estradiol") +
-  theme(axis.title.x = element_text(vjust=- 4, size = 16),
-         axis.title.y = element_text(vjust=8, size = 16),
+  theme(axis.title.x = element_blank(),
+         axis.title.y = element_blank(),
          axis.text.x = element_text(size = 12),
          axis.text.y = element_text(size = 12),
          panel.background =element_blank(),
          axis.line = element_line(colour = "black"),
          plot.margin = margin(1, 2, 1, 1.5, "cm"),
-         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+         plot.title = element_blank(),
+        legend.position="none"
  )
 
 ```
