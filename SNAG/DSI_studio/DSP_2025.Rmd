@@ -229,21 +229,21 @@ These were excluded later from hippocampal analyses so i just excluded their beh
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
 ##### Mac Desktop path
-working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-
-behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
-
-DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
+# working_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+# 
+# behavior_sub_info <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv") # This is a sheet that has all of the subjects with at least one usable behavior task (Loop, maze, dsp). Filtering 352 here because i didn't manually exclude in this sheet
+# 
+# DSP_DSI_DF <- read.csv("/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>% filter(!is.na(subject_id)) %>%  filter(subject_id != 352) # This is from the main subject sheet and includes all subjects that have a dsp score AND should have a scan with them
 
 ###### Laptop path
 
 
-# working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-# 
-# behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
-# 
-# 
-# DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352) 
+working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+
+behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
+
+
+DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
 
 
 # combining peri and post into one group
@@ -602,7 +602,7 @@ df_DSP_fem %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")),
 ```
 
 
-# Multiple comparison correction
+## Multiple comparison correction
 
 All pvalues are still significant here. 
 
@@ -1105,8 +1105,8 @@ pcor.test(f_data_dsp$estradiol_spatial_pg_ml,
 #PDF 9 X 6
 ggplot(data = Behavioronly_Female_data_dsp, aes(x = estradiol_spatial_pg_ml,
                                y = dsp_si_true_pct, color=repo_status)) +
-  geom_point(aes(color = factor(repo_status)), size=2) +
-  scale_color_manual(values=c("#CD8A9B", "#7d4c5a","#414143")) + 
+  geom_point(aes(color = factor(repo_status)), size=3) +
+  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
@@ -1454,18 +1454,17 @@ kruskal.test(FNAME ~ repo_status, data = DSP_DSI_DF)
 ```{r, group boxplot}
 
 # 9 x 6 
-DSP_DSI_DF %>% ggplot(aes(x = factor(repo_status, levels=c("Men", "Pre", "Peri", "Post")), y = dsp_si_true_pct, fill= repo_status)) +
+DSP_DSI_DF %>% ggplot(aes(x = factor(repo_status, levels=c("Men", "Pre", "Peri_Post")), y = dsp_si_true_pct, fill= repo_status)) +
   geom_boxplot(width=0.5,fatten = 1, show.legend = TRUE) +
   geom_point(shape=16) +
-  scale_fill_manual(values=c("#d3d0c6","#CD8A9B", "#7d4c5a","#414143"))+
+  scale_fill_manual(values=c("#d3d0c6","#7d4c5a","#CD8A9B"))+  #"#414143")
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
    xlab("Sex")+
    ylab("Solution Index") +
-  theme(axis.title.x = element_text(vjust=- 4, size = 16),
-         axis.title.y = element_text(vjust=8, size = 16),
-         axis.text.x = element_text(size = 12),
-         axis.text.y = element_text(size = 12),
+  theme( axis.title.x=element_blank(),
+         axis.title.y=element_blank(),
          panel.background =element_blank(),
+         legend.position="none",
          axis.line = element_line(colour = "black"),
          plot.margin = margin(1, 2, 1, 1.5, "cm"),
          plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
@@ -1476,6 +1475,7 @@ DSP_DSI_DF %>% ggplot(aes(x = factor(repo_status, levels=c("Men", "Pre", "Peri",
 #           order = c("Male", "Pre", "Peri", "Post"),
 #           ylab = "Wayfinding Success", xlab = "Group")
 ```
+
 ```{r, fnamegroup boxplot}
 
 # 9 x 6 
