@@ -51,6 +51,7 @@ library(markdown)
 library(psych)
 library(ppcor)
 library(mediation)
+library(FSA)
 ```
 
 
@@ -1442,6 +1443,10 @@ group_by(DSP_DSI_DF, repo_status) %>% dplyr::summarise(count = n(), mean = mean(
 ```{r, Check group compairsions between DSP}
 DSP_ANOVA <- kruskal.test(dsp_si_true_pct ~ repo_status, data = DSP_DSI_DF)
 #There is a marginal effect of REPO on performance 
+
+dunn.test::dunn.test(DSP_DSI_DF$dsp_si_true_pct, g=DSP_DSI_DF$repo_status, method = "bh")
+
+
 ```
 
 
@@ -1452,6 +1457,18 @@ DSP_ANOVA <- kruskal.test(dsp_si_true_pct ~ repo_status, data = DSP_DSI_DF)
 kruskal.test(FNAME ~ repo_status, data = DSP_DSI_DF)
 #There is a Siginifcant effect of REPO on performance 
 ```
+
+```{r, post hoc }
+wilcox.test(df$estradiol_spatial_pg_ml, df_DSP_peri_post$estradiol_spatial_pg_ml) %>% broom::tidy() %>%  mutate(hormone = "Estradiol") %>% dplyr::select("hormone",everything())
+
+hormone_comparison <- rbind(hormone_comparison, est_wilx_test)
+
+df_DSP_pre %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+df_DSP_peri_post %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+```
+
 
 ```{r, group boxplot}
 
