@@ -354,9 +354,9 @@ REalized subjects 064 and 092 were not actually processed nor were they reconstr
 ```{r}
 
 #Using liz's old version of the noddi data set so that i also have a template for what i want.
-#main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2025/"
+main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2025/"
 
-main_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/NODDI_2025/"
+#main_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/NODDI_2025/"
 
 
 old_df <- read_csv(paste0(main_dir,"noddi_data.csv"))
@@ -468,7 +468,7 @@ colnames(HC50_ICVF_wm_CLEANED[2]) <- "Value"
 HC50_ICVF_allNODDI <- rbind(HC50_ICVF_wm_CLEANED,HC50_ICVF_gm_CLEANED)
 # Export
 
-write.csv(HC50_ICVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_ICVF_NODDI.csv"), row.names = FALSE)
+write.csv(HC50_ICVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Re_Cleaned/HC50_ICVF_NODDI.csv"), row.names = FALSE)
 
 
 ```
@@ -577,9 +577,9 @@ write.csv(HC50_OD_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_OD_N
 
 # First thing is to read in our first CSV
 
-HC50_ISOVF_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_gmNODDI.csv"))
+HC50_ISOVF_gm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ISOVF_gmNODDI.csv"))
 
-HC50_ISOVF_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_wmNODDI.csv"))
+HC50_ISOVF_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ISOVF_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HC50_ISOVF_gm)
@@ -665,7 +665,7 @@ colnames(HC50_ISOVF_wm_CLEANED[2]) <- "Value"
 HC50_ISOVF_allNODDI <- rbind(HC50_ISOVF_gm_CLEANED,HC50_ISOVF_wm_CLEANED)
 # Export
 
-write.csv(HC50_ISOVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_ISOVF_NODDI.csv"), row.names = FALSE)
+write.csv(HC50_ISOVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Re_Cleaned/HC50_ISOVF_NODDI.csv"), row.names = FALSE)
 
 
 ```

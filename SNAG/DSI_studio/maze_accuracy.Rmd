@@ -117,9 +117,9 @@ library(outliers)
 
 <!-- Reading in the paths and the CSV that contains all of the subject info -->
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
+working_dir <-"/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/Maze/"
 
-working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
+#working_dir <- "/Users/danielacossio/Desktop/MAZE/" #laptop
 
 rows2grab <- c("Tract Name", "number of tracts","mean length(mm)", "total volume(mm^3)")
 
