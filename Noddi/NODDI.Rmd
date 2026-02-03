@@ -802,7 +802,7 @@ write.csv(HS50_ICVF_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_ICVF_
 
 ## OD
 
-```{r, harvard cortical OD}
+```{r, harvard sub OD}
 
 # First thing is to read in our first CSV
 
@@ -901,7 +901,7 @@ write.csv(HS50_OD_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_OD_NODD
 
 ## ISOVF
 
-```{r, harvard cortical ISOVF}
+```{r, harvard sub ISOVF}
 
 # First thing is to read in our first CSV
 
