@@ -125,11 +125,11 @@ Below is a list of sections included here. Including summaries of the white matt
 ## **Participants** 
  ### Behavior
   * there were 108 participants in total who completed the LOOP task. 
-  * 56 midlife adults 
+  * 55 midlife adults 
       * Men = 23
-      * Women = 33
+      * Women = 31
       * Stage
-          * Pre = 14
+          * Pre = 13
           * Peri = 10 
           * Post = 9
       
@@ -141,7 +141,7 @@ Below is a list of sections included here. Including summaries of the white matt
       
   ### Behavior and Diffusion
     
-  * 45 midlife adults 
+  * 44 midlife adults 
       * Men = 23
       * Women = 33
       * Stage
@@ -154,7 +154,23 @@ Below is a list of sections included here. Including summaries of the white matt
       * Women = 25
   
   ### Behavior and T1
-
+THe following subjects were excluded for note having a T1:  320, 325,
+    * 45 midlife adults 
+    * Men = 23
+      * Women = 33
+      * Stage
+          * Pre = 14
+          * Peri = 10 
+          * Post = 9
+      
+  * 28 young adults 
+      * Men = 27
+      * Women = 25
+  
+  ### Behavior and High REs
+    * 28 midlife adults 
+  
+  
   
 <br><br><br><br><br>
  
