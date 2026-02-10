@@ -395,6 +395,7 @@ test
 
 #### Maze 
 
+##### Stratified distribution
 LEt's look at the performance distribution and normality
 
 Womens performance is also not normal p-value = 6.529e-10
@@ -411,9 +412,12 @@ ggplot(df_maze_male, aes(x=maze_accuracy_pct)) +
 shapiro.test(df_maze_male$maze_accuracy_pct)
 ```
 
+##### Sex difference comparison
 
 
 No sex differences between males and females when using wilconox test since normality failed. Do i try and normalize data points?
+
+
 
 ```{r}
 # create data frame for us to export so we can see what data will be used for the boxplot below 
@@ -421,6 +425,14 @@ No sex differences between males and females when using wilconox test since norm
 sex_diff_wayfinding_DF <- sub_info %>% dplyr::select(subject_id,SEX,maze_accuracy_pct)
 write_csv(sex_diff_wayfinding_DF,"/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/maze_plots/sex_diff_wayfinding_DF.csv")
 ```
+
+```{r}
+# because none of the groups are normally distributed we'll do a wilconox 
+
+wilcox.test(df_maze_fem$maze_accuracy_pct, df_maze_male$maze_accuracy_pct,estimate = TRUE, conf.int = TRUE)
+
+```
+
 
 ```{r,echo=FALSE,message=FALSE}
 # Sex differences Ttest
@@ -452,6 +464,7 @@ group_by(sub_info, REPO) %>% dplyr::summarise(count = n(), mean = mean(maze_accu
 
 ```
 
+##### ANOVA for menopause status group differences
 Needed to do the one way  anova between all groups
 
 ```{r,echo=FALSE, results='hide',message=FALSE, one way anova}
@@ -494,6 +507,9 @@ sub_info %>% ggplot(aes(x = factor(REPO, levels=c("Male", "Pre", "Peri_Post")), 
 ```
 
 <br>
+
+##### Groups compared to chance 
+
 Need to see if things are different from chance
 Women only
 ```{r, df_maze_fem  }
@@ -601,8 +617,23 @@ This is a visualization of the accuracy performance for the subjects that i have
 
 <!-- <hr> -->
 
-#### FNAME GRoup comparisons
+#### FNAME 
 
+##### Sex diffrence comparisons 
+
+```{r,echo=FALSE, results='hide',message=FALSE}
+
+group_by(sub_info, SEX) %>% dplyr::summarise(count = n(), mean = mean(FNAME, na.rm = TRUE), sd = sd(FNAME, na.rm = TRUE))
+```
+
+
+```{r}
+wilcox.test(df_maze_fem$FNAME, df_maze_male$FNAME,estimate = TRUE, conf.int = TRUE)
+```
+
+
+
+##### Group comparisons
 First we are doing a one- way anova between all groups 
 ```{r,echo=FALSE, results='hide',message=FALSE}
 
@@ -689,11 +720,14 @@ cor.test(df_maze_fem$estradiol_scan_pg_ml,
          method = "spearman")
 ```
 
-Partial correlation between estradiol spatial and performance while controlling for age. no significant association 
+Partial correlation between estradiol spatial and performance while controlling for age. no significant association. tthis is the one reported in manuscript
 ```{r, warning=FALSE}
-pcor.test(df_maze_fem$estradiol_spatial_pg_ml,
-          df_maze_fem$maze_accuracy_pct,
-          df_maze_fem$age_spatial_years, 
+
+df_maze_est <- df_maze_fem %>% filter(!is.na(estradiol_spatial_pg_ml))
+
+pcor.test(df_maze_est$estradiol_spatial_pg_ml,
+          df_maze_est$maze_accuracy_pct,
+          df_maze_est$age_spatial_years, 
           method = "spearman")
 ```
 
@@ -771,9 +805,12 @@ cor.test(df_maze_fem$progesterone_scan_ng_ml,
 
 Partial correlation between progesterone spatial and performance while controlling for age. no significant association 
 ```{r, warning=FALSE}
-pcor.test(df_maze_fem$progesterone_spatial_ng_ml,
-          df_maze_fem$maze_accuracy_pct,
-          df_maze_fem$age_spatial_years, 
+
+df_maze_prog <- df_maze_fem %>% filter(!is.na(progesterone_spatial_ng_ml))
+
+pcor.test(df_maze_prog$progesterone_spatial_ng_ml,
+          df_maze_prog$maze_accuracy_pct,
+          df_maze_prog$age_spatial_years, 
           method = "spearman") 
 ```
 
