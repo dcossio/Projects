@@ -464,6 +464,49 @@ group_by(sub_info, REPO) %>% dplyr::summarise(count = n(), mean = mean(maze_accu
 
 ```
 
+##### TTEST between pre and peripost menoapase
+```{r}
+# create data frame for us to export so we can see what data will be used for the boxplot below 
+
+meno_diff_wayfinding_DF <- sub_info %>% dplyr::select(subject_id,REPO,maze_accuracy_pct) %>% filter(REPO != "Male")
+write_csv(sex_diff_wayfinding_DF,"/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/maze_plots/REPO_diff_wayfinding_DF.csv")
+
+
+```
+
+```{r}
+# because none of the groups are normally distributed we'll do a wilconox 
+
+wilcox.test(df_maze_pre$maze_accuracy_pct, df_maze_peri_post$maze_accuracy_pct,estimate = TRUE, conf.int = TRUE)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+# Sex differences Ttest
+
+
+meno_diff_wayfinding_DF %>% ggplot(aes(x = REPO, y = maze_accuracy_pct, fill=REPO)) +      geom_boxplot(width=0.5,fatten = 1, outliers = FALSE) +
+  geom_jitter(width = 0.3, size =2) +
+  #geom_point(size=2) +
+  scale_fill_manual(values=c("#7d4c5a", "#6c6c6e"))+
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Wayfinding Success") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+# scale_color_manual(values=c("#4e363e", "#6c6c6e"))+
+
+```
+
 ##### ANOVA for menopause status group differences
 Needed to do the one way  anova between all groups
 
@@ -633,7 +676,50 @@ wilcox.test(df_maze_fem$FNAME, df_maze_male$FNAME,estimate = TRUE, conf.int = TR
 
 
 
-##### Group comparisons
+##### TTSET Pre and post
+```{r}
+# create data frame for us to export so we can see what data will be used for the boxplot below 
+
+
+
+meno_diff_fname_DF <- sub_info %>% dplyr::select(subject_id,REPO,FNAME) %>% filter(REPO != "Male")
+write_csv(sex_diff_wayfinding_DF,"/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/maze_plots/REPO_diff_FNAME_DF.csv")
+```
+
+```{r}
+# because peri/post is not normally distributed we'll use the wilcoxon 
+
+wilcox.test(df_maze_pre$FNAME, df_maze_peri_post$FNAME,estimate = TRUE, conf.int = TRUE)
+
+```
+
+
+```{r,echo=FALSE,message=FALSE}
+# Sex differences Ttest
+
+
+meno_diff_fname_DF %>% ggplot(aes(x = REPO, y = FNAME, fill=REPO)) +      geom_boxplot(width=0.5,fatten = 1, outliers = FALSE) +
+  geom_jitter(width = 0.3, size =2) +
+  #geom_point(size=2) +
+  scale_fill_manual(values=c("#7d4c5a", "#6c6c6e"))+
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Sex")+
+   ylab("Wayfinding Success") +
+  theme(axis.title.x = element_text(vjust=- 4, size = 16),
+         axis.title.y = element_text(vjust=8, size = 16),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         panel.background =element_blank(),
+         axis.line = element_line(colour = "black"),
+         plot.margin = margin(1, 2, 1, 1.5, "cm"),
+         plot.title = element_text(hjust = 0.5, vjust = 2, size = 16, face="bold" )
+ )
+
+# scale_color_manual(values=c("#4e363e", "#6c6c6e"))+
+
+```
+
+##### anova Group comparisons
 First we are doing a one- way anova between all groups 
 ```{r,echo=FALSE, results='hide',message=FALSE}
 
@@ -822,7 +908,7 @@ pvalue =0.388
 wilcox.test(df_maze_pre$progesterone_spatial_ng_ml, df_maze_peri_post$progesterone_spatial_ng_ml)
 
 mean(df_maze_pre$maze_accuracy_pct)
-sd(df_maze_post$maze_accuracy_pct)
+sd(df_maze_peri_post$maze_accuracy_pct)
 
 
 
