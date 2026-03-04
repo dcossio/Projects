@@ -772,6 +772,14 @@ I am going to rerun correlation analyses between hormones and maze accuracy. I a
 6) for males, testosterone is one tailed in positive direction
 7) Do i do one controlling for age and one not controlling for age?? 
 
+
+```{r, creating empty dataframe to keep pvalues in}
+
+hormone_comparison <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c("hormone","statistic","p.value","method","alternative"))
+#for multiple comparisons 
+
+```
+
 #### Estradiol 
 
 
@@ -823,7 +831,9 @@ pcor.test(df_maze_est$estradiol_spatial_pg_ml,
 pvalu=<0.001
 ```{r, ttest}
  #estradiol not normal 
-wilcox.test(df_maze_pre$estradiol_spatial_pg_ml, df_maze_peri_post$estradiol_spatial_pg_ml)
+est_wilx_test <- wilcox.test(df_maze_pre$estradiol_spatial_pg_ml, df_maze_peri_post$estradiol_spatial_pg_ml) %>% broom::tidy() %>%  mutate(hormone = "Estradiol") %>% dplyr::select("hormone",everything())
+
+hormone_comparison <- rbind(hormone_comparison, est_wilx_test)
 
 mean(df_maze_pre$estradiol_spatial_pg_ml)
 sd(df_maze_pre$estradiol_spatial_pg_ml)
@@ -905,9 +915,14 @@ pcor.test(df_maze_prog$progesterone_spatial_ng_ml,
 pvalue =0.388
 ```{r, ttest}
  #Prog not normal 
-wilcox.test(df_maze_pre$progesterone_spatial_ng_ml, df_maze_peri_post$progesterone_spatial_ng_ml)
+prog_wilx_test <- wilcox.test(df_maze_pre$progesterone_spatial_ng_ml, df_maze_peri_post$progesterone_spatial_ng_ml) %>% broom::tidy() %>%  mutate(hormone = "Progesterone") %>% dplyr::select("hormone",everything()) 
+
+hormone_comparison <- rbind(hormone_comparison, prog_wilx_test)
 
 mean(df_maze_pre$maze_accuracy_pct)
+sd(df_maze_pre$maze_accuracy_pct)
+
+mean(df_maze_peri_post$maze_accuracy_pct)
 sd(df_maze_peri_post$maze_accuracy_pct)
 
 
@@ -980,8 +995,13 @@ pcor.test(df_maze_fem$fsh_spatial_miu_ml,
 
 pvalue< 0.001
 ```{r, ttest}
- #Prog not normal 
-wilcox.test(df_maze_pre$fsh_spatial_miu_ml, df_maze_peri_post$fsh_spatial_miu_ml)
+
+
+fsh_wilx_test <- wilcox.test(df_maze_pre$fsh_spatial_miu_ml, df_maze_peri_post$fsh_spatial_miu_ml) %>% broom::tidy() %>%  mutate(hormone = "FSH") %>% dplyr::select("hormone",everything()) 
+
+hormone_comparison <- rbind(hormone_comparison, fsh_wilx_test)
+
+
 
 mean(df_maze_pre$fsh_spatial_miu_ml)
 sd(df_maze_pre$fsh_spatial_miu_ml)
@@ -1016,6 +1036,21 @@ df_maze_fem %>% ggplot(aes(x = factor(REPO, levels=c("Pre", "Peri_Post")), y = f
 #           order = c("Male", "Pre", "Peri", "Post"),
 #           ylab = "Wayfinding Success", xlab = "Group")
 ```
+
+#### Multiple comparison correction
+
+All pvalues are still significant here. 
+
+```{r, multiple comparison}
+options(scipen=999)
+
+p_corrected <- p.adjust(hormone_comparison$p.value, "BY")
+
+hormone_comparison <- hormone_comparison %>% mutate(p.value.BYCorrected = p_corrected)
+
+hormone_comparison
+```
+
 
 
 #### Testosterone (males and females)
