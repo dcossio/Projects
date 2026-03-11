@@ -354,19 +354,19 @@ REalized subjects 064 and 092 were not actually processed nor were they reconstr
 ```{r}
 
 #Using liz's old version of the noddi data set so that i also have a template for what i want.
-main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2025/"
+main_dir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/NODDI_2026/"
 
 #main_dir <-"/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/NODDI_2025/"
 
 
-old_df <- read_csv(paste0(main_dir,"noddi_data.csv"))
+old_df <- read_csv(paste0(main_dir,"noddi_data_2026.csv"))
 
 columns <- c("Brain_Area","Value","SubjectID","Metric","Score","Age","Gender", "Tissue")    
 
 
 clean_NODDI_DF <- data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 
-sub_info <- old_df %>% select("SubjectID","Age","Gender","Score") %>% unique() %>% filter(SubjectID != 64)
+sub_info <- old_df %>% select("SubjectID","Age","Gender","Score") %>% unique()
   
   
 ```
@@ -380,9 +380,9 @@ I have this as a function up top but it's such a big job that i'm splitting in c
 
 # First thing is to read in our first CSV
 
-HC50_ICVF_gm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ICVF_gmNODDI.csv"))
+HC50_ICVF_gm <- read_csv(paste0(main_dir,"/harvardcort50/raw/all_icvf_gmNODDI.csv"))
 
-HC50_ICVF_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ICVF_wmNODDI.csv"))
+HC50_ICVF_wm <- read_csv(paste0(main_dir,"/harvardcort50/raw/all_icvf_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HC50_ICVF_gm)
@@ -404,9 +404,9 @@ HC50_ICVF_gm_CLEANED <-
 HC50_ICVF_wm_CLEANED <-
     data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 temp_gm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 80, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 80, ncol = 8)) %>% `colnames<-`(columns)
 
  # Create new label for Brain area by cleaning column names. again same for each database so just using one 
 
@@ -468,7 +468,7 @@ colnames(HC50_ICVF_wm_CLEANED[2]) <- "Value"
 HC50_ICVF_allNODDI <- rbind(HC50_ICVF_wm_CLEANED,HC50_ICVF_gm_CLEANED)
 # Export
 
-write.csv(HC50_ICVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Re_Cleaned/HC50_ICVF_NODDI.csv"), row.names = FALSE)
+write.csv(HC50_ICVF_allNODDI,paste0(main_dir,"/harvardcort50/cleaned/HC50_ICVF_NODDI.csv"), row.names = FALSE)
 
 
 ```
@@ -478,9 +478,9 @@ write.csv(HC50_ICVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Re_Cleaned/HC50
 
 # First thing is to read in our first CSV
 
-HC50_OD_gm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_OD_gmNODDI.csv"))
+HC50_OD_gm <- read_csv(paste0(main_dir,"/harvardcort50/raw/all_od_gmNODDI.csv"))
 
-HC50_OD_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_OD_wmNODDI.csv"))
+HC50_OD_wm <- read_csv(paste0(main_dir,"/harvardcort50/raw/all_od_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HC50_OD_gm)
@@ -502,9 +502,9 @@ HC50_OD_gm_CLEANED <-
 HC50_OD_wm_CLEANED <-
     data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 temp_gm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 80, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = 80, ncol = 8)) %>% `colnames<-`(columns)
 
  # Create new label for Brain area by cleaning column names. again same for each database so just using one 
 
@@ -566,7 +566,7 @@ colnames(HC50_OD_wm_CLEANED[2]) <- "Value"
 HC50_OD_allNODDI <- rbind(HC50_OD_gm_CLEANED,HC50_OD_wm_CLEANED)
 # Export
 
-write.csv(HC50_OD_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_OD_NODDI.csv"), row.names = FALSE)
+write.csv(HC50_OD_allNODDI,paste0(main_dir,"/harvardcort50/cleaned/HC50_OD_NODDI.csv"), row.names = FALSE)
 
 
 ```
@@ -577,9 +577,9 @@ write.csv(HC50_OD_allNODDI,paste0(main_dir,"Data/harvardcort50/Cleaned/HC50_OD_N
 
 # First thing is to read in our first CSV
 
-HC50_ISOVF_gm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ISOVF_gmNODDI.csv"))
+HC50_ISOVF_gm <- read_csv(paste0(main_dir,"/harvardcort50/raw/all_isovf_gmNODDI.csv")) 
 
-HC50_ISOVF_wm <- read_csv(paste0(main_dir,"Data/harvardcort50/Raw/all_ISOVF_wmNODDI.csv"))
+HC50_ISOVF_wm <- read_csv(paste0(main_dir,"/harvardcort50/raw/all_isovf_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HC50_ISOVF_gm)
@@ -665,7 +665,7 @@ colnames(HC50_ISOVF_wm_CLEANED[2]) <- "Value"
 HC50_ISOVF_allNODDI <- rbind(HC50_ISOVF_gm_CLEANED,HC50_ISOVF_wm_CLEANED)
 # Export
 
-write.csv(HC50_ISOVF_allNODDI,paste0(main_dir,"Data/harvardcort50/Re_Cleaned/HC50_ISOVF_NODDI.csv"), row.names = FALSE)
+write.csv(HC50_ISOVF_allNODDI,paste0(main_dir,"/harvardcort50/cleaned/HC50_ISOVF_NODDI.csv"), row.names = FALSE)
 
 
 ```
@@ -707,9 +707,9 @@ dfclean <- CSV %>% filter(df)
 ```{r}
 # First thing is to read in our first CSV
 
-HS50_ICVF_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ICVF_gmNODDI.csv"))
+HS50_ICVF_gm <- read_csv(paste0(main_dir,"harvardsub50/raw/all_icvf_gmNODDI.csv"))
 
-HS50_ICVF_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ICVF_wmNODDI.csv"))
+HS50_ICVF_wm <- read_csv(paste0(main_dir,"harvardsub50/raw/all_icvf_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HS50_ICVF_gm)
@@ -731,9 +731,9 @@ HS50_ICVF_gm_CLEANED <-
 HS50_ICVF_wm_CLEANED <-
     data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 temp_gm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = num_rows, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = num_rows, ncol = 8)) %>% `colnames<-`(columns)
 
  # Create new label for Brain area by cleaning column names. again same for each database so just using one 
 
@@ -795,7 +795,7 @@ colnames(HS50_ICVF_wm_CLEANED[2]) <- "Value"
 HS50_ICVF_allNODDI <- rbind(HS50_ICVF_wm_CLEANED,HS50_ICVF_gm_CLEANED)
 # Export
 
-write.csv(HS50_ICVF_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_ICVF_NODDI.csv"), row.names = FALSE)
+write.csv(HS50_ICVF_allNODDI,paste0(main_dir,"harvardsub50/cleaned/HS50_ICVF_NODDI.csv"), row.names = FALSE)
 
 
 ```
@@ -806,9 +806,9 @@ write.csv(HS50_ICVF_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_ICVF_
 
 # First thing is to read in our first CSV
 
-HS50_OD_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_OD_gmNODDI.csv"))
+HS50_OD_gm <- read_csv(paste0(main_dir,"harvardsub50/raw/all_od_gmNODDI.csv"))
 
-HS50_OD_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_OD_wmNODDI.csv"))
+HS50_OD_wm <- read_csv(paste0(main_dir,"harvardsub50/raw/all_od_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HS50_OD_gm)
@@ -830,9 +830,9 @@ HS50_OD_gm_CLEANED <-
 HS50_OD_wm_CLEANED <-
     data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 temp_gm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = num_rows, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = num_rows, ncol = 8)) %>% `colnames<-`(columns)
 
  # Create new label for Brain area by cleaning column names. again same for each database so just using one 
 
@@ -894,7 +894,7 @@ colnames(HS50_OD_wm_CLEANED[2]) <- "Value"
 HS50_OD_allNODDI <- rbind(HS50_OD_gm_CLEANED,HS50_OD_wm_CLEANED)
 # Export
 
-write.csv(HS50_OD_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_OD_NODDI.csv"), row.names = FALSE)
+write.csv(HS50_OD_allNODDI,paste0(main_dir,"harvardsub50/cleaned/HS50_OD_NODDI.csv"), row.names = FALSE)
 
 
 ```
@@ -905,9 +905,9 @@ write.csv(HS50_OD_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_OD_NODD
 
 # First thing is to read in our first CSV
 
-HS50_ISOVF_gm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_gmNODDI.csv"))
+HS50_ISOVF_gm <- read_csv(paste0(main_dir,"harvardsub50/raw/all_isovf_gmNODDI.csv"))
 
-HS50_ISOVF_wm <- read_csv(paste0(main_dir,"Data/harvardsub50/Raw/all_ISOVF_wmNODDI.csv"))
+HS50_ISOVF_wm <- read_csv(paste0(main_dir,"harvardsub50/raw/all_isovf_wmNODDI.csv"))
 
 # Get number of rows and cols for later. Same for both so just using one
 num_cols <- ncol(HS50_ISOVF_gm)
@@ -929,9 +929,9 @@ HS50_ISOVF_gm_CLEANED <-
 HS50_ISOVF_wm_CLEANED <-
     data.frame(matrix(nrow = 0, ncol = 8)) %>% `colnames<-`(columns)
 temp_gm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = num_rows, ncol = 8)) %>% `colnames<-`(columns)
 temp_wm <-
-    data.frame(matrix(nrow = 78, ncol = 8)) %>% `colnames<-`(columns)
+    data.frame(matrix(nrow = num_rows, ncol = 8)) %>% `colnames<-`(columns)
 
  # Create new label for Brain area by cleaning column names. again same for each database so just using one 
 
@@ -993,7 +993,7 @@ colnames(HS50_ISOVF_wm_CLEANED[2]) <- "Value"
 HS50_ISOVF_allNODDI <- rbind(HS50_ISOVF_gm_CLEANED,HS50_ISOVF_wm_CLEANED)
 # Export
 
-write.csv(HS50_ISOVF_allNODDI,paste0(main_dir,"Data/harvardsub50/Clean/HS50_ISOVF_NODDI.csv"), row.names = FALSE)
+write.csv(HS50_ISOVF_allNODDI,paste0(main_dir,"harvardsub50/cleaned/HS50_ISOVF_NODDI.csv"), row.names = FALSE)
 
 
 ```
