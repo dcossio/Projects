@@ -1,0 +1,436 @@
+---
+title: "Manuscript DSP Code"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+   html_document: 
+     toc: yes
+     toc_float: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+<!-- Reading in my libraries -->
+```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(stringr)
+library(kableExtra)
+library(markdown)
+library(psych)
+library(ppcor)
+library(mediation)
+library(knitr)
+library(janitor)
+#library(car)
+#library(ggiraph)
+#library(ggiraphExtra)
+library(moonBook)
+#library(nationalparkcolors)
+#library(gridExtra)
+# library(dplyr)
+# library(tidyr)
+# library(data.table)
+# library(network)
+# library(tidygraph)
+# library(ggraph)
+# library(igraph)
+# library(networkD3)
+# library(CINNA)
+# library(umap)
+# library(plotly)
+#library(factoextra)
+#library(lsr)
+#library(ggpubr)
+#library(entropy)
+#library(ds4psy)
+# library(pROC)
+#library(devtools)
+#library(BRRR)
+#library(stats)
+#library(afex)
+
+#library(FSA)
+```
+
+<!-- below is code for generating the markdown html. just basic aesthetics -->
+
+```{css, echo=FALSE}
+TOC {
+  color: #F6B2DB;
+  font-family: Arial;
+  font-size: "16px"; 
+  border-color: #F6B2DB;
+}
+
+h1.title {
+  color: black ;
+  font-family: Arial;
+  font-size: "72px";
+  padding: "10px 0";
+  background-color: #F6B2DB ;
+  text-align: center;
+}
+
+h4.date {
+  color: black ;
+  font-family: Arial;
+  font-size: "34px";
+  text-align: center;
+}
+
+h4.author {
+  color: black;
+  font-size: "34px";
+  font-family: Arial;
+  text-align: center;
+}
+
+
+h1,h2, h3, h4, h5 ,h6 {
+  text-align: center;
+  font-family: Arial;
+  
+}
+
+body, p, h2{
+  color: black; 
+  font-family: Arial;
+}
+
+hr {
+  height:5px;
+  border-width:0;
+  background-color: black ;
+}
+
+
+
+```
+
+
+# Overview of experiment and analyses {.tabset .tabset-fade}
+
+This is the complete analysis of the DSP task using white matter and bevaior and hormones. 
+
+<br><br><br>
+
+<hr>
+
+# Methods {.tabset .tabset-pills} 
+
+## **Participants** 
+### Midlife 
+  * Total number of scans = 120 (males and females)  
+  
+  * Total scans used in analysis= 69  
+  * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 and 424 failed quality 
+  control check in DSI
+  
+    * All subjects = 69 <br>
+    * Men = 24 <br>
+    * Women = 45 <br>
+    * Pre = 18 <br>
+    * Peri = 14 <br>
+    * Post = 13 <br>
+
+<br><br>
+
+### Young 
+  * total subject with DSP = 27
+  * Total scans used in analysis= 25  
+  * Excluded subs 380 and 384 due to low quality outliar 
+  
+    * All subjects = 27 <br>
+    * Men =  <br>
+    * Women =  <br>
+ 
+    
+    
+<hr> 
+
+
+  
+## **Scan parameters** 
+
+  * Locations from UCSB and UCI
+  
+<br><br>
+
+<hr> 
+
+
+## **QSIprep** 
+
+  * Version used: 0.16.0RC3
+
+  * The following parameters were used
+    * dwi_denoise_window **5** 
+    * hmc_model **3dSHORE** 
+    * hmc-transform **Rigid** 
+    * shoreline_iters **2**
+<br><br>
+
+<hr> 
+
+## **DSI Studio**
+
+  * Version and tags used via singularity container: **chen-2024-05-03**
+  
+  * **Parameters** 
+    * T-threshold = 2.5
+    * Length = 25
+    * Permutation = 4,000
+    * pruning 4
+    * QA
+    * Covariates: sex, age, and FNAME
+
+<hr>
+
+
+## **Hormones and behavior**
+
+I am doing a mediation analysis to understand the relation ship between white matter, hormones, and performance on the dual solution paradigm.
+
+From shuying's data, DSP is associated with estradial. Increased solution index is associated with increased solution index.
+
+MD is negatively associated with Solution Index such that increased MD in the fornix is associated with less shortcuts. Essentially lower white matter integrity in fornix is associated with lower performance.
+
+Hypothesis for mediation is that greater estradiol is driving the relationship in which greater integrity in the fornix for greater solution index. 
+
+
+X= Mean diffusivity in fornix  
+Y= greater SI on DSP task  
+M= Estradiol  
+<br>
+<hr>
+<br>
+
+**Subject Numbers for DSP analyses**
+Total SNAG numbers: 137  
+    * 60 removed
+Total participants with DSP: 77
+Total participants with DSI scans: 73
+Total participants used in analyses: 69
+
+
+Shuyings numbers are as follows from her behavioral task, idk who she excluded:  
+Women: 47  
+MEn:28  
+Total:75
+
+Daniela's
+
+Women: 45   
+Men: 23  
+Total: 68  
+
+Subjects I excluded 
+347 for Low quality outliar
+424 for low quality outliar
+372 for neurochistosomaisis
+388 for cyst in cerebellum
+352 for depression
+
+These were excluded later from hippocampal analyses so i just excluded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
+
+# Results {.tabset .tabset-pills} 
+
+Reading in and prepping our data {.tabset .tabset-fade}
+
+<!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
+```{r reading in our CSVs, results='hide',message=FALSE}
+##### Mac Desktop path
+working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
+
+
+# path to the subject sheets 
+midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
+
+yng_DSP_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv"))
+
+yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")) %>%  filter(Subject_ID != 84) %>% filter(Subject_ID != 80)
+
+
+###### Laptop path
+
+# 
+# working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+# 
+# behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
+# 
+# 
+# DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
+
+
+```
+
+## Young Adult Summary Stats
+
+Total number of young adults with DSP 
+Mean = 0.27
+SD = 0.15
+```{r, sumamry stats for young adults with DSP}
+yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+```
+
+<br>
+
+Total number of young adults with DSP+good scan
+Mean = 0.26
+SD = 0.16
+
+```{r, sumamry stats for young adults with DSP + good scan}
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+```
+
+<br>
+
+
+## Midlife Adults Summary Stats
+
+Total number of midlife adults
+n = 68
+Mean = 0.23
+SD = 0.17
+```{r, sum stats for midlife adults}
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+```
+
+<br>
+
+Midlife stats grouped by sex 
+men
+  n = 23
+  mean = 0.19
+  SD = 0.15]
+  
+<br>
+  
+women
+  n = 45
+  mean = 0.25
+  SD = 0.18
+```{r, sum stats for midlife adults split by sex}
+group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+```
+
+
+
+Midlife stats grouped by REPO 
+
+Pre 
+  n = 18
+  mean = 0.31
+  SD = 0.17
+  
+Peri Post
+  n = 27
+  mean = 0.22
+  SD = 0.18
+  
+```{r, sum stats for midlife adults split by repo status}
+group_by(midlife_DSP_df, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+```
+
+```{r}
+# combining peri and post into one group
+midlife_DSP_df$repo_status[midlife_DSP_df$repo_status =="Peri"]<-c("Peri_Post")
+midlife_DSP_df$repo_status[midlife_DSP_df$repo_status =="Post"]<-c("Peri_Post")
+
+
+#Creating group DF
+Mid_dsp_fem_df <- midlife_DSP_df %>% filter(sex == "Female")
+Mid_dsp_male_df <- midlife_DSP_df %>% filter(sex == "Male")
+Mid_dsp_pre_df <- midlife_DSP_df %>% filter(repo_status == "Pre")
+Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filter(repo_status != "Men")
+
+```
+
+
+## Group comparisons
+
+### Midlife vs Young
+
+**Check normality of group**
+Not normal
+```{r}
+shapiro.test(midlife_DSP_df$dsp_si_true_pct)
+```
+<br>
+is normal
+```{r}
+shapiro.test(yng_DSP_scan_df$dsp_si_true_pct)
+```
+
+<br>
+
+Since one is not normal, I will use wilconox test
+Young adults do not take more shortcuts than midlife adults, although we see it with shuyings data 
+
+```{r}
+wilcox.test(midlife_DSP_df$dsp_si_true_pct, yng_DSP_scan_df$dsp_si_true_pct)
+```
+
+### Midlife men vs women
+
+Not sig different here either'
+W = 653.5, p-value = 0.07849
+```{r}
+wilcox.test(Mid_dsp_fem_df$dsp_si_true_pct, Mid_dsp_male_df$dsp_si_true_pct)
+```
+
+
+```{r fig.height=6, fig.width=9}
+
+
+dev.size()
+
+midlife_DSP_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = dsp_si_true_pct,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE) +
+  geom_jitter(width = 0.3, size = 8) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Sex") +
+  ylab("Wayfinding Success") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.text.x = element_text(
+      size = 50,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 50,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =3 ),
+    axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 4),
+    legend.position = "none",
+    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+  )
+
+ggsave(paste0(working_dir,"/DSP_sexDiff.tiff"))
+
+```
+
+
+### Midlife pre vs peri_post
+
+These are significantly different 
+```{r}
+wilcox.test(Mid_dsp_pre_df$dsp_si_true_pct, Mid_dsp_peripost_df$dsp_si_true_pct)
+```
