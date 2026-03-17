@@ -235,13 +235,16 @@ These were excluded later from hippocampal analyses so i just excluded their beh
 
 # Results {.tabset .tabset-pills} 
 
-Reading in and prepping our data {.tabset .tabset-fade}
+Reading in and prepping our data 
 
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
 ##### Mac Desktop path
 working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
 
+# Moving to save all figrues and output into a different folder bc it's too big for github
+
+outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
 # path to the subject sheets 
 midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
@@ -347,7 +350,7 @@ Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filte
 ```
 
 
-## Group comparisons
+## Group comparisons {.tabset .tabset-pills} 
 
 ### Midlife vs Young
 
@@ -371,24 +374,27 @@ Young adults do not take more shortcuts than midlife adults, although we see it 
 wilcox.test(midlife_DSP_df$dsp_si_true_pct, yng_DSP_scan_df$dsp_si_true_pct)
 ```
 
-### Midlife men vs women
+**Creating Graph**
 
-Not sig different here either'
-W = 653.5, p-value = 0.07849
-```{r}
-wilcox.test(Mid_dsp_fem_df$dsp_si_true_pct, Mid_dsp_male_df$dsp_si_true_pct)
+```{r, Creating a simple DF with young and midlife}
+
+all_SI_df <- midlife_DSP_df %>% dplyr::select(c("subject_id","sex","age_group","age_scan_years","dsp_si_true_pct","dsp_success_pct"))
+
+temp_yng_df <- yng_DSP_scan_df %>% dplyr::select(c("Subject_ID","sex","age_group","age_scan_years","dsp_si_true_pct","dsp_success_pct")) %>% `colnames<-`(c("subject_id","sex","age_group","age_scan_years","dsp_si_true_pct","dsp_success_pct"))
+
+all_SI_df <- rbind(all_SI_df,temp_yng_df)
+
 ```
 
 
-```{r fig.height=6, fig.width=9}
-
+```{r fig.height=6, fig.width=9, results='hide'}
 
 dev.size()
 
-midlife_DSP_df %>% ggplot(aes(
-  x = factor(sex, levels = c("Male", "Female")),
+all_SI_df %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
   y = dsp_si_true_pct,
-  fill = sex
+  fill = age_group
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
@@ -396,8 +402,12 @@ midlife_DSP_df %>% ggplot(aes(
   #geom_point(size=2) +
   scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
-  xlab("Sex") +
-  ylab("Wayfinding Success") +
+  xlab("Age Group") +
+  ylab("Solution Index (%)") +
+  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("Success") +
   theme(
     axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
@@ -423,7 +433,124 @@ midlife_DSP_df %>% ggplot(aes(
     plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
   )
 
-ggsave(paste0(working_dir,"/DSP_sexDiff.tiff"))
+
+ggsave(paste0(outputdir,"/DSP_age_diff_si2.tiff"))
+
+
+```
+
+<br>
+<hr>
+
+**DSP success**
+
+
+```{r}
+wilcox.test(midlife_DSP_df$dsp_success_pct, yng_DSP_scan_df$dsp_success_pct)
+```
+
+
+```{r fig.height=6, fig.width=9}
+
+dev.size()
+
+all_SI_df %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = dsp_success_pct,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE) +
+  geom_jitter(width = 0.3, size = 8) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("Success") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.text.x = element_text(
+      size = 50,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 50,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =3 ),
+    axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 4),
+    legend.position = "none",
+    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+  )
+
+ggsave(paste0(outputdir,"/DSP_age_diff_success.tiff"))
+
+
+```
+
+
+
+### Midlife men vs women
+
+Not sig different here either'
+W = 653.5, p-value = 0.07849
+```{r}
+wilcox.test(Mid_dsp_fem_df$dsp_si_true_pct, Mid_dsp_male_df$dsp_si_true_pct)
+```
+
+
+```{r fig.height=6, fig.width=9}
+
+dev.size()
+
+midlife_DSP_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = dsp_si_true_pct,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE) +
+  geom_jitter(width = 0.3, size = 8) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Sex") +
+  ylab("Solution Index (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.text.x = element_text(
+      size = 50,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 50,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =3 ),
+    axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 4),
+    legend.position = "none",
+    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+  )
+
+ggsave(paste0(outputdir,"/DSP_sexDiff.tiff"))
 
 ```
 
@@ -433,4 +560,54 @@ ggsave(paste0(working_dir,"/DSP_sexDiff.tiff"))
 These are significantly different 
 ```{r}
 wilcox.test(Mid_dsp_pre_df$dsp_si_true_pct, Mid_dsp_peripost_df$dsp_si_true_pct)
+```
+
+```{r}
+all_menopause_df <- rbind(Mid_dsp_pre_df,Mid_dsp_peripost_df)
+```
+
+```{r fig.height=6, fig.width=9}
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(
+  x = factor(repo_status, levels = c("Pre", "Peri_Post")),
+  y = dsp_si_true_pct,
+  fill = repo_status
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE) +
+  geom_jitter(width = 0.3, size = 8) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("repo_status") +
+  ylab("Solution Index (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.text.x = element_text(
+      size = 50,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 50,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =3 ),
+    axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 4),
+    legend.position = "none",
+    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+  )
+
+ggsave(paste0(outputdir,"/DSP_meno_diff_SI.tiff"))
+
 ```
