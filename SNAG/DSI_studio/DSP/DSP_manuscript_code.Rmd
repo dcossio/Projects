@@ -267,7 +267,7 @@ yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")
 
 ```
 
-## Young Adult Summary Stats
+# Young Adult Summary Stats
 
 Total number of young adults with DSP 
 Mean = 0.27
@@ -289,7 +289,7 @@ yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, n
 <br>
 
 
-## Midlife Adults Summary Stats
+# Midlife Adults Summary Stats
 
 Total number of midlife adults
 n = 68
@@ -301,7 +301,8 @@ midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na
 
 <br>
 
-Midlife stats grouped by sex 
+Midlife stats grouped by sex  
+
 men
   n = 23
   mean = 0.19
@@ -349,10 +350,9 @@ Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filte
 
 ```
 
+# Group comparisons {.tabset .tabset-pills} 
 
-## Group comparisons {.tabset .tabset-pills} 
-
-### Midlife vs Young
+## Midlife vs Young
 
 **Check normality of group**
 Not normal
@@ -386,11 +386,8 @@ all_SI_df <- rbind(all_SI_df,temp_yng_df)
 
 ```
 
-
-```{r fig.height=6, fig.width=9, results='hide'}
-
+```{r, out.width="120%"}
 dev.size()
-
 all_SI_df %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
   y = dsp_si_true_pct,
@@ -398,46 +395,42 @@ all_SI_df %>% ggplot(aes(
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 8) +
+  geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
   scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Solution Index (%)") +
-  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
-  xlab("Age Group") +
-  ylab("Success") +
   theme(
-    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
     axis.text.x = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       vjust = -2,
       face = "bold"
     ),
     axis.text.y = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       hjust = 2,
       face = "bold"
     ),
     axis.ticks.y = element_line(color = "black",
-                                linewidth =3 ),
-    axis.ticks.x = element_blank(),
-    axis.ticks.length = unit(0.75, "cm"),
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
     panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 4),
+    axis.line = element_line(colour = "black", linewidth = 1),
     legend.position = "none",
-    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+    plot.margin = margin(1,1 , 1, 1, "cm"),
   )
-
-
-ggsave(paste0(outputdir,"/DSP_age_diff_si2.tiff"))
-
+ggsave(paste0(outputdir,"/DSP_age_diff_si.tiff"))
 
 ```
+
+
+
 
 <br>
 <hr>
@@ -450,7 +443,7 @@ wilcox.test(midlife_DSP_df$dsp_success_pct, yng_DSP_scan_df$dsp_success_pct)
 ```
 
 
-```{r fig.height=6, fig.width=9}
+```{r  out.width="120%"}
 
 dev.size()
 
@@ -461,45 +454,44 @@ all_SI_df %>% ggplot(aes(
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 8) +
+  geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
   scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
-  ylab("Success") +
+  ylab("DSP Success") +
   theme(
-    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
     axis.text.x = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       vjust = -2,
       face = "bold"
     ),
     axis.text.y = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       hjust = 2,
       face = "bold"
     ),
     axis.ticks.y = element_line(color = "black",
-                                linewidth =3 ),
-    axis.ticks.x = element_blank(),
-    axis.ticks.length = unit(0.75, "cm"),
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
     panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 4),
+    axis.line = element_line(colour = "black", linewidth = 1),
     legend.position = "none",
-    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+    plot.margin = margin(1,1, 1, 1, "cm"),
   )
-
 ggsave(paste0(outputdir,"/DSP_age_diff_success.tiff"))
-
 
 ```
 
 
 
-### Midlife men vs women
+
+## Midlife men vs women
 
 Not sig different here either'
 W = 653.5, p-value = 0.07849
@@ -507,8 +499,7 @@ W = 653.5, p-value = 0.07849
 wilcox.test(Mid_dsp_fem_df$dsp_si_true_pct, Mid_dsp_male_df$dsp_si_true_pct)
 ```
 
-
-```{r fig.height=6, fig.width=9}
+```{r out.width="120%"}
 
 dev.size()
 
@@ -519,35 +510,35 @@ midlife_DSP_df %>% ggplot(aes(
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 8) +
+  geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
   scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Sex") +
   ylab("Solution Index (%)") +
   theme(
-    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
     axis.text.x = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       vjust = -2,
       face = "bold"
     ),
     axis.text.y = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       hjust = 2,
       face = "bold"
     ),
     axis.ticks.y = element_line(color = "black",
-                                linewidth =3 ),
-    axis.ticks.x = element_blank(),
-    axis.ticks.length = unit(0.75, "cm"),
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
     panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 4),
+    axis.line = element_line(colour = "black", linewidth = 1),
     legend.position = "none",
-    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+    plot.margin = margin(1,1, 1, 1, "cm"),
   )
 
 ggsave(paste0(outputdir,"/DSP_sexDiff.tiff"))
@@ -555,7 +546,7 @@ ggsave(paste0(outputdir,"/DSP_sexDiff.tiff"))
 ```
 
 
-### Midlife pre vs peri_post
+## Midlife pre vs peri_post
 
 These are significantly different 
 ```{r}
@@ -566,7 +557,7 @@ wilcox.test(Mid_dsp_pre_df$dsp_si_true_pct, Mid_dsp_peripost_df$dsp_si_true_pct)
 all_menopause_df <- rbind(Mid_dsp_pre_df,Mid_dsp_peripost_df)
 ```
 
-```{r fig.height=6, fig.width=9}
+```{r out.width="120%"}
 
 dev.size()
 
@@ -577,37 +568,151 @@ all_menopause_df %>% ggplot(aes(
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 8) +
+  geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
   scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
-  xlab("repo_status") +
+  xlab("REPO status") +
   ylab("Solution Index (%)") +
   theme(
-    axis.title.x = element_text(vjust = -3, size = 70, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 70,face = "bold"),
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
     axis.text.x = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       vjust = -2,
       face = "bold"
     ),
     axis.text.y = element_text(
-      size = 50,
+      size = 18,
       color = "black",
       hjust = 2,
       face = "bold"
     ),
     axis.ticks.y = element_line(color = "black",
-                                linewidth =3 ),
-    axis.ticks.x = element_blank(),
-    axis.ticks.length = unit(0.75, "cm"),
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
     panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 4),
+    axis.line = element_line(colour = "black", linewidth = 1),
     legend.position = "none",
-    plot.margin = margin(2.5,2.5 , 2.5, 2.5, "cm"),
+    plot.margin = margin(1,1, 1, 1, "cm"),
   )
 
 ggsave(paste0(outputdir,"/DSP_meno_diff_SI.tiff"))
+
+```
+
+## Group hormone comparisons
+
+```{r, creating empty dataframe to keep pvalues in}
+
+hormone_comparison <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c("hormone","statistic","p.value","method","alternative"))
+
+
+```
+
+
+## Estradiol between pre and peri_post
+
+Significantly different P < 0.001
+```{r}
+est_wilx_test <- wilcox.test(Mid_dsp_pre_df$estradiol_spatial_pg_ml, Mid_dsp_peripost_df$estradiol_spatial_pg_ml) %>% broom::tidy() %>%  mutate(hormone = "Estradiol") %>% dplyr::select("hormone",everything())
+
+hormone_comparison <- rbind(hormone_comparison, est_wilx_test)
+
+Mid_dsp_pre_df %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+Mid_dsp_peripost_df %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+```
+
+```{r, estradiol comparison boxplot, out.width="120%"}
+# Extract 9 x 6 portrait
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")), y = estradiol_spatial_pg_ml, fill= repo_status)) +
+  geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
+  geom_point(shape=16) +
+  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+   xlab("Repo Status")+
+   ylab("Estradiol") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 3, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+
+ggsave(paste0(outputdir,"/DSP_Est_boxplot.tiff"))
+
+```
+
+
+SCatter plot
+```{r, "Estradiol VS DSP scatter plot",out.width="120%" }
+
+# Using 
+#PDF 9 X 6
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_si_true_pct, color=repo_status)) +
+  geom_point(aes(color = factor(repo_status)), size=3) +
+  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE)+
+  xlab("Estradiol (pg/mL)")+
+  ylab("Solution Index (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+ggsave(paste0(outputdir,"/DSP_Est_scatterplot.tiff"))
 
 ```
