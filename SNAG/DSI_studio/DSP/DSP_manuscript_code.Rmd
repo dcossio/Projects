@@ -370,6 +370,7 @@ shapiro.test(yng_DSP_scan_df$dsp_si_true_pct)
 Since one is not normal, I will use wilconox test
 Young adults do not take more shortcuts than midlife adults, although we see it with shuyings data 
 
+
 ```{r}
 wilcox.test(midlife_DSP_df$dsp_si_true_pct, yng_DSP_scan_df$dsp_si_true_pct)
 ```
@@ -545,10 +546,139 @@ ggsave(paste0(outputdir,"/DSP_sexDiff.tiff"))
 
 ```
 
+## Midlife X Young X sex and age interaction
+
+### Solution Index
+
+Here we are using the "all_SI_df" variable which as mid and young adults 
+
+**ANOVA**
+
+No main effect of age or sex but an interaction
+Relationship between SI and age is dependent on sex 0.0144
+```{r, Check group compairsions between DSP}
+DSP_SI_ANOVA <- aov(dsp_si_true_pct ~ age_scan_years * sex, data = all_SI_df)
+#There is a marginal effect of REPO on performance 
+
+summary(DSP_SI_ANOVA)
+
+```
+
+```{r  out.width="120%"}
+
+dev.size()
+
+all_SI_df %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = dsp_si_true_pct,
+  fill = interaction(age_group,sex),
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                    color = "black") +
+  geom_jitter(width = 0.3, size = 2) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c(Young.Male ="#2d2d2d", Young.Female ="#3e262d", Midlife.Female = "#7d4c5a", Midlife.Male = "#6c6c6e")) + 
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("Solution Index") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+ggsave(paste0(outputdir,"/DSP_SI_age_sex_boxplot.tiff"))
+
+# see code below to add a significance label
+ #ggsignif::geom_signif(annotations ="*", y_position = c(1), xmin = c(2), xmax =c(3)) +
+```
+
+### Success
+effect of age <0.0001
+effect of sex = 0.0121
+
+no interaction
+```{r, Check group compairsions between DSP}
+DSP_success_ANOVA <- aov(dsp_success_pct ~ age_scan_years * sex, data = all_SI_df)
+#There is a marginal effect of REPO on performance 
+
+summary(DSP_success_ANOVA)
+
+```
+
+```{r  out.width="120%"}
+
+dev.size()
+
+all_SI_df %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = dsp_success_pct,
+  fill = interaction(age_group,sex),
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                    color = "black") +
+  geom_jitter(width = 0.3, size = 2) +
+  ggsignif::geom_signif(annotations ="*", y_position = c(1.1), xmin = c(0.7), xmax =c(2.25)) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c(Young.Male ="#2d2d2d", Young.Female ="#3e262d", Midlife.Female = "#7d4c5a", Midlife.Male = "#6c6c6e")) + 
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("Solution Index") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+ggsave(paste0(outputdir,"/DSP_success_age_s_boxplot.tiff"))
+
+# see code below to add a significance label
+ #+
+```
+
 
 ## Midlife pre vs peri_post
 
-These are significantly different 
+### SI
+These are significantly different  0.037
 ```{r}
 wilcox.test(Mid_dsp_pre_df$dsp_si_true_pct, Mid_dsp_peripost_df$dsp_si_true_pct)
 ```
@@ -603,6 +733,60 @@ ggsave(paste0(outputdir,"/DSP_meno_diff_SI.tiff"))
 
 ```
 
+### Success
+
+not significantly different 0.3645
+```{r}
+wilcox.test(Mid_dsp_pre_df$dsp_success_pct, Mid_dsp_peripost_df$dsp_success_pct)
+```
+
+
+```{r out.width="120%"}
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(
+  x = factor(repo_status, levels = c("Pre", "Peri_Post")),
+  y = dsp_success_pct,
+  fill = repo_status
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE) +
+  geom_jitter(width = 0.3, size = 2) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("REPO status") +
+  ylab("Success (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+
+ggsave(paste0(outputdir,"/DSP_meno_diff_success.tiff"))
+
+```
+
 ## Group hormone comparisons
 
 ```{r, creating empty dataframe to keep pvalues in}
@@ -613,7 +797,9 @@ hormone_comparison <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c
 ```
 
 
-## Estradiol between pre and peri_post
+## Estradiol 
+
+### Comparing pre and peri post hormone levels between pre and peri_post
 
 Significantly different P < 0.001
 ```{r}
@@ -668,6 +854,30 @@ ggsave(paste0(outputdir,"/DSP_Est_boxplot.tiff"))
 
 ```
 
+### Estradiol and SI 
+**Partial correlations**
+**One-tailed correlation controlling for AGE using all females**
+
+Here we want to control for age. ]
+Originally shuying did one tailed but we decided to go with two tailed.
+**Estradiol is significantly associated with SI when controlling for age (n=45, r(43)=0.37, p=0.014).** 
+```{r, warning=FALSE,"2 tailed Est and SI correlation controlling age us"}
+
+pcor.test(Mid_dsp_fem_df$estradiol_spatial_pg_ml,
+          Mid_dsp_fem_df$dsp_si_true_pct,
+          Mid_dsp_fem_df$age_spatial_years, 
+          method = "spearman")
+
+```
+
+**Estradiol is significantly associated with SI (n=45, r(43)=0.46, p=0.0016).** 
+```{r, warning=FALSE, "2 tailed Est and SI correlation"}
+cor.test(all_menopause_df$estradiol_spatial_pg_ml,
+          all_menopause_df$dsp_si_true_pct,
+          method = "spearman") 
+
+```
+
 
 SCatter plot
 ```{r, "Estradiol VS DSP scatter plot",out.width="120%" }
@@ -713,6 +923,224 @@ all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_si_true_pct,
   )
   
 
-ggsave(paste0(outputdir,"/DSP_Est_scatterplot.tiff"))
+ggsave(paste0(outputdir,"/DSP_Est_SI_scatterplot.tiff"))
+
+```
+
+### Estradiol and Success 
+**Partial correlations**
+Originally shuying did one tailed but we decided to go with two tailed.
+**Estradiol is significantly associated with SI when controlling for age (n=45, r(43)=0.37, p=0.014).** 
+```{r, warning=FALSE,"2 tailed Est and SI correlation controlling age us"}
+
+pcor.test(Mid_dsp_fem_df$estradiol_spatial_pg_ml,
+          Mid_dsp_fem_df$dsp_success_pct,
+          Mid_dsp_fem_df$age_spatial_years, 
+          method = "spearman")
+
+```
+
+**Estradiol is significantly associated with SI (n=45, r(43)=0.46, p=0.0016).** 
+```{r, warning=FALSE, "2 tailed Est and SI correlation"}
+cor.test(all_menopause_df$estradiol_spatial_pg_ml,
+          all_menopause_df$dsp_success_pct,
+          method = "spearman") 
+
+```
+
+SCatter plot
+```{r, "Estradiol VS DSP success scatter plot",out.width="120%" }
+
+# Using 
+#PDF 9 X 6
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_success_pct, color=repo_status)) +
+  geom_point(aes(color = factor(repo_status)),size=3,alpha = 0.7) +
+  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+   geom_line(stat = "smooth", method = "lm",
+            formula = y ~ x,
+             alpha = 0.7,
+            color = "black",
+            size = 1,
+             se=FALSE) +
+  xlab("Estradiol (pg/mL)")+
+  ylab("Success") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+ggsave(paste0(outputdir,"/DSP_success_Est_scatterplot.tiff"))
+
+```
+
+### FSH + SI
+
+**Partial correlations**
+**One-tailed correlation controlling for AGE using all females**
+
+Here we want to control for age. ]
+Originally shuying did one tailed but we decided to go with two tailed.
+**FSH is not significantly associated with SI when controlling for age (n=45, r(43)=-0.16, p=0.29).** 
+```{r, warning=FALSE,"2 tailed FSH and SI correlation controlling age us"}
+
+pcor.test(Mid_dsp_fem_df$fsh_spatial_miu_ml,
+          Mid_dsp_fem_df$dsp_si_true_pct,
+          Mid_dsp_fem_df$age_spatial_years, 
+          method = "spearman")
+
+```
+
+**FSH is significantly associated with SI (n=45, r(43)=-0.32, p=0.03).** 
+```{r, warning=FALSE, "2 tailed FSH and SI correlation"}
+cor.test(all_menopause_df$fsh_spatial_miu_ml,
+          all_menopause_df$dsp_si_true_pct,
+          method = "spearman") 
+
+```
+
+
+SCatter plot
+```{r, "FSH VS DSP scatter plot",out.width="120%" }
+
+# Using 
+#PDF 9 X 6
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(x = fsh_spatial_miu_ml,y = dsp_si_true_pct, color=repo_status)) +
+  geom_point(aes(color = factor(repo_status)), size=3) +
+  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE)+
+  xlab("FSH (pg/mL)")+
+  ylab("Solution Index (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+ggsave(paste0(outputdir,"/DSP_FSH_SI_scatterplot.tiff"))
+
+```
+### FSH + Success
+
+**Partial correlations**
+**One-tailed correlation controlling for AGE using all females**
+
+Here we want to control for age. ]
+Originally shuying did one tailed but we decided to go with two tailed.
+**FSH is not significantly associated with SI when controlling for age (n=45, r(43)=0.002, p=0.99).** 
+```{r, warning=FALSE,"2 tailed FSH and success correlation controlling age us"}
+
+pcor.test(Mid_dsp_fem_df$fsh_spatial_miu_ml,
+          Mid_dsp_fem_df$dsp_success_pct,
+          Mid_dsp_fem_df$age_spatial_years, 
+          method = "spearman")
+
+```
+
+**FSH is significantly associated with success (n=45, r(43)=-0.07, p=0.66).** 
+```{r, warning=FALSE, "2 tailed FSH and success correlation"}
+cor.test(all_menopause_df$fsh_spatial_miu_ml,
+          all_menopause_df$dsp_success_pct,
+          method = "spearman") 
+
+```
+
+
+SCatter plot
+```{r, "FSH VS DSP success scatter plot",out.width="120%" }
+
+# Using 
+#PDF 9 X 6
+
+dev.size()
+
+all_menopause_df %>% ggplot(aes(x = fsh_spatial_miu_ml,y = dsp_success_pct, color=repo_status)) +
+  geom_point(aes(color = factor(repo_status)),size=3,alpha = 0.7) +
+  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+   geom_line(stat = "smooth", method = "lm",
+            formula = y ~ x,
+             alpha = 0.7,
+            color = "black",
+            size = 1,
+             se=FALSE)+
+  xlab("FSH (pg/mL)")+
+  ylab("Success (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+ggsave(paste0(outputdir,"/DSP_FSH_success_scatterplot.tiff"))
 
 ```
