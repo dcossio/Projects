@@ -617,7 +617,7 @@ effect of age <0.0001
 effect of sex = 0.0121
 
 no interaction
-```{r, Check group compairsions between DSP}
+```{r, Check group comparisons between Success}
 DSP_success_ANOVA <- aov(dsp_success_pct ~ age_scan_years * sex, data = all_SI_df)
 #There is a marginal effect of REPO on performance 
 
@@ -931,7 +931,7 @@ ggsave(paste0(outputdir,"/DSP_Est_SI_scatterplot.tiff"))
 **Partial correlations**
 Originally shuying did one tailed but we decided to go with two tailed.
 **Estradiol is significantly associated with SI when controlling for age (n=45, r(43)=0.37, p=0.014).** 
-```{r, warning=FALSE,"2 tailed Est and SI correlation controlling age us"}
+```{r, warning=FALSE,"2 tailed Est and success correlation controlling age us"}
 
 pcor.test(Mid_dsp_fem_df$estradiol_spatial_pg_ml,
           Mid_dsp_fem_df$dsp_success_pct,
@@ -941,7 +941,7 @@ pcor.test(Mid_dsp_fem_df$estradiol_spatial_pg_ml,
 ```
 
 **Estradiol is significantly associated with SI (n=45, r(43)=0.46, p=0.0016).** 
-```{r, warning=FALSE, "2 tailed Est and SI correlation"}
+```{r, warning=FALSE, "2 tailed Est and Success correlation"}
 cor.test(all_menopause_df$estradiol_spatial_pg_ml,
           all_menopause_df$dsp_success_pct,
           method = "spearman") 
