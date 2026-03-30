@@ -233,7 +233,7 @@ Subjects I excluded
 
 These were excluded later from hippocampal analyses so i just excluded their behavior here as well. Adding these in gives me 77 which is still not the correct number of subjects. I'm not sure which one is the extra. For now I'll add them back in but it shouldn't affect much. 
 
-# Results {.tabset .tabset-pills} 
+# Results 
 
 Reading in and prepping our data 
 
@@ -267,73 +267,83 @@ yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")
 
 ```
 
-# Young Adult Summary Stats
+## Young Adult Summary Stats
 
-Total number of young adults with DSP 
-Mean = 0.27
-SD = 0.15
+**Total number of young adults with DSP** 
+
+  - N = 27  
+  - Mean = 0.27  
+  - SD = 0.15  
 ```{r, sumamry stats for young adults with DSP}
-yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
 
-Total number of young adults with DSP+good scan
-Mean = 0.26
-SD = 0.16
+**Total number of young adults with DSP+good scan**  
+
+  - N = 25  
+  - Mean = 0.26  
+  - SD = 0.16  
 
 ```{r, sumamry stats for young adults with DSP + good scan}
-yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
+
 <br>
+<br>
+<hr>
 
 
-# Midlife Adults Summary Stats
 
-Total number of midlife adults
-n = 68
-Mean = 0.23
-SD = 0.17
+## Midlife Adults Summary Stats
+
+**Total number of midlife adults**  
+  
+  - n = 68
+  - Mean = 0.23
+  - SD = 0.17
 ```{r, sum stats for midlife adults}
-midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
 
-Midlife stats grouped by sex  
+**Midlife stats grouped by sex**  
 
-men
-  n = 23
-  mean = 0.19
-  SD = 0.15]
+* Men    
+  - n = 23  
+  - mean = 0.19  
+  - SD = 0.15  
   
 <br>
   
-women
-  n = 45
-  mean = 0.25
-  SD = 0.18
+* women  
+  - n = 45  
+  - mean = 0.25  
+  - SD = 0.18 
+  
 ```{r, sum stats for midlife adults split by sex}
-group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
+<br>
 
+**Midlife stats grouped by REPO**
 
-Midlife stats grouped by REPO 
-
-Pre 
-  n = 18
-  mean = 0.31
-  SD = 0.17
+* Pre   
+  - n = 18  
+  - mean = 0.31  
+  - SD = 0.17  
   
-Peri Post
-  n = 27
-  mean = 0.22
-  SD = 0.18
+* Peri Post    
+  - n = 27    
+  - mean = 0.22    
+  - SD = 0.18    
   
 ```{r, sum stats for midlife adults split by repo status}
-group_by(midlife_DSP_df, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))
+group_by(midlife_DSP_df, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 ```{r}
@@ -350,30 +360,38 @@ Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filte
 
 ```
 
-# Group comparisons {.tabset .tabset-pills} 
+<br>
+<br>
+<hr>
 
-## Midlife vs Young
+## Group comparisons {.tabset .tabset-pills} 
 
+### Midlife vs Young
+
+#### Solution Index
 **Check normality of group**
-Not normal
+
+Midlife solution index is not normally distributed p < 0.001
 ```{r}
-shapiro.test(midlife_DSP_df$dsp_si_true_pct)
+shapiro.test(midlife_DSP_df$dsp_si_true_pct) 
 ```
 <br>
-is normal
+
+young solution index is not normally distributed p < 0.001
 ```{r}
 shapiro.test(yng_DSP_scan_df$dsp_si_true_pct)
 ```
 
 <br>
 
-Since one is not normal, I will use wilconox test
-Young adults do not take more shortcuts than midlife adults, although we see it with shuyings data 
+Since one is not normal, I will use wilconox test  
 
+Young adults do not take more shortcuts than midlife adults, although we see it with shuyings data W = 749.5 p-value = 0.3857
 
 ```{r}
 wilcox.test(midlife_DSP_df$dsp_si_true_pct, yng_DSP_scan_df$dsp_si_true_pct)
 ```
+<br>
 
 **Creating Graph**
 
@@ -430,19 +448,18 @@ ggsave(paste0(outputdir,"/DSP_age_diff_si.tiff"))
 
 ```
 
-
-
-
 <br>
 <hr>
 
-**DSP success**
+#### **Success**  
 
-
+Young adults are significacnlty better at wayfinding than midlife adults  
+W = 223, p-value = 4.806e-08
 ```{r}
 wilcox.test(midlife_DSP_df$dsp_success_pct, yng_DSP_scan_df$dsp_success_pct)
 ```
 
+<br>
 
 ```{r  out.width="120%"}
 
@@ -490,15 +507,18 @@ ggsave(paste0(outputdir,"/DSP_age_diff_success.tiff"))
 ```
 
 
+<br>
+<hr>
 
-
-## Midlife men vs women
+### Midlife men vs women
 
 Not sig different here either'
 W = 653.5, p-value = 0.07849
 ```{r}
 wilcox.test(Mid_dsp_fem_df$dsp_si_true_pct, Mid_dsp_male_df$dsp_si_true_pct)
 ```
+
+<br>
 
 ```{r out.width="120%"}
 
@@ -546,9 +566,9 @@ ggsave(paste0(outputdir,"/DSP_sexDiff.tiff"))
 
 ```
 
-## Midlife X Young X sex and age interaction
+### Midlife X Young X sex and age interaction
 
-### Solution Index
+#### Solution Index
 
 Here we are using the "all_SI_df" variable which as mid and young adults 
 
@@ -612,7 +632,12 @@ ggsave(paste0(outputdir,"/DSP_SI_age_sex_boxplot.tiff"))
  #ggsignif::geom_signif(annotations ="*", y_position = c(1), xmin = c(2), xmax =c(3)) +
 ```
 
-### Success
+<br>
+<br>
+<hr>
+
+
+#### Success
 effect of age <0.0001
 effect of sex = 0.0121
 
@@ -675,10 +700,10 @@ ggsave(paste0(outputdir,"/DSP_success_age_s_boxplot.tiff"))
 ```
 
 
-## Midlife pre vs peri_post
+### Midlife pre vs peri_post
 
-### SI
-These are significantly different  0.037
+#### SI
+These are slighlty significantly different  0.037
 ```{r}
 wilcox.test(Mid_dsp_pre_df$dsp_si_true_pct, Mid_dsp_peripost_df$dsp_si_true_pct)
 ```
@@ -733,7 +758,11 @@ ggsave(paste0(outputdir,"/DSP_meno_diff_SI.tiff"))
 
 ```
 
-### Success
+<br>
+<br>
+<hr>
+
+#### Success
 
 not significantly different 0.3645
 ```{r}
@@ -787,7 +816,7 @@ ggsave(paste0(outputdir,"/DSP_meno_diff_success.tiff"))
 
 ```
 
-## Group hormone comparisons
+### Group hormone comparisons
 
 ```{r, creating empty dataframe to keep pvalues in}
 
@@ -797,9 +826,9 @@ hormone_comparison <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c
 ```
 
 
-## Estradiol 
+#### Estradiol 
 
-### Comparing pre and peri post hormone levels between pre and peri_post
+##### Comparing pre and peri post hormone levels between pre and peri_post
 
 Significantly different P < 0.001
 ```{r}
@@ -854,7 +883,7 @@ ggsave(paste0(outputdir,"/DSP_Est_boxplot.tiff"))
 
 ```
 
-### Estradiol and SI 
+##### Estradiol and SI 
 **Partial correlations**
 **One-tailed correlation controlling for AGE using all females**
 
@@ -927,7 +956,7 @@ ggsave(paste0(outputdir,"/DSP_Est_SI_scatterplot.tiff"))
 
 ```
 
-### Estradiol and Success 
+##### Estradiol and Success 
 **Partial correlations**
 Originally shuying did one tailed but we decided to go with two tailed.
 **Estradiol is significantly associated with SI when controlling for age (n=45, r(43)=0.37, p=0.014).** 
@@ -997,7 +1026,7 @@ ggsave(paste0(outputdir,"/DSP_success_Est_scatterplot.tiff"))
 
 ```
 
-### FSH + SI
+#### FSH + SI
 
 **Partial correlations**
 **One-tailed correlation controlling for AGE using all females**
