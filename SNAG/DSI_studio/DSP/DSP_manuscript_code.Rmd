@@ -5,8 +5,9 @@ output:
    html_document: 
      toc: yes
      toc_float: yes
+     code_folding: hide
 editor_options: 
-  chunk_output_type: inline
+chunk_output_type: inline
 ---
 
 <!-- Reading in my libraries -->
@@ -71,6 +72,11 @@ h1.title {
   text-align: center;
 }
 
+h1, h2 {
+  text-align: center;
+  font-family: Arial;
+}
+
 h4.date {
   color: black ;
   font-family: Arial;
@@ -86,10 +92,10 @@ h4.author {
 }
 
 
-h1,h2, h3, h4, h5 ,h6 {
+h3{
   text-align: center;
   font-family: Arial;
-  
+   background-color: #99d7e8 ;
 }
 
 body, p, h2{
@@ -112,6 +118,39 @@ hr {
 
 This is the complete analysis of the DSP task using white matter and bevaior and hormones. 
 
+Reading in and prepping our data 
+
+<!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
+```{r reading in our CSVs, results='hide',message=FALSE}
+##### Mac Desktop path
+working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
+
+# Moving to save all figrues and output into a different folder bc it's too big for github
+
+outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+
+# path to the subject sheets 
+midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
+
+yng_DSP_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv"))
+
+yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")) %>%  filter(Subject_ID != 84) %>% filter(Subject_ID != 80)
+
+
+###### Laptop path
+
+# 
+# working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+# 
+# behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
+# 
+# 
+# DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
+
+
+```
+
+
 <br><br><br>
 
 <hr>
@@ -126,15 +165,27 @@ This is the complete analysis of the DSP task using white matter and bevaior and
   * Excluded subs 329 and 372 from analyses due to bad behavior data and Subject 347 and 424 failed quality 
   control check in DSI
   
-    * All subjects = 69 <br>
+    * All subjects = 68 <br>
     * Men = 24 <br>
     * Women = 45 <br>
     * Pre = 18 <br>
     * Peri = 14 <br>
-    * Post = 13 <br>
+    * Post = 13 <br>  
+    
+```{r, midlife adult demographics summary stats}
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean age", "Age SD","Min age", "Max age")) %>%  kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+    
 
+<br>
+```{r, midlife by sex demographics summary stats}
+midlife_DSP_df %>% group_by(sex) %>%  dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE)) %>% `colnames<-`(c("sex","N", "Mean age", "Age SD","Min age", "Max age")) %>%  kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+    
 <br><br>
 
+    
+  
 ### Young 
   * total subject with DSP = 27
   * Total scans used in analysis= 25  
@@ -143,7 +194,20 @@ This is the complete analysis of the DSP task using white matter and bevaior and
     * All subjects = 27 <br>
     * Men =  <br>
     * Women =  <br>
- 
+    
+    
+```{r, young adult behavior only demographics summary stats}
+yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE))  %>% `colnames<-`(c("N", "Mean age", "Age SD","Min age", "Max age")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
+    
+<br>
+<br>
+
+```{r, young adult scan + behavior by sex demographics summary stats}
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean age", "Age SD","Min age", "Max age")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
     
     
 <hr> 
@@ -235,47 +299,16 @@ These were excluded later from hippocampal analyses so i just excluded their beh
 
 # Results 
 
-Reading in and prepping our data 
-
-<!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
-```{r reading in our CSVs, results='hide',message=FALSE}
-##### Mac Desktop path
-working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
-
-# Moving to save all figrues and output into a different folder bc it's too big for github
-
-outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-
-# path to the subject sheets 
-midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
-
-yng_DSP_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv"))
-
-yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")) %>%  filter(Subject_ID != 84) %>% filter(Subject_ID != 80)
-
-
-###### Laptop path
-
-# 
-# working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-# 
-# behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
-# 
-# 
-# DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
-
-
-```
 
 ## Young Adult Summary Stats
 
 **Total number of young adults with DSP** 
 
   - N = 27  
-  - Mean = 0.27  
-  - SD = 0.15  
+  - Mean SI = 0.27  
+  - SD SI = 0.15  
 ```{r, sumamry stats for young adults with DSP}
-yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI"))%>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
@@ -287,7 +320,7 @@ yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm 
   - SD = 0.16  
 
 ```{r, sumamry stats for young adults with DSP + good scan}
-yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))%>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 
@@ -299,36 +332,47 @@ yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, n
 
 ## Midlife Adults Summary Stats
 
+
 **Total number of midlife adults**  
   
   - n = 68
   - Mean = 0.23
   - SD = 0.17
 ```{r, sum stats for midlife adults}
-midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
 
+
 **Midlife stats grouped by sex**  
 
+:::: {style="display: flex;"}
+::: {}
 * Men    
   - n = 23  
   - mean = 0.19  
   - SD = 0.15  
   
+::: 
 <br>
   
+::: {}
+
 * women  
   - n = 45  
   - mean = 0.25  
   - SD = 0.18 
-  
+::: 
+
+::::
+
 ```{r, sum stats for midlife adults split by sex}
-group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("sex", "N", "Mean SI", "SI SD","Min SI", "Max SI"))%>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
+
 
 **Midlife stats grouped by REPO**
 
@@ -343,7 +387,7 @@ group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_
   - SD = 0.18    
   
 ```{r, sum stats for midlife adults split by repo status}
-group_by(midlife_DSP_df, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+group_by(midlife_DSP_df, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("REPO", "N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 ```{r}
@@ -359,6 +403,7 @@ Mid_dsp_pre_df <- midlife_DSP_df %>% filter(repo_status == "Pre")
 Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filter(repo_status != "Men")
 
 ```
+
 
 <br>
 <br>
