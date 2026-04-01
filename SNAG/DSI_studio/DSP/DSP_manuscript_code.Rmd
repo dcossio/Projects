@@ -22,7 +22,10 @@ library(ppcor)
 library(mediation)
 library(knitr)
 library(janitor)
-#library(car)
+library(car)
+library(sjstats)
+library(rstatix)
+library(effsize)
 #library(ggiraph)
 #library(ggiraphExtra)
 library(moonBook)
@@ -620,14 +623,45 @@ Here we are using the "all_SI_df" variable which as mid and young adults
 **ANOVA**
 
 No main effect of age or sex but an interaction
-Relationship between SI and age is dependent on sex 0.0144
+Relationship between SI and age is dependent on sex 0.00724
 ```{r, Check group compairsions between DSP}
-DSP_SI_ANOVA <- aov(dsp_si_true_pct ~ age_scan_years * sex, data = all_SI_df)
+DSP_SI_ANOVA <- aov(dsp_si_true_pct ~ age_group * sex, data = all_SI_df)
 #There is a marginal effect of REPO on performance 
 
 summary(DSP_SI_ANOVA)
 
 ```
+
+```{r}
+Anova(DSP_SI_ANOVA, type="III")
+```
+
+```{r}
+aov_DSP_SI <- Anova(DSP_SI_ANOVA, type="III")
+anova_stats(aov_DSP_SI)
+```
+
+```{r}
+all_SI_df %>%
+  group_by(age_group) %>%
+  anova_test(dsp_si_true_pct ~ sex, 
+             type = "III",
+             effect.size = "pes") %>%
+  get_anova_table() %>%
+  adjust_pvalue(method = "bonferroni")
+```
+
+```{r}
+# Effect of treatment at each level of Sex
+all_SI_df %>%
+  group_by(sex) %>%
+  anova_test(dsp_si_true_pct ~ age_group,
+             type = "III",
+             effect.size = "pes") %>%
+  get_anova_table() %>%
+  adjust_pvalue(method = "bonferroni")
+```
+
 
 ```{r  out.width="120%"}
 
@@ -688,7 +722,7 @@ effect of sex = 0.0121
 
 no interaction
 ```{r, Check group comparisons between Success}
-DSP_success_ANOVA <- aov(dsp_success_pct ~ age_scan_years * sex, data = all_SI_df)
+DSP_success_ANOVA <- aov(dsp_success_pct ~ age_group * sex, data = all_SI_df)
 #There is a marginal effect of REPO on performance 
 
 summary(DSP_success_ANOVA)
