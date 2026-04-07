@@ -126,11 +126,17 @@ Reading in and prepping our data
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
 ##### Mac Desktop path
-working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
+#working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
 
 # Moving to save all figrues and output into a different folder bc it's too big for github
 
-outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+#outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+
+###### Laptop path
+
+working_dir <- "/Users/danielacossio/Desktop/Projects/SNAG/DSI_studio/DSP"
+
+outputdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
 # path to the subject sheets 
 midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
@@ -140,16 +146,9 @@ yng_DSP_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv"))
 yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")) %>%  filter(Subject_ID != 84) %>% filter(Subject_ID != 80)
 
 
-###### Laptop path
+
 
 # 
-# working_dir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
-# 
-# behavior_sub_info <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/SNAG_Behavior.csv")
-# 
-# 
-# DSP_DSI_DF <- read.csv("/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/sub_info_sheets/DSPDSI.csv") %>%  filter(!is.na(subject_id)) %>%  filter(subject_id != 352)
-
 
 ```
 
@@ -496,6 +495,54 @@ ggsave(paste0(outputdir,"/DSP_age_diff_si.tiff"))
 
 ```
 
+<!-- ```{r, } -->
+<!-- # Use this for exporting tiff for illustrator  -->
+
+<!-- tiff(paste0(outputdir,"/DSP_age_diff_si_20x15.tiff"), units="in", width=20, height=15, res=300) -->
+
+<!-- all_SI_df %>% ggplot(aes( -->
+<!--   x = factor(age_group, levels = c("Young", "Midlife")), -->
+<!--   y = dsp_si_true_pct, -->
+<!--   fill = age_group -->
+<!-- )) + geom_boxplot(width = 1, -->
+<!--                   fatten = 1, -->
+<!--                   outliers = FALSE, -->
+<!--                   linewidth = 2, -->
+<!--                   color="black") + -->
+<!--   geom_jitter(width = 0.3, size = 8) + -->
+<!--   #geom_point(size=2) + -->
+<!--   scale_fill_manual(values = c("#4e363e", "#2f3c31")) + -->
+<!--   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) + -->
+<!--   xlab("Age Group") + -->
+<!--   ylab("Solution Index (%)")  + -->
+<!--   theme( -->
+<!--     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"), -->
+<!--     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"), -->
+<!--     axis.text.x = element_text( -->
+<!--       size = 45, -->
+<!--       color = "black", -->
+<!--       vjust = -2, -->
+<!--       face = "bold" -->
+<!--     ), -->
+<!--     axis.text.y = element_text( -->
+<!--       size = 45, -->
+<!--       color = "black", -->
+<!--       hjust = 2, -->
+<!--       face = "bold" -->
+<!--     ), -->
+<!--     axis.ticks = element_line(color = "black", -->
+<!--                                 linewidth =2 ), -->
+<!--     axis.ticks.length = unit(0.75, "cm"), -->
+<!--     panel.background = element_blank(), -->
+<!--     axis.line = element_line(colour = "black", linewidth = 3), -->
+<!--     legend.position = "none", -->
+<!--     plot.margin = margin(2,2, 2, 2, "cm"), -->
+<!--   ) -->
+<!-- dev.off() -->
+
+<!-- ``` -->
+
+
 <br>
 <hr>
 
@@ -522,10 +569,10 @@ all_SI_df %>% ggplot(aes(
                   outliers = FALSE) +
   geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
-  ylab("DSP Success") +
+  ylab("Wayfinding Success (%)") +
   theme(
     axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
@@ -554,6 +601,52 @@ ggsave(paste0(outputdir,"/DSP_age_diff_success.tiff"))
 
 ```
 
+```{r, }
+# Use this for exporting tiff for illustrator 
+
+tiff(paste0(outputdir,"/DSP_age_diff_success_20_15.tiff"), units="in", width=20, height=15, res=300)
+
+all_SI_df %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = dsp_success_pct,
+  fill = age_group
+)) + geom_boxplot(width = 1,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_jitter(width = 0.3, size = 8) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("Wayfinding Success (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
 
 <br>
 <hr>
