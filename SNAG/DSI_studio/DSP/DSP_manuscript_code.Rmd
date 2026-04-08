@@ -75,7 +75,7 @@ h1.title {
   text-align: center;
 }
 
-h1, h2 {
+h1, h2,h5 {
   text-align: center;
   font-family: Arial;
 }
@@ -126,17 +126,17 @@ Reading in and prepping our data
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
 ##### Mac Desktop path
-#working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
+working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
 
 # Moving to save all figrues and output into a different folder bc it's too big for github
 
-#outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
 ###### Laptop path
 
-working_dir <- "/Users/danielacossio/Desktop/Projects/SNAG/DSI_studio/DSP"
-
-outputdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+# working_dir <- "/Users/danielacossio/Desktop/Projects/SNAG/DSI_studio/DSP"
+# 
+# outputdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
 # path to the subject sheets 
 midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
@@ -144,14 +144,22 @@ midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
 yng_DSP_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv"))
 
 yng_DSP_scan_df <-  read.csv(paste0(working_dir,"/DSP_yng_participant_info.csv")) %>%  filter(Subject_ID != 84) %>% filter(Subject_ID != 80)
-
-
-
-
-# 
-
 ```
 
+
+```{r}
+# combining peri and post into one group
+midlife_DSP_df$repo_status[midlife_DSP_df$repo_status =="Peri"]<-c("Peri_Post")
+midlife_DSP_df$repo_status[midlife_DSP_df$repo_status =="Post"]<-c("Peri_Post")
+
+
+#Creating group DF
+Mid_dsp_fem_df <- midlife_DSP_df %>% filter(sex == "Female")
+Mid_dsp_male_df <- midlife_DSP_df %>% filter(sex == "Male")
+Mid_dsp_pre_df <- midlife_DSP_df %>% filter(repo_status == "Pre")
+Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filter(repo_status != "Men")
+
+```
 
 <br><br><br>
 
@@ -210,8 +218,7 @@ yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.r
 yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(age_spatial_years, na.rm = TRUE), sd = sd(age_spatial_years, na.rm = TRUE), min(age_spatial_years, na.rm = TRUE), max(age_spatial_years, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean age", "Age SD","Min age", "Max age")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
-    
-    
+ 
 <hr> 
 
 
@@ -322,12 +329,18 @@ yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm 
   - SD = 0.16  
 
 ```{r, sumamry stats for young adults with DSP + good scan}
-yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE))%>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 
 <br>
 <br>
+
+```{r, success stats for young adults with DSP + good scan}
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_success_pct, na.rm = TRUE), sd = sd(dsp_success_pct, na.rm = TRUE), min(dsp_success_pct, na.rm = TRUE), max(dsp_success_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean acc", "acc SD","Min acc", "Max acc")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
+
 <hr>
 
 
@@ -346,6 +359,11 @@ midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na
 
 <br>
 
+```{r, success sum stats for midlife adults}
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_success_pct, na.rm = TRUE), sd = sd(dsp_success_pct, na.rm = TRUE), min(dsp_success_pct, na.rm = TRUE), max(dsp_success_pct, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean acc", "acc SD","Min acc", "Max acc")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
+<br>
 
 **Midlife stats grouped by sex**  
 
@@ -392,55 +410,43 @@ group_by(midlife_DSP_df, sex) %>% dplyr::summarise(count = n(), mean = mean(dsp_
 group_by(midlife_DSP_df, repo_status) %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("REPO", "N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
-```{r}
-# combining peri and post into one group
-midlife_DSP_df$repo_status[midlife_DSP_df$repo_status =="Peri"]<-c("Peri_Post")
-midlife_DSP_df$repo_status[midlife_DSP_df$repo_status =="Post"]<-c("Peri_Post")
-
-
-#Creating group DF
-Mid_dsp_fem_df <- midlife_DSP_df %>% filter(sex == "Female")
-Mid_dsp_male_df <- midlife_DSP_df %>% filter(sex == "Male")
-Mid_dsp_pre_df <- midlife_DSP_df %>% filter(repo_status == "Pre")
-Mid_dsp_peripost_df <- midlife_DSP_df %>% filter(repo_status != "Pre") %>% filter(repo_status != "Men")
-
-```
 
 
 <br>
 <br>
 <hr>
 
-## Group comparisons {.tabset .tabset-pills} 
+******
 
-### Midlife vs Young
+## Midlife vs Young
 
-#### Solution Index
-**Check normality of group**
+### Solution Index
 
-Midlife solution index is not normally distributed p < 0.001
+<p style="font-size:16pt">**Check normality of group**</p>
+
+  Midlife solution index is not normally distributed p < 0.001
 ```{r}
 shapiro.test(midlife_DSP_df$dsp_si_true_pct) 
 ```
 <br>
 
-young solution index is not normally distributed p < 0.001
+  Young solution index is not normally distributed p < 0.001
 ```{r}
 shapiro.test(yng_DSP_scan_df$dsp_si_true_pct)
 ```
 
 <br>
 
-Since one is not normal, I will use wilconox test  
-
-Young adults do not take more shortcuts than midlife adults, although we see it with shuyings data W = 749.5 p-value = 0.3857
+  Since one is not normal, I will use wilconox test.Young adults do not take      more shortcuts than midlife adults, although we see it with shuyings data W =    749.5 p-value = 0.3857
 
 ```{r}
-wilcox.test(midlife_DSP_df$dsp_si_true_pct, yng_DSP_scan_df$dsp_si_true_pct)
+wilcox.test(midlife_DSP_df$dsp_si_true_pct, yng_DSP_scan_df$dsp_si_true_pct, paired=FALSE)
 ```
 <br>
 
-**Creating Graph**
+<p style="font-size:14pt">**Creating Graph**</p>
+
+<p style="font-size:12pt">Box plot comparing solution index scores for young and midlife adults. The show button will show code for the dataframe I used to make the </p>
 
 ```{r, Creating a simple DF with young and midlife}
 
@@ -452,7 +458,12 @@ all_SI_df <- rbind(all_SI_df,temp_yng_df)
 
 ```
 
-```{r, out.width="120%"}
+```{r,out.width="120%", warning=FALSE, ,message=FALSE}
+all_SI_df %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
+
+```{r, out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 dev.size()
 all_SI_df %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
@@ -463,7 +474,7 @@ all_SI_df %>% ggplot(aes(
                   outliers = FALSE) +
   geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Solution Index (%)") +
@@ -495,68 +506,66 @@ ggsave(paste0(outputdir,"/DSP_age_diff_si.tiff"))
 
 ```
 
-<!-- ```{r, } -->
-<!-- # Use this for exporting tiff for illustrator  -->
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+# Use this for exporting tiff for illustrator
 
-<!-- tiff(paste0(outputdir,"/DSP_age_diff_si_20x15.tiff"), units="in", width=20, height=15, res=300) -->
+tiff(paste0(outputdir,"/DSP_age_diff_si_20x15.tiff"), units="in", width=20, height=15, res=300)
 
-<!-- all_SI_df %>% ggplot(aes( -->
-<!--   x = factor(age_group, levels = c("Young", "Midlife")), -->
-<!--   y = dsp_si_true_pct, -->
-<!--   fill = age_group -->
-<!-- )) + geom_boxplot(width = 1, -->
-<!--                   fatten = 1, -->
-<!--                   outliers = FALSE, -->
-<!--                   linewidth = 2, -->
-<!--                   color="black") + -->
-<!--   geom_jitter(width = 0.3, size = 8) + -->
-<!--   #geom_point(size=2) + -->
-<!--   scale_fill_manual(values = c("#4e363e", "#2f3c31")) + -->
-<!--   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) + -->
-<!--   xlab("Age Group") + -->
-<!--   ylab("Solution Index (%)")  + -->
-<!--   theme( -->
-<!--     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"), -->
-<!--     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"), -->
-<!--     axis.text.x = element_text( -->
-<!--       size = 45, -->
-<!--       color = "black", -->
-<!--       vjust = -2, -->
-<!--       face = "bold" -->
-<!--     ), -->
-<!--     axis.text.y = element_text( -->
-<!--       size = 45, -->
-<!--       color = "black", -->
-<!--       hjust = 2, -->
-<!--       face = "bold" -->
-<!--     ), -->
-<!--     axis.ticks = element_line(color = "black", -->
-<!--                                 linewidth =2 ), -->
-<!--     axis.ticks.length = unit(0.75, "cm"), -->
-<!--     panel.background = element_blank(), -->
-<!--     axis.line = element_line(colour = "black", linewidth = 3), -->
-<!--     legend.position = "none", -->
-<!--     plot.margin = margin(2,2, 2, 2, "cm"), -->
-<!--   ) -->
-<!-- dev.off() -->
+all_SI_df %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = dsp_si_true_pct,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_jitter(width = 0.3, size = 8) +
+  #geom_point(size=2) +
+  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("Solution Index (%)")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
 
-<!-- ``` -->
-
-
+```
 <br>
 <hr>
 
-#### **Success**  
+### Success
 
-Young adults are significacnlty better at wayfinding than midlife adults  
-W = 223, p-value = 4.806e-08
+<p style="font-size:12pt">Young adults are significant better at wayfinding than midlife adults W = 223, p-value = 4.806e-08 </p>
+
 ```{r}
-wilcox.test(midlife_DSP_df$dsp_success_pct, yng_DSP_scan_df$dsp_success_pct)
+wilcox.test(midlife_DSP_df$dsp_success_pct, yng_DSP_scan_df$dsp_success_pct, paired=FALSE)
 ```
 
 <br>
 
-```{r  out.width="120%"}
+```{r  out.width="120%",warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 dev.size()
 
@@ -601,7 +610,7 @@ ggsave(paste0(outputdir,"/DSP_age_diff_success.tiff"))
 
 ```
 
-```{r, }
+```{r, echo=FALSE,warning=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator 
 
 tiff(paste0(outputdir,"/DSP_age_diff_success_20_15.tiff"), units="in", width=20, height=15, res=300)
@@ -610,13 +619,13 @@ all_SI_df %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
   y = dsp_success_pct,
   fill = age_group
-)) + geom_boxplot(width = 1,
+)) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE,
                   linewidth = 2,
                   color="black") +
-  geom_jitter(width = 0.3, size = 8) +
-  #geom_point(size=2) +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=8)+
   scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
@@ -651,17 +660,17 @@ dev.off()
 <br>
 <hr>
 
-### Midlife men vs women
+## Midlife men vs women
 
 Not sig different here either'
 W = 653.5, p-value = 0.07849
-```{r}
+```{r, warning=FALSE}
 wilcox.test(Mid_dsp_fem_df$dsp_si_true_pct, Mid_dsp_male_df$dsp_si_true_pct)
 ```
 
 <br>
 
-```{r out.width="120%"}
+```{r out.width="120%",warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 dev.size()
 
@@ -672,9 +681,9 @@ midlife_DSP_df %>% ggplot(aes(
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 2) +
-  #geom_point(size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  #geom_jitter(width = 0.1, size = 2) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=2) +
+  scale_fill_manual(values = c("#4e363e", "#a57c8a")) + #"#4e363e", "#2f3c31" #6c6c6e #7d4c5a
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Sex") +
   ylab("Solution Index (%)") +
@@ -707,9 +716,56 @@ ggsave(paste0(outputdir,"/DSP_sexDiff.tiff"))
 
 ```
 
-### Midlife X Young X sex and age interaction
 
-#### Solution Index
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/DSP_sexDiff_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_DSP_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = dsp_si_true_pct,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=8) +
+  scale_fill_manual(values = c("#4e363e", "#a57c8a"))+
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Sex") +
+  ylab("Solution Index (%)")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+## Midlife X Young X sex and age interaction
+
+### Solution Index
 
 Here we are using the "all_SI_df" variable which as mid and young adults 
 
@@ -770,7 +826,7 @@ all_SI_df %>% ggplot(aes(
                     color = "black") +
   geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c(Young.Male ="#2d2d2d", Young.Female ="#3e262d", Midlife.Female = "#7d4c5a", Midlife.Male = "#6c6c6e")) + 
+  scale_fill_manual(values = c(Young.Male ="#253027", Young.Female ="#828a83", Midlife.Female = "#4e363e", Midlife.Male = "#a57c8a")) + 
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Solution Index") +
@@ -809,7 +865,7 @@ ggsave(paste0(outputdir,"/DSP_SI_age_sex_boxplot.tiff"))
 <hr>
 
 
-#### Success
+### Success
 effect of age <0.0001
 effect of sex = 0.0121
 
@@ -837,7 +893,7 @@ all_SI_df %>% ggplot(aes(
   geom_jitter(width = 0.3, size = 2) +
   ggsignif::geom_signif(annotations ="*", y_position = c(1.1), xmin = c(0.7), xmax =c(2.25)) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c(Young.Male ="#2d2d2d", Young.Female ="#3e262d", Midlife.Female = "#7d4c5a", Midlife.Male = "#6c6c6e")) + 
+    scale_fill_manual(values = c(Young.Male ="#253027", Young.Female ="#828a83", Midlife.Female = "#4e363e", Midlife.Male = "#a57c8a"))+ 
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Solution Index") +
@@ -872,9 +928,9 @@ ggsave(paste0(outputdir,"/DSP_success_age_s_boxplot.tiff"))
 ```
 
 
-### Midlife pre vs peri_post
+## Midlife pre vs peri_post
 
-#### SI
+### SI
 These are slighlty significantly different  0.037
 ```{r}
 wilcox.test(Mid_dsp_pre_df$dsp_si_true_pct, Mid_dsp_peripost_df$dsp_si_true_pct)
@@ -895,9 +951,9 @@ all_menopause_df %>% ggplot(aes(
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
                   outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 2) +
-  #geom_point(size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  #geom_jitter(width = 0.3, size = 2) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=2) +
+  scale_fill_manual(values = c("#7d4c5a", "#cdadb6")) +   
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("REPO status") +
   ylab("Solution Index (%)") +
@@ -932,9 +988,58 @@ ggsave(paste0(outputdir,"/DSP_meno_diff_SI.tiff"))
 
 <br>
 <br>
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/DSP_meno_diff_SI_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_menopause_df %>% ggplot(aes(
+  x = factor(repo_status, levels = c("Pre", "Peri_Post")),
+  y = dsp_si_true_pct,
+  fill = repo_status
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=8) +
+  scale_fill_manual(values = c("#7d4c5a", "#cdadb6"))  +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("REPO Status") +
+  ylab("Solution Index (%)")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+
 <hr>
 
-#### Success
+### Success
 
 not significantly different 0.3645
 ```{r}
@@ -955,7 +1060,7 @@ all_menopause_df %>% ggplot(aes(
                   outliers = FALSE) +
   geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#6c6c6e")) +
+  scale_fill_manual(values = c("#7d4c5a", "#cdadb6")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("REPO status") +
   ylab("Success (%)") +
@@ -988,7 +1093,7 @@ ggsave(paste0(outputdir,"/DSP_meno_diff_success.tiff"))
 
 ```
 
-### Group hormone comparisons
+## Hormones
 
 ```{r, creating empty dataframe to keep pvalues in}
 
@@ -998,21 +1103,35 @@ hormone_comparison <-  data.frame(matrix(ncol = 5, nrow = 0)) %>% `colnames<-`(c
 ```
 
 
-#### Estradiol 
+### Estradiol 
 
-##### Comparing pre and peri post hormone levels between pre and peri_post
+#### Comparing pre and peri post hormone levels between pre and peri_post
 
-Significantly different P < 0.001
+no parametric test to compare pre and peripost. Significantly different P < 0.001
 ```{r}
 est_wilx_test <- wilcox.test(Mid_dsp_pre_df$estradiol_spatial_pg_ml, Mid_dsp_peripost_df$estradiol_spatial_pg_ml) %>% broom::tidy() %>%  mutate(hormone = "Estradiol") %>% dplyr::select("hormone",everything())
 
 hormone_comparison <- rbind(hormone_comparison, est_wilx_test)
 
-Mid_dsp_pre_df %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
 
-Mid_dsp_peripost_df %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))
+
+
 
 ```
+<br>
+Pre menopausal estradiol stats
+```{r}
+Mid_dsp_pre_df %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE))  %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
+<br>
+
+Pre and peripost menopausal estradiol stats
+```{r}
+Mid_dsp_peripost_df %>% dplyr::summarise(count = n(), mean = mean(estradiol_spatial_pg_ml, na.rm = TRUE), sd = sd(estradiol_spatial_pg_ml, na.rm = TRUE)) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```
+
+<br>
 
 ```{r, estradiol comparison boxplot, out.width="120%"}
 # Extract 9 x 6 portrait
@@ -1055,7 +1174,7 @@ ggsave(paste0(outputdir,"/DSP_Est_boxplot.tiff"))
 
 ```
 
-##### Estradiol and SI 
+#### Estradiol and SI 
 **Partial correlations**
 **One-tailed correlation controlling for AGE using all females**
 
@@ -1128,6 +1247,66 @@ ggsave(paste0(outputdir,"/DSP_Est_SI_scatterplot.tiff"))
 
 ```
 
+<br>
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/DSP_Est_SI_scatterplot_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_si_true_pct, color=repo_status)) +
+  geom_point(aes(color = factor(repo_status)), size=12) +
+  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE,
+             linewidth = 4)+
+   xlab("Estradiol (pg/mL)")+
+  ylab("Solution Index (%)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+
+**Estradiol + SI + FNAME**
+Conducting a partial correlation controlling for sex and FNAME 
+
+Here, estradiol is still significantly associated with SI but it is reduced when controlling for age AND FNAME. p=0.016
+```{r, warning=FALSE}
+
+pcor.test(Mid_dsp_fem_df$estradiol_spatial_pg_ml,
+          Mid_dsp_fem_df$dsp_si_true_pct,
+          Mid_dsp_fem_df[,c("age_spatial_years","FNAME")],
+          method = "spearman")
+```
+
+
 ##### Estradiol and Success 
 **Partial correlations**
 Originally shuying did one tailed but we decided to go with two tailed.
@@ -1198,7 +1377,7 @@ ggsave(paste0(outputdir,"/DSP_success_Est_scatterplot.tiff"))
 
 ```
 
-#### FSH + SI
+### FSH + SI
 
 **Partial correlations**
 **One-tailed correlation controlling for AGE using all females**
@@ -1271,6 +1450,7 @@ all_menopause_df %>% ggplot(aes(x = fsh_spatial_miu_ml,y = dsp_si_true_pct, colo
 ggsave(paste0(outputdir,"/DSP_FSH_SI_scatterplot.tiff"))
 
 ```
+
 ### FSH + Success
 
 **Partial correlations**
@@ -1345,3 +1525,23 @@ all_menopause_df %>% ggplot(aes(x = fsh_spatial_miu_ml,y = dsp_success_pct, colo
 ggsave(paste0(outputdir,"/DSP_FSH_success_scatterplot.tiff"))
 
 ```
+
+## DSP and FNAME
+
+Is DSP SI associated with FNAME performance? 
+No SI is not correlated to FNAME performance. Which makes sense. 
+
+```{r}
+pcor.test(Mid_dsp_fem_df$FNAME,
+          Mid_dsp_fem_df$dsp_success_pct,
+          Mid_dsp_fem_df$age_spatial_years, 
+          method = "spearman")
+
+```
+
+```{r}
+corr.test(Mid_dsp_fem_df$FNAME,
+          Mid_dsp_fem_df$dsp_success_pct, method = "spearman")
+
+```
+
