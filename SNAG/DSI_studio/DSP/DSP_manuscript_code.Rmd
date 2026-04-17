@@ -326,8 +326,8 @@ These were excluded later from hippocampal analyses so i just excluded their beh
   - N = 27  
   - Mean SI = 0.27  
   - SD SI = 0.15  
-```{r, sumamry stats for young adults with DSP}
-yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI"))%>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+```{r, summary stats for young adults with DSP}
+yng_DSP_df %>% dplyr::summarise(count = n(), mean = round(mean(dsp_si_true_pct, na.rm = TRUE), digits = 2), sd = round(sd(dsp_si_true_pct, na.rm = TRUE), digits = 2), round(min(dsp_si_true_pct, na.rm = TRUE), digits = 2), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI"))%>% kableExtra::kable(., caption = "Young adult SI summary stats") %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
@@ -339,7 +339,7 @@ yng_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm 
   - SD = 0.16  
 
 ```{r, sumamry stats for young adults with DSP + good scan}
-yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = round(mean(dsp_si_true_pct, na.rm = TRUE), digits = 2), sd = round(sd(dsp_si_true_pct, na.rm = TRUE), digits = 2), round(min(dsp_si_true_pct, na.rm = TRUE), digits = 2), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean SI", "SI SD","Min SI", "Max SI"))%>% kableExtra::kable(., caption = "Young adult SI summary stats excluding subs") %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 
@@ -347,7 +347,7 @@ yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, n
 <br>
 
 ```{r, success stats for young adults with DSP + good scan}
-yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_success_pct, na.rm = TRUE), sd = sd(dsp_success_pct, na.rm = TRUE), min(dsp_success_pct, na.rm = TRUE), max(dsp_success_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean acc", "acc SD","Min acc", "Max acc")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = round(mean(dsp_success_pct, na.rm = TRUE), digits = 2), sd = round(sd(dsp_success_pct, na.rm = TRUE), digits = 2), min(dsp_success_pct, na.rm = TRUE), max(dsp_success_pct, na.rm = TRUE)) %>% `colnames<-`(c("N", "Mean acc", "acc SD","Min acc", "Max acc")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 
@@ -364,13 +364,13 @@ yng_DSP_scan_df %>% dplyr::summarise(count = n(), mean = mean(dsp_success_pct, n
   - Mean = 0.23
   - SD = 0.17
 ```{r, sum stats for midlife adults}
-midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_si_true_pct, na.rm = TRUE), sd = sd(dsp_si_true_pct, na.rm = TRUE), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = round(mean(dsp_si_true_pct, na.rm = TRUE), digits = 2), sd = round(sd(dsp_si_true_pct, na.rm = TRUE), digits = 2), min(dsp_si_true_pct, na.rm = TRUE), max(dsp_si_true_pct, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean SI", "SI SD","Min SI", "Max SI")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
 
 ```{r, success sum stats for midlife adults}
-midlife_DSP_df %>% dplyr::summarise(count = n(), mean = mean(dsp_success_pct, na.rm = TRUE), sd = sd(dsp_success_pct, na.rm = TRUE), min(dsp_success_pct, na.rm = TRUE), max(dsp_success_pct, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean acc", "acc SD","Min acc", "Max acc")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
+midlife_DSP_df %>% dplyr::summarise(count = n(), mean = round(mean(dsp_success_pct, na.rm = TRUE), digits = 2), sd = round(sd(dsp_success_pct, na.rm = TRUE), digits = 2), round(min(dsp_success_pct, na.rm = TRUE), digits = 2), max(dsp_success_pct, na.rm = TRUE)) %>% `colnames<-`(c( "N", "Mean acc", "acc SD","Min acc", "Max acc")) %>% kableExtra::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed"))
 ```
 
 <br>
@@ -440,7 +440,7 @@ shapiro.test(midlife_DSP_df$dsp_si_true_pct)
 ```
 <br>
 
-  Young solution index is not normally distributed p < 0.001
+  Young solution index is  normally distributed p = 0.08
 ```{r}
 shapiro.test(yng_DSP_scan_df$dsp_si_true_pct)
 ```
