@@ -56,6 +56,49 @@ library(moonBook)
 #library(FSA)
 ```
 
+<!-- palette -->
+
+
+```{r}
+sleeptoken_colors <- c(
+"#7d4c5a", 
+"#997C5C",
+"#a57c8a",
+"#2f3c31",
+"#4e363e",
+"#E2DAE1",
+"#243811",
+"#93A681",
+"#B99A8F",
+"#648173",
+"#828a83",
+"#CD8A9B",
+"#253027",
+"#1f2420",
+"#c3b99c",
+"#8a967d",
+"#a5607b",
+"#564454",
+"#8c8d99",
+"#848c8c",
+"#172e44",
+"#7889ac",
+"#65727e"
+)
+
+# I need about 6 distinct colors for sleep token 
+# young vs midlife 
+# Young
+# Midlife : #7d4c5a
+# Young : #997C5C
+
+# Midlife men: 2f3c31
+# Midlife Women: a57c8a
+
+
+
+```
+
 <!-- below is code for generating the markdown html. just basic aesthetics -->
 
 ```{css, echo=FALSE}
@@ -126,17 +169,17 @@ Reading in and prepping our data
 <!-- Setting the path to our extracted diffusion data and grabbing our subject info -->
 ```{r reading in our CSVs, results='hide',message=FALSE}
 ##### Mac Desktop path
-working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
+#working_dir <- "/Users/danielacossio/Desktop/Scripts/Projects/SNAG/DSI_studio/DSP"
 
 # Moving to save all figrues and output into a different folder bc it's too big for github
 
-outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+#outputdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
 ###### Laptop path
 
-# working_dir <- "/Users/danielacossio/Desktop/Projects/SNAG/DSI_studio/DSP"
+ working_dir <- "/Users/danielacossio/Desktop/Projects/SNAG/DSI_studio/DSP"
 # 
-# outputdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
+ outputdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/DSI/DSP"
 
 # path to the subject sheets 
 midlife_DSP_df <- read.csv(paste0(working_dir,"/Mid_DSP_DSI.csv"))
@@ -481,10 +524,13 @@ all_SI_df %>% ggplot(aes(
   fill = age_group
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
-                  outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 2) +
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Solution Index (%)") +
@@ -526,13 +572,14 @@ all_SI_df %>% ggplot(aes(
   y = dsp_si_true_pct,
   fill = age_group
 )) + geom_boxplot(width = 0.5,
-                  fatten = 0,
+                  fatten = 1,
                   outliers = FALSE,
                   linewidth = 2,
                   color="black") +
-  geom_jitter(width = 0.3, size = 8) +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=20) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Solution Index (%)")  +
@@ -585,10 +632,13 @@ all_SI_df %>% ggplot(aes(
   fill = age_group
 )) + geom_boxplot(width = 0.5,
                   fatten = 1,
-                  outliers = FALSE) +
-  geom_jitter(width = 0.3, size = 2) +
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
+  scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Wayfinding Success (%)") +
@@ -635,8 +685,8 @@ all_SI_df %>% ggplot(aes(
                   linewidth = 2,
                   color="black") +
   #geom_jitter(width = 0.3, size = 8) +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=8)+
-  scale_fill_manual(values = c("#4e363e", "#2f3c31")) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=20)+
+  scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Age Group") +
   ylab("Wayfinding Success (%)") +
@@ -693,7 +743,7 @@ midlife_DSP_df %>% ggplot(aes(
                   outliers = FALSE) +
   #geom_jitter(width = 0.1, size = 2) +
   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=2) +
-  scale_fill_manual(values = c("#4e363e", "#a57c8a")) + #"#4e363e", "#2f3c31" #6c6c6e #7d4c5a
+  scale_fill_manual(values = c("#a57c8a", "#2f3c31")) + #"#4e363e", "#2f3c31" #6c6c6e #7d4c5a
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Sex") +
   ylab("Solution Index (%)") +
@@ -742,7 +792,7 @@ midlife_DSP_df %>% ggplot(aes(
                   linewidth = 2,
                   color="black") +
   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=8) +
-  scale_fill_manual(values = c("#4e363e", "#a57c8a"))+
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("Sex") +
   ylab("Solution Index (%)")  +
@@ -963,7 +1013,7 @@ all_menopause_df %>% ggplot(aes(
                   outliers = FALSE) +
   #geom_jitter(width = 0.3, size = 2) +
   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#cdadb6")) +   
+  scale_fill_manual(values = c("#4e363e", "#E2DAE1")) +   
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("REPO status") +
   ylab("Solution Index (%)") +
@@ -1015,7 +1065,7 @@ all_menopause_df %>% ggplot(aes(
                   color="black") +
   #geom_jitter(width = 0.3, size = 8) +
   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=8) +
-  scale_fill_manual(values = c("#7d4c5a", "#cdadb6"))  +
+  scale_fill_manual(values = c("#4e363e", "#E2DAE1"))  +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("REPO Status") +
   ylab("Solution Index (%)")  +
@@ -1070,7 +1120,7 @@ all_menopause_df %>% ggplot(aes(
                   outliers = FALSE) +
   geom_jitter(width = 0.3, size = 2) +
   #geom_point(size=2) +
-  scale_fill_manual(values = c("#7d4c5a", "#cdadb6")) +
+  scale_fill_manual(values = c("#4e363e", "#E2DAE1")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   xlab("REPO status") +
   ylab("Success (%)") +
@@ -1172,7 +1222,7 @@ dev.size()
 all_menopause_df %>% ggplot(aes(x = factor(repo_status, levels=c("Pre", "Peri_Post")), y = estradiol_spatial_pg_ml, fill= repo_status)) +
   geom_boxplot(width=0.5,fatten = 1, show.legend = FALSE) +
   geom_point(shape=16) +
-  scale_fill_manual(values=c("#7d4c5a", "#CD8A9B"))+
+  scale_fill_manual(values = c("#4e363e", "#E2DAE1"))+
   #scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
    xlab("Repo Status")+
    ylab("Estradiol") +
@@ -1240,7 +1290,7 @@ dev.size()
 
 all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_si_true_pct, color=repo_status)) +
   geom_point(aes(color = factor(repo_status)), size=3) +
-  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+  scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
@@ -1286,8 +1336,8 @@ ggsave(paste0(outputdir,"/DSP_Est_SI_scatterplot.tiff"))
 tiff(paste0(outputdir,"/DSP_Est_SI_scatterplot_20x15.tiff"), units="in", width=20, height=15, res=300)
 
 all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_si_true_pct, color=repo_status)) +
-  geom_point(aes(color = factor(repo_status)), size=12) +
-  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) +
+  geom_point(aes(color = factor(repo_status)), size=18) +
+  scale_color_manual(values = c("#4e363e", "#CCBDCA")) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   stat_smooth(method = "lm",
               formula = y ~ x,
@@ -1368,8 +1418,8 @@ SCatter plot
 dev.size()
 
 all_menopause_df %>% ggplot(aes(x = estradiol_spatial_pg_ml,y = dsp_success_pct, color=repo_status)) +
-  geom_point(aes(color = factor(repo_status)),size=3,alpha = 0.7) +
-  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+  geom_point(aes(fill = factor(repo_status), color ="black"),size=3,alpha = 0.7) +
+  scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
    geom_line(stat = "smooth", method = "lm",
             formula = y ~ x,
              alpha = 0.7,
@@ -1464,7 +1514,7 @@ dev.size()
 
 all_menopause_df %>% ggplot(aes(x = fsh_spatial_miu_ml,y = dsp_si_true_pct, color=repo_status)) +
   geom_point(aes(color = factor(repo_status)), size=3) +
-  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+  scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
@@ -1538,7 +1588,7 @@ dev.size()
 
 all_menopause_df %>% ggplot(aes(x = fsh_spatial_miu_ml,y = dsp_success_pct, color=repo_status)) +
   geom_point(aes(color = factor(repo_status)),size=3,alpha = 0.7) +
-  scale_color_manual(values=c( "#7d4c5a","#CD8A9B")) + 
+  scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
    geom_line(stat = "smooth", method = "lm",
             formula = y ~ x,
              alpha = 0.7,
