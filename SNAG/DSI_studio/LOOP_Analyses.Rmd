@@ -7,6 +7,7 @@ output:
     toc: true
     toc_float: true
     toc_depth: 2
+    code_folding: hide
     classoption:
     - twocolumn
 ---
@@ -268,11 +269,11 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 <hr>
 <br>
 
-# Results {.tabset .tabset-pills}
+# Results
 
 ## Reading in and prepping our data 
 
-Reading in our main LOOP CSV and creating large dataframes for midlife and young
+Reading in our main LOOP CSV and creating large dataframes for midlife and young. 
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
@@ -298,59 +299,27 @@ young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young")
 
 ## Behavior 
 
-### YOung and midlife 
-```{r, summary stats for all participants with useable behavior  }
-loop_summarystats <- LOOP_raw_df  %>% 
-  group_by(sex) %>% 
+### Extracting summary stats
+
+Young adult summery stats including those without scan
+```{r, summary stats for young adults with useable behavior}
+young_raw_df  %>%
+  group_by(sex) %>%
   summarize(
     n = n(),
     `Mean Age` = round(mean(age_spatial_years), digits = 2),
     SD = round(sd(age_spatial_years), digits = 2),
-    #AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+    AE_rad3 = round(mean(loop_ae_rad3_degree,na.rm=TRUE), digits = 2),
     `Angular Error` = round(mean(loop_ae_avg_degree , na.rm = TRUE), digits = 2),
-    AE_SD = round(sd(loop_ae_avg_degree), digits = 2),
-    #PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
-    #PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
-    #DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
-    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2),
-    DT_SD = round(sd(loop_ae_avg_degree), digits = 2)) %>% as.data.frame() 
+    PE_rad3 = round(mean(loop_pe_rad3_m,na.rm=TRUE), digits = 2),
+    PE_avg = round(mean(loop_pe_avg_m,na.rm=TRUE), digits = 2),
+    DT_rad3 = round(mean(loop_de_rad3_degree,na.rm=TRUE), digits = 2),
+    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm = TRUE), digits = 2)
+  ) %>% as.data.frame() %>%
+  knitr::kable(.) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
 ```
 
-```{r, table for all adults with useable behavior}
-
-knitr::kable(loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
-
-```
-
-### Young adult behavior summarized 
-- Below are the summary stats for young adults with useable behavior 
-
-
-```{r, summary stats for young adults with useable behavior  }
-yng_loop_summarystats <- young_raw_df  %>% 
-  group_by(sex) %>% 
-summarize(
-    n = n(),
-    `Mean Age` = round(mean(age_spatial_years), digits = 2),
-    SD = round(sd(age_spatial_years), digits = 2),
-    #AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
-    `Angular Error` = round(mean(loop_ae_avg_degree , na.rm = TRUE), digits = 2),
-    #PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
-    #PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
-    #DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
-    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() 
-```
-
-```{r, table for young adults with useable behavior}
-
-knitr::kable(yng_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
-
-```
-
-
-### Midlife 
-
-- Below are the summary stats for midlife adults with useable behavior 
+<br>
 
 ```{r, summary stats for mid adults with useable behavior}
 mid_loop_summarystats <- midlife_raw_df  %>% 
@@ -359,24 +328,21 @@ summarize(
     n = n(),
     `Mean Age` = round(mean(age_spatial_years), digits = 2),
     SD = round(sd(age_spatial_years), digits = 2),
-    #AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
+    AE_rad3 = round(mean(loop_ae_rad3_degree,na.rm=TRUE), digits = 2),
     `Angular Error` = round(mean(loop_ae_avg_degree , na.rm = TRUE), digits = 2),
-    #PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
-    #PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
-    #DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
-    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() 
+    PE_rad3 = round(mean(loop_pe_rad3_m,na.rm=TRUE), digits = 2),
+    PE_avg = round(mean(loop_pe_avg_m,na.rm=TRUE), digits = 2),
+    DT_rad3 = round(mean(loop_de_rad3_degree,na.rm=TRUE), digits = 2),
+    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
 ```
 
-```{r, table for mid adults with useable behavior}
-knitr::kable(mid_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
-
-```
 
 ### ANOVA
 
+#### Using all subjects regardless of exclusion
 SO no age effect but there is a sex effect essentially replicating what shuying found in her original analysis. 
 
-HEre only sex is signifacnlty associated
+HEre only sex is significant associated
 ```{r, 2X2 ANOVA sex,age, DT }
 
 DT_aov <- aov(loop_de_avg_degree ~ age_group * sex, data =LOOP_raw_df )
@@ -400,6 +366,113 @@ summary(AE_aov)
 ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_ae_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
+
+
+
+
+#### USing only those with HP or diffusion scan and excluding subjects
+
+HEre only sex is signifacnlty associated
+
+```{r}
+all_cleaned_loop <- LOOP_raw_df %>%  filter(!is.na(eTIV)) %>% filter(subject_id != 372)
+```
+
+```{r }
+
+DT_aov <- aov( ~ age_group * sex, data =all_cleaned_loop )
+
+summary(DT_aov)
+```
+
+```{r, plot for 2X2 ANOVA sex,age, AE}
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_de_avg_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  xlab("Age Group") +
+  ylab("loop_de_avg_degree") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+
+```{r, plot for 2X2 ANOVA sex,age, DT }
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_de_avg_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+```{r, 2X2 ANOVA sex,age, AE }
+
+AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =all_cleaned_loop )
+
+summary(AE_aov)
+```
+
+
+
+
+### Age comparison
+
+```{r}
+wilcox.test(midlife_HP_df$loop_de_avg_degree, young_HP_df$loop_de_avg_degree, paired=FALSE)
+```
+
+```{r}
+wilcox.test(midlife_HP_df$loop_ae_avg_degree, young_HP_df$loop_ae_avg_degree, paired=FALSE)
+```
+
+```{r}
+wilcox.test(midlife_HP_df$loop_pe_avg_m, young_HP_df$loop_pe_avg_m, paired=FALSE)
+```
+<br>
+
+### sex in midlife comparison
+```{r}
+wilcox.test(midlife_HP_female_df$loop_pe_avg_m, midlife_HP_male_df$loop_pe_avg_m, paired=FALSE)
+```
+
+```{r}
+wilcox.test(midlife_HP_female_df$loop_de_avg_degree, midlife_HP_male_df$loop_de_avg_degree, paired=FALSE)
+```
+
+```{r}
+wilcox.test(midlife_HP_female_df$loop_ae_avg_degree, midlife_HP_male_df$loop_ae_avg_degree, paired=FALSE)
+```
+<br>
 
 
 ## Hippocampal Volume {.tabset .tabset-pills}
@@ -525,7 +598,7 @@ midlife_HP_male_df <- midlife_HP_df %>%  filter(sex== "Male")
 
 - Degrees traveled rad3 for all midlife is not normally distributed (p=0.04) and degrees traveled for men only ( p = 0.0001979)
 - Position error was normally distributed for all groups 
-- Angular error rad3 was normally distributed for alll groups
+- Angular error rad3 was normally distributed for all groups
 -  Angular error average for midlife was not normally distributed (p = 0.0007472) and it was not normally distributed for women only ( p-value = 0.004246)
 ```{r, checkin midlife normality, echo=FALSE,message=FALSE}
 
@@ -562,7 +635,9 @@ normality_midlife_HP[16,] <-unlist(shapiro.test(midlife_HP_df$loop_ae_avg_degree
 normality_midlife_HP[17,] <-unlist(shapiro.test(midlife_HP_female_df$loop_ae_avg_degree))  #notnormal
 normality_midlife_HP[18,] <-unlist(shapiro.test(midlife_HP_male_df$loop_ae_avg_degree))  #no
 
+normality_midlife_HP$pvalue <-round(as.numeric(normality_midlife_HP$pvalue), digits = 3)
 
+normality_midlife_HP$statistic <-round(as.numeric(normality_midlife_HP$statistic), digits = 3)
 ```
 
 ```{r, normality table}
@@ -591,7 +666,7 @@ hp_loop_summarystats <- midlife_HP_df  %>%
 ```
 
 ```{r, hp df summary table}
-knitr::kable(loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+knitr::kable(hp_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
 
 ```
 
