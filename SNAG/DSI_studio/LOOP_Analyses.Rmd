@@ -4,12 +4,11 @@ author: "Daniela Cossio"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
     html_document:
-    toc: true
-    toc_float: true
-    toc_depth: 2
-    code_folding: hide
-    classoption:
-    - twocolumn
+      toc: yes
+      toc_float: yes
+      code_folding: hide
+editor_options: 
+chunk_output_type: inline
 ---
 
 ```{r adding libraries,echo=FALSE, results='hide',message=FALSE}
@@ -53,6 +52,11 @@ h1.title {
   text-align: center;
 }
 
+h1, h2,h5 {
+  text-align: center;
+  font-family: Arial;
+}
+
 h4.date {
   color: black ;
   font-family: Arial;
@@ -68,10 +72,10 @@ h4.author {
 }
 
 
-h1,h2, h3, h4, h5 ,h6 {
+h3{
   text-align: center;
   font-family: Arial;
-  
+   background-color: #99d7e8 ;
 }
 
 body, p, h2{
@@ -84,6 +88,7 @@ hr {
   border-width:0;
   background-color: black ;
 }
+
 
 
 
@@ -124,7 +129,7 @@ Below is a list of sections included here. Including summaries of the white matt
 # <span style="color: darkblue;">Methods </span>  {.tabset .tabset-pills} 
 
 ## **Participants** 
- ### Behavior
+### Behavior
   * there were 108 participants in total who completed the LOOP task. 
   * 55 midlife adults 
       * Men = 23
@@ -140,36 +145,53 @@ Below is a list of sections included here. Including summaries of the white matt
       
       <br>
       
-  ### Behavior and Diffusion
-    
+
+  
+### Behavior and T1
+  
+of the 55 midlife subjects, 45 of them completed a scan but 1 subject (372) is being excluded because of a cyst in the back of his head    
+   
   * 44 midlife adults 
-      * Men = 23
-      * Women = 33
-      * Stage
-          * Pre = 14
-          * Peri = 10 
-          * Post = 9
+    * Men = 17
+    * Women = 26
+    * Stage
+        * Pre = 14
+        * Peri = 7
+        * Post = 7
       
+  * 32 young adults 
+      * Men = 21
+      * Women = 11
+
+### Behavior and Diffusion
+  
+Of the 45 with a T1 scan completed,  3 did not have a diffusion scan 
+
+  * 42 midlife adults 
+      * Men = 17
+      * Women = 25
+      * Stage
+          * Pre = 11
+          * Peri = 7 
+          * Post = 7
+<br>
+
+Of the 32 with a T1 scan completed, 4 did not complete a diffusion scan  
+
   * 28 young adults 
       * Men = 27
       * Women = 25
   
-  ### Behavior and T1
-THe following subjects were excluded for note having a T1:  320, 325,
-    * 45 midlife adults 
-    * Men = 23
-      * Women = 33
-      * Stage
-          * Pre = 14
-          * Peri = 10 
-          * Post = 9
-      
-  * 28 young adults 
-      * Men = 27
-      * Women = 25
-  
-  ### Behavior and High REs
+### Behavior and High REs
     * 28 midlife adults 
+      * Men = 11
+      * Women = 16
+      
+    * 14 young adults  
+      * Men = 8
+      * Women = 6
+    
+  
   
   
   
@@ -262,21 +284,17 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 
 ## Diffusion
 
-
-
-
-
 <hr>
 <br>
 
 # Results
 
-## Reading in and prepping our data 
-
 Reading in our main LOOP CSV and creating large dataframes for midlife and young. 
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
 workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+
+outputdir <- paste0(workingdir,"/Figs")
 
 #workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
 
@@ -284,27 +302,31 @@ LOOP_raw_df <- read_csv(paste0(workingdir,"/LOOP_all_data.csv")) %>%  filter(loo
 
 midlife_raw_df <- LOOP_raw_df %>% filter(age_group=="Midlife")  %>% filter(subject_id != 372) # Excluding these 372 because they had a brain worm or something  #53
 
-midlife_female_raw_df <- midlife_raw_df %>% filter(sex=="Female")
-
-midlife_male_raw_df <- midlife_raw_df %>% filter(sex=="Male")
-  
 young_raw_df <- LOOP_raw_df %>% filter(age_group=="Young") 
 
+
+all_cleaned_loop <- LOOP_raw_df %>%  filter(!is.na(eTIV)) %>% filter(subject_id != 372) # all subjects that completed some type of scan 
+
+young_cleaned_df <- all_cleaned_loop %>% filter(age_group=="Young") 
+
+midlife_cleaned_df <- all_cleaned_loop %>% filter(age_group=="Midlife")
+
+mid_female_cleaned_df <- midlife_cleaned_df %>% filter(sex =="Female")
+
+mid_male_cleaned_df <- midlife_cleaned_df %>% filter(sex =="Male")
 ```
 
 
-<br>
-<br>
 <br>
 
 ## Behavior 
 
 ### Extracting summary stats
 
-Young adult summery stats including those without scan
+Young adult summer stats
 ```{r, summary stats for young adults with useable behavior}
-young_raw_df  %>%
-  group_by(sex) %>%
+young_cleaned_df  %>%
+  #group_by(sex) %>%
   summarize(
     n = n(),
     `Mean Age` = round(mean(age_spatial_years), digits = 2),
@@ -316,14 +338,15 @@ young_raw_df  %>%
     DT_rad3 = round(mean(loop_de_rad3_degree,na.rm=TRUE), digits = 2),
     `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm = TRUE), digits = 2)
   ) %>% as.data.frame() %>%
-  knitr::kable(.) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+  knitr::kable(.) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "600px", height = "200")
 ```
 
 <br>
 
+midlife adults summary stats
 ```{r, summary stats for mid adults with useable behavior}
-mid_loop_summarystats <- midlife_raw_df  %>% 
-  group_by(sex) %>% 
+midlife_cleaned_df  %>% 
+  #group_by(sex) %>% 
 summarize(
     n = n(),
     `Mean Age` = round(mean(age_spatial_years), digits = 2),
@@ -333,29 +356,42 @@ summarize(
     PE_rad3 = round(mean(loop_pe_rad3_m,na.rm=TRUE), digits = 2),
     PE_avg = round(mean(loop_pe_avg_m,na.rm=TRUE), digits = 2),
     DT_rad3 = round(mean(loop_de_rad3_degree,na.rm=TRUE), digits = 2),
-    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+    `Degrees Traveled` = round(mean(loop_de_avg_degree, na.rm =TRUE), digits = 2)) %>% as.data.frame() %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "600px", height = "200")
 ```
 
+<br>
+<hr>
 
 ### ANOVA
 
-#### Using all subjects regardless of exclusion
+#### <span style="text-decoration:underline">Using all subjects regardless of exclusion</span>
+
 SO no age effect but there is a sex effect essentially replicating what shuying found in her original analysis. 
 
-HEre only sex is significant associated
-```{r, 2X2 ANOVA sex,age, DT }
+**Degrees Traveled**  
+
+Here only sex is significant associated
+
+```{r}
 
 DT_aov <- aov(loop_de_avg_degree ~ age_group * sex, data =LOOP_raw_df )
 
 summary(DT_aov)
 ```
 
-```{r, plot for 2X2 ANOVA sex,age, DT }
+```{r }
 ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_de_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
 
-```{r, 2X2 ANOVA sex,age, AE }
+<br>
+<br>
+
+**Angular Error**
+
+Neither sex nor age significantly predict angular error
+
+```{r}
 
 AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =LOOP_raw_df )
 
@@ -367,25 +403,51 @@ ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_ae_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
 
+<br>
+<hr>
 
 
+#### <span style="text-decoration:underline"> Using only those with HP or diffusion scan and excluding subjects</span>
 
-#### USing only those with HP or diffusion scan and excluding subjects
 
-HEre only sex is signifacnlty associated
+**Degrees Traveled**   
 
-```{r}
-all_cleaned_loop <- LOOP_raw_df %>%  filter(!is.na(eTIV)) %>% filter(subject_id != 372)
-```
-
+Here only sex is significantly associated
 ```{r }
 
-DT_aov <- aov( ~ age_group * sex, data =all_cleaned_loop )
+DT_aov <- aov(loop_de_avg_degree ~ age_group * sex, data =all_cleaned_loop )
 
 summary(DT_aov)
 ```
 
-```{r, plot for 2X2 ANOVA sex,age, AE}
+
+```{r, plot for 2X2 ANOVA sex,age, DT }
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_de_avg_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+```{r, 2X2 ANOVA sex,age, AE }
+
+AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =all_cleaned_loop )
+
+summary(AE_aov)
+```
+
+<br>
+<hr>
+
+
+
+### T test
+
+**Degrees traveled**  
+- No significant difference between young and midlife adults (p = 0.6572)
+```{r}
+t.test(midlife_cleaned_df$loop_de_avg_degree, young_cleaned_df$loop_de_avg_degree, paired=FALSE)
+```
+<br>
+
+```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 all_cleaned_loop %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
@@ -400,9 +462,209 @@ all_cleaned_loop %>% ggplot(aes(
   geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
   #geom_point(size=2) +
     scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
   xlab("Age Group") +
-  ylab("loop_de_avg_degree") +
+  ylab("Average Degrees Traveled") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+tiff(paste0(outputdir,"/loop_ageDiff_avgDT_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_de_avg_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_x_discrete(labels = c("Young", "Midlife")) +
+  xlab("Age group") +
+  ylab("Degrees traveled")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+<br>
+<br>
+
+**Angular Error**
+- No significant difference between young and midlife adults (p = 0.078)
+```{r, warning=FALSE}
+wilcox.test(midlife_cleaned_df$loop_ae_avg_degree, young_cleaned_df$loop_ae_avg_degree, paired=FALSE)
+```
+<br>
+
+```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_ae_avg_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+  xlab("Age Group") +
+  ylab("Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_ageDiff_avgAE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_ae_avg_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+  scale_x_discrete(labels = c("Young", "Midlife")) +
+  xlab("Age group") +
+  ylab("Angular Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      #hjust = -0.75,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+<br>
+<br>
+
+
+**Position Error**
+- Position Error is significantly different between young and midlife (p = 0.007)
+```{r, warning=FALSE}
+wilcox.test(midlife_cleaned_df$loop_pe_avg_m, young_cleaned_df$loop_pe_avg_m, paired=FALSE)
+```
+<br>
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_pe_avg_m,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
+  scale_y_continuous(breaks = seq(0, 3, by = 0.25)) +
+  xlab("Age Group") +
+  ylab("Position Error") +
   theme(
     axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
@@ -429,59 +691,370 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
 
-```{r, plot for 2X2 ANOVA sex,age, DT }
-ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_de_avg_degree", color = "sex",
-          palette = c("#00AFBB", "#E7B800"))
+tiff(paste0(outputdir,"/loop_ageDiff_avgPE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_pe_avg_m,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  scale_x_discrete(labels = c("Young", "Midlife")) +
+  xlab("Age group") +
+  ylab("Position Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      #hjust = -0.75,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
 ```
 
-```{r, 2X2 ANOVA sex,age, AE }
-
-AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =all_cleaned_loop )
-
-summary(AE_aov)
-```
-
-
-
-
-### Age comparison
-
-```{r}
-wilcox.test(midlife_HP_df$loop_de_avg_degree, young_HP_df$loop_de_avg_degree, paired=FALSE)
-```
-
-```{r}
-wilcox.test(midlife_HP_df$loop_ae_avg_degree, young_HP_df$loop_ae_avg_degree, paired=FALSE)
-```
-
-```{r}
-wilcox.test(midlife_HP_df$loop_pe_avg_m, young_HP_df$loop_pe_avg_m, paired=FALSE)
-```
 <br>
+<br>
+<hr>
+
 
 ### sex in midlife comparison
-```{r}
-wilcox.test(midlife_HP_female_df$loop_pe_avg_m, midlife_HP_male_df$loop_pe_avg_m, paired=FALSE)
-```
 
+**Position Error**
+- No significant difference between young and midlife adults (p = 0.33)
 ```{r}
-wilcox.test(midlife_HP_female_df$loop_de_avg_degree, midlife_HP_male_df$loop_de_avg_degree, paired=FALSE)
-```
-
-```{r}
-wilcox.test(midlife_HP_female_df$loop_ae_avg_degree, midlife_HP_male_df$loop_ae_avg_degree, paired=FALSE)
+wilcox.test(mid_female_cleaned_df$loop_pe_avg_m, mid_male_cleaned_df$loop_pe_avg_m, paired=FALSE)
 ```
 <br>
 
+<!-- plot for html below -->
+```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_pe_avg_m,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#a57c8a", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  xlab("sex") +
+  ylab("Position Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_midlife_sexDiff_avgPE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_pe_avg_m,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  scale_x_discrete(labels = c("Men", "Women")) +
+  xlab("sex") +
+  ylab("Position Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+<br>
+<br>
+
+
+**Degrees traveled **
+- Significant difference between midlife men and women (p = 0.029)
+```{r}
+wilcox.test(mid_female_cleaned_df$loop_de_avg_degree, mid_male_cleaned_df$loop_de_avg_degree, paired=FALSE)
+```
+
+```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_de_avg_degree,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#a57c8a", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  xlab("sex") +
+  ylab("Degrees Traveled") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_midlife_sexDiff_avg_DE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_de_avg_degree,
+  fill = sex
+))  + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_x_discrete(labels = c("Men", "Women")) +
+  xlab("sex") +
+  ylab("Degrees Traveled")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+<br>
+<br>
+
+
+**Angular Error**
+- No significant difference (p = 0.49)
+```{r}
+wilcox.test(mid_female_cleaned_df$loop_ae_avg_degree, mid_male_cleaned_df$loop_ae_avg_degree, paired=FALSE)
+```
+
+
+```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_ae_avg_degree,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#a57c8a", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 150, by = 25))  +
+  xlab("sex") +
+  ylab("Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = -2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_midlife_sexDiff_avg_AE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_ae_avg_degree,
+  fill = sex
+))  + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+  scale_y_continuous(breaks = seq(0, 3.5, by = 0.25)) +
+  scale_x_discrete(labels = c("Men", "Women")) +
+  xlab("sex") +
+  ylab("Angular Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+<br>
+
+
+
+<br>
+<hr>
 
 ## Hippocampal Volume {.tabset .tabset-pills}
 
 -  Need to figure out how many comparisons are included to use the BY correction
 
-### Midlife {.tabset .tabset-pills}
-
-#### List of columns  
+### Midlife 
 
 The list below are from shuyings original raw data. We will ignore the old T1.
 The T2 here are already corrected for TIV. 
@@ -518,14 +1091,15 @@ data.frame(c(
 
 ```
 
-#### Creating HP specific Dataframe : midlife_HP_df
+<br>
+<br>
 
-Total N - 43 
-    
+<!-- Creating HP specific Dataframe : midlife_HP_df -->
+<!-- Total N - 43  -->
+
     
 ```{r, Creating cleaned DF to work from,collapse = TRUE}
 # Let's create a clean df to work with here and include only the columns we want 
-
 
 midlife_HP_df <-
   midlife_raw_df %>%  dplyr::select(
@@ -594,7 +1168,49 @@ midlife_HP_male_df <- midlife_HP_df %>%  filter(sex== "Male")
  
 ```
 
-#### Checking normality
+<br>
+
+**T1 adjust correlations**
+
+Shuying originally did an adjustment using TIV from VBM.
+
+I don't know if shuying and viasakh got the VBM for TIV the same. It looks like shuyings is multiplied by 1000x. 
+
+Due to that, I am correcting using Freesurfer TIV
+
+```{r, midlife Correct for T1v}
+
+#v contains adjusted hip
+# 1 Create function for apply to variables
+dividebyTIV <- function(x, na.rm = FALSE) (x/midlife_HP_df$eTIV)
+
+# 2 Let's correct by mutating the columns using the TIV from freesurfer
+
+midlife_HP_df_adj <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
+            dividebyTIV) %>% 
+  
+  # multiplying to get proportions 
+   mutate(avg_t1_hipp = avg_t1_hipp*1000,
+         `Left-Hippocampus` = `Left-Hippocampus`*1000,
+         `Right-Hippocampus` = `Right-Hippocampus`*1000)
+
+
+midlife_HP_female_df_adj <- midlife_HP_df_adj %>% filter(sex=="Female")
+
+midlife_HP_male_df_adj <- midlife_HP_df_adj %>%  filter(sex== "Male")
+
+```
+
+<!-- I need to create a correlation matrix to house all of the results from the correlations so I can correct p values later -->
+
+```{r, create empty data frame for correlations }
+midlife_HP_correlations <- data.frame(matrix(ncol=9, nrow=0)) 
+```
+
+<br>
+
+
+#### **Checking normality**
 
 - Degrees traveled rad3 for all midlife is not normally distributed (p=0.04) and degrees traveled for men only ( p = 0.0001979)
 - Position error was normally distributed for all groups 
@@ -638,6 +1254,11 @@ normality_midlife_HP[18,] <-unlist(shapiro.test(midlife_HP_male_df$loop_ae_avg_d
 normality_midlife_HP$pvalue <-round(as.numeric(normality_midlife_HP$pvalue), digits = 3)
 
 normality_midlife_HP$statistic <-round(as.numeric(normality_midlife_HP$statistic), digits = 3)
+
+normality_midlife_HP$statistic <-round(as.numeric(normality_midlife_HP$statistic), digits = 3)
+
+normality_midlife_HP$variable <- normality_midlife_HP$variable %>% str_replace_all(c("midlife_HP_male_df\\$" ="", "midlife_HP_female_df\\$" = "","midlife_HP_df\\$" = "" )) 
+
 ```
 
 ```{r, normality table}
@@ -645,78 +1266,35 @@ knitr::kable(normality_midlife_HP) %>% kable_styling(bootstrap_options =  c("str
 ```
 
 
+
 <br>
 <br>
 
-#### Behavior summarized
-
+#### **Behavior summarized**
 
 ```{r, summarizing hp df}
-hp_loop_summarystats <- midlife_HP_df  %>% 
+midlife_HP_df  %>% 
   group_by(sex) %>% 
   summarize(n_subject = n(),
-            age_mean = mean(age_spatial_years),
-            age_Sd = sd(age_spatial_years),
-            AE_rad3 = mean(loop_ae_rad3_degree,na.rm=TRUE),
-            AE_avg = mean(loop_ae_avg_degree ,na.rm=TRUE),
-            PE_rad3 = mean(loop_pe_rad3_m,na.rm=TRUE),
-            PE_avg = mean(loop_pe_avg_m,na.rm=TRUE),
-            DT_rad3 = mean(loop_de_rad3_degree,na.rm=TRUE),
-            DT_avg = mean(loop_de_avg_degree,na.rm=TRUE)) %>% as.data.frame() 
-```
-
-```{r, hp df summary table}
-knitr::kable(hp_loop_summarystats) %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+            age_mean = round(mean(age_spatial_years), digits = 2),
+            age_Sd = round(sd(age_spatial_years), digits = 2),
+            AE_rad3 = round(mean(loop_ae_rad3_degree,na.rm=TRUE), digits = 2),
+            AE_avg = round(mean(loop_ae_avg_degree ,na.rm=TRUE), digits = 2),
+            PE_rad3 = round(mean(loop_pe_rad3_m,na.rm=TRUE), digits = 2),
+            PE_avg = round(mean(loop_pe_avg_m,na.rm=TRUE), digits = 2),
+            DT_rad3 = round(mean(loop_de_rad3_degree,na.rm=TRUE), digits = 2),
+            DT_avg = round(mean(loop_de_avg_degree,na.rm=TRUE), digits = 2)) %>% as.data.frame() %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "600px", height = "200")
 
 ```
 
+<br>
+<br>
 
-#### T1 adjust correlations
+#### **Total T1 HP volume**
 
-Shuying originally did an adjustment using TIV from VBM.
+##### Position Error
 
-I don't know if shuying and viasakh got the VBM for TIV the same. It looks like shuyings is multiplied by 1000x. 
-
-Due to that, I am correcting using Freesurfer TIV
-
-
-
-```{r, midlife Correct for T1v}
-
-#v contains adjusted hip
-# 1 Create function for apply to variables
-dividebyTIV <- function(x, na.rm = FALSE) (x/midlife_HP_df$eTIV)
-
-# 2 Let's correct by mutating the columns using the TIV from freesurfer
-
-midlife_HP_df_adj <- midlife_HP_df %>% mutate_at(vars(avg_t1_hipp, `Left-Hippocampus`, `Right-Hippocampus`),
-            dividebyTIV) %>% 
-  
-  # multiplying to get proportions 
-   mutate(avg_t1_hipp = avg_t1_hipp*1000,
-         `Left-Hippocampus` = `Left-Hippocampus`*1000,
-         `Right-Hippocampus` = `Right-Hippocampus`*1000)
-
-
-midlife_HP_female_df_adj <- midlife_HP_df_adj %>% filter(sex=="Female")
-
-midlife_HP_male_df_adj <- midlife_HP_df_adj %>%  filter(sex== "Male")
-
-```
-
-- I need to create a correlation matrix to house all of the results from the correlations so I can correct p values later
-
-```{r, create empty data frame for correlations }
-midlife_HP_correlations <- data.frame(matrix(ncol=9, nrow=0)) 
-```
-
-Now that things have been adjusted I need to do correlations
-
-
-##### total T1 HP
-
-
-###### position Error
+**Average**  
 
 - Position error avg is not significantly associated with t1 total hippocampus R=0.22, p=0.15
 
@@ -724,26 +1302,103 @@ Now that things have been adjusted I need to do correlations
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_pe_avg_m)) %>% mutate(analysis = "Avg_PE_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
-
-x
 ```
 
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
 
-```{r, plot midlife total hippocampus adjusted and position error average}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_avg_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+```{r, out.width="120%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
+  geom_point(aes(size=3)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Position Error at average (m)") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
 
 ```
+
 <br>
-<hr>
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_AveT1HPVol_PE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
+  geom_point(aes(size=22)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) +
+  stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE,
+             linewidth = 4)+
+    xlab("Averaged GMV Volume")+
+  ylab("Position Error at average (m)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+
+<br>
+<br>
+
+**Rad3**  
 
 - Position error rad3 is not significantly associated with t1 total hippocampus R=0.11, p=0.52
 
@@ -752,27 +1407,104 @@ x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_p
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
 ```
 
-```{r, plot midlife total hippocampus aadjusted and  position error rad3}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_pe_rad3_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
+
+```{r, out.width="120%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
+  geom_point(aes(size=3)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Position Error at Rad3 (m)") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
 
 ```
 
 <br>
 
-###### **Angular Error**
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
 
+tiff(paste0(outputdir,"/Loop_AveT1HPVol_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
+  geom_point(aes(size=22)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) +
+  stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=FALSE,
+             linewidth = 4)+
+ xlab("Averaged GMV Volume")+
+  ylab("Position Error at Rad3 (m)") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+dev.off()
+
+```
+
+<br>
+<hr>
+
+##### **Angular Error**
+
+**Average**
 - Angular error is not significantly associated with t1 total hippocampus R=0.066, p=0.67
 
 ```{r, midlife total hippocampus adjusted and angular error average}
@@ -799,8 +1531,9 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_avg_degree",
 ```
 
 <br>
-<hr>
+<br>
 
+**rad3**
 - Angular error is not significantly associated with t1 total hippocampus R=0.1, p=0.54
 
 ```{r, midlife total hippocampus adjusted and angular error rad3}
@@ -826,8 +1559,10 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_ae_rad3_degree",
 
 ```
 
+<br>
+<hr>
 
-###### **Degrees Traveled**
+##### **Degrees Traveled**
 
 - Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.17, p=0.28
 ```{r, midlife total hippocampus adjusted and DT average}
@@ -883,9 +1618,9 @@ ggscatter(midlife_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
 
 
 
-##### Left HP
+#### Left HP
 
-** position Error **
+**position Error**
 
 - Position error avg is not significantly associated with t1 left hippocampus R=0.22, p=0.16
 ```{r, midlife left hippocampus adjusted and position error average}
@@ -2188,15 +2923,15 @@ ggscatter(young_HP_df_adj, x = "avg_t1_hipp", y = "loop_de_rad3_degree",
 - PE not normal use spearman
 ```{r, young right hippocampus adjusted and position error average}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2204,15 +2939,15 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
 - not normal use spearman
 ```{r, young right hippocampus adjusted  and position error rad3}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2224,15 +2959,15 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
 - notnormal use spearman
 ```{r, young right hippocampus adjusted  and angular error average}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2241,15 +2976,15 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
 -not normal use spearman
 ```{r, young right hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2259,15 +2994,15 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
 - Degrees Traveled is not associated with T1 hippocampal volume in young adults R= - 0.21, p=0.26
 ```{r, young right hippocampus adjusted and Degrees Traveled average}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2275,15 +3010,15 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
 
 ```{r, young right hippocampus adjusted  and degrees traveled rad3}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2297,15 +3032,15 @@ ggscatter(young_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
 - PE not normal use spearman
 ```{r, young left hippocampus adjusted  and position error average}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2313,15 +3048,15 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_avg_m",
 - not normal use spearman
 ```{r, young left hippocampus adjusted and position error rad3}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2333,15 +3068,15 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_pe_rad3_m",
 - notnormal use spearman
 ```{r,young left hippocampus adjusted  and angular error average}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2350,15 +3085,15 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_avg_degree",
 -not normal use spearman
 ```{r, young left hippocampus adjusted and angular error rad3}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "spearman",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2368,15 +3103,15 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_ae_rad3_degree",
 - Degrees Traveled is not associated with T1 left hippocampal volume in young adults R= -0.18, p=0.34
 ```{r, young left hippocampus adjusted  and Degrees Traveled average}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at average (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2384,15 +3119,15 @@ ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_avg_degree",
 
 ```{r, young left hippocampus adjusted  and degrees traveled rad3}
 # Use hp data frame adjusted 
-ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+# ggscatter(young_HP_df_adj, x = "Left-Hippocampus", y = "loop_de_rad3_degree",
+#           add = "reg.line",
+#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
+#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#           conf.int = TRUE, 
+#           cor.method = "pearson",
+#           cor.coeff.args = list(label.sep = "\n"),
+#           xlab = "Averaged GMV Volume", ylab = "Degrees Traveled at aver3.0  (m)", ) +
+#     theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
@@ -2630,11 +3365,11 @@ for (ROI in FS_all_apriori) {
 ```
 
 ```{r,echo=FALSE,message=FALSE}
-
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# 
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 ##### female
@@ -2669,10 +3404,10 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 
@@ -2706,10 +3441,10 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 
@@ -2922,10 +3657,10 @@ for (ROI in schaefar_apriori_labelnames) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 <br> 
@@ -2934,25 +3669,25 @@ cor_results
 
 ```{r, All DE Apriori rad3,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_rad3[["loop_de_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_rad3[["loop_de_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -2969,25 +3704,25 @@ for (ROI in FS_all_apriori) {
 ```{r, All AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -2997,35 +3732,35 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 
  rad3 
 ```{r, fs All AE Apriori rad3,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BY", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -3035,10 +3770,10 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value, pi0=1)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value, pi0=1)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 #### Male
@@ -3046,25 +3781,25 @@ cor_results
 ```{r, male AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_male_Avg[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_male_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_male_Avg[[ROI]], z = midlife_CT_df_male_Avg[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_male_Avg[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_male_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_male_Avg[[ROI]], z = midlife_CT_df_male_Avg[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -3074,34 +3809,34 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 
 ```{r, All AE Apriori rad3,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_male_rad3[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_male_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_male_rad3[[ROI]], z = midlife_CT_df_male_rad3[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_male_rad3[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_male_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_male_rad3[[ROI]], z = midlife_CT_df_male_rad3[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -3111,35 +3846,35 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 #### female
 ```{r, fs female DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_female_Avg[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_female_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_female_Avg[[ROI]], z = midlife_CT_df_female_Avg[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# 
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_female_Avg[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_female_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_female_Avg[[ROI]], z = midlife_CT_df_female_Avg[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -3148,35 +3883,35 @@ for (ROI in FS_all_apriori) {
 ```
 
 ```{r,echo=FALSE,message=FALSE}
-
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# 
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
 
 ```{r, fs female DE Apriori rad3,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
-
-cor_results <-
-  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-
-pcorlist <- list()
-
-for (ROI in FS_all_apriori) {
-  
-  print(ROI)
-  if(!is.na(sum(midlife_CT_df_female_rad3[[ROI]])) == FALSE){
-
-    pcorlist[[ROI]] <- NA
-
-  }else{
-  pcorlist[[ROI]] <-
-    pcor.test(x = midlife_CT_df_female_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_female_rad3[[ROI]], z = midlife_CT_df_female_rad3[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
-  temp <- cbind(ROI, pcorlist[[ROI]])
-  cor_results <- rbind(cor_results, temp)
-  }
-}
+# 
+# cor_results <-
+#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+# 
+# pcorlist <- list()
+# 
+# for (ROI in FS_all_apriori) {
+#   
+#   print(ROI)
+#   if(!is.na(sum(midlife_CT_df_female_rad3[[ROI]])) == FALSE){
+# 
+#     pcorlist[[ROI]] <- NA
+# 
+#   }else{
+#   pcorlist[[ROI]] <-
+#     pcor.test(x = midlife_CT_df_female_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_female_rad3[[ROI]], z = midlife_CT_df_female_rad3[, c("age_spatial_years","EstimatedTotalIntraCranialVol")], method = "spearman")
+#   temp <- cbind(ROI, pcorlist[[ROI]])
+#   cor_results <- rbind(cor_results, temp)
+#   }
+# }
 
 # cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
 # cor_results <- arrange(cor_results,p.value)
@@ -3186,9 +3921,9 @@ for (ROI in FS_all_apriori) {
 
 ```{r,echo=FALSE,message=FALSE}
 
-qvals <- qvalue::qvalue(cor_results$p.value)
-cor_results$adj.pval <- qvals[["qvalues"]]
-cor_results <- arrange(cor_results,p.value)
-cor_results
+# qvals <- qvalue::qvalue(cor_results$p.value)
+# cor_results$adj.pval <- qvals[["qvalues"]]
+# cor_results <- arrange(cor_results,p.value)
+# cor_results
 ```
 
