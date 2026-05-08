@@ -360,26 +360,29 @@ summarize(
 ```
 
 <br>
-<hr>
 
-### ANOVA
 
-#### <span style="text-decoration:underline">Using all subjects regardless of exclusion</span>
+### ANOVA 
+
+#### <span style="text-decoration:underline">Using all subjects regardless of exclusion</span> {.tabset .tabset-pills}
 
 SO no age effect but there is a sex effect essentially replicating what shuying found in her original analysis. 
 
-**Degrees Traveled**  
+##### Degrees Traveled
 
-Here only sex is significant associated
+:::: {style="display: flex; "}
+
+:::{}
+
+**Average**  
+
+Sex is a  significant facotr mediating degrees traveled
 
 ```{r}
-
-DT_aov <- aov(loop_de_avg_degree ~ age_group * sex, data =LOOP_raw_df )
-
-summary(DT_aov)
+summary(aov(loop_de_avg_degree ~ age_group * sex, data =LOOP_raw_df))
 ```
 
-```{r }
+```{r,out.width="65%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_de_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
@@ -387,67 +390,258 @@ ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_de_avg_degree", color = "sex",
 <br>
 <br>
 
-**Angular Error**
+:::
+
+:::{}
+**Radius 3**
+
+Sex is a  significant factor mediating degrees traveled
+
+```{r}
+summary(aov(loop_de_rad3_degree ~ age_group * sex, data =LOOP_raw_df))
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_de_rad3_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+
+:::
+
+::::
+
+##### Angular Error
+
+:::: {style="display: flex;"}
+
+:::{}
+
+**Average**
 
 Neither sex nor age significantly predict angular error
 
 ```{r}
-
-AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =LOOP_raw_df )
-
-summary(AE_aov)
+summary(aov(loop_ae_avg_degree ~ age_group * sex, data =LOOP_raw_df))
 ```
 
-```{r, plot for 2X2 ANOVA sex,age, AE}
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_ae_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
 
 <br>
-<hr>
+<br>
 
+:::
 
-#### <span style="text-decoration:underline"> Using only those with HP or diffusion scan and excluding subjects</span>
+:::{}
 
+**Radius 3**
 
-**Degrees Traveled**   
+Neither sex nor age significantly predict angular error
 
-Here only sex is significantly associated
-```{r }
-
-DT_aov <- aov(loop_de_avg_degree ~ age_group * sex, data =all_cleaned_loop )
-
-summary(DT_aov)
+```{r}
+summary(aov(loop_ae_rad3_degree ~ age_group * sex, data =LOOP_raw_df))
 ```
 
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_ae_rad3_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
 
-```{r, plot for 2X2 ANOVA sex,age, DT }
+:::
+
+::::
+
+
+
+##### Position Error  
+
+:::: {style="display: flex;"}
+
+:::{}
+
+**Average**
+
+Sex is a  significant facotr mediating degrees traveled
+
+```{r}
+summary(aov(loop_pe_avg_m ~ age_group * sex, data =LOOP_raw_df))
+```
+
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_pe_avg_m", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+<br>
+
+:::
+
+:::{}
+
+**Radius 3**
+Niether sex nor age predict position error in radius 3
+```{r}
+summary(aov(loop_pe_rad3_m ~ age_group * sex, data =LOOP_raw_df))
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(LOOP_raw_df, x = "age_group", y = "loop_pe_rad3_m", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+:::
+
+::::
+
+
+
+
+#### <span style="text-decoration:underline"> Using only those with HP or diffusion scan and excluding subjects</span> {.tabset .tabset-pills}
+
+
+##### Degrees Traveled
+
+:::: {style="display: flex; "}
+
+:::{}
+**Average**  
+
+No significant predictors
+
+```{r}
+summary(aov(loop_de_avg_degree ~ age_group * sex, data =all_cleaned_loop))
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_de_avg_degree", color = "sex",
           palette = c("#00AFBB", "#E7B800"))
 ```
 
-```{r, 2X2 ANOVA sex,age, AE }
+<br>
 
-AE_aov <- aov(loop_ae_avg_degree ~ age_group * sex, data =all_cleaned_loop )
+:::
 
-summary(AE_aov)
+:::{}
+
+**Radius 3**
+
+Sex is a  significant factor mediating degrees traveled
+
+```{r}
+summary(aov(loop_de_rad3_degree ~ age_group * sex, data =all_cleaned_loop))
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_de_rad3_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+:::
+
+::::
+
+
+##### Angular Error
+:::: {style="display: flex;"}
+
+:::{}
+**Average**
+
+Neither sex nor age significantly predict angular error
+
+```{r}
+summary(aov(loop_ae_avg_degree ~ age_group * sex, data =all_cleaned_loop))
+```
+
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_ae_avg_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
 ```
 
 <br>
-<hr>
+
+:::
+
+:::{}
+
+**Radius 3**
+
+Neither sex nor age significantly predict angular error
+
+```{r}
+summary(aov(loop_ae_rad3_degree ~ age_group * sex, data =all_cleaned_loop))
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_ae_rad3_degree", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+:::
+::::
 
 
 
-### T test
 
-**Degrees traveled**  
+##### Position Error
+
+:::: {style="display: flex; "}
+:::{}
+**Average**
+
+Age group is a significant predictor 
+```{r}
+summary(aov(loop_pe_avg_m ~ age_group * sex, data =all_cleaned_loop))
+```
+
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_pe_avg_m", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+<br>
+
+:::
+
+:::{}
+
+**Radius 3**  
+
+Neither sex nor age predict position error in radius 3
+```{r}
+summary(aov(loop_pe_rad3_m ~ age_group * sex, data =all_cleaned_loop))
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+ggboxplot(all_cleaned_loop, x = "age_group", y = "loop_pe_rad3_m", color = "sex",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+:::
+
+::::
+
+
+
+### T test {.tabset .tabset-pills}
+
+
+#### Degrees traveled
+
+:::: {style="display: flex;"}
+
+:::{}
+**Average**
+
 - No significant difference between young and midlife adults (p = 0.6572)
 ```{r}
 t.test(midlife_cleaned_df$loop_de_avg_degree, young_cleaned_df$loop_de_avg_degree, paired=FALSE)
 ```
 <br>
 
-```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 all_cleaned_loop %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
@@ -462,7 +656,7 @@ all_cleaned_loop %>% ggplot(aes(
   geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
   #geom_point(size=2) +
     scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
-  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Age Group") +
   ylab("Average Degrees Traveled") +
   theme(
@@ -533,21 +727,135 @@ all_cleaned_loop %>% ggplot(aes(
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
 <br>
 
-**Angular Error**
+:::
+
+:::{}
+
+**Radius 3**
+
+- No significant difference between young and midlife adults (p = 0.5165)
+```{r}
+t.test(midlife_cleaned_df$loop_de_rad3_degree, young_cleaned_df$loop_de_rad3_degree, paired=FALSE)
+```
+<br>
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_de_rad3_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Age Group") +
+  ylab("Radius 3 Degrees Traveled") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+tiff(paste0(outputdir,"/loop_ageDiff_rad3DT_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_de_rad3_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_x_discrete(labels = c("Young", "Midlife")) +
+  xlab("Age group") +
+  ylab("Radius 3 Degrees traveled")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+<br>
+<br>
+
+:::
+
+::::
+
+#### Angular Error
+
+:::: {style="display: flex;"}
+:::{}
+**Average**  
+
 - No significant difference between young and midlife adults (p = 0.078)
 ```{r, warning=FALSE}
 wilcox.test(midlife_cleaned_df$loop_ae_avg_degree, young_cleaned_df$loop_ae_avg_degree, paired=FALSE)
 ```
 <br>
 
-```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 all_cleaned_loop %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
@@ -633,21 +941,130 @@ all_cleaned_loop %>% ggplot(aes(
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
 <br>
+:::
 
+:::{}
 
-**Position Error**
-- Position Error is significantly different between young and midlife (p = 0.007)
+**Radius 3**  
+- No significant difference between young and midlife adults (p = 0.0876)
+```{r, warning=FALSE}
+wilcox.test(midlife_cleaned_df$loop_ae_rad3_degree, young_cleaned_df$loop_ae_rad3_degree, paired=FALSE)
+```
+<br>
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_ae_rad3_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+  xlab("Age Group") +
+  ylab("Radius 3 Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_ageDiff_rad3AE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_ae_rad3_degree,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+  scale_x_discrete(labels = c("Young", "Midlife")) +
+  xlab("Age group") +
+  ylab("Radius 3Angular Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      #hjust = -0.75,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+:::
+::::
+
+#### Position Error
+
+:::: {style="display: flex;"}
+:::{}
+
+**Average**  
+
+  - Position Error is significantly different between young and midlife (p = 0.007)
 ```{r, warning=FALSE}
 wilcox.test(midlife_cleaned_df$loop_pe_avg_m, young_cleaned_df$loop_pe_avg_m, paired=FALSE)
 ```
 <br>
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+```{r, out.width="80%",echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 
 all_cleaned_loop %>% ggplot(aes(
   x = factor(age_group, levels = c("Young", "Midlife")),
@@ -662,7 +1079,7 @@ all_cleaned_loop %>% ggplot(aes(
   geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
   #geom_point(size=2) +
     scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
-  scale_y_continuous(breaks = seq(0, 3, by = 0.25)) +
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
   xlab("Age Group") +
   ylab("Position Error") +
   theme(
@@ -706,7 +1123,7 @@ all_cleaned_loop %>% ggplot(aes(
                   color="black") +
   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
-  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
   scale_x_discrete(labels = c("Young", "Midlife")) +
   xlab("Age group") +
   ylab("Position Error")  +
@@ -733,18 +1150,128 @@ all_cleaned_loop %>% ggplot(aes(
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
+:::
+
+:::{}
+
+**Radius 3**  
+
+  - Not significanlty different
+
+```{r, warning=FALSE}
+wilcox.test(midlife_cleaned_df$loop_pe_rad3_m, young_cleaned_df$loop_pe_rad3_m, paired=FALSE)
+```
+<br>
+
+```{r, out.width="80%",echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_pe_rad3_m,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#7d4c5a", "#997C5C")) +
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Radius 3 Position Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_ageDiff_rad3PE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+all_cleaned_loop %>% ggplot(aes(
+  x = factor(age_group, levels = c("Young", "Midlife")),
+  y = loop_pe_rad3_m,
+  fill = age_group
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  scale_x_discrete(labels = c("Young", "Midlife")) +
+  xlab("Age group") +
+  ylab("Position Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      #hjust = -0.75,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+:::
+::::
+
 <br>
 <br>
-<hr>
 
 
-### sex in midlife comparison
 
-**Position Error**
+### sex in midlife comparison {.tabset .tabset-pills}
+
+#### Position Error
+
+:::: {style="display: flex;"}
+:::{}
+
+**Average**
 - No significant difference between young and midlife adults (p = 0.33)
 ```{r}
 wilcox.test(mid_female_cleaned_df$loop_pe_avg_m, mid_male_cleaned_df$loop_pe_avg_m, paired=FALSE)
@@ -752,7 +1279,7 @@ wilcox.test(mid_female_cleaned_df$loop_pe_avg_m, mid_male_cleaned_df$loop_pe_avg
 <br>
 
 <!-- plot for html below -->
-```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_cleaned_df %>% ggplot(aes(
   x = factor(sex, levels = c("Male", "Female")),
@@ -838,21 +1365,129 @@ midlife_cleaned_df %>% ggplot(aes(
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
-
+invisible(dev.off())
 ```
 
 <br>
 <br>
+:::
+:::{}
 
+**Radius 3**
 
-**Degrees traveled **
+- No significant difference between midlife men and women (p = 0.51)
+```{r}
+wilcox.test(mid_female_cleaned_df$loop_pe_rad3_m, mid_male_cleaned_df$loop_pe_rad3_m, paired=FALSE)
+```
+<br>
+
+<!-- plot for html below -->
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_pe_rad3_m,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#a57c8a", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  xlab("sex") +
+  ylab("Position Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_midlife_sexDiff_rad3PE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_pe_rad3_m,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  scale_x_discrete(labels = c("Men", "Women")) +
+  xlab("sex") +
+  ylab("Position Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+:::
+::::
+
+#### Degrees traveled 
+
+:::: {style="display: flex;"}
+:::{}
+
+**Average**
+
 - Significant difference between midlife men and women (p = 0.029)
 ```{r}
 wilcox.test(mid_female_cleaned_df$loop_de_avg_degree, mid_male_cleaned_df$loop_de_avg_degree, paired=FALSE)
 ```
 
-```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_cleaned_df %>% ggplot(aes(
   x = factor(sex, levels = c("Male", "Female")),
@@ -938,22 +1573,132 @@ midlife_cleaned_df %>% ggplot(aes(
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
 <br>
 
+:::
 
-**Angular Error**
+:::{}
+
+**Radius 3**
+
+Men and women are significantly different P = 0.005672
+```{r}
+wilcox.test(mid_female_cleaned_df$loop_de_rad3_degree, mid_male_cleaned_df$loop_de_rad3_degree, paired=FALSE)
+```
+
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_de_rad3_degree,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#a57c8a", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  xlab("sex") +
+  ylab("Degrees Traveled") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_midlife_sexDiff_Rad3DE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_de_rad3_degree,
+  fill = sex
+))  + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_x_discrete(labels = c("Men", "Women")) +
+  xlab("sex") +
+  ylab("Degrees Traveled")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+:::
+::::
+
+#### Angular Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**  
+
 - No significant difference (p = 0.49)
 ```{r}
 wilcox.test(mid_female_cleaned_df$loop_ae_avg_degree, mid_male_cleaned_df$loop_ae_avg_degree, paired=FALSE)
 ```
 
 
-```{r,out.width="120%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_cleaned_df %>% ggplot(aes(
   x = factor(sex, levels = c("Male", "Female")),
@@ -1039,18 +1784,122 @@ midlife_cleaned_df %>% ggplot(aes(
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
-<br>
+<br> 
+
+:::
+
+:::{}
+
+**Radius3**
+
+- No significant difference (p = 0.675)
+```{r}
+wilcox.test(mid_female_cleaned_df$loop_ae_rad3_degree, mid_male_cleaned_df$loop_ae_rad3_degree, paired=FALSE)
+```
 
 
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_ae_rad3_degree,
+  fill = sex
+)) + geom_boxplot(width = 0.5,
+                  fatten = 1,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  #geom_jitter(width = 0.3, size = 8) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .2),size=2)+
+  #geom_point(size=2) +
+    scale_fill_manual(values = c("#a57c8a", "#2f3c31")) +
+  scale_y_continuous(breaks = seq(0, 150, by = 25))  +
+  xlab("sex") +
+  ylab("Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      #hjust = -2,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1 , 1, 1, "cm"),
+  )
+```
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+
+tiff(paste0(outputdir,"/loop_midlife_sexDiff_Rad3AE_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_cleaned_df %>% ggplot(aes(
+  x = factor(sex, levels = c("Male", "Female")),
+  y = loop_ae_rad3_degree,
+  fill = sex
+))  + geom_boxplot(width = 0.5,
+                  fatten = 0,
+                  outliers = FALSE,
+                  linewidth = 2,
+                  color="black") +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+  scale_y_continuous(breaks = seq(0, 3.5, by = 0.25)) +
+  scale_x_discrete(labels = c("Men", "Women")) +
+  xlab("sex") +
+  ylab("Angular Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+:::
+
+::::
 
 <br>
 <hr>
 
-## Hippocampal Volume {.tabset .tabset-pills}
+## Hippocampal Volume 
 
 -  Need to figure out how many comparisons are included to use the BY correction
 
@@ -1091,8 +1940,7 @@ data.frame(c(
 
 ```
 
-<br>
-<br>
+
 
 <!-- Creating HP specific Dataframe : midlife_HP_df -->
 <!-- Total N - 43  -->
@@ -1290,25 +2138,29 @@ midlife_HP_df  %>%
 <br>
 <br>
 
-#### **Total T1 HP volume**
+#### Total T1 HP volume {.tabset .tabset-pills}
 
 ##### Position Error
+
+:::: {style="display: flex;"}
+
+:::{} 
 
 **Average**  
 
 - Position error avg is not significantly associated with t1 total hippocampus R=0.22, p=0.15
 
-```{r, midlife total hippocampus aadjusted and position error average}
+```{r,  warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_pe_avg_m)) %>% mutate(analysis = "Avg_PE_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 ```
 
 ```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 ```
 
-```{r, out.width="120%"}
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
   geom_point(aes(size=3)) +
@@ -1318,6 +2170,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 150, by = 25)) +
   xlab("Averaged GMV Volume")+
   ylab("Position Error at average (m)") +
@@ -1351,7 +2204,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
 
 <br>
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1HPVol_PE_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -1365,6 +2218,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
              color="Black",
              se=FALSE,
              linewidth = 4)+
+    stat_cor(method = "pearson")+
     xlab("Averaged GMV Volume")+
   ylab("Position Error at average (m)") +
   theme(
@@ -1390,19 +2244,22 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 
 <br>
 <br>
+:::
+:::{}
+
 
 **Rad3**  
 
 - Position error rad3 is not significantly associated with t1 total hippocampus R=0.11, p=0.52
 
-```{r, midlife total hippocampus aadjusted and  position error rad3}
+```{r,  warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_pe_rad3_m)) %>% mutate(analysis = "rad3_PE_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
@@ -1410,10 +2267,10 @@ midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 ```
 
 ```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 ```
 
-```{r, out.width="120%"}
+```{r, out.width="80%",warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
   geom_point(aes(size=3)) +
@@ -1423,6 +2280,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson") +
   scale_y_continuous(breaks = seq(0, 150, by = 25)) +
   xlab("Averaged GMV Volume")+
   ylab("Position Error at Rad3 (m)") +
@@ -1456,7 +2314,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
 
 <br>
 
-```{r,echo=FALSE}
+```{r,eecho=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1HPVol_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -1470,6 +2328,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
              color="Black",
              se=FALSE,
              linewidth = 4)+
+  stat_cor(method = "pearson")+
  xlab("Averaged GMV Volume")+
   ylab("Position Error at Rad3 (m)") +
   theme(
@@ -1495,31 +2354,38 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
-<br>
-<hr>
+:::
+::::
 
-##### **Angular Error**
+##### Angular Error {.tabset .tabset-pills}
 
-**Average**
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**  
+
 - Angular error is not significantly associated with t1 total hippocampus R=0.066, p=0.67
 
-```{r, midlife total hippocampus adjusted and angular error average}
+```{r, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_ae_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_AE_T1total") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
 x <- x[,c(1,2,3,7,8,9,4,5,6)]
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 ```
 
+<br>
+
 ```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 ```
 
 
-```{r, out.width="120%"}
+```{r,out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_avg_degree)) +
   geom_point(aes(size=3)) +
@@ -1529,6 +2395,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_avg_degree)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 150, by = 25)) +
   xlab("Averaged GMV Volume")+
   ylab("Average Angular Error") +
@@ -1576,6 +2443,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_avg_degree)) +
              color="Black",
              se=FALSE,
              linewidth = 4)+
+  stat_cor(method = "pearson")+
    xlab("Averaged GMV Volume")+
   ylab("Average Angular Error") +
   theme(
@@ -1601,18 +2469,22 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_avg_degree)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
+
 
 ```
 
 
 <br>
 <br>
+:::
+:::{}
 
-**rad3**
+**rad3**  
+
 - Angular error is not significantly associated with t1 total hippocampus R=0.1, p=0.54
 
-```{r}
+```{r,warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_ae_rad3_degree)) %>% mutate(analysis = "rad3_AE_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
@@ -1621,11 +2493,11 @@ midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
 
 ```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 ```
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
   geom_point(aes(size=3)) +
@@ -1635,6 +2507,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 150, by = 25)) +
   xlab("Averaged GMV Volume")+
   ylab("Angular Error at Rad3 (m)") +
@@ -1668,7 +2541,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
 
 <br>
 
-```{r,echo=FALSE}
+```{r,warning=FALSE, echo=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1HPVol_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -1682,6 +2555,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
              color="Black",
              se=FALSE,
              linewidth = 4)+
+  stat_cor(method = "pearson")+
    xlab("Averaged GMV Volume")+
   ylab("Angular Error at Rad3 (m)") +
   theme(
@@ -1707,22 +2581,26 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
+
 
 ```
 
+:::
+::::
 
 
 
-<br>
-<hr>
+##### Degrees Traveled {.tabset .tabset-pills}
 
-##### Degrees Traveled
+:::: {style="display: flex;"}
+
+:::{} 
 
 **Average**
 
 - Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.17, p=0.28
-```{r, midlife total hippocampus adjusted and DT average}
+```{r, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_avg_degree)) %>% mutate(analysis = "Avg_DT_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
@@ -1731,11 +2609,11 @@ midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
 
 ```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 ```
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
   geom_point(aes(size=3)) +
@@ -1745,6 +2623,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 500, by = 50)) +
   xlab("Averaged GMV Volume")+
   ylab("Average Degrees Traveled") +
@@ -1778,7 +2657,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
 
 <br>
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1HPVol_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -1791,6 +2670,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 500, by = 50)) +
   xlab("Averaged GMV Volume")+
   ylab("Average Degrees Traveled")  +
@@ -1817,7 +2697,8 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
+
 
 ```
 
@@ -1825,11 +2706,15 @@ dev.off()
 <br>
 <br>
 
-**rad3**
-- Angular error is not significantly associated with t1 total hippocampus R=0.1, p=0.54
+:::
 
-```{r}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_ae_rad3_degree)) %>% mutate(analysis = "rad3_AE_T1total")
+:::{}
+
+**rad3**
+
+
+```{r,warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_rad3_degree)) %>% mutate(analysis = "rad3_AE_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
@@ -1837,11 +2722,11 @@ midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
 
 ```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 ```
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
   geom_point(aes(size=3)) +
@@ -1851,6 +2736,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 500, by = 50)) +
   xlab("Averaged GMV Volume")+
   ylab(" Degrees Traveled Rad3") +
@@ -1884,7 +2770,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
 
 <br>
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1HPVol_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -1898,6 +2784,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
              color="Black",
              se=TRUE,
              size=4)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 500, by = 50)) +
   xlab("Averaged GMV Volume")+
   ylab(" Average Degrees Traveled ") +
@@ -1924,141 +2811,37 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
-
-
-<br>
-<hr>
-
-- degrees traveled is not significantly associated with t1 total hippocampus R=-0.079, p=0.63
-
-```{r,midlife total hippocampus adjusted and degrees traveled error rad3}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_T1total") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
-x <- x[,c(1,2,3,7,8,9,4,5,6)]
-
-midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
-
-```
+:::
+::::
 
 
 
-```{r}
-x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
-```
-
-
-```{r, out.width="120%"}
-
-midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
-  geom_point(aes(size=3)) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled") +
-  theme(
-    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
-    axis.text.x = element_text(
-      size = 18,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 18,
-      color = "black",
-      hjust = 1,
-      face = "bold"
-    ),
-    axis.ticks.y = element_line(color = "black",
-                                linewidth =1 ),
-    #axis.ticks.x = element_blank(),
-    axis.ticks.length = unit(0.25, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 1),
-    legend.position = "none",
-    plot.margin = margin(1,1, 1, 1, "cm"),
-  )
-  
-
-```
-
-<br>
-
-```{r,echo=FALSE}
-# Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Loop_AveT1HPVol_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
-  geom_point(aes(size=22)) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) +
-  stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=FALSE,
-             linewidth = 4)+
-   xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-dev.off()
-
-```
-
-<br>
-<hr>
-
-
-
-#### Left HP
+#### Left HP {.tabset .tabset-pills}
 
 ##### Position Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
 **Avg**
 
 - Position error avg is not significantly associated with t1 left hippocampus R=0.22, p=0.16
 
 
-
 ```{r}
-broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_pe_avg_m, method = "spearman")) %>% mutate(analysis = "Avg_PE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_pe_avg_m, method = "spearman")) %>% mutate(analysis = "Avg_PE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 
 
 ```
 
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%",warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_avg_m)) +
   geom_point(aes(size=3)) +
@@ -2071,6 +2854,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_avg_m)) +
   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
   xlab("Averaged GMV Volume")+
   ylab("Average Position Error") +
+  stat_cor(method = "pearson")+
   theme(
     axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
@@ -2101,7 +2885,9 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_avg_m)) +
 
 <br>
 
-```{r,echo=FALSE}
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1_LeftHPVol_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -2140,24 +2926,27 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_avg_m)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
 
+:::
+:::{}
+
 **Rad3**
 
 - 
-```{r}
-broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_pe_rad3_m, method = "spearman")) %>% mutate(analysis = "Rad3_PE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```{r,warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_pe_rad3_m, method = "spearman")) %>% mutate(analysis = "Rad3_PE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 
 
 ```
 
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%",warning=FALSE}
 
 midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_rad3_m)) +
   geom_point(aes(size=3)) +
@@ -2167,6 +2956,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_rad3_m)) +
               geom = "smooth",
              color="Black",
              se=TRUE)+
+  stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
   xlab("Averaged GMV Volume")+
   ylab(" Position Error Rad3 (m) ") +
@@ -2200,7 +2990,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_rad3_m)) +
 
 
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1_LeftHPVol_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -2239,25 +3029,29 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_rad3_m)) +
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
-<br>
-<hr>
+:::
+::::
 
 ##### Angular Error
 
+:::: {style="display: flex;"}
+
+:::{} 
+
 **Avg**
-```{r}
-broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_ae_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_AE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```{r,warning=FALSE}
+broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_ae_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_AE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 
 
 ```
 
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%",warning=FALSE}
 
 midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_avg_degree)) +
   geom_point(aes(size=3)) +
@@ -2267,6 +3061,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_avg_degree))
               geom = "smooth",
              color="Black",
              se=TRUE)+
+    stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 125, by = 25)) +
   xlab("Averaged GMV Volume")+
   ylab(" Angular Error Avg (m) ") +
@@ -2300,7 +3095,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_avg_degree))
 
 
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1_LeftHPVol_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -2339,22 +3134,24 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_avg_degree))
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
+:::
+:::{}
 
 **Rad3**
-```{r}
-broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_ae_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_AE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
 
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_ae_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_AE_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 
 ```
 
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%",warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_rad3_degree)) +
   geom_point(aes(size=3)) +
@@ -2364,6 +3161,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_rad3_degree)
               geom = "smooth",
              color="Black",
              se=TRUE)+
+    stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 125, by = 25)) +
   xlab("Averaged GMV Volume")+
   ylab(" Angular Error rad3 (m) ") +
@@ -2397,7 +3195,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_rad3_degree)
 
 
 
-```{r,echo=FALSE}
+```{r,warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
 
 tiff(paste0(outputdir,"/Loop_AveT1_LeftHPVol_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
@@ -2436,25 +3234,31 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_rad3_degree)
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
 
+:::
+::::
 
 ##### Degrees Traveled
+:::: {style="display: flex;"}
+
+:::{} 
+
 **Average**
-**Avg**
+
 ```{r}
-broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_de_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_DT_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_de_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_DT_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 
 
 ```
 
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%"}
 
 midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_avg_degree)) +
   geom_point(aes(size=3)) +
@@ -2464,6 +3268,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_avg_degree))
               geom = "smooth",
              color="Black",
              se=TRUE)+
+    stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
   ylab(" Degrees Traved  Avg ") +
@@ -2536,22 +3341,24 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_avg_degree))
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
 
 ```
 
 <br>
+:::
+:::{}
 
 **Rad3**
 ```{r}
-broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+broom::tidy(cor.test(midlife_HP_df_adj$`Left-Hippocampus`,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_LeftHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "200")
 
 
 ```
 
 
 
-```{r, out.width="120%"}
+```{r, out.width="80%"}
 
 midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_rad3_degree)) +
   geom_point(aes(size=3)) +
@@ -2561,6 +3368,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_rad3_degree)
               geom = "smooth",
              color="Black",
              se=TRUE)+
+    stat_cor(method = "pearson")+
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
   ylab("  Degrees Traved  rad3 ") +
@@ -2633,299 +3441,1312 @@ midlife_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_rad3_degree)
     legend.position = "none",
     plot.margin = margin(2,2, 2, 2, "cm"),
   )
-dev.off()
+invisible(dev.off())
+
+```
+
+:::
+::::
+
+
+#### Right HP {.tabset .tabset-pills}
+
+##### Position Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+Right hippocampus is not associated with Loop PE average
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Right-Hippocampus`,midlife_HP_df_adj$loop_pe_avg_m, method = "spearman")) %>% mutate(analysis = "Avg_PE_RightHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+
+```
+
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_avg_m)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Position Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_RightHPVol_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_avg_m)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Position Error")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+<br>
+:::
+:::{}
+
+
+**Rad3**
+
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Right-Hippocampus`,midlife_HP_df_adj$loop_pe_rad3_m, method = "spearman")) %>% mutate(analysis = "rad3_PE_RightHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+
+```
+
+
+
+```{r, out.width="75%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_rad3_m)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Position Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_RightHPVol_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_rad3_m)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Position Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+<br>
+:::
+::::
+
+
+
+##### Angular Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Right-Hippocampus`,midlife_HP_df_adj$loop_ae_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_AE_RightHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+
+```
+
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_avg_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_RightHPVol_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_avg_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Angular Error")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+<br>
+:::
+:::{}
+
+
+**Rad3**
+
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Right-Hippocampus`,midlife_HP_df_adj$loop_ae_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_AE_RightHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+
+```
+
+
+
+```{r, out.width="75%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_rad3_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_RightHPVol_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_rad3_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Angular Error")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+<br>
+:::
+::::
+
+
+##### Degrees Traveled
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Right-Hippocampus`,midlife_HP_df_adj$loop_de_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_DT_RightHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+
+```
+
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_de_avg_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average DEgrees Traveled ") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_RightHPVol_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_de_avg_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Degrees Traveled")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
+<br>
+:::
+:::{}
+
+
+**Rad3**
+
+```{r}
+broom::tidy(cor.test(midlife_HP_df_adj$`Right-Hippocampus`,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_RightHP") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA") %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+
+
+```
+
+
+
+```{r, out.width="75%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_de_rad3_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Degrees Traveled") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 24, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 24,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_RightHPVol_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_de_rad3_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 ADegrees Traveled")  +
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
 
 ```
 
 <br>
 
+:::
+::::
 
-##### Right HP
+#### total T2 HP {.tabset .tabset-pills}
 
-
-** position Error **
-
-- Position error avg is not significantly associated with t1 Right hippocampus R=0.22, p=0.15
-```{r, midlife right hippocampus adjusted and position error average}
-# Use hp data frame adjusted 
-# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_avg_m",
-#           add = "reg.line",
-#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#           conf.int = TRUE, 
-#           cor.method = "pearson",
-#           cor.coeff.args = list(label.sep = "\n"),
-#           xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-#     theme(legend.position = "top", legend.title=element_blank()) 
-
-```
-
-- Position error rad3 is not significantly associated with t1 right hippocampus R=0.0941, p=0.57
-
-```{r, midlife right hippocampus adjusted and position error rad3}
-# Use hp data frame adjusted 
-# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_pe_rad3_m",
-#           add = "reg.line",
-#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#           conf.int = TRUE, 
-#           cor.method = "pearson",
-#           cor.coeff.args = list(label.sep = "\n"),
-#           xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-#     theme(legend.position = "top", legend.title=element_blank()) 
-
-```
-
-
-<br>
-
-** Angular Error**
-
-- Angular error is not significantly associated with t1 right hippocampus R=0.029, p=0.062
-
-```{r, midlife right hippocampus adjusted and angular error average}
-# Use hp data frame adjusted 
-# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_avg_degree",
-#           add = "reg.line",
-#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#           conf.int = TRUE, 
-#           cor.method = "pearson",
-#           cor.coeff.args = list(label.sep = "\n"),
-#           xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
-#     theme(legend.position = "top", legend.title=element_blank()) 
-
-```
-
-- Angular error is not significantly associated with t1 right hippocampus R=-0.093, p=0.58
-
-```{r, midlife right hippocampus adjusted and angular error rad3}
-# Use hp data frame adjusted 
-# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_ae_rad3_degree",
-#           add = "reg.line",
-#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#           conf.int = TRUE, 
-#           cor.method = "pearson",
-#           cor.coeff.args = list(label.sep = "\n"),
-#           xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
-#     theme(legend.position = "top", legend.title=element_blank()) 
-
-```
-
-** Degrees Traveled **
-
-- Degrees Traveled  is not significantly associated with t1 Right-Hippocampus R=-0.0182, p=0.26
-
-```{r, midlife right hippocampus adjustedand DT average}
-# Use hp data frame adjusted 
-# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_avg_degree",
-#           add = "reg.line",
-#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#           conf.int = TRUE, 
-#           cor.method = "pearson",
-#           cor.coeff.args = list(label.sep = "\n"),
-#           xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
-#     theme(legend.position = "top", legend.title=element_blank()) 
-
-```
-
-- degrees traveled is not significantly associated with t1 Right-Hippocampus R=-0.09, p=0.58
-
-```{r, midlife right hippocampus adjusted and degrees traveled error rad3}
-# Use hp data frame adjusted 
-# ggscatter(midlife_HP_df_adj, x = "Right-Hippocampus", y = "loop_de_rad3_degree",
-#           add = "reg.line",
-#           add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-#           cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#           conf.int = TRUE, 
-#           cor.method = "spearman",
-#           cor.coeff.args = list(label.sep = "\n"),
-#           xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
-#     theme(legend.position = "top", legend.title=element_blank()) 
-
-```
-
-
-##### total T2 HP
-
-###### **position Error**
+##### Position Error
 
 - Position error avg is not significantly associated with t2 total hippocampus R=0.048, p=0.82
 
-```{r,midlife total t2 hippocampus adjusted and position error average}
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+
+```{r}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_pe_avg_m)) %>% mutate(analysis = "avg_PE_T2total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
+
+```
+
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_pe_avg_m)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Position Error ") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
 
 ```
 
 
-```{r, Plot midlife total t2 hippocampus adjusted and position error average}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_pe_avg_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_T2totalhp_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp,y = loop_pe_avg_m)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Position Error")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
 
 ```
 
 <br>
+:::
+:::{}
 
-- Position error rad3 is not significantly associated with t2 total hippocampus R=-0.11, p=0.61
 
+**Rad3**
 
-```{r, midlife total t2 hippocampus adjusted and position error rad3}
+```{r}
 x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_pe_rad3_m)) %>% mutate(analysis = "rad3_PE_T2total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
+
+```
+
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_pe_rad3_m)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Position Error ") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
 
 ```
 
 
-```{r, plot midlife total t2 hippocampus adjusted and  position error rad3}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_pe_rad3_m",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Position Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_T2totalhp_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp,y = loop_pe_rad3_m)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("rad3 Position Error")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
 
 ```
+
+
+
+:::
+::::
+
 
 <br>
 <hr>
 
-###### **Angular Error**
+##### **Angular Error**
 
-- Angular error is not significantly associated with t2 total hippocampus R=0.14, p=0.49
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
 
 
-```{r, midlife t2 total hippocampus adjusted and angular error average}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_ae_avg_degree, method = "spearman")) %>% mutate(analysis = "Avg_AE_T2total") %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
-x <- x[,c(1,2,3,7,8,9,4,5,6)]
+```{r}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_ae_avg_degree)) %>% mutate(analysis = "avg_AE_T2total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
-```
-
-```{r, plot midlife t2 total hippocampus adjusted and angular error average}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_ae_avg_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at average (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
+
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_ae_avg_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 50)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Angular Error ") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_T2totalhp_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_ae_avg_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 50)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Angular Error ")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+
 <br>
 
-- Angular error is not significantly associated with t2 total hippocampus R=-0.11, p=0.62
+:::
+:::{}
 
-```{r, midlife t2 total hippocampus adjusted and angular error rad3}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_ae_rad3_degree)) %>% mutate(analysis = "rad3_AE_T2total" )
+
+**Rad3**
+
+```{r}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_ae_rad3_degree)) %>% mutate(analysis = "rad3_AE_T2total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
 
 ```
 
-```{r, plot midlife t2 total hippocampus adjusted and angular error rad3}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_ae_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "Angular Error at aver3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_ae_rad3_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 50)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Angular Error ") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
 
 ```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_T2totalhp_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_ae_rad3_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 50)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Angular Error ")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+:::
+::::
 
 <br>
 <hr>
 
-###### **Degrees Traveled**
+##### **Degrees Traveled**
 
 
 - Degrees Traveled  is significantly associated with t2 total hippocampus R=-0.053, p=0.0049
 
-```{r,  midlife t2 total hippocampus adjusted and DT average}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_avg_degree)) %>% mutate(analysis = "Avg_DT_T2total" )
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+
+```{r}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_avg_degree)) %>% mutate(analysis = "avg_DT_T2total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
+
+```
+
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "50px", height = "100")
+```
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_de_avg_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Degrees Traveled") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
 
 ```
 
 
-```{r,plot midlife t2 total hippocampus adjusted and DT average}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_avg_degree",  size=4,
-          add = "reg.line", color = "#7d4c5a",
-          add.params = list(color = "#7d4c5a", fill = "#806d71"), # Customize reg. line
-          #cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          #cor.method = "pearson",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "degrees traveled  at average (m)", ) +
-     geom_hline(yintercept=360, linetype="dashed", color = "#414143", size=1) +
-    theme(legend.position = "top", legend.title=element_blank()) 
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_T2totalhp_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_de_avg_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Degrees Traveled")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
 
 ```
+
 <br>
 
-- degrees traveled is  significantly associated with t2 total hippocampus R=-0.67, p=0.00061
+:::
+:::{}
 
-```{r, midlife t2 total hippocampus adjusted and degrees traveled error rad3}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_rad3_degree, method = "spearman")) %>% mutate(analysis = "rad3_DT_T2total" )  %>% mutate(parameter = "NA", conf.low= "NA", conf.high= "NA")
 
-x <- x[,c(1,2,3,7,8,9,4,5,6)]
+**Rad3**
+
+```{r}
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t2_total_hipp,midlife_HP_df_adj$loop_de_rad3_degree)) %>% mutate(analysis = "rad3_AE_T2total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
-x
-```
-
-
-```{r, plot midlife t2 total hippocampus adjusted and degrees traveled error rad3}
-# Use hp data frame adjusted 
-ggscatter(midlife_HP_df_adj, x = "avg_t2_total_hipp", y = "loop_de_rad3_degree",
-          add = "reg.line",
-          add.params = list(color = "black", fill = "lightgray"), # Customize reg. line
-          cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-          conf.int = TRUE, 
-          cor.method = "spearman",
-          cor.coeff.args = list(label.sep = "\n"),
-          xlab = "Averaged GMV Volume", ylab = "degrees traveled at 3.0  (m)", ) +
-    theme(legend.position = "top", legend.title=element_blank()) 
 
 ```
 
-##### CA1
+```{r}
+x %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "200")
+```
+
+
+```{r, out.width="80%"}
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_de_rad3_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Degrees Traveled ") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 1810,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 10,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+```{r,echo=FALSE}
+# Use this for exporting tiff for illustrator
+
+tiff(paste0(outputdir,"/Loop_T2totalhp_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_de_rad3_degree)) +
+  geom_point(size=18) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Rad3 Degrees Traveled ")+
+  theme(
+    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+    axis.text.x = element_text(
+      size = 45,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 45,
+      color = "black",
+      hjust = 2,
+      face = "bold"
+    ),
+    axis.ticks = element_line(color = "black",
+                                linewidth =2 ),
+    axis.ticks.length = unit(0.75, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 3),
+    legend.position = "none",
+    plot.margin = margin(2,2, 2, 2, "cm"),
+  )
+invisible(dev.off())
+
+```
+:::
+::::
+
+#### CA1 {.tabset .tabset-pills}
 
 **Degrees Traveled**
 
@@ -2984,7 +4805,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca1", y = "loop_de_rad3_degree"
 
 ```
 
-##### CA23
+#### CA23 {.tabset .tabset-pills}
 
 - Degrees Traveled  is significantly associated with ca23 R=-0.54, p=0.0047
 
@@ -3043,7 +4864,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_ca23", y = "loop_de_rad3_degree
 ```
 
 
-##### DG
+#### DG {.tabset .tabset-pills}
 
  Degrees Traveled  is significantly associated with DG R=-0.46, p=0.017
 
@@ -3340,7 +5161,7 @@ ggscatter(midlife_HP_df_adj, x = "t2hipp_vol_avg_prc", y = "loop_de_rad3_degree"
 ```
 
 
-#### Summary
+#### Summary {.tabset .tabset-pills}
 
 ```{r, full corrleation results for all variables}
 
