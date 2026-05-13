@@ -11967,7 +11967,8 @@ invisible(dev.off())
 
 ## Cortical Thickness 
 
-### DK atlas 
+### Midlife
+#### DK atlas 
 
 The DKT atlas i used with freesurfer 
 - First i need to create a few cortical thickness data frames
@@ -12048,11 +12049,11 @@ midlife_CT_df_female_rad3 <-midlife_CT_df_rad3 %>% filter(sex==0)
 
 ```
 
-#### <span style="text-decoration:underline">Full midlife sample</span> {.tabset .tabset-pills}
+##### <span style="text-decoration:underline">Full midlife sample</span> {.tabset .tabset-pills}
 
 Here I'm using the full average of the apriori regions so left and right combined 
 
-##### Position Error
+###### Position Error
 
 :::: {style="display: flex;"}
 
@@ -12136,7 +12137,7 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-##### Angular Error
+###### Angular Error
 
 :::: {style="display: flex;"}
 
@@ -12218,7 +12219,7 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-##### degrees traveled 
+###### degrees traveled 
 
 :::: {style="display: flex;"}
 
@@ -12302,9 +12303,9 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-#### <span style="text-decoration:underline">Men</span> {.tabset .tabset-pills}
+##### <span style="text-decoration:underline">Men</span> {.tabset .tabset-pills}
 
-##### Position Error
+###### Position Error
 
 :::: {style="display: flex;"}
 
@@ -12388,7 +12389,7 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-##### Angular Error
+###### Angular Error
 
 :::: {style="display: flex;"}
 
@@ -12470,7 +12471,7 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-##### degrees traveled 
+###### degrees traveled 
 
 :::: {style="display: flex;"}
 
@@ -12554,8 +12555,8 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-#### <span style="text-decoration:underline">Female</span> {.tabset .tabset-pills}
-##### Position Error
+##### <span style="text-decoration:underline">Female</span> {.tabset .tabset-pills}
+###### Position Error
 
 :::: {style="display: flex;"}
 
@@ -12639,7 +12640,7 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-##### Angular Error
+###### Angular Error
 
 :::: {style="display: flex;"}
 
@@ -12721,7 +12722,7 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-##### degrees traveled 
+###### degrees traveled 
 
 :::: {style="display: flex;"}
 
@@ -12805,7 +12806,10 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 <br>
 <br> 
 
-### Schaefar
+#### Schaefar Label Names
+
+
+
 - First i need to create a few cortical thickness data frames
 ```{r, creating cortical thickness data frames}
 
@@ -12952,12 +12956,10 @@ for (label in schaefar_apriori_labelnames) {
       }
 ```
 
-#### Degrees traveled
-
 ```{r, set up scahefer dataframes}
 
 # Average
-midlife_CT_df_Avg <- midlife_schaefar_df %>% filter(loop_de_avg_degree != "NA") %>% filter(EstimatedTotalIntraCranialVol != "NA")
+midlife_CT_df_Avg <- midlife_schaefar_df %>% filter(loop_de_avg_degree != "NA") %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_SomMotA != "NA")
 midlife_CT_df_Avg$sex[midlife_CT_df_Avg$sex=="Male"] <- 1 
 midlife_CT_df_Avg$sex[midlife_CT_df_Avg$sex=="Female"] <- 0
 midlife_CT_df_Avg$sex <- as.numeric(midlife_CT_df_Avg$sex)
@@ -12967,7 +12969,7 @@ midlife_CT_df_female_Avg <-midlife_CT_df_Avg %>% filter(sex==0)
 
 #Rad3
   
-midlife_CT_df_rad3 <- midlife_schaefar_df %>% filter(loop_de_rad3_degree != "NA")
+midlife_CT_df_rad3 <- midlife_schaefar_df %>% filter(loop_de_rad3_degree != "NA") %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_SomMotA != "NA")
 midlife_CT_df_rad3$sex[midlife_CT_df_rad3$sex=="Male"] <- 1 
 midlife_CT_df_rad3$sex[midlife_CT_df_rad3$sex=="Female"] <- 0
 midlife_CT_df_rad3$sex <- as.numeric(midlife_CT_df_rad3$sex)
@@ -12978,20 +12980,194 @@ midlife_CT_df_female_rad3 <-midlife_CT_df_rad3 %>% filter(sex==0)
 
 ```
 
-##### All 
+##### span style="text-decoration:underline">All</span> {.tabset .tabset-pills}
+
+###### Position Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
 **Average**
-```{r, All DT schaefar network Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 cor_results <-
   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
 
 pcorlist <- list()
 
- 
 for (ROI in schaefar_apriori_labelnames) {
   
   print(ROI)
+  if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = midlife_CT_df_Avg[["loop_pe_avg_m"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+:::
+:::{}
+
+**Rad3**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
   
+  print(ROI)
+  if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = midlife_CT_df_rad3[["loop_pe_rad3_m"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+::::
+:::
+
+<br>
+<br> 
+
+###### Angular Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
+  print(ROI)
+  if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = midlife_CT_df_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+:::
+:::{}
+
+**Rad3**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
+  print(ROI)
+  if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = midlife_CT_df_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+::::
+:::
+
+<br>
+<br> 
+
+###### Degrees traveled
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
+  print(ROI)
   if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
 
     pcorlist[[ROI]] <- NA
@@ -13004,33 +13180,30 @@ for (ROI in schaefar_apriori_labelnames) {
   }
 }
 
-# cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
-# cor_results <- arrange(cor_results,p.value)
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
 
 
 ```
 
-```{r,echo=FALSE,message=FALSE}
-
-# qvals <- qvalue::qvalue(cor_results$p.value)
-# cor_results$adj.pval <- qvals[["qvalues"]]
-# cor_results <- arrange(cor_results,p.value)
-# cor_results%>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px")
+```{r,message=FALSE}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
 ```
 
-<br> 
+:::
+:::{}
 
 **Rad3**
 
-```{r, All DE Apriori rad3,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 cor_results <-
   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-# 
-pcorlist <- list()
-# 
-for (ROI in schaefar_apriori_labelnames) {
 
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
   print(ROI)
   if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
 
@@ -13044,103 +13217,30 @@ for (ROI in schaefar_apriori_labelnames) {
   }
 }
 
-# cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
-# cor_results <- arrange(cor_results,p.value)
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BH", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
 
 
 ```
 
-```{r,echo=FALSE,message=FALSE}
 
-# qvals <- qvalue::qvalue(cor_results$p.value)
-# cor_results$adj.pval <- qvals[["qvalues"]]
-# cor_results <- arrange(cor_results,p.value)
-# cor_results%>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px")
-```
-`
-
-
-#### Angular error 
-
-
-#### Freesurfer
-##### all
-```{r, All AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
-
-
-# cor_results <-
-#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-# 
-# pcorlist <- list()
-# 
-# for (ROI in FS_all_apriori) {
-#   
-#   print(ROI)
-#   if(!is.na(sum(midlife_CT_df_Avg[[ROI]])) == FALSE){
-# 
-#     pcorlist[[ROI]] <- NA
-# 
-#   }else{
-#   pcorlist[[ROI]] <-
-#     pcor.test(x = midlife_CT_df_Avg[["loop_ae_avg_degree"]], y = midlife_CT_df_Avg[[ROI]], z = midlife_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
-#   temp <- cbind(ROI, pcorlist[[ROI]])
-#   cor_results <- rbind(cor_results, temp)
-#   }
-# }
-
-# cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
-# cor_results <- arrange(cor_results,p.value)
-
-
+```{r}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
 ```
 
-```{r,echo=FALSE,message=FALSE}
+::::
+:::
 
-# qvals <- qvalue::qvalue(cor_results$p.value)
-# cor_results$adj.pval <- qvals[["qvalues"]]
-# cor_results <- arrange(cor_results,p.value)
-# cor_results
-```
+<br>
+<br>
 
 
- rad3 
-```{r, fs All AE Apriori rad3,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
-
-# cor_results <-
-#   data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
-# 
-# pcorlist <- list()
-# 
-# for (ROI in FS_all_apriori) {
-#   
-#   print(ROI)
-#   if(!is.na(sum(midlife_CT_df_rad3[[ROI]])) == FALSE){
-# 
-#     pcorlist[[ROI]] <- NA
-# 
-#   }else{
-#   pcorlist[[ROI]] <-
-#     pcor.test(x = midlife_CT_df_rad3[["loop_ae_rad3_degree"]], y = midlife_CT_df_rad3[[ROI]], z = midlife_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
-#   temp <- cbind(ROI, pcorlist[[ROI]])
-#   cor_results <- rbind(cor_results, temp)
-#   }
-# }
-
-# cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "BY", n = length(cor_results$p.value))
-# cor_results <- arrange(cor_results,p.value)
 
 
-```
 
-```{r,echo=FALSE,message=FALSE}
 
-# qvals <- qvalue::qvalue(cor_results$p.value, pi0=1)
-# cor_results$adj.pval <- qvals[["qvalues"]]
-# cor_results <- arrange(cor_results,p.value)
-# cor_results
-```
-
-#### Male
+##### Freesurfer
+##### Male
 
 ```{r, male AE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -13216,7 +13316,7 @@ for (ROI in schaefar_apriori_labelnames) {
 # cor_results
 ```
 
-#### female
+##### female
 ```{r, fs female DE Apriori Average,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 # 
@@ -13290,6 +13390,335 @@ for (ROI in schaefar_apriori_labelnames) {
 # cor_results <- arrange(cor_results,p.value)
 # cor_results
 ```
+
+### Young Adults 
+#### DK atlas
+
+- First i need to create a few cortical thickness data frames
+```{r}
+# just a data frame to work with
+young_CT_df <- young_raw_df %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol")
+
+freesurfer_colnames <- as.data.frame(colnames(midlife_raw_df)) %>% `colnames<-`("freesurfer_rois") %>% filter(grepl("thickness", freesurfer_rois))
+freesurfer_colnames <- as.character(freesurfer_colnames[,1])
+
+# now creating a temp df to select just the data for freesurfer
+temp_ct_df <- young_raw_df %>%  dplyr::select(freesurfer_colnames)
+
+# creating a new var with updated names removing the thickness
+new_freesurfer_colnames <- str_remove(freesurfer_colnames,"_thickness")
+
+# replacing cols
+temp_ct_df <- temp_ct_df %>% `colnames<-`(new_freesurfer_colnames)
+
+# adding to updated df 
+young_CT_df <- cbind(young_CT_df,temp_ct_df)
+
+temp_ct_df <- young_raw_df %>%  dplyr::select( "Left-Caudate","Right-Caudate","Left-Putamen","Right-Putamen","Left-Hippocampus","Right-Hippocampus")
+
+#creating dataframe with all apriori regions
+young_CT_df <- cbind(young_CT_df, temp_ct_df) %>% mutate(
+  avg_t1_hipp = (.$`Left-Hippocampus` + .$`Right-Hippocampus`) / 2,
+  avg_postcentral = lh_postcentral + rh_postcentral /
+    2,
+  avg_precentral = lh_precentral + rh_precentral / 2,
+  avg_superior_parietal = lh_superiorparietal + rh_superiorparietal / 2,
+  avg_superior_frontal = rh_superiorfrontal + lh_superiorfrontal / 2 , avg_caudate = `Left-Caudate` + `Right-Caudate` /2, avg_putamen = `Left-Putamen`,`Right-Putamen`
+) %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(lh_postcentral != "NA")
+
+    
+# now there's a lot of columns to select here so I'm going to try and make a few list of them so then we can grab by names 
+
+# precentral, postcentral, superoir parietal, superior frontal, caudate and putamen 
+
+FS_all_apriori <- c("lh_postcentral","lh_precentral","lh_superiorparietal","lh_superiorfrontal", "lh_cuneus","lh_medialorbitofrontal","lh_entorhinal","lh_parahippocampal","lh_precuneus","lh_lateraloccipital","lh_posteriorcingulate", "rh_postcentral","rh_precentral","rh_superiorparietal","rh_superiorfrontal","rh_cuneus","rh_medialorbitofrontal","rh_entorhinal","rh_parahippocampal","rh_precuneus","rh_lateraloccipital","rh_posteriorcingulate","Left-Caudate","Right-Caudate","Left-Putamen","Right-Putamen","Left-Hippocampus","Right-Hippocampus")
+
+FS_avg_apriori <- c("avg_t1_hipp","avg_postcentral", "avg_precentral",
+  "avg_superior_parietal", "avg_superior_frontal", "avg_caudate", "avg_putamen")
+```
+
+```{r,,message=FALSE, warning=FALSE}
+
+# Average
+young_CT_df_Avg <- young_CT_df %>% filter(loop_de_avg_degree != "NA")
+young_CT_df_Avg$sex[young_CT_df_Avg$sex=="Male"] <- 1 
+young_CT_df_Avg$sex[young_CT_df_Avg$sex=="Female"] <- 0
+young_CT_df_Avg$sex <- as.numeric(young_CT_df_Avg$sex)
+
+#Rad3
+  
+young_CT_df_rad3 <- young_CT_df %>% filter(loop_de_rad3_degree != "NA")
+young_CT_df_rad3$sex[young_CT_df_rad3$sex=="Male"] <- 1 
+young_CT_df_rad3$sex[young_CT_df_rad3$sex=="Female"] <- 0
+young_CT_df_rad3$sex <- as.numeric(young_CT_df_rad3$sex)
+```
+
+
+##### <span style="text-decoration:underline">Full young adult sample</span> {.tabset .tabset-pills}
+
+Here I'm using the full average of the apriori regions so left and right combined 
+
+###### Position Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in FS_avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(young_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_CT_df_Avg[["loop_pe_avg_m"]], y = young_CT_df_Avg[[ROI]], z = young_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+:::
+:::{}
+
+**Rad3**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in FS_avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(young_CT_df_rad3[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_CT_df_rad3[["loop_pe_rad3_m"]], y = young_CT_df_rad3[[ROI]], z = young_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+::::
+:::
+
+<br>
+<br> 
+
+###### Angular Error
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in FS_avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(young_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_CT_df_Avg[["loop_ae_avg_degree"]], y = young_CT_df_Avg[[ROI]], z = young_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+:::
+:::{}
+
+**Rad3**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in FS_avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(young_CT_df_rad3[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_CT_df_rad3[["loop_ae_rad3_degree"]], y = young_CT_df_rad3[[ROI]], z = young_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+```
+
+```{r}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+::::
+:::
+
+<br>
+<br> 
+
+###### degrees traveled 
+
+:::: {style="display: flex;"}
+
+:::{} 
+
+**Average**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in FS_avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(young_CT_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_CT_df_Avg[["loop_de_avg_degree"]], y = young_CT_df_Avg[[ROI]], z = young_CT_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+:::
+:::{}
+
+**Rad3**
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in FS_avg_apriori) {
+  
+  print(ROI)
+  if(!is.na(sum(young_CT_df_rad3[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_CT_df_rad3[["loop_de_rad3_degree"]], y = young_CT_df_rad3[[ROI]], z = young_CT_df_rad3[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+
+```{r}
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "400px", height = "300px")
+```
+
+::::
+:::
+
+<br>
+<br> 
+
 
 ## LM perm cortical thickness (testing)
 ### Freesurfer
@@ -13399,5 +13828,19 @@ midlife_CT_lmperm_pivoted$ROI = factor(midlife_CT_lmperm_pivoted$ROI,
 library(lmPerm)
 # 
 # model <- midlife_CT_lmperm_pivoted %>% lmp(loop_ae_avg_degree ~ CorticalThickness, perm = "Prob" )
+```
+
+
+## Boot strapping approach for this 
+
+I'm following an online tutorial here:https://cran.r-project.org/web/packages/boot.pval/vignettes/boot_summary.html
+
+```{r}
+# library(boot.pval)
+```
+
+```{r}
+# model <- lm(mpg ~ hp + vs, data = mtcars)
+# boot_summary(model, R = 9999, adjust.method = "holm") %>% summary_to_gt()
 ```
 
