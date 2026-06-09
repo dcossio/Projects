@@ -294,11 +294,11 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 Reading in our main LOOP CSV and creating large dataframes for midlife and young. 
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-#workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
 
 
 
-workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
+#workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
 
 outputdir <- paste0(workingdir,"/Figs")
 
@@ -703,12 +703,12 @@ all_cleaned_loop %>% ggplot(aes(
                   outliers = FALSE,
                   linewidth = 2,
                   color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=14) +
    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
-  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   scale_x_discrete(labels = c("Young", "Midlife")) +
   xlab("Age group") +
-  ylab("Degrees traveled")  +
+  ylab("Degrees Traveled (°)")  +
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -917,12 +917,12 @@ all_cleaned_loop %>% ggplot(aes(
                   outliers = FALSE,
                   linewidth = 2,
                   color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=14) +
    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
   scale_y_continuous(breaks = seq(0, 150, by = 25)) +
   scale_x_discrete(labels = c("Young", "Midlife")) +
   xlab("Age group") +
-  ylab("Angular Error")  +
+  ylab("Angular Error (°)")  +
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
