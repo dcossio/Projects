@@ -294,11 +294,13 @@ bias in comparisons. In addition to the total hippocampal volume from the T1-wei
 Reading in our main LOOP CSV and creating large dataframes for midlife and young. 
 
 ```{r reading in our CSVs, echo=FALSE, results='hide',message=FALSE}
-workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+#workingdir <- "/Users/danielacossio/Documents/Chrastil_Lab/Projects/SNAG/LOOP"
+
+
+
+workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
 
 outputdir <- paste0(workingdir,"/Figs")
-
-#workingdir <- "/Users/danielacossio/Library/CloudStorage/GoogleDrive-dcossio1@uci.edu/Other computers/My iMac/Chrastil_Lab/Projects/SNAG/LOOP"
 
 LOOP_raw_df <- read_csv(paste0(workingdir,"/LOOP_all_data.csv")) %>%  filter(loop_useable=="Yes")
 
@@ -2601,8 +2603,7 @@ invisible(dev.off())
 ::::
 
 
-
-##### Degrees Traveled {.tabset .tabset-pills}
+##### Degrees Traveled {.tabset .tabset-pills} 
 
 :::: {style="display: flex;"}
 
@@ -2673,18 +2674,19 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
 
 tiff(paste0(outputdir,"/Loop_AveT1HPVol_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
 
-midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_avg_degree, color = avg_t1_hipp)) +
+  geom_point(size=22, colour = "#7e4d5b") + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  stat_cor(method = "pearson")+
-  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+             color="#7e4d5b",
+             se=TRUE,
+             linewidth = 4)+
+  #stat_cor(method = "pearson", cor.coef.name = "r", size =14,aes(label = ..r.label..)) +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
   ylab("Average Degrees Traveled")  +
+  geom_hline(yintercept = 360, linetype = "dotted", linewidth = 4 )+
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -2726,7 +2728,7 @@ invisible(dev.off())
 - Degrees Traveled  is not significantly associated with t1 total hippocampus R=-0.09, p=0.59
 
 ```{r,warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
-x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_rad3_degree)) %>% mutate(analysis = "rad3_AE_T1total")
+x <- broom::tidy(cor.test(midlife_HP_df_adj$avg_t1_hipp,midlife_HP_df_adj$loop_de_rad3_degree)) %>% mutate(analysis = "rad3_DT_T1total")
 
 midlife_HP_correlations <- rbind(midlife_HP_correlations,x)
 
@@ -2793,7 +2795,7 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
+             #color="Black",
              se=TRUE,
              size=4)+
   stat_cor(method = "pearson")+
@@ -4639,17 +4641,18 @@ midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_de_avg_degree))
 tiff(paste0(outputdir,"/Loop_T2totalhp_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
 
 midlife_HP_df_adj %>% ggplot(aes(x = avg_t2_total_hipp ,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+  geom_point(size=22, colour = "#7e4d5b") + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  stat_cor(method = "pearson")+
-  scale_y_continuous(breaks = seq(50, 500, by = 100)) +
+             color="#7e4d5b",
+             se=TRUE,
+             linewidth = 4)+
+  #stat_cor(method = "pearson", cor.coef.name = "r", size =14,aes(label = ..r.label..)) +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled")+
+  ylab("Average Degrees Traveled")  +
+  geom_hline(yintercept = 360, linetype = "dotted", linewidth = 4 )+
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -5303,16 +5306,18 @@ midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_ca1 ,y = loop_de_avg_degree)
 tiff(paste0(outputdir,"/Loop_T2CA1_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
 
 midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_ca1,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+  geom_point(size=22, colour = "#7e4d5b") + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
-             se=TRUE)+
+             color="#7e4d5b",
+             se=TRUE,
+             linewidth = 4)+
+  #stat_cor(method = "pearson", cor.coef.name = "r", size =14,aes(label = ..r.label..)) +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled")+
+  ylab("Average Degrees Traveled")  +
+  geom_hline(yintercept = 360, linetype = "dotted", linewidth = 4 )+
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -5970,16 +5975,18 @@ midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_ca23 ,y = loop_de_avg_degree
 tiff(paste0(outputdir,"/Loop_T2totalCA23_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
 
 midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_ca23,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   geom_point(size=22, colour = "#7e4d5b") + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
-             se=TRUE)+
+             color="#7e4d5b",
+             se=TRUE,
+             linewidth = 4)+
+  #stat_cor(method = "pearson", cor.coef.name = "r", size =14,aes(label = ..r.label..)) +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled")+
+  ylab("Average Degrees Traveled")  +
+  geom_hline(yintercept = 360, linetype = "dotted", linewidth = 4 )+
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -6631,16 +6638,18 @@ midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_dg ,y = loop_de_avg_degree))
 tiff(paste0(outputdir,"/Loop_T2totalDG_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
 
 midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_dg,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   geom_point(size=22, colour = "#7e4d5b") + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
-             se=TRUE)+
+             color="#7e4d5b",
+             se=TRUE,
+             linewidth = 4)+
+  #stat_cor(method = "pearson", cor.coef.name = "r", size =14,aes(label = ..r.label..)) +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled")+
+  ylab("Average Degrees Traveled")  +
+  geom_hline(yintercept = 360, linetype = "dotted", linewidth = 4 )+
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -7289,16 +7298,18 @@ midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_sub ,y = loop_de_avg_degree)
 tiff(paste0(outputdir,"/Loop_T2totalSub_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
 
 midlife_HP_df_adj %>% ggplot(aes(x = t2hipp_vol_avg_sub,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   geom_point(size=22, colour = "#7e4d5b") + 
    stat_smooth(method = "lm",
               formula = y ~ x,
               geom = "smooth",
-             color="Black",
-             se=TRUE)+
+             color="#7e4d5b",
+             se=TRUE,
+             linewidth = 4)+
+  #stat_cor(method = "pearson", cor.coef.name = "r", size =14,aes(label = ..r.label..)) +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled")+
+  ylab("Average Degrees Traveled")  +
+  geom_hline(yintercept = 360, linetype = "dotted", linewidth = 4 )+
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
