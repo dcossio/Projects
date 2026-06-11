@@ -736,6 +736,7 @@ invisible(dev.off())
 
 ```
 
+
 <br>
 <br>
 
@@ -1555,12 +1556,12 @@ midlife_cleaned_df %>% ggplot(aes(
                   outliers = FALSE,
                   linewidth = 2,
                   color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=14) +
    scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
-  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   scale_x_discrete(labels = c("Men", "Women")) +
-  xlab("sex") +
-  ylab("Degrees Traveled")  +
+  xlab("Sex") +
+  ylab("Degrees Traveled (°)")  +
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -1770,12 +1771,12 @@ midlife_cleaned_df %>% ggplot(aes(
                   outliers = FALSE,
                   linewidth = 2,
                   color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=14) +
    scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
-  scale_y_continuous(breaks = seq(0, 3.5, by = 0.25)) +
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
   scale_x_discrete(labels = c("Men", "Women")) +
-  xlab("sex") +
-  ylab("Angular Error")  +
+  xlab("Sex") +
+  ylab("Angular Error (°)")  +
   theme(
     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
@@ -1788,7 +1789,7 @@ midlife_cleaned_df %>% ggplot(aes(
     axis.text.y = element_text(
       size = 45,
       color = "black",
-      hjust = 2,
+      #hjust = 2,
       face = "bold"
     ),
     axis.ticks = element_line(color = "black",
@@ -1892,7 +1893,7 @@ midlife_cleaned_df %>% ggplot(aes(
     axis.text.y = element_text(
       size = 45,
       color = "black",
-      hjust = 2,
+      #hjust = 2,
       face = "bold"
     ),
     axis.ticks = element_line(color = "black",
