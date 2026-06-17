@@ -690,7 +690,7 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
-```{r, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+```{r, TIFF loop_ageDiff_avgDT_20x15, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 
 tiff(paste0(outputdir,"/loop_ageDiff_avgDT_20x15.tiff"), units="in", width=20, height=15, res=300)
 
@@ -796,49 +796,49 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
-```{r, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
-
-tiff(paste0(outputdir,"/loop_ageDiff_rad3DT_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-all_cleaned_loop %>% ggplot(aes(
-  x = factor(age_group, levels = c("Young", "Midlife")),
-  y = loop_de_rad3_degree,
-  fill = age_group
-)) + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
-  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
-  scale_x_discrete(labels = c("Young", "Midlife")) +
-  xlab("Age group") +
-  ylab("Radius 3 Degrees traveled")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+```{r, TIFF loop_ageDiff_rad3DT_20x15,warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+# 
+# tiff(paste0(outputdir,"/loop_ageDiff_rad3DT_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# all_cleaned_loop %>% ggplot(aes(
+#   x = factor(age_group, levels = c("Young", "Midlife")),
+#   y = loop_de_rad3_degree,
+#   fill = age_group
+# )) + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+#   scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+#   scale_x_discrete(labels = c("Young", "Midlife")) +
+#   xlab("Age group") +
+#   ylab("Radius 3 Degrees traveled")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -905,7 +905,7 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
-```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+```{r,TIFF loop_ageDiff_avgAE_20x15 ,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
 
 tiff(paste0(outputdir,"/loop_ageDiff_avgAE_20x15.tiff"), units="in", width=20, height=15, res=300)
 
@@ -1008,49 +1008,49 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
-```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_ageDiff_rad3AE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-all_cleaned_loop %>% ggplot(aes(
-  x = factor(age_group, levels = c("Young", "Midlife")),
-  y = loop_ae_rad3_degree,
-  fill = age_group
-)) + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
-  scale_y_continuous(breaks = seq(0, 150, by = 25)) +
-  scale_x_discrete(labels = c("Young", "Midlife")) +
-  xlab("Age group") +
-  ylab("Radius 3Angular Error")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      #hjust = -0.75,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+```{r, TIFF loop_ageDiff_rad3AE_20x15.tiff, warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+# 
+# tiff(paste0(outputdir,"/loop_ageDiff_rad3AE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# all_cleaned_loop %>% ggplot(aes(
+#   x = factor(age_group, levels = c("Young", "Midlife")),
+#   y = loop_ae_rad3_degree,
+#   fill = age_group
+# )) + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+#   scale_y_continuous(breaks = seq(0, 150, by = 25)) +
+#   scale_x_discrete(labels = c("Young", "Midlife")) +
+#   xlab("Age group") +
+#   ylab("Radius 3Angular Error")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       #hjust = -0.75,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -1115,49 +1115,49 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
-```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_ageDiff_avgPE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-all_cleaned_loop %>% ggplot(aes(
-  x = factor(age_group, levels = c("Young", "Midlife")),
-  y = loop_pe_avg_m,
-  fill = age_group
-)) + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  scale_x_discrete(labels = c("Young", "Midlife")) +
-  xlab("Age group") +
-  ylab("Position Error")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      #hjust = -0.75,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+```{r, TIFF loop_ageDiff_avgPE_20x15.tiff ,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+# 
+# tiff(paste0(outputdir,"/loop_ageDiff_avgPE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# all_cleaned_loop %>% ggplot(aes(
+#   x = factor(age_group, levels = c("Young", "Midlife")),
+#   y = loop_pe_avg_m,
+#   fill = age_group
+# )) + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   scale_x_discrete(labels = c("Young", "Midlife")) +
+#   xlab("Age group") +
+#   ylab("Position Error")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       #hjust = -0.75,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -1217,49 +1217,49 @@ all_cleaned_loop %>% ggplot(aes(
   )
 ```
 
-```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_ageDiff_rad3PE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-all_cleaned_loop %>% ggplot(aes(
-  x = factor(age_group, levels = c("Young", "Midlife")),
-  y = loop_pe_rad3_m,
-  fill = age_group
-)) + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  scale_x_discrete(labels = c("Young", "Midlife")) +
-  xlab("Age group") +
-  ylab("Position Error")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      #hjust = -0.75,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+```{r, TIFF loop_ageDiff_rad3PE_20x15.tiff, warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+# 
+# tiff(paste0(outputdir,"/loop_ageDiff_rad3PE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# all_cleaned_loop %>% ggplot(aes(
+#   x = factor(age_group, levels = c("Young", "Midlife")),
+#   y = loop_pe_rad3_m,
+#   fill = age_group
+# )) + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#7d4c5a", "#997C5C"))+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   scale_x_discrete(labels = c("Young", "Midlife")) +
+#   xlab("Age group") +
+#   ylab("Position Error")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       #hjust = -0.75,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -1280,7 +1280,7 @@ invisible(dev.off())
 
 **Average**  
 
-  - No significant difference between young and midlife adults (p = 0.33)
+  - No significant difference between female and male adults (p = 0.33)
 ```{r}
 wilcox.test(mid_female_cleaned_df$loop_pe_avg_m, mid_male_cleaned_df$loop_pe_avg_m, paired=FALSE)
 ```
@@ -1331,49 +1331,49 @@ midlife_cleaned_df %>% ggplot(aes(
   )
 ```
 
-```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_midlife_sexDiff_avgPE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-midlife_cleaned_df %>% ggplot(aes(
-  x = factor(sex, levels = c("Male", "Female")),
-  y = loop_pe_avg_m,
-  fill = sex
-)) + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
-  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
-  scale_x_discrete(labels = c("Men", "Women")) +
-  xlab("sex") +
-  ylab("Position Error")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+```{r, TIFF loop_midlife_sexDiff_avgPE_20x15.tiff,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
+# 
+# tiff(paste0(outputdir,"/loop_midlife_sexDiff_avgPE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# midlife_cleaned_df %>% ggplot(aes(
+#   x = factor(sex, levels = c("Male", "Female")),
+#   y = loop_pe_avg_m,
+#   fill = sex
+# )) + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+#   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+#   scale_x_discrete(labels = c("Men", "Women")) +
+#   xlab("sex") +
+#   ylab("Position Error")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 ```
 
 <br>
@@ -1435,48 +1435,48 @@ midlife_cleaned_df %>% ggplot(aes(
 ```
 
 ```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_midlife_sexDiff_rad3PE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-midlife_cleaned_df %>% ggplot(aes(
-  x = factor(sex, levels = c("Male", "Female")),
-  y = loop_pe_rad3_m,
-  fill = sex
-)) + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
-  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
-  scale_x_discrete(labels = c("Men", "Women")) +
-  xlab("sex") +
-  ylab("Position Error")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/loop_midlife_sexDiff_rad3PE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# midlife_cleaned_df %>% ggplot(aes(
+#   x = factor(sex, levels = c("Male", "Female")),
+#   y = loop_pe_rad3_m,
+#   fill = sex
+# )) + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+#   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+#   scale_x_discrete(labels = c("Men", "Women")) +
+#   xlab("sex") +
+#   ylab("Position Error")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -1650,48 +1650,48 @@ midlife_cleaned_df %>% ggplot(aes(
 ```
 
 ```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_midlife_sexDiff_Rad3DE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-midlife_cleaned_df %>% ggplot(aes(
-  x = factor(sex, levels = c("Male", "Female")),
-  y = loop_de_rad3_degree,
-  fill = sex
-))  + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
-  scale_y_continuous(breaks = seq(0, 500, by = 50)) +
-  scale_x_discrete(labels = c("Men", "Women")) +
-  xlab("sex") +
-  ylab("Degrees Traveled")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/loop_midlife_sexDiff_Rad3DE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# midlife_cleaned_df %>% ggplot(aes(
+#   x = factor(sex, levels = c("Male", "Female")),
+#   y = loop_de_rad3_degree,
+#   fill = sex
+# ))  + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+#   scale_y_continuous(breaks = seq(0, 500, by = 50)) +
+#   scale_x_discrete(labels = c("Men", "Women")) +
+#   xlab("sex") +
+#   ylab("Degrees Traveled")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -1863,48 +1863,48 @@ midlife_cleaned_df %>% ggplot(aes(
 ```
 
 ```{r,warning=FALSE, echo=FALSE,message=FALSE, fig.show='hide'}
-
-tiff(paste0(outputdir,"/loop_midlife_sexDiff_Rad3AE_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-midlife_cleaned_df %>% ggplot(aes(
-  x = factor(sex, levels = c("Male", "Female")),
-  y = loop_ae_rad3_degree,
-  fill = sex
-))  + geom_boxplot(width = 0.5,
-                  fatten = 0,
-                  outliers = FALSE,
-                  linewidth = 2,
-                  color="black") +
-  geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
-   scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
-  scale_y_continuous(breaks = seq(0, 3.5, by = 0.25)) +
-  scale_x_discrete(labels = c("Men", "Women")) +
-  xlab("sex") +
-  ylab("Angular Error")  +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      #hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/loop_midlife_sexDiff_Rad3AE_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# midlife_cleaned_df %>% ggplot(aes(
+#   x = factor(sex, levels = c("Male", "Female")),
+#   y = loop_ae_rad3_degree,
+#   fill = sex
+# ))  + geom_boxplot(width = 0.5,
+#                   fatten = 0,
+#                   outliers = FALSE,
+#                   linewidth = 2,
+#                   color="black") +
+#   geom_point(position=position_jitterdodge(0.2, dodge.width = .1),size=18) +
+#    scale_fill_manual(values = c("#a57c8a", "#2f3c31"))+
+#   scale_y_continuous(breaks = seq(0, 3.5, by = 0.25)) +
+#   scale_x_discrete(labels = c("Men", "Women")) +
+#   xlab("sex") +
+#   ylab("Angular Error")  +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       #hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10042,44 +10042,44 @@ young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_ae_avg_degree)) +
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_T1total_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Angular Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_T1total_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_avg_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Angular Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10150,44 +10150,44 @@ young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_ae_rad3_degree)) +
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_T1total_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Angular Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_T1total_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_ae_rad3_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Angular Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10261,44 +10261,44 @@ young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_pe_avg_m)) +
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_T1total_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Position Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_T1total_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_avg_m)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Position Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10369,44 +10369,44 @@ young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_pe_rad3_m)) +
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_T1total_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Position Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_T1total_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_pe_rad3_m)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Position Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10483,44 +10483,44 @@ young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_de_avg_degree)) +
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_T1total_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled") +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_T1total_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_de_avg_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Degrees Traveled") +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10590,44 +10590,44 @@ young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp ,y = loop_de_rad3_degree)) +
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_T1total_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Degrees Traveled")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_T1total_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = avg_t1_hipp,y = loop_de_rad3_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Degrees Traveled")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10706,44 +10706,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_ae_avg_degree))
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_RightHP_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Angular Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_RightHP_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_avg_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Angular Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10814,44 +10814,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_ae_rad3_degree)
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_RightHP_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_rad3_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Angular Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_RightHP_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_ae_rad3_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Angular Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -10928,44 +10928,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_pe_avg_m)) +
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_RightHP_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_avg_m)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Position Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_RightHP_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_avg_m)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Position Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11035,44 +11035,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_pe_rad3_m)) +
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_RightHP_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_rad3_m)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Position Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_RightHP_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_pe_rad3_m)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Position Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11149,44 +11149,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_de_avg_degree))
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_RightHP_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled") +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_RightHP_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_de_avg_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Degrees Traveled") +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11257,43 +11257,43 @@ young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus` ,y = loop_de_rad3_degree)
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
 
-tiff(paste0(outputdir,"/Young_RightHP_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_de_rad3_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Degrees Traveled")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# tiff(paste0(outputdir,"/Young_RightHP_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Right-Hippocampus`,y = loop_de_rad3_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Degrees Traveled")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11371,44 +11371,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_ae_avg_degree)) 
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_LeftHP_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Angular Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_LeftHP_AE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_avg_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Angular Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11479,44 +11479,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_ae_rad3_degree))
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_LeftHP_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_rad3_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Angular Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_LeftHP_AE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_ae_rad3_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Angular Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11593,44 +11593,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_pe_avg_m)) +
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_LeftHP_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_avg_m)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Position Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_LeftHP_PE_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_avg_m)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 3, by = 0.5)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Position Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11700,44 +11700,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_pe_rad3_m)) +
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_LeftHP_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_rad3_m)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Position Error")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_LeftHP_PE_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_pe_rad3_m)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Position Error")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11818,44 +11818,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_de_avg_degree)) 
 
 ```{r,echo=FALSE, warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/young_LeftHP_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_de_avg_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("Average Degrees Traveled") +
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/young_LeftHP_DT_Avg_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_de_avg_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("Average Degrees Traveled") +
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -11925,44 +11925,44 @@ young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus` ,y = loop_de_rad3_degree))
 
 ```{r,echo=FALSE, warning=FALSE}
 # Use this for exporting tiff for illustrator
-
-tiff(paste0(outputdir,"/Young_LeftHP_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
-
-young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_rad3_degree)) +
-  geom_point(size=18) +
-  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
-   stat_smooth(method = "lm",
-              formula = y ~ x,
-              geom = "smooth",
-             color="Black",
-             se=TRUE)+
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
-  xlab("Averaged GMV Volume")+
-  ylab("rad3 Degrees Traveled")+
-  theme(
-    axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
-    axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
-    axis.text.x = element_text(
-      size = 45,
-      color = "black",
-      vjust = -2,
-      face = "bold"
-    ),
-    axis.text.y = element_text(
-      size = 45,
-      color = "black",
-      hjust = 2,
-      face = "bold"
-    ),
-    axis.ticks = element_line(color = "black",
-                                linewidth =2 ),
-    axis.ticks.length = unit(0.75, "cm"),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black", linewidth = 3),
-    legend.position = "none",
-    plot.margin = margin(2,2, 2, 2, "cm"),
-  )
-invisible(dev.off())
+# 
+# tiff(paste0(outputdir,"/Young_LeftHP_DT_rad3_20x15.tiff"), units="in", width=20, height=15, res=300)
+# 
+# young_HP_df_adj %>% ggplot(aes(x = `Left-Hippocampus`,y = loop_de_rad3_degree)) +
+#   geom_point(size=18) +
+#   #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+#    stat_smooth(method = "lm",
+#               formula = y ~ x,
+#               geom = "smooth",
+#              color="Black",
+#              se=TRUE)+
+#   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+#   xlab("Averaged GMV Volume")+
+#   ylab("rad3 Degrees Traveled")+
+#   theme(
+#     axis.title.x = element_text(vjust = -3, size = 60, face = "bold"),
+#     axis.title.y = element_text(vjust = 4, size = 60,face = "bold"),
+#     axis.text.x = element_text(
+#       size = 45,
+#       color = "black",
+#       vjust = -2,
+#       face = "bold"
+#     ),
+#     axis.text.y = element_text(
+#       size = 45,
+#       color = "black",
+#       hjust = 2,
+#       face = "bold"
+#     ),
+#     axis.ticks = element_line(color = "black",
+#                                 linewidth =2 ),
+#     axis.ticks.length = unit(0.75, "cm"),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black", linewidth = 3),
+#     legend.position = "none",
+#     plot.margin = margin(2,2, 2, 2, "cm"),
+#   )
+# invisible(dev.off())
 
 ```
 
@@ -14184,6 +14184,230 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 
 <br>
 <br> 
+
+#### Schaefar 
+
+
+```{r}
+#Scahefer Aprioris
+
+schaefar_apriori_labelnames <-
+  c(
+    "LH_SomMotA",
+    "LH_SomMotB_Cent",
+    "LH_SomMotB_S2",
+    "LH_SomMotB_Ins",
+    "LH_SomMotB_Aud",
+    "LH_DorsAttnA_TempOcc",
+    "LH_DorsAttnA_ParOcc",
+    "LH_DorsAttnA_SPL",
+    "LH_DorsAttnB_PostC",
+    "LH_DorsAttnB_FEF",
+    "LH_DorsAttnB_PrCv",
+    "LH_ContA_Temp",
+    "LH_ContA_IPS",
+    "LH_ContA_PFCd",
+    "LH_ContA_PFCl",
+    "LH_ContA_PFClv",
+    "LH_ContA_Cingm",
+    "LH_ContC_pCun",
+    "LH_ContC_Cingp",
+    "LH_DefaultA_IPL",
+    "LH_DefaultA_PFCd",
+    "LH_DefaultA_pCunPCC",
+    "LH_DefaultA_PFCm",
+    "LH_DefaultC_IPL",
+    "LH_DefaultC_Rsp",
+    "LH_DefaultC_PHC",
+    "RH_SomMotA",
+    "RH_SomMotB_Cent",
+    "RH_SomMotB_S2",
+    "RH_SomMotB_Ins",
+    "RH_SomMotB_Aud",
+    "RH_DorsAttnA_TempOcc",
+    "RH_DorsAttnA_ParOcc",
+    "RH_DorsAttnA_SPL",
+    "RH_DorsAttnB_TempOcc",
+    "RH_DorsAttnB_PostC",
+    "RH_DorsAttnB_FEF",
+    "RH_ContA_Temp" ,
+    "RH_ContA_IPS",
+    "RH_ContA_PFCd",
+    "RH_ContA_PFCl",
+    "RH_ContA_Cingm",
+    "RH_ContC_pCun",
+    "RH_ContC_Cingp",
+    "RH_DefaultA_Temp",
+    "RH_DefaultA_IPL",
+    "RH_DefaultA_PFCd",
+    "RH_DefaultA_pCunPCC",
+    "RH_DefaultA_PFCm",
+    "RH_DefaultC_Rsp",
+    "RH_DefaultC_PHC"
+  )
+
+schaefar_apriori_labelnames_averaged <-
+  c(
+    "avg_SomMotA",
+    "avg_SomMotB_Cent",
+    "avg_SomMotB_S2",
+    "avg_SomMotB_Ins",
+    "avg_SomMotB_Aud",
+    "avg_DorsAttnA_TempOcc",
+    "avg_DorsAttnA_ParOcc",
+    "avg_DorsAttnA_SPL",
+    "avg_DorsAttnB_PostC",
+    "avg_DorsAttnB_FEF",
+    "LH_DorsAttnB_PrCv",
+    "avg_ContA_Temp",
+    "avg_ContA_IPS",
+    "avg_ContA_PFCd",
+    "avg_ContA_PFCl",
+    "avg_ContA_PFClv",
+    "avg_ContA_Cingm",
+    "avg_ContC_pCun",
+    "avg_ContC_Cingp",
+    "avg_DefaultA_IPL",
+    "avg_DefaultA_PFCd",
+    "avg_DefaultA_pCunPCC",
+    "avg_DefaultA_PFCm",
+    "avg_DefaultC_IPL",
+    "avg_DefaultC_Rsp",
+    "avg_DefaultC_PHC",
+    "RH_DefaultA_Temp"
+  )
+
+schaefar_apriori_networknames <-
+  c(
+    "LH_SomMotA",
+    "LH_SomMotB",
+    "LH_DorsAttnA",
+    "LH_DorsAttnB",
+    "LH_ContA",
+    "LH_ContC",
+    "LH_DefaultA",
+    "LH_DefaultC",
+    "RH_SomMotA",
+    "RH_SomMotB",
+    "RH_DorsAttnA",
+    "RH_DorsAttnB",
+    "RH_ContA",
+    "RH_ContC",
+    "RH_DefaultA",
+    "RH_DefaultC"
+  )
+
+schaefar_apriori_networknames_avg <-
+  c(
+    "avg_SomMotA",
+    "avg_SomMotB",
+    "avg_DorsAttnA",
+    "avg_DorsAttnB",
+    "avg_ContA",
+    "avg_ContC",
+    "avg_DefaultA",
+    "avg_DefaultC"
+  )
+
+
+```
+
+```{r}
+young_CT_df <- young_raw_df %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol"
+)
+
+
+# now lets do some data wrangling to rename all of the schaefar columns by creating a variable with the master DF col names as rows, and then filtering by 17 networks. finally convert to a variable list of chars
+schaefar_colnames <- as.data.frame(colnames(young_raw_df)) %>% `colnames<-`("schaefar_rois") %>% filter(grepl("17Networks", schaefar_rois))
+schaefar_colnames <- as.character(schaefar_colnames[,1])
+
+# now creating a temp df to select just the data for schaefar 
+temp_ct_df <- young_raw_df %>%  dplyr::select(schaefar_colnames) 
+
+# creating a new var with updated names removing the 17 netowrks 
+new_schaefar_colnames <- str_remove(schaefar_colnames,"17Networks_")
+
+
+# replacing cols
+temp_ct_df <- temp_ct_df %>% `colnames<-`(new_schaefar_colnames)
+
+# adding to updated df 
+young_CT_df <-
+  cbind(young_CT_df, temp_ct_df) 
+
+
+
+young_schaefar_df <- young_CT_df  %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol")
+
+for (label in schaefar_apriori_labelnames) {
+        temp <-young_CT_df %>% dplyr::select(matches(label)) %>% rowMeans() %>% as.data.frame() %>% `colnames<-`(label)
+        
+        young_schaefar_df <- cbind(young_schaefar_df, temp)
+}
+        
+        
+        
+
+young_schaefar_df <-  young_schaefar_df %>% mutate(
+    avg_SomMotA = (.$LH_SomMotA + .$RH_SomMotA) / 2,
+    avg_SomMotB_Cent = (LH_SomMotB_Cent + RH_SomMotB_Cent)  / 2,
+    avg_SomMotB_S2 = (LH_SomMotB_S2 + RH_SomMotB_S2) / 2,
+    avg_SomMotB_Ins = (LH_SomMotB_Ins + RH_SomMotB_Ins) / 2,
+    avg_SomMotB_Aud = (LH_SomMotB_Aud + RH_SomMotB_Aud) / 2,
+    avg_DorsAttnA_TempOcc = (LH_DorsAttnA_TempOcc + RH_DorsAttnA_TempOcc) / 2,
+    avg_DorsAttnA_ParOcc = (LH_DorsAttnA_ParOcc + RH_DorsAttnA_ParOcc) / 2,
+    avg_DorsAttnA_SPL = (LH_DorsAttnA_SPL + RH_DorsAttnA_SPL) / 2,
+    avg_DorsAttnB_PostC = (LH_DorsAttnB_PostC + RH_DorsAttnB_PostC) / 2,
+    avg_DorsAttnB_FEF = (LH_DorsAttnB_FEF + RH_DorsAttnB_FEF) / 2,
+    avg_ContA_Temp = (LH_ContA_Temp + RH_ContA_Temp) / 2,
+    avg_ContA_IPS = (LH_ContA_IPS + RH_ContA_IPS) / 2,
+    avg_ContA_PFCd = (LH_ContA_PFCd + RH_ContA_PFCd) / 2,
+    avg_ContA_PFCl = (LH_ContA_PFCl + RH_ContA_PFCl) / 2,
+    avg_ContA_Cingm = (LH_ContA_Cingm + RH_ContA_Cingm) / 2,
+    avg_ContC_pCun = (LH_ContC_pCun + RH_ContC_pCun) / 2,
+    avg_ContC_Cingp = (LH_ContC_Cingp + RH_ContC_Cingp) / 2,
+    avg_DefaultA_IPL = (LH_DefaultA_IPL + RH_DefaultA_IPL) / 2,
+    avg_DefaultA_PFCd = (LH_DefaultA_PFCd + RH_DefaultA_PFCd) / 2,
+    avg_DefaultA_pCunPCC = (LH_DefaultA_pCunPCC + RH_DefaultA_pCunPCC) / 2,
+    avg_DefaultA_PFCm = (LH_DefaultA_PFCm + RH_DefaultA_PFCm) / 2,
+    avg_DefaultC_Rsp = (LH_DefaultC_Rsp + RH_DefaultC_Rsp) / 2,
+    avg_DefaultC_PHC = (LH_DefaultC_PHC + RH_DefaultC_PHC) / 2
+  ) %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_SomMotA != "NA")
+
+
+
+```
+
+
+
+
+
+
+
+
+################################################################  
 
 
 ## LM perm cortical thickness (testing)
