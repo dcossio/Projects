@@ -12905,7 +12905,6 @@ schaefar_apriori_labelnames <-
     "RH_DorsAttnB_TempOcc",
     "RH_DorsAttnB_PostC",
     "RH_DorsAttnB_FEF",
-    "RH_ContA_Temp" ,
     "RH_ContA_IPS",
     "RH_ContA_PFCd",
     "RH_ContA_PFCl",
@@ -14187,13 +14186,11 @@ cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped
 
 #### Schaefar 
 
-
 ```{r}
 #Scahefer Aprioris
 
 schaefar_apriori_labelnames <-
-  c(
-    "LH_SomMotA",
+  c("LH_SomMotA",
     "LH_SomMotB_Cent",
     "LH_SomMotB_S2",
     "LH_SomMotB_Ins",
@@ -14230,7 +14227,6 @@ schaefar_apriori_labelnames <-
     "RH_DorsAttnB_TempOcc",
     "RH_DorsAttnB_PostC",
     "RH_DorsAttnB_FEF",
-    "RH_ContA_Temp" ,
     "RH_ContA_IPS",
     "RH_ContA_PFCd",
     "RH_ContA_PFCl",
@@ -14243,8 +14239,11 @@ schaefar_apriori_labelnames <-
     "RH_DefaultA_pCunPCC",
     "RH_DefaultA_PFCm",
     "RH_DefaultC_Rsp",
-    "RH_DefaultC_PHC"
+    "RH_DefaultC_PHC",
+    "RH_DefaultC_IPL"
   )
+
+    #"RH_ContA_Temp" , this one doesn't exist??
 
 schaefar_apriori_labelnames_averaged <-
   c(
@@ -14259,11 +14258,9 @@ schaefar_apriori_labelnames_averaged <-
     "avg_DorsAttnB_PostC",
     "avg_DorsAttnB_FEF",
     "LH_DorsAttnB_PrCv",
-    "avg_ContA_Temp",
     "avg_ContA_IPS",
     "avg_ContA_PFCd",
     "avg_ContA_PFCl",
-    "avg_ContA_PFClv",
     "avg_ContA_Cingm",
     "avg_ContC_pCun",
     "avg_ContC_Cingp",
@@ -14381,7 +14378,6 @@ young_schaefar_df <-  young_schaefar_df %>% mutate(
     avg_DorsAttnA_SPL = (LH_DorsAttnA_SPL + RH_DorsAttnA_SPL) / 2,
     avg_DorsAttnB_PostC = (LH_DorsAttnB_PostC + RH_DorsAttnB_PostC) / 2,
     avg_DorsAttnB_FEF = (LH_DorsAttnB_FEF + RH_DorsAttnB_FEF) / 2,
-    avg_ContA_Temp = (LH_ContA_Temp + RH_ContA_Temp) / 2,
     avg_ContA_IPS = (LH_ContA_IPS + RH_ContA_IPS) / 2,
     avg_ContA_PFCd = (LH_ContA_PFCd + RH_ContA_PFCd) / 2,
     avg_ContA_PFCl = (LH_ContA_PFCl + RH_ContA_PFCl) / 2,
@@ -14393,16 +14389,589 @@ young_schaefar_df <-  young_schaefar_df %>% mutate(
     avg_DefaultA_pCunPCC = (LH_DefaultA_pCunPCC + RH_DefaultA_pCunPCC) / 2,
     avg_DefaultA_PFCm = (LH_DefaultA_PFCm + RH_DefaultA_PFCm) / 2,
     avg_DefaultC_Rsp = (LH_DefaultC_Rsp + RH_DefaultC_Rsp) / 2,
-    avg_DefaultC_PHC = (LH_DefaultC_PHC + RH_DefaultC_PHC) / 2
+    avg_DefaultC_PHC = (LH_DefaultC_PHC + RH_DefaultC_PHC) / 2,
+    avg_DefaultC_IPL = (LH_DefaultC_IPL + RH_DefaultC_IPL) / 2,
   ) %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_SomMotA != "NA")
 
 
 
 ```
 
+```{r}
+# Average
+young_schaefar_df_Avg <- young_schaefar_df %>% filter(loop_de_avg_degree != "NA") %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_SomMotA != "NA")
+young_schaefar_df_Avg$sex[young_schaefar_df_Avg$sex=="Male"] <- 1 
+young_schaefar_df_Avg$sex[young_schaefar_df_Avg$sex=="Female"] <- 0
+young_schaefar_df_Avg$sex <- as.numeric(young_schaefar_df_Avg$sex)
+
+young_schaefar_df_male_Avg <- young_schaefar_df_Avg %>% filter(sex==1)
+young_schaefar_df_female_Avg <-young_schaefar_df_Avg %>% filter(sex==0)
+
+
+```
+
+##### <span style="text-decoration:underline">A priori label names</span> {.tabset .tabset-pills}
+
+###### Position Error Average
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_pe_avg_m"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") %>% row_spec(1, background = "pink") 
+```
 
 
 
+```{r, out.width="60%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+young_schaefar_df_Avg %>% ggplot(aes(x = LH_ContA_Temp ,y = loop_pe_avg_m)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 3, by = 1)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Position Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+<br>
+<br> 
+
+###### Angular Error Average
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_ae_avg_degree"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") %>% row_spec(1, background = "pink") 
+```
+
+```{r, out.width="60%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+young_schaefar_df_Avg %>% ggplot(aes(x = LH_ContA_Temp ,y = loop_ae_avg_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 125, by = 50)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+<br>
+<br> 
+
+###### degrees traveled
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_de_avg_degree"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") %>% row_spec(1, background = "pink") 
+```
+
+```{r, out.width="60%", warning=FALSE, echo=FALSE,message=FALSE,results='hide'}
+
+young_schaefar_df_Avg %>% ggplot(aes(x = RH_SomMotB_Cent ,y = loop_de_avg_degree)) +
+  geom_point(aes(size=2)) +
+  #scale_color_manual(values = c("#4e363e", "#CCBDCA")) + 
+   stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth",
+             color="Black",
+             se=TRUE)+
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  xlab("Averaged GMV Volume")+
+  ylab("Average Angular Error") +
+  theme(
+    axis.title.x = element_text(vjust = -4, size = 18, face = "bold"),
+    axis.title.y = element_text(vjust = 4, size = 18,face = "bold"),
+    axis.text.x = element_text(
+      size = 18,
+      color = "black",
+      vjust = -2,
+      face = "bold"
+    ),
+    axis.text.y = element_text(
+      size = 18,
+      color = "black",
+      hjust = 1,
+      face = "bold"
+    ),
+    axis.ticks.y = element_line(color = "black",
+                                linewidth =1 ),
+    #axis.ticks.x = element_blank(),
+    axis.ticks.length = unit(0.25, "cm"),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1),
+    legend.position = "none",
+    plot.margin = margin(1,1, 1, 1, "cm"),
+  )
+  
+
+```
+
+
+
+<br>
+<br> 
+
+
+##### <span style="text-decoration:underline">a priori label names averaged</span> {.tabset .tabset-pills}
+
+###### Position Error Average
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames_averaged) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_pe_avg_m"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") #%>% row_spec(1, background = "pink") 
+```
+
+
+<br>
+<br> 
+
+###### Angular Error Average
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames_averaged) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_ae_avg_degree"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px")# %>% row_spec(1, background = "pink") 
+```
+
+
+<br>
+<br> 
+
+###### degrees traveled
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_labelnames_averaged) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_de_avg_degree"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") #%>% row_spec(1, background = "pink") 
+```
+
+
+<br>
+<br> 
+
+##### <span style="text-decoration:underline">a priori network names</span> {.tabset .tabset-pills}
+
+```{r}
+young_CT_df <- young_raw_df %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol"
+)
+
+
+# now lets do some data wrangling to rename all of the schaefar columns by creating a variable with the master DF col names as rows, and then filtering by 17 networks. finally convert to a variable list of chars
+schaefar_colnames <- as.data.frame(colnames(young_raw_df)) %>% `colnames<-`("schaefar_rois") %>% filter(grepl("17Networks", schaefar_rois))
+schaefar_colnames <- as.character(schaefar_colnames[,1])
+
+# now creating a temp df to select just the data for schaefar 
+temp_ct_df <- young_raw_df %>%  dplyr::select(schaefar_colnames) 
+
+# creating a new var with updated names removing the 17 netowrks 
+new_schaefar_colnames <- str_remove(schaefar_colnames,"17Networks_")
+
+
+# replacing cols
+temp_ct_df <- temp_ct_df %>% `colnames<-`(new_schaefar_colnames)
+
+# adding to updated df 
+young_CT_df <-
+  cbind(young_CT_df, temp_ct_df) 
+
+
+
+young_schaefar_df <- young_CT_df  %>%  dplyr::select(
+  "subject_id",
+  "sex",
+  "age_spatial_years",
+  "repo_status",
+  "loop_pe_rad3_m",
+  "loop_pe_avg_m",
+  "loop_de_rad3_degree",
+  "loop_de_avg_degree",
+  "loop_ae_rad3_degree",
+  "loop_ae_avg_degree",
+  "EstimatedTotalIntraCranialVol")
+
+for (label in schaefar_apriori_networknames) {
+        temp <-young_CT_df %>% dplyr::select(matches(label)) %>% rowMeans() %>% as.data.frame() %>% `colnames<-`(label)
+        
+        young_schaefar_df <- cbind(young_schaefar_df, temp)
+}
+
+```
+
+```{r}
+# Average
+young_schaefar_df_Avg <- young_schaefar_df %>% filter(loop_de_avg_degree != "NA") %>% filter(EstimatedTotalIntraCranialVol != "NA") %>% filter(LH_SomMotA != "NA")
+young_schaefar_df_Avg$sex[young_schaefar_df_Avg$sex=="Male"] <- 1 
+young_schaefar_df_Avg$sex[young_schaefar_df_Avg$sex=="Female"] <- 0
+young_schaefar_df_Avg$sex <- as.numeric(young_schaefar_df_Avg$sex)
+
+young_schaefar_df_male_Avg <- young_schaefar_df_Avg %>% filter(sex==1)
+young_schaefar_df_female_Avg <-young_schaefar_df_Avg %>% filter(sex==0)
+
+
+```
+
+###### Position Error Average
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_networknames) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_pe_avg_m"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") #%>% row_spec(1, background = "pink") 
+```
+
+
+<br>
+<br> 
+
+###### Angular Error Average
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_networknames) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_ae_avg_degree"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") #%>% row_spec(1, background = "pink") 
+```
+
+
+<br>
+<br> 
+
+###### degrees traveled
+
+
+```{r,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+cor_results <-
+  data.frame(matrix(nrow = 0, ncol = 7)) %>%   `colnames<-`(c("roi", "estimate", "p.value", "statistic", "n", "gp", "Method"))
+
+pcorlist <- list()
+
+for (ROI in schaefar_apriori_networknames) {
+  
+  print(ROI)
+  if(!is.na(sum(young_schaefar_df_Avg[[ROI]])) == FALSE){
+
+    pcorlist[[ROI]] <- NA
+
+  }else{
+  pcorlist[[ROI]] <-
+    pcor.test(x = young_schaefar_df_Avg[["loop_de_avg_degree"]], y = young_schaefar_df_Avg[[ROI]], z = young_schaefar_df_Avg[, c("age_spatial_years","sex","EstimatedTotalIntraCranialVol")], method = "spearman")
+  temp <- cbind(ROI, pcorlist[[ROI]])
+  cor_results <- rbind(cor_results, temp)
+  }
+}
+
+cor_results$adj.pval <- p.adjust(cor_results$p.value, method = "fdr", n = length(cor_results$p.value))
+cor_results <- arrange(cor_results,p.value)
+
+
+```
+
+```{r,message=FALSE}
+
+cor_results %>% knitr::kable() %>% kable_styling(bootstrap_options =  c("striped", "hover", "condensed")) %>% scroll_box(width = "800px", height = "300px") #%>% row_spec(1, background = "pink") 
+```
+
+
+<br>
+<br> 
 
 
 
